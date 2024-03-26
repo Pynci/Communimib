@@ -3,3 +3,10 @@ plugins {
     alias(libs.plugins.androidApplication) apply false
     id("com.google.gms.google-services") version "4.4.1" apply false
 }
+
+buildscript {
+    dependencies {
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.6")
+        classpath("com.android.tools.build:gradle:4.2.2")
+    }
+}
