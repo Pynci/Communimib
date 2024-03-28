@@ -15,4 +15,5 @@
     <string name="surname">Cognome</string>
     <string name="confirm_password">Conferma password</string>
     <string name="joinUs">Unisciti a noi</string>
+    <string name="alreadySignup">Sei già registrato?</string>
 </resources>
