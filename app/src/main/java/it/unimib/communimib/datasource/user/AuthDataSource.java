@@ -9,7 +9,7 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class AuthDataSource implements IAuthDataSource {
 
-    private FirebaseAuth auth;
+    private final FirebaseAuth auth;
     private FirebaseUser firebaseUser;
 
     public AuthDataSource(){
@@ -46,6 +46,24 @@ public class AuthDataSource implements IAuthDataSource {
                         callback.onComplete(new Result.Error(ErrorMapper.SIGNIN_ERROR));
                     }
                 });
+    }
+
+    @Override
+    public void sendEmailVerification(Callback callback) {
+        if(firebaseUser != null) {
+            firebaseUser.sendEmailVerification()
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()) {
+                            callback.onComplete(new Result.Success());
+                        }
+                        else{
+                            callback.onComplete(new Result.Error(ErrorMapper.EMAIL_VERIFICATION_ERROR));
+                        }
+                    });
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
+        }
     }
 
 }
