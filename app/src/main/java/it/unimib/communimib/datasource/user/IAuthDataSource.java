@@ -7,4 +7,6 @@ public interface IAuthDataSource {
     void signUp(String email, String password, Callback callback);
 
     void signIn(String email, String password, Callback callback);
+
+    void signOut(Callback callback);
 }

@@ -48,4 +48,16 @@ public class AuthDataSource implements IAuthDataSource {
                 });
     }
 
+    @Override
+    public void signOut(Callback callback){
+        firebaseUser = auth.getCurrentUser();
+        if(firebaseUser != null){
+            auth.signOut();
+            callback.onComplete(new Result.Success());
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
+        }
+    }
+
 }
