@@ -1,14 +1,16 @@
 package it.unimib.communimib.model;
 
-import java.net.URI;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class User {
 
-    private String email;
-    private String password;
-    private String name;
-    private String surname;
-    private URI profileImage;
+    @PrimaryKey private String email;
+    @ColumnInfo(name = "password") private String password;
+    @ColumnInfo(name = "name") private String name;
+    @ColumnInfo(name = "surname") private String surname;
 
     public User(String email, String password, String name, String surname) {
         this.email = email;
@@ -47,13 +49,5 @@ public class User {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public URI getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(URI profileImage) {
-        this.profileImage = profileImage;
     }
 }
