@@ -1,6 +1,7 @@
 package it.unimib.communimib;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import it.unimib.communimib.model.Result;
 import it.unimib.communimib.util.ServiceLocator;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        ServiceLocator.getInstance().getUserRepository().signUp("baba@gmail.com", "pinselo", "Pueblo", "Scatarri", null);
+        ServiceLocator.getInstance().getUserRepository().signUp("baba@gmail.com", "pinselo", "Pueblo", "Scatarri", result -> {
+            if(result.isSuccessful()){
+                Log.d(this.getClass().getSimpleName(), "funziona");
+            }
+            else{
+                Log.d(this.getClass().getSimpleName(), "ERRORE: " + ((Result.Error) result).getMessage());
+            }
+        });
     }
 }

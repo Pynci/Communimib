@@ -19,31 +19,14 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public void signUp(String email, String password, String name, String surname, Callback callback) {
-
         authDataSource.signUp(email, password, authResult -> {
-
             if(authResult.isSuccessful()){
-
-                userRemoteDataSource.storeUserParameters(
-                        ((Result.AuthSuccess) authResult).getUid(),
-                        email,
-                        name,
-                        surname,
-                        dbResult -> {
-
-                    if(dbResult.isSuccessful()){
-                        Log.d(this.getClass().getSimpleName(), "funziona");
-                    }
-                    else{
-                        Log.d(this.getClass().getSimpleName(), "NON funziona il salvataggio su Realtime Database");
-                        Log.d(this.getClass().getSimpleName(), ((Result.Error) dbResult).getMessage());
-                    }
-
+                userRemoteDataSource.storeUserParameters(((Result.AuthSuccess) authResult).getUid(), email, name, surname, dbResult -> {
+                    callback.onComplete(dbResult);
                 });
             }
             else{
-                Log.d(this.getClass().getSimpleName(), "NON funziona la registrazione su Firebase Authentication");
-                Log.d(this.getClass().getSimpleName(), ((Result.Error) authResult).getMessage());
+                callback.onComplete(authResult);
             }
         });
     }
