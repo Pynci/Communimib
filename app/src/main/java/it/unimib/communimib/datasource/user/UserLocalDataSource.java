@@ -1,0 +1,35 @@
+package it.unimib.communimib.datasource.user;
+
+import it.unimib.communimib.Callback;
+import it.unimib.communimib.database.LocalDatabase;
+import it.unimib.communimib.database.UserDAO;
+import it.unimib.communimib.model.User;
+
+public class UserLocalDataSource implements IUserLocalDataSource{
+
+    private final UserDAO userDAO;
+
+    public UserLocalDataSource(LocalDatabase localDatabase) {
+        userDAO = localDatabase.userDAO();
+    }
+
+    @Override
+    public void getUser(Callback callback) {
+
+    }
+
+    @Override
+    public void insertUser(User user, Callback callback) {
+
+    }
+
+    @Override
+    public void updateUser(User user, Callback callback) {
+
+    }
+
+    @Override
+    public void deleteUser(Callback callback) {
+
+    }
+}

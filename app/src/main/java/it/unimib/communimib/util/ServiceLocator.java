@@ -1,6 +1,10 @@
 package it.unimib.communimib.util;
 
+import android.content.Context;
+
+import it.unimib.communimib.database.LocalDatabase;
 import it.unimib.communimib.datasource.user.AuthDataSource;
+import it.unimib.communimib.datasource.user.UserLocalDataSource;
 import it.unimib.communimib.datasource.user.UserRemoteDataSource;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.repository.UserRepository;
@@ -22,8 +26,15 @@ public class ServiceLocator {
         return INSTANCE;
     }
 
-    public IUserRepository getUserRepository(){
-        return new UserRepository(new AuthDataSource(), new UserRemoteDataSource());
+    public IUserRepository getUserRepository(Context context){
+        return new UserRepository(
+                new AuthDataSource(),
+                new UserRemoteDataSource(),
+                new UserLocalDataSource(getLocalDatabase(context)));
+    }
+
+    public LocalDatabase getLocalDatabase(Context context) {
+        return LocalDatabase.getDatabase(context);
     }
 
 }

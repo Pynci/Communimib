@@ -25,7 +25,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        ServiceLocator.getInstance().getUserRepository().signUp("baba@gmail.com", "pinselo", "Pueblo", "Scatarri", result -> {
+        ServiceLocator
+                .getInstance()
+                .getUserRepository(this.getApplicationContext())
+                .signUp("baba@gmail.com", "pinselo", "Pueblo", "Scatarri", result -> {
+
             if(result.isSuccessful()){
                 Log.d(this.getClass().getSimpleName(), "funziona");
             }

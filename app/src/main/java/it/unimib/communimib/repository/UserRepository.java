@@ -4,6 +4,7 @@ import android.util.Log;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.datasource.user.IAuthDataSource;
+import it.unimib.communimib.datasource.user.IUserLocalDataSource;
 import it.unimib.communimib.datasource.user.IUserRemoteDataSource;
 import it.unimib.communimib.model.Result;
 
@@ -11,10 +12,12 @@ public class UserRepository implements IUserRepository{
 
     private final IAuthDataSource authDataSource;
     private final IUserRemoteDataSource userRemoteDataSource;
+    private final IUserLocalDataSource userLocalDataSource;
 
-    public UserRepository(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource){
+    public UserRepository(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource, IUserLocalDataSource localDataSource){
         this.authDataSource = authDataSource;
         this.userRemoteDataSource = userRemoteDataSource;
+        this.userLocalDataSource = localDataSource;
     }
 
     @Override
