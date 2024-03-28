@@ -23,7 +23,7 @@ public class AuthDataSource implements IAuthDataSource {
                     if(task.isSuccessful()){
                         firebaseUser = auth.getCurrentUser();
                         if(firebaseUser != null){
-                            callback.onComplete(new Result.AuthSuccess(firebaseUser.getUid()));
+                            callback.onComplete(new Result.SignupSuccess(firebaseUser.getUid()));
                         }
                         else{
                             callback.onComplete(new Result.Error(ErrorMapper.SIGNUP_FIREBASE_USER_ERROR));

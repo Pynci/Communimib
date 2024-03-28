@@ -12,6 +12,7 @@ public class UserRepository implements IUserRepository{
     private final IAuthDataSource authDataSource;
     private final IUserRemoteDataSource userRemoteDataSource;
     private final IUserLocalDataSource userLocalDataSource;
+    private User currentUser;
 
     public UserRepository(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource, IUserLocalDataSource localDataSource){
         this.authDataSource = authDataSource;
@@ -21,12 +22,20 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public void signUp(String email, String password, String name, String surname, Callback callback) {
+
         authDataSource.signUp(email, password, authResult -> {
             if(authResult.isSuccessful()){
-                userRemoteDataSource.storeUserParameters(((Result.AuthSuccess) authResult).getUid(), email, name, surname, dbResult -> {
+                userRemoteDataSource.storeUserParameters(((Result.SignupSuccess) authResult).getUid(), email, name, surname, dbResult -> {
                     if(dbResult.isSuccessful()) {
-                        authDataSource.sendEmailVerification(emailSendResult -> {
-                            callback.onComplete(emailSendResult);
+                        userLocalDataSource.insertUser(new User(email, name, surname), localdbResult -> {
+                            if(localdbResult.isSuccessful()){
+                                authDataSource.sendEmailVerification(emailSendResult -> {
+                                    callback.onComplete(emailSendResult);
+                                });
+                            }
+                            else{
+                                callback.onComplete(localdbResult);
+                            }
                         });
                     }
                     else{
@@ -38,12 +47,22 @@ public class UserRepository implements IUserRepository{
                 callback.onComplete(authResult);
             }
         });
+
     }
 
     @Override
     public void signIn(String email, String password, Callback callback) {
         authDataSource.signIn(email, password, result -> {
-
+            if(result.isSuccessful()){
+                userRemoteDataSource.getUserByEmail(email, remoteResult -> {
+                    if(remoteResult.isSuccessful()){
+                        //continuare qui
+                    }
+                });
+            }
+            else{
+                callback.onComplete(result);
+            }
         });
     }
 

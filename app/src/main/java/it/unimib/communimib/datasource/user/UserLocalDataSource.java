@@ -5,6 +5,7 @@ import it.unimib.communimib.database.LocalDatabase;
 import it.unimib.communimib.database.UserDAO;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
+import it.unimib.communimib.util.ErrorMapper;
 
 public class UserLocalDataSource implements IUserLocalDataSource{
 
@@ -27,7 +28,7 @@ public class UserLocalDataSource implements IUserLocalDataSource{
                 callback.onComplete(new Result.Success());
             }
             else{
-                callback.onComplete(new Result.Error("Errore nella memorizzazione dei dati sul database locale"));
+                callback.onComplete(new Result.Error(ErrorMapper.LOCAL_DATATABASE_ERROR));
             }
         });
     }

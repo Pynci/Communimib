@@ -32,4 +32,7 @@ public class ErrorMapper {
     public static final String SIGNIN_ERROR = "signin_error";
     public static final String EMAIL_VERIFICATION_ERROR = "email_verification_error";
     public static final String USER_NOT_AUTHENTICATED_ERROR = "user_not_authenticated_error";
+    public static final String LOCAL_DATATABASE_ERROR = "local_database_error";
+    public static final String REMOTE_DATABASE_ERROR = "remote_database_error";
+    public static final String USER_NOT_FOUND_ERROR = "user_not_found_error";
 }

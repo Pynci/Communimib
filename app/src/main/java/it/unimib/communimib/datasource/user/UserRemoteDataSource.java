@@ -1,12 +1,20 @@
 package it.unimib.communimib.datasource.user;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Iterator;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.util.Constants;
+import it.unimib.communimib.util.ErrorMapper;
 
 public class UserRemoteDataSource implements IUserRemoteDataSource{
 
@@ -27,14 +35,33 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                         callback.onComplete(new Result.Success());
                     }
                     else{
-                        callback.onComplete(new Result.Error("errorazzo clamoroso incredibile (placeholder)"));
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTE_DATABASE_ERROR));
                     }
                 });
     }
 
     @Override
-    public void getUserByEmail(String email) {
-
+    public void getUserByEmail(String email, Callback callback) {
+        databaseReference
+                .child(Constants.USERS_PATH)
+                .orderByChild("email")
+                .equalTo(email)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        DataSnapshot queryResult = task.getResult();
+                        Iterator<DataSnapshot> iterator = queryResult.getChildren().iterator();
+                        if(iterator.hasNext()){
+                            callback.onComplete(new Result.UserSuccess(iterator.next().getValue(User.class)));
+                        }
+                        else{
+                            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_FOUND_ERROR));
+                        }
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTE_DATABASE_ERROR));
+                    }
+                });
     }
 
     @Override
