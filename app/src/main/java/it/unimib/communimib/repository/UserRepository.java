@@ -25,8 +25,8 @@ public class UserRepository implements IUserRepository{
             if(authResult.isSuccessful()){
                 userRemoteDataSource.storeUserParameters(((Result.AuthSuccess) authResult).getUid(), email, name, surname, dbResult -> {
                     if(dbResult.isSuccessful()) {
-                        userLocalDataSource.insertUser(new User(email, name, surname), localdbResult -> {
-                            callback.onComplete(localdbResult);
+                        authDataSource.sendEmailVerification(emailSendResult -> {
+                            callback.onComplete(emailSendResult);
                         });
                     }
                     else{

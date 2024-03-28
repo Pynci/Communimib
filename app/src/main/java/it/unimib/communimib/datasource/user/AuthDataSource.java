@@ -49,6 +49,24 @@ public class AuthDataSource implements IAuthDataSource {
     }
 
     @Override
+    public void sendEmailVerification(Callback callback) {
+        if(firebaseUser != null) {
+            firebaseUser.sendEmailVerification()
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()) {
+                            callback.onComplete(new Result.Success());
+                        }
+                        else{
+                            callback.onComplete(new Result.Error(ErrorMapper.EMAIL_VERIFICATION_ERROR));
+                        }
+                    });
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
+        }
+    }
+
+    @Override
     public void signOut(Callback callback){
         firebaseUser = auth.getCurrentUser();
         if(firebaseUser != null){
