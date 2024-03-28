@@ -44,6 +44,7 @@ dependencies {
 
     //Dipendenze per firebase
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-analytics")
 
     //Dipendenze per room
