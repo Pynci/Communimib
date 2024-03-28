@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/md_theme_light_onSecondaryContainer"
+    android:background="@color/md_theme_light_primary"
     tools:context=".ui.auth.SigninFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:alpha="0.9">
 
         <ImageView
             android:layout_width="380dp"
@@ -60,7 +61,7 @@
                 android:text="@string/signin_with_your_information"
                 android:textStyle="bold"
                 android:textColor="@color/md_theme_light_onSecondaryContainer"
-                android:textSize="11dp" />
+                android:textSize="11sp" />
 
 
 
@@ -70,7 +71,7 @@
                 android:alpha="0.7"
                 android:layout_marginTop="24dp"
                 android:text="@string/Email_address"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -86,7 +87,7 @@
                 android:alpha="0.7"
                 android:text="@string/password"
                 android:layout_marginTop="18dp"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -110,7 +111,7 @@
                     android:text="@string/forgotten_password"
                     android:textAllCaps="false"
                     android:textColor="@color/md_theme_light_onSecondaryContainer"
-                    android:textSize="10dp"
+                    android:textSize="10sp"
                     android:textStyle="bold" />
 
 
@@ -127,7 +128,7 @@
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="10dp" />
+                android:layout_height="12dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -141,11 +142,11 @@
                     android:layout_marginBottom="8dp"
                     android:alpha="0.7"
                     android:text="@string/not_signUp"
-                    android:textSize="10dp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.346"
+                    app:layout_constraintHorizontal_bias="0.292"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -157,7 +158,7 @@
                     android:layout_marginEnd="84dp"
                     android:layout_toEndOf="@+id/textView"
                     android:text="@string/signup"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -168,7 +169,7 @@
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="30dp" />
+                android:layout_height="28dp" />
 
         </LinearLayout>
 
