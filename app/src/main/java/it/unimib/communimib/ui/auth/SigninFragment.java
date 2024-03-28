@@ -2,6 +2,8 @@ package it.unimib.communimib.ui.auth;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import it.unimib.communimib.R;
+import it.unimib.communimib.databinding.FragmentSigninBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +20,7 @@ import it.unimib.communimib.R;
  */
 public class SigninFragment extends Fragment {
 
+    private FragmentSigninBinding fragmentSigninBinding;
 
     public SigninFragment() {
         // Required empty public constructor
@@ -40,6 +44,12 @@ public class SigninFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_signin, container, false);
+        fragmentSigninBinding = FragmentSigninBinding.inflate(inflater, container, false);
+        return fragmentSigninBinding.getRoot();
+    }
+
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
     }
 }
