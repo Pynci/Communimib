@@ -1,12 +1,11 @@
 package it.unimib.communimib.repository;
 
-import android.util.Log;
-
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.datasource.user.IAuthDataSource;
 import it.unimib.communimib.datasource.user.IUserLocalDataSource;
 import it.unimib.communimib.datasource.user.IUserRemoteDataSource;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 
 public class UserRepository implements IUserRepository{
 
@@ -25,7 +24,14 @@ public class UserRepository implements IUserRepository{
         authDataSource.signUp(email, password, authResult -> {
             if(authResult.isSuccessful()){
                 userRemoteDataSource.storeUserParameters(((Result.AuthSuccess) authResult).getUid(), email, name, surname, dbResult -> {
-                    callback.onComplete(dbResult);
+                    if(dbResult.isSuccessful()) {
+                        userLocalDataSource.insertUser(new User(email, name, surname), localdbResult -> {
+                            callback.onComplete(localdbResult);
+                        });
+                    }
+                    else{
+                        callback.onComplete(dbResult);
+                    }
                 });
             }
             else{

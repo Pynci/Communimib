@@ -8,8 +8,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class User {
 
-    @PrimaryKey @NonNull
-    private String email;
+    @PrimaryKey @NonNull private String email;
     @ColumnInfo(name = "name") private String name;
     @ColumnInfo(name = "surname") private String surname;
 
