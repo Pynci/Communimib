@@ -42,7 +42,9 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public void signIn(String email, String password, Callback callback) {
-
+        authDataSource.signIn(email, password, result -> {
+            callback.onComplete(result);
+        });
     }
 
     @Override

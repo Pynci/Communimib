@@ -27,6 +27,8 @@ public class ErrorMapper {
         return 0;
     }
 
-    // inserire tutti i codici errore qui sotto
+    public static final String SIGNUP_ERROR = "signup_error";
+    public static final String SIGNUP_FIREBASE_USER_ERROR = "signup_firebase_user_error";
+    public static final String SIGNIN_ERROR = "signin_error";
 
 }
