@@ -1,5 +1,6 @@
 package it.unimib.communimib.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -7,7 +8,8 @@ import androidx.room.PrimaryKey;
 @Entity
 public class User {
 
-    @PrimaryKey private String email;
+    @PrimaryKey @NonNull
+    private String email;
     @ColumnInfo(name = "password") private String password;
     @ColumnInfo(name = "name") private String name;
     @ColumnInfo(name = "surname") private String surname;

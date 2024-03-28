@@ -15,7 +15,15 @@ public class Result {
     }
 
     public static final class Error extends Result{
-        //class representing a generic error
+        private final String message;
+
+        public Error(String message){
+            this.message = message;
+        }
+
+        public String getMessage(){
+            return message;
+        }
     }
 
 }

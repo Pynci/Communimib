@@ -8,6 +8,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import it.unimib.communimib.util.ServiceLocator;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -20,5 +22,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        ServiceLocator.getInstance().getUserRepository().signUp("baba@gmail.com", "pinselo", "Pueblo", "Scatarri", null);
     }
 }
