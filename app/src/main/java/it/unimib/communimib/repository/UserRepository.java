@@ -4,25 +4,46 @@ import android.util.Log;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.datasource.user.IAuthDataSource;
+import it.unimib.communimib.datasource.user.IUserRemoteDataSource;
 import it.unimib.communimib.model.Result;
 
 public class UserRepository implements IUserRepository{
 
     private final IAuthDataSource authDataSource;
+    private final IUserRemoteDataSource userRemoteDataSource;
 
-    public UserRepository(IAuthDataSource authDataSource){
+    public UserRepository(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource){
         this.authDataSource = authDataSource;
+        this.userRemoteDataSource = userRemoteDataSource;
     }
 
     @Override
     public void signUp(String email, String password, String name, String surname, Callback callback) {
-        authDataSource.signUp(email, password, result -> {
-            if(result.isSuccessful()){
-                Log.d(this.getClass().getSimpleName(), "funziona");
+
+        authDataSource.signUp(email, password, authResult -> {
+
+            if(authResult.isSuccessful()){
+
+                userRemoteDataSource.storeUserParameters(
+                        ((Result.AuthSuccess) authResult).getUid(),
+                        email,
+                        name,
+                        surname,
+                        dbResult -> {
+
+                    if(dbResult.isSuccessful()){
+                        Log.d(this.getClass().getSimpleName(), "funziona");
+                    }
+                    else{
+                        Log.d(this.getClass().getSimpleName(), "NON funziona il salvataggio su Realtime Database");
+                        Log.d(this.getClass().getSimpleName(), ((Result.Error) dbResult).getMessage());
+                    }
+
+                });
             }
             else{
-                Log.d(this.getClass().getSimpleName(), "NON funziona");
-                Log.d(this.getClass().getSimpleName(), ((Result.Error) result).getMessage());
+                Log.d(this.getClass().getSimpleName(), "NON funziona la registrazione su Firebase Authentication");
+                Log.d(this.getClass().getSimpleName(), ((Result.Error) authResult).getMessage());
             }
         });
     }

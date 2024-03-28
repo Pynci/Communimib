@@ -9,7 +9,7 @@ import it.unimib.communimib.model.Result;
 public class AuthDataSource implements IAuthDataSource {
 
     private FirebaseAuth auth;
-    private FirebaseUser fbUser;
+    private FirebaseUser firebaseUser;
 
     public AuthDataSource(){
         auth = FirebaseAuth.getInstance();
@@ -20,9 +20,9 @@ public class AuthDataSource implements IAuthDataSource {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        fbUser = auth.getCurrentUser();
-                        if(fbUser != null){
-                            callback.onComplete(new Result.Success());
+                        firebaseUser = auth.getCurrentUser();
+                        if(firebaseUser != null){
+                            callback.onComplete(new Result.AuthSuccess(firebaseUser.getUid()));
                         }
                         else{
                             callback.onComplete(new Result.Error(task.getException().getLocalizedMessage()));

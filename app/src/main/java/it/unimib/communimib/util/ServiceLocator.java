@@ -1,6 +1,7 @@
 package it.unimib.communimib.util;
 
 import it.unimib.communimib.datasource.user.AuthDataSource;
+import it.unimib.communimib.datasource.user.UserRemoteDataSource;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.repository.UserRepository;
 
@@ -22,7 +23,7 @@ public class ServiceLocator {
     }
 
     public IUserRepository getUserRepository(){
-        return new UserRepository(new AuthDataSource());
+        return new UserRepository(new AuthDataSource(), new UserRemoteDataSource());
     }
 
 }

@@ -1,17 +1,29 @@
 package it.unimib.communimib.model;
 
-public class Result {
+public abstract class Result {
 
     private Result(){
-
     }
 
     public boolean isSuccessful(){
-        return this instanceof Success;
+        return this instanceof Success
+                || this instanceof AuthSuccess;
     }
 
     public static final class Success extends Result{
         //class representing a generic success
+    }
+
+    public static final class AuthSuccess extends Result{
+        private final String uid;
+
+        public AuthSuccess(String uid){
+            this.uid = uid;
+        }
+
+        public String getUid() {
+            return uid;
+        }
     }
 
     public static final class Error extends Result{
