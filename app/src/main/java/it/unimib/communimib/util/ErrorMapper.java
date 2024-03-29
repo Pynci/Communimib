@@ -14,6 +14,7 @@ public class ErrorMapper {
         errorMap = new HashMap<>();
         errorMap.put(EMPTY_FIELD, R.string.emptyField);
         errorMap.put(INVALID_FIELD, R.string.invalidField);
+        errorMap.put(NOT_UNIVERSITY_EMAIL, R.string.not_university_email);
         errorMap.put(TOO_SHORT_FIELD, R.string.tooShortField);
         errorMap.put(NUMBER_MISSING, R.string.numberMissing);
         errorMap.put(CAPITAL_CASE_MISSING, R.string.capitalcaseMissing);
@@ -51,6 +52,7 @@ public class ErrorMapper {
     //Signup controls errors
     public static final String EMPTY_FIELD = "empty_field";
     public static final String INVALID_FIELD = "invalid_field";
+    public static final String NOT_UNIVERSITY_EMAIL = "not_university_email";
     public static final String TOO_SHORT_FIELD = "too_short_field";
     public static final String NUMBER_MISSING = "number_missing";
     public static final String CAPITAL_CASE_MISSING = "capital_case_missing";

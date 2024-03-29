@@ -15,7 +15,7 @@
     <string name="joinUs">Unisciti a noi</string>
     <string name="alreadySignup">Sei già registrato?</string>
     <string name="emptyField">Questo campo è obbligatorio</string>
-    <string name="invalidField">Valore inserito non corretto</string>
+    <string name="invalidField">Valore inserito non valido</string>
     <string name="tooShortField">Valore inserito troppo corto</string>
     <string name="numberMissing">Inserisci almeno un numero</string>
     <string name="capitalcaseMissing">Inserisci almeno un carattere maiuscolo</string>
@@ -23,4 +23,5 @@
     <string name="numberNotAllowed">Numeri non consentiti</string>
     <string name="specialCharNotAllowed">Caratteri speciali non consentiti</string>
     <string name="notEqualPassword">Le password non corrispondono</string>
+    <string name="not_university_email">Inserire la mail universitaria</string>
 </resources>

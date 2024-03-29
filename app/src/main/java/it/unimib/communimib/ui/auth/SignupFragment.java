@@ -40,6 +40,7 @@ public class SignupFragment extends Fragment {
         signupViewModel = new ViewModelProvider(requireActivity(), new SignupViewModelFactory()).get(SignupViewModel.class);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,6 +53,10 @@ public class SignupFragment extends Fragment {
 
         ErrorMapper errorMapper = ErrorMapper.getInstance();
 
+        fragmentSignupBinding.fragmentSignupButtonLogin.setOnClickListener(v ->{
+            getParentFragmentManager().popBackStackImmediate();
+        });
+
         //Listeners on fields
 
         fragmentSignupBinding.fragmentSignupEditTextEmailAddress.setOnFocusChangeListener((v, hasFocus) -> {
@@ -60,9 +65,12 @@ public class SignupFragment extends Fragment {
                 String result = signupViewModel.checkEmail(email);
 
                 if (result.equals("ok"))
-                    fragmentSignupBinding.fragmentSignupTextViewEmailError.setError(null);
-                else
-                    fragmentSignupBinding.fragmentSignupTextViewEmailError.setError(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSignupBinding.fragmentSignupTextViewEmailError.setText("");
+                else{
+                    fragmentSignupBinding.fragmentSignupTextViewEmailError.setText(getString(errorMapper.getErrorMessage(result)));
+                }
+
+
             }
         });
 
@@ -72,9 +80,9 @@ public class SignupFragment extends Fragment {
                 String result = signupViewModel.checkField(name);
 
                 if (result.equals("ok"))
-                    fragmentSignupBinding.fragmentSignupTextViewNameError.setError(null);
+                    fragmentSignupBinding.fragmentSignupTextViewNameError.setText("");
                 else
-                    fragmentSignupBinding.fragmentSignupTextViewNameError.setError(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSignupBinding.fragmentSignupTextViewNameError.setText(getString(errorMapper.getErrorMessage(result)));
             }
         });
 
@@ -84,33 +92,34 @@ public class SignupFragment extends Fragment {
                 String result = signupViewModel.checkField(surname);
 
                 if (result.equals("ok"))
-                    fragmentSignupBinding.fragmentSignupTextViewSurnameError.setError(null);
+                    fragmentSignupBinding.fragmentSignupTextViewSurnameError.setText("");
                 else
-                    fragmentSignupBinding.fragmentSignupTextViewSurnameError.setError(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSignupBinding.fragmentSignupTextViewSurnameError.setText(getString(errorMapper.getErrorMessage(result)));
             }
         });
 
         fragmentSignupBinding.fragmentSignupEditTextPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
-                String result = signupViewModel.checkField(password);
+                String result = signupViewModel.checkPassword(password);
 
                 if (result.equals("ok"))
-                    fragmentSignupBinding.fragmentSignupTextViewPasswordError.setError(null);
+                    fragmentSignupBinding.fragmentSignupTextViewPasswordError.setText("");
                 else
-                    fragmentSignupBinding.fragmentSignupTextViewPasswordError.setError(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSignupBinding.fragmentSignupTextViewPasswordError.setText(getString(errorMapper.getErrorMessage(result)));
             }
         });
 
         fragmentSignupBinding.fragmentSignupEditTextConfirmPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
+                String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
                 String confirmPassword = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextConfirmPassword.getText());
-                String result = signupViewModel.checkField(confirmPassword);
+                String result = signupViewModel.checkConfirmPassword(confirmPassword, password);
 
                 if (result.equals("ok"))
-                    fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setError(null);
+                    fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setText("");
                 else
-                    fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setError(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setText(getString(errorMapper.getErrorMessage(result)));
             }
         });
     }

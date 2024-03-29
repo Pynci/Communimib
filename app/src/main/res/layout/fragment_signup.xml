@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/joinUs"
                 android:textColor="@color/seed"
-                android:textSize="32dp"
+                android:textSize="32sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -70,7 +70,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.7"
-                android:textSize="10sp"
+                android:textColor="@color/md_theme_light_primary"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -94,7 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.7"
-                android:textSize="10sp"
+                android:textColor="@color/md_theme_light_primary"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -118,7 +120,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.7"
-                android:textSize="10sp"
+                android:textColor="@color/md_theme_light_primary"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -142,14 +145,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.7"
-                android:textSize="10sp"
+                android:textColor="@color/md_theme_light_primary"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/fragmentSignup_editText_password"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:drawableEnd="@drawable/baseline_remove_red_eye_24"
+                android:drawableEnd="@drawable/baseline_key_24"
                 android:inputType="textPassword" />
 
             <TextView
@@ -166,14 +170,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.7"
-                android:textSize="10sp"
+                android:textColor="@color/md_theme_light_primary"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/fragmentSignup_editText_confirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:drawableEnd="@drawable/baseline_remove_red_eye_24"
+                android:drawableEnd="@drawable/baseline_key_24"
                 android:inputType="textPassword" />
 
             <com.google.android.material.button.MaterialButton

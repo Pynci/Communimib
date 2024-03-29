@@ -74,6 +74,15 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/fragmentSignin_textView_emailError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.7"
+                android:textColor="@color/md_theme_light_primary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/fragmentSignin_EditText_emailAddress"
                 android:layout_width="match_parent"
@@ -90,11 +99,20 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/fragmentSignin_textView_passwordError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.7"
+                android:textColor="@color/md_theme_light_primary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/fragmentSignin_EditText_password"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:drawableEnd="@drawable/baseline_remove_red_eye_24"
+                android:drawableEnd="@drawable/baseline_key_24"
                 android:inputType="textPassword" />
 
             <RelativeLayout
