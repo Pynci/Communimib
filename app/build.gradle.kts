@@ -52,4 +52,7 @@ dependencies {
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    //Dipendenze per splash screen
+    implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
 }
