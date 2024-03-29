@@ -16,6 +16,7 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
     private final DatabaseReference databaseReference;
 
     public UserRemoteDataSource() {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         databaseReference = FirebaseDatabase.getInstance(Constants.DATABASE).getReference();
     }
 
