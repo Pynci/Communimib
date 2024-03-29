@@ -7,10 +7,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import it.unimib.communimib.R;
 
 public class LoadingScreen extends AppCompatActivity {
+
+    private LoadingScreenViewModel loadingScreenViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,11 +22,25 @@ public class LoadingScreen extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        splashScreen.setKeepOnScreenCondition(() -> true );
+        loadingScreenViewModel = new ViewModelProvider(this).get(LoadingScreenViewModel.class);
+
         setContentView(R.layout.activity_loading_screen);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        loadingScreenViewModel.areDataAvaible().observe(this, aBoolean -> {
+            if (aBoolean)
+                splashScreen.setKeepOnScreenCondition(() -> false );
+        });
+
+        try {
+            loadingScreenViewModel.setDataAvaible();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
