@@ -49,6 +49,9 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    implementation("commons-validator:commons-validator:1.7")
+    implementation("commons-io:commons-io:2.15.0")
+
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-analytics")
 }

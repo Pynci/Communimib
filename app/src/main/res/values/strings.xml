@@ -10,7 +10,7 @@
     <string name="login">Login</string>
     <string name="not_signUp">Non hai un account?</string>
     <string name="signup">Registrati</string>
-    <string name="insertCredential">Inserisci le tue credenziali</string>
+    <string name="insertUniversityCredential">Inserisci le tue credenziali universitarie</string>
     <string name="name">Nome</string>
     <string name="surname">Cognome</string>
     <string name="confirm_password">Conferma password</string>

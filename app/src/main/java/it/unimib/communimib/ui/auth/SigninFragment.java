@@ -13,11 +13,6 @@ import android.view.ViewGroup;
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentSigninBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SigninFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SigninFragment extends Fragment {
 
     private FragmentSigninBinding fragmentSigninBinding;

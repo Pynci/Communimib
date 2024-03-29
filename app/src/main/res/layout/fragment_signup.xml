@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:alpha="0.9"
-                android:text="@string/insertCredential"
+                android:text="@string/insertUniversityCredential"
                 android:textColor="@color/md_theme_light_onSecondaryContainer"
                 android:textSize="11sp"
                 android:textStyle="bold" />
