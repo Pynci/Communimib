@@ -122,6 +122,11 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
+    public void isEmailVerified(Callback callback){
+        authDataSource.isEmailVerified(callback);
+    }
+
+    @Override
     public void updateUserNameAndSurname(String name, String surname, Callback callback) {
         // scrivo sto commento altrimenti Sonar mi picchia
     }

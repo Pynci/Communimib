@@ -12,5 +12,7 @@ public interface IAuthDataSource {
     void sendEmailVerification(Callback callback);
     void signIn(String email, String password, Callback callback);
 
+    void isEmailVerified(Callback callback);
+
     void signOut(Callback callback);
 }

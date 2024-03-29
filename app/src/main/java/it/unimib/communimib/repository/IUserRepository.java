@@ -10,6 +10,9 @@ public interface IUserRepository {
     void isSessionStillActive(Callback callback);
 
     void sendEmailVerification(Callback callback);
+
+    void isEmailVerified(Callback callback);
+
     void updateUserNameAndSurname(String name, String surname, Callback callback);
     void getUserByEmail(String email, Callback callback);
     // void updatePropic(Callback callback) e poi cosa?
