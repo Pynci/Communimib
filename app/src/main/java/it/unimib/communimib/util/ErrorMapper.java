@@ -35,6 +35,7 @@ public class ErrorMapper {
     public static final String LOCALDB_INSERT_ERROR = "localdb_insert_error";
     public static final String LOCALDB_DELETE_ERROR = "localdb_delete_error";
     public static final String LOCALDB_GET_ERROR = "localdb_get_error";
-    public static final String REMOTE_DATABASE_ERROR = "remote_database_error";
+    public static final String REMOTEDB_GET_ERROR = "remotedb_get_error";
+    public static final String REMOTEDB_INSERT_ERROR = "remotedb_insert_error";
     public static final String USER_NOT_FOUND_ERROR = "user_not_found_error";
 }

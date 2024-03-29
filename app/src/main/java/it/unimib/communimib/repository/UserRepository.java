@@ -58,6 +58,9 @@ public class UserRepository implements IUserRepository{
                         currentUser = ((Result.UserSuccess) remoteResult).getUser();
                         userLocalDataSource.insertUser(currentUser, callback);
                     }
+                    else{
+                        callback.onComplete(remoteResult);
+                    }
                 });
             }
             else{

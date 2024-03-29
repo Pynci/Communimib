@@ -32,7 +32,7 @@ public class UserLocalDataSource implements IUserLocalDataSource{
     public void insertUser(User user, Callback callback) {
         LocalDatabase.databaseWriteExecutor.execute(() -> {
             long userId = userDAO.insertUser(user);
-            if(userId == -1) {
+            if(userId != -1) {
                 callback.onComplete(new Result.Success());
             }
             else{
@@ -50,7 +50,7 @@ public class UserLocalDataSource implements IUserLocalDataSource{
     public void deleteUser(User currentUser, Callback callback) {
         LocalDatabase.databaseWriteExecutor.execute(() -> {
             int rowsDeleted = userDAO.deleteUser(currentUser);
-            if(rowsDeleted > 0){
+            if(rowsDeleted >= 0){
                 callback.onComplete(new Result.Success());
             }
             else{

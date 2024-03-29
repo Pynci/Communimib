@@ -3,6 +3,7 @@ package it.unimib.communimib.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -12,6 +13,12 @@ public class User {
     @ColumnInfo(name = "name") private String name;
     @ColumnInfo(name = "surname") private String surname;
 
+    @Ignore
+    public User(){
+
+    }
+
+    @Ignore
     public User(@NonNull String email){
         this.email = email;
     }

@@ -2,6 +2,7 @@ package it.unimib.communimib;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.repository.IUserRepository;
+import it.unimib.communimib.repository.UserRepository;
 import it.unimib.communimib.util.ServiceLocator;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,17 +28,52 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        ServiceLocator
-                .getInstance()
-                .getUserRepository(this.getApplicationContext())
-                .signUp("baba@gmail.com", "pinselo", "Pueblo", "Scatarri", result -> {
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(this.getApplicationContext());
 
-            if(result.isSuccessful()){
-                Log.d(this.getClass().getSimpleName(), "funziona");
-            }
-            else{
-                Log.d(this.getClass().getSimpleName(), "ERRORE: " + ((Result.Error) result).getMessage());
-            }
+        findViewById(R.id.registrazione).setOnClickListener(view -> {
+            userRepository.signUp("baba@gmail.com", "pinselo", "Pueblo", "Scatarri", result -> {
+                if(result.isSuccessful()){
+                    Log.d(this.getClass().getSimpleName(), "REGISTRAZIONE: successo");
+                }
+                else{
+                    Log.d(this.getClass().getSimpleName(), "REGISTRAZIONE: errore - " + ((Result.Error) result).getMessage());
+                }
+            });
+        });
+
+        findViewById(R.id.login).setOnClickListener(view -> {
+            userRepository.signIn("baba@gmail.com", "pinselo", result -> {
+                if(result.isSuccessful()){
+                    Log.d(this.getClass().getSimpleName(), "LOGIN: successo");
+                }
+                else{
+                    Log.d(this.getClass().getSimpleName(), "LOGIN: errore - " + ((Result.Error) result).getMessage());
+                }
+            });
+        });
+
+        findViewById(R.id.logout).setOnClickListener(view -> {
+            userRepository.signOut(result -> {
+                if(result.isSuccessful()){
+                    Log.d(this.getClass().getSimpleName(), "LOGOUT: successo");
+                }
+                else{
+                    Log.d(this.getClass().getSimpleName(), "LOGOUT: errore - " + ((Result.Error) result).getMessage());
+                }
+            });
+        });
+
+        findViewById(R.id.sessione).setOnClickListener(view -> {
+            userRepository.isSessionStillActive(result -> {
+                if(result.isSuccessful()){
+                    Log.d(this.getClass().getSimpleName(), "SESSIONE: successo - " + ((Result.BooleanSuccess) result).getBoolean());
+                }
+                else{
+                    Log.d(this.getClass().getSimpleName(), "SESSIONE: errore - " + ((Result.Error) result).getMessage());
+                }
+            });
         });
     }
+
+
 }

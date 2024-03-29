@@ -30,7 +30,7 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                         callback.onComplete(new Result.Success());
                     }
                     else{
-                        callback.onComplete(new Result.Error(ErrorMapper.REMOTE_DATABASE_ERROR));
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_INSERT_ERROR));
                     }
                 });
     }
@@ -54,7 +54,7 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                         }
                     }
                     else{
-                        callback.onComplete(new Result.Error(ErrorMapper.REMOTE_DATABASE_ERROR));
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
                     }
                 });
     }
