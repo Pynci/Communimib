@@ -30,7 +30,7 @@ public class UserRepository implements IUserRepository{
                         currentUser = new User(email, name, surname);
                         userLocalDataSource.insertUser(currentUser, localdbResult -> {
                             if(localdbResult.isSuccessful()){
-                                authDataSource.sendEmailVerification(callback);
+                                sendEmailVerification(callback);
                             }
                             else{
                                 callback.onComplete(localdbResult);
@@ -53,7 +53,7 @@ public class UserRepository implements IUserRepository{
     public void signIn(String email, String password, Callback callback) {
         authDataSource.signIn(email, password, authResult -> {
             if(authResult.isSuccessful()){
-                userRemoteDataSource.getUserByEmail(email, remoteResult -> {
+                getUserByEmail(email, remoteResult -> {
                     if(remoteResult.isSuccessful()){
                         currentUser = ((Result.UserSuccess) remoteResult).getUser();
                         userLocalDataSource.insertUser(currentUser, callback);
@@ -117,8 +117,8 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
-    public void sendEmailVerification(String email, Callback callback) {
-        // scrivo sto commento altrimenti Sonar mi picchia
+    public void sendEmailVerification(Callback callback) {
+        authDataSource.sendEmailVerification(callback);
     }
 
     @Override
@@ -126,7 +126,6 @@ public class UserRepository implements IUserRepository{
         // scrivo sto commento altrimenti Sonar mi picchia
     }
 
-    //serve? per ora lo lascio così -Luca
     @Override
     public void getUserByEmail(String email, Callback callback) {
         userRemoteDataSource.getUserByEmail(email, callback);

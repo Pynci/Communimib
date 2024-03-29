@@ -66,6 +66,7 @@ public class AuthDataSource implements IAuthDataSource {
 
     @Override
     public void sendEmailVerification(Callback callback) {
+        firebaseUser = auth.getCurrentUser();
         if(firebaseUser != null) {
             firebaseUser.sendEmailVerification()
                     .addOnCompleteListener(task -> {
