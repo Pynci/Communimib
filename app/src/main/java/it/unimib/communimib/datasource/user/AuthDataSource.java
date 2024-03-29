@@ -67,6 +67,7 @@ public class AuthDataSource implements IAuthDataSource {
     @Override
     public void isEmailVerified(Callback callback) {
         if(isSessionStillActive()){
+            firebaseUser.reload();
             callback.onComplete(new Result.BooleanSuccess(firebaseUser.isEmailVerified()));
         }
         else{

@@ -38,4 +38,5 @@ public class ErrorMapper {
     public static final String REMOTEDB_GET_ERROR = "remotedb_get_error";
     public static final String REMOTEDB_INSERT_ERROR = "remotedb_insert_error";
     public static final String USER_NOT_FOUND_ERROR = "user_not_found_error";
+    //public static final String EMAIL_CHECK_ERROR = "email_check_error";
 }

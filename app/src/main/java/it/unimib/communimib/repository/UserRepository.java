@@ -1,5 +1,9 @@
 package it.unimib.communimib.repository;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.datasource.user.IAuthDataSource;
 import it.unimib.communimib.datasource.user.IUserLocalDataSource;
@@ -9,6 +13,8 @@ import it.unimib.communimib.model.User;
 
 public class UserRepository implements IUserRepository{
 
+    private static final ScheduledExecutorService pollingExecutor =
+            Executors.newSingleThreadScheduledExecutor();
     private final IAuthDataSource authDataSource;
     private final IUserRemoteDataSource userRemoteDataSource;
     private final IUserLocalDataSource userLocalDataSource;
@@ -124,6 +130,29 @@ public class UserRepository implements IUserRepository{
     @Override
     public void isEmailVerified(Callback callback){
         authDataSource.isEmailVerified(callback);
+    }
+
+    @Override
+    public void startEmailPolling(Callback callback){
+        pollingExecutor.scheduleAtFixedRate(() -> {
+            isEmailVerified(result -> {
+                if(result.isSuccessful()){
+                    if(((Result.BooleanSuccess)result).getBoolean()){
+                        callback.onComplete(new Result.Success());
+                    }
+                }
+                else{
+                    callback.onComplete(result);
+                }
+            });
+        }, 0, 5, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void stopEmailPolling(){
+        if (pollingExecutor != null && !pollingExecutor.isShutdown()){
+            pollingExecutor.shutdownNow();
+        }
     }
 
     @Override
