@@ -24,4 +24,13 @@
     <string name="specialCharNotAllowed">Caratteri speciali non consentiti</string>
     <string name="notEqualPassword">Le password non corrispondono</string>
     <string name="not_university_email">Inserire la mail universitaria</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="confirmEmail">CONFERMA MAIL</string>
+    <string name="to_confirm_your_profile_click_on_link">Per confermare il tuo profilo, clicca sul link che hai ricevuto tramite mail</string>
+    <string name="Back_to_login">Torna al login</string>
+    <string name="update">Aggiorna</string>
+    <string name="mail_not_received">Non hai ricevuto nessuna mail?</string>
+    <string name="generate_new_mail">Per generare una nuova mail</string>
+    <string name="click_here">Clicca qui</string>
 </resources>
