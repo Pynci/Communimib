@@ -12,21 +12,22 @@ public class User {
     @ColumnInfo(name = "name") private String name;
     @ColumnInfo(name = "surname") private String surname;
 
-    public User(String email){
+    public User(@NonNull String email){
         this.email = email;
     }
 
-    public User(String email, String name, String surname) {
+    public User(@NonNull String email, String name, String surname) {
         this.email = email;
         this.name = name;
         this.surname = surname;
     }
 
+    @NonNull
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NonNull String email) {
         this.email = email;
     }
 

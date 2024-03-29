@@ -6,11 +6,7 @@ public abstract class Result {
     }
 
     public boolean isSuccessful(){
-        return this instanceof Success
-                || this instanceof SignupSuccess
-                || this instanceof SigninSuccess
-                || this instanceof UserSuccess
-                || this instanceof BooleanSuccess;
+        return !(this instanceof Error);
     }
 
     public static final class Success extends Result{

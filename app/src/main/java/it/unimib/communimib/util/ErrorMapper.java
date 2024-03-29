@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ErrorMapper {
 
-    private Map<String, Integer> errorMap;
+    private final Map<String, Integer> errorMap;
     private static ErrorMapper instance;
 
     private ErrorMapper(){

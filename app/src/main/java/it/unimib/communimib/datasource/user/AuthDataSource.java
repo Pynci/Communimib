@@ -9,7 +9,7 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class AuthDataSource implements IAuthDataSource {
 
-    private FirebaseAuth auth;
+    private final FirebaseAuth auth;
     private FirebaseUser firebaseUser;
 
     public AuthDataSource(){
