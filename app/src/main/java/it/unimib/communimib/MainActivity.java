@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(this.getApplicationContext());
 
         findViewById(R.id.registrazione).setOnClickListener(view -> {
-            userRepository.signUp("baba@gmail.com", "pinselo", "Pueblo", "Scatarri", result -> {
+            userRepository.signUp("luca.pinciroli02@gmail.com", "pinselo", "Pueblo", "Scatarri", result -> {
                 if(result.isSuccessful()){
                     Log.d(this.getClass().getSimpleName(), "REGISTRAZIONE: successo");
                 }
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.login).setOnClickListener(view -> {
-            userRepository.signIn("baba@gmail.com", "pinselo", result -> {
+            userRepository.signIn("luca.pinciroli02@gmail.com", "pinselo", result -> {
                 if(result.isSuccessful()){
                     Log.d(this.getClass().getSimpleName(), "LOGIN: successo");
                 }
@@ -70,6 +70,32 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     Log.d(this.getClass().getSimpleName(), "SESSIONE: errore - " + ((Result.Error) result).getMessage());
+                }
+            });
+        });
+
+        findViewById(R.id.avvioMail).setOnClickListener(view -> {
+            userRepository.startEmailPolling(result -> {
+                if(result.isSuccessful()){
+                    Log.d(this.getClass().getSimpleName(), "MAIL: VERIFICATA!");
+                }
+                else{
+                    Log.d(this.getClass().getSimpleName(), "MAIL: errore - " + ((Result.Error) result).getMessage());
+                }
+            });
+        });
+
+        findViewById(R.id.stopMail).setOnClickListener(view -> {
+            userRepository.stopEmailPolling();
+        });
+
+        findViewById(R.id.mail).setOnClickListener(view -> {
+            userRepository.sendEmailVerification(result -> {
+                if(result.isSuccessful()){
+                    Log.d(this.getClass().getSimpleName(), "INVIO MAIL: INVIATA!");
+                }
+                else{
+                    Log.d(this.getClass().getSimpleName(), "INVIO MAIL: errore - " + ((Result.Error) result).getMessage());
                 }
             });
         });

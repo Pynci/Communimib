@@ -1,5 +1,7 @@
 package it.unimib.communimib.repository;
 
+import android.util.Log;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -136,8 +138,10 @@ public class UserRepository implements IUserRepository{
     public void startEmailPolling(Callback callback){
         pollingExecutor.scheduleAtFixedRate(() -> {
             isEmailVerified(result -> {
+                Log.d(this.getClass().getSimpleName(), "MAIL: sto controllando...");
                 if(result.isSuccessful()){
                     if(((Result.BooleanSuccess)result).getBoolean()){
+                        stopEmailPolling();
                         callback.onComplete(new Result.Success());
                     }
                 }
