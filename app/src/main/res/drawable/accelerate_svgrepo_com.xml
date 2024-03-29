@@ -2,8 +2,7 @@
   <group
       android:name="animationGroup"
       android:pivotX="512"
-      android:pivotY="512"
-      android:rotation="90.0">
+      android:pivotY="512">
 
     <path android:fillColor="#E73B37" android:pathData="M512,301.2m-10,0a10,10 0,1 0,20 0,10 10,0 1,0 -20,0Z"/>
 

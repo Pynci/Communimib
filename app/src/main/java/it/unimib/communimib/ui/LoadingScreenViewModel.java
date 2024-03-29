@@ -17,7 +17,7 @@ public class LoadingScreenViewModel extends ViewModel {
     }
 
     public void setDataAvaible() throws InterruptedException {
-        Thread.sleep(5000);
+        Thread.sleep(3000);
         isReady.setValue(true);
     }
 }
