@@ -28,7 +28,7 @@ public class UserLocalDataSource implements IUserLocalDataSource{
                 callback.onComplete(new Result.Success());
             }
             else{
-                callback.onComplete(new Result.Error(ErrorMapper.LOCAL_DATATABASE_ERROR));
+                callback.onComplete(new Result.Error(ErrorMapper.LOCALDB_INSERT_ERROR));
             }
         });
     }
@@ -39,7 +39,15 @@ public class UserLocalDataSource implements IUserLocalDataSource{
     }
 
     @Override
-    public void deleteUser(Callback callback) {
-
+    public void deleteUser(User currentUser, Callback callback) {
+        LocalDatabase.databaseWriteExecutor.execute(() -> {
+            int rowsDeleted = userDAO.deleteUser(currentUser);
+            if(rowsDeleted > 0){
+                callback.onComplete(new Result.Success());
+            }
+            else{
+                callback.onComplete(new Result.Error(ErrorMapper.LOCALDB_DELETE_ERROR));
+            }
+        });
     }
 }

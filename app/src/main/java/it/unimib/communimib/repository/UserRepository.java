@@ -27,7 +27,8 @@ public class UserRepository implements IUserRepository{
             if(authResult.isSuccessful()){
                 userRemoteDataSource.storeUserParameters(((Result.SignupSuccess) authResult).getUid(), email, name, surname, dbResult -> {
                     if(dbResult.isSuccessful()) {
-                        userLocalDataSource.insertUser(new User(email, name, surname), localdbResult -> {
+                        currentUser = new User(email, name, surname);
+                        userLocalDataSource.insertUser(currentUser, localdbResult -> {
                             if(localdbResult.isSuccessful()){
                                 authDataSource.sendEmailVerification(emailSendResult -> {
                                     callback.onComplete(emailSendResult);
@@ -52,23 +53,38 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public void signIn(String email, String password, Callback callback) {
-        authDataSource.signIn(email, password, result -> {
-            if(result.isSuccessful()){
+        authDataSource.signIn(email, password, authResult -> {
+            if(authResult.isSuccessful()){
                 userRemoteDataSource.getUserByEmail(email, remoteResult -> {
                     if(remoteResult.isSuccessful()){
-                        //continuare qui
+                        currentUser = ((Result.UserSuccess) remoteResult).getUser();
+                        userLocalDataSource.insertUser(currentUser, localResult -> {
+                            callback.onComplete(localResult);
+                        });
                     }
                 });
             }
             else{
-                callback.onComplete(result);
+                callback.onComplete(authResult);
             }
         });
     }
 
     @Override
     public void signOut(Callback callback) {
-
+        authDataSource.signOut(authResult -> {
+            if(authResult.isSuccessful()){
+                userLocalDataSource.deleteUser(currentUser, localResult -> {
+                    if(localResult.isSuccessful()){
+                        currentUser = null;
+                    }
+                    callback.onComplete(localResult);
+                });
+            }
+            else{
+                callback.onComplete(authResult);
+            }
+        });
     }
 
     @Override
