@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Communimib</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="welcome">Benvenuto</string>
     <string name="signin_with_your_information">Accedi con le tue credenziali</string>
     <string name="Email_address">Indirizzo email</string>
@@ -16,4 +14,13 @@
     <string name="confirm_password">Conferma password</string>
     <string name="joinUs">Unisciti a noi</string>
     <string name="alreadySignup">Sei già registrato?</string>
+    <string name="emptyField">Questo campo è obbligatorio</string>
+    <string name="invalidField">Valore inserito non corretto</string>
+    <string name="tooShortField">Valore inserito troppo corto</string>
+    <string name="numberMissing">Inserisci almeno un numero</string>
+    <string name="capitalcaseMissing">Inserisci almeno un carattere maiuscolo</string>
+    <string name="specialcharMissing">Inserisci almeno un carattere speciale</string>
+    <string name="numberNotAllowed">Numeri non consentiti</string>
+    <string name="specialCharNotAllowed">Caratteri speciali non consentiti</string>
+    <string name="notEqualPassword">Le password non corrispondono</string>
 </resources>

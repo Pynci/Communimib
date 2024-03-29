@@ -65,6 +65,14 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/fragmentSignup_textView_emailError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.7"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/fragmentSignup_editText_emailAddress"
                 android:layout_width="match_parent"
@@ -79,6 +87,14 @@
                 android:alpha="0.7"
                 android:text="@string/name"
                 android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fragmentSignup_textView_nameError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.7"
+                android:textSize="10sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -97,6 +113,14 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/fragmentSignup_textView_surnameError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.7"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/fragmentSignup_editText_surname"
                 android:layout_width="match_parent"
@@ -113,6 +137,14 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/fragmentSignup_textView_passwordError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.7"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/fragmentSignup_editText_password"
                 android:layout_width="match_parent"
@@ -127,6 +159,14 @@
                 android:alpha="0.7"
                 android:text="@string/confirm_password"
                 android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fragmentSignup_textView_confirmPasswordError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.7"
+                android:textSize="10sp"
                 android:textStyle="bold" />
 
             <EditText

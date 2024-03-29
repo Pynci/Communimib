@@ -3,6 +3,8 @@ package it.unimib.communimib.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.unimib.communimib.R;
+
 public class ErrorMapper {
 
     private Map<String, Integer> errorMap;
@@ -10,7 +12,15 @@ public class ErrorMapper {
 
     private ErrorMapper(){
         errorMap = new HashMap<>();
-        // inserire mappatura tra codice errore e stringa di errore
+        errorMap.put(EMPTY_FIELD, R.string.emptyField);
+        errorMap.put(INVALID_FIELD, R.string.invalidField);
+        errorMap.put(TOO_SHORT_FIELD, R.string.tooShortField);
+        errorMap.put(NUMBER_MISSING, R.string.numberMissing);
+        errorMap.put(CAPITAL_CASE_MISSING, R.string.capitalcaseMissing);
+        errorMap.put(SPECIAL_CHAR_MISSING, R.string.specialcharMissing);
+        errorMap.put(NUMBER_NOT_ALLOWED, R.string.numberNotAllowed);
+        errorMap.put(SPECIAL_CHAR_NOT_ALLOWED, R.string.specialCharNotAllowed);
+        errorMap.put(NOT_EQUAL_PASSWORD, R.string.notEqualPassword);
     }
 
     public static ErrorMapper getInstance() {
