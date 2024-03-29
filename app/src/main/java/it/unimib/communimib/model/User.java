@@ -12,6 +12,10 @@ public class User {
     @ColumnInfo(name = "name") private String name;
     @ColumnInfo(name = "surname") private String surname;
 
+    public User(String email){
+        this.email = email;
+    }
+
     public User(String email, String name, String surname) {
         this.email = email;
         this.name = name;

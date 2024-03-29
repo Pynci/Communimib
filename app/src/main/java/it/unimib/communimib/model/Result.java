@@ -7,7 +7,10 @@ public abstract class Result {
 
     public boolean isSuccessful(){
         return this instanceof Success
-                || this instanceof SignupSuccess;
+                || this instanceof SignupSuccess
+                || this instanceof SigninSuccess
+                || this instanceof UserSuccess
+                || this instanceof BooleanSuccess;
     }
 
     public static final class Success extends Result{
@@ -49,6 +52,20 @@ public abstract class Result {
         public User getUser(){
             return user;
         }
+    }
+
+    public static final class BooleanSuccess extends Result{
+
+        private final boolean aBoolean;
+
+        public BooleanSuccess(boolean aBoolean){
+            this.aBoolean = aBoolean;
+        }
+
+        public boolean getBoolean(){
+            return aBoolean;
+        }
+
     }
 
     public static final class Error extends Result{

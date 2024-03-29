@@ -6,6 +6,9 @@ public interface IUserRepository {
     void signUp(String email, String password, String name, String surname, Callback callback);
     void signIn(String email, String password, Callback callback);
     void signOut(Callback callback);
+
+    void isSessionStillActive(Callback callback);
+
     void sendEmailVerification(String email, Callback callback);
     void updateUserNameAndSurname(String name, String surname, Callback callback);
     void getUserByEmail(String email, Callback callback);

@@ -88,6 +88,36 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
+    public void isSessionStillActive(Callback callback){
+        if(authDataSource.isSessionStillActive()){
+            if(currentUser == null){
+                userLocalDataSource.getUser(localResult -> {
+                    if(localResult.isSuccessful()){
+                        currentUser = ((Result.UserSuccess) localResult).getUser();
+                        callback.onComplete(new Result.BooleanSuccess(true));
+                    }
+                    else{
+                        callback.onComplete(localResult);
+                    }
+                });
+            }
+            else{
+                callback.onComplete(new Result.BooleanSuccess(true));
+            }
+        }
+        else{
+            userLocalDataSource.deleteUser(new User(authDataSource.getCurrentUserEmail()), localResult -> {
+                if(localResult.isSuccessful()){
+                    callback.onComplete(new Result.BooleanSuccess(false));
+                }
+                else{
+                    callback.onComplete(localResult);
+                }
+            });
+        }
+    }
+
+    @Override
     public void sendEmailVerification(String email, Callback callback) {
 
     }
@@ -97,9 +127,10 @@ public class UserRepository implements IUserRepository{
 
     }
 
+    //serve? per ora lo lascio così -Luca
     @Override
     public void getUserByEmail(String email, Callback callback) {
-
+        userRemoteDataSource.getUserByEmail(email, callback);
     }
 
     @Override

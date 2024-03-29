@@ -17,7 +17,15 @@ public class UserLocalDataSource implements IUserLocalDataSource{
 
     @Override
     public void getUser(Callback callback) {
-
+        LocalDatabase.databaseWriteExecutor.execute(() -> {
+            User user = userDAO.getUser();
+            if(user != null){
+                callback.onComplete(new Result.UserSuccess(user));
+            }
+            else{
+                callback.onComplete(new Result.Error(ErrorMapper.LOCALDB_GET_ERROR));
+            }
+        });
     }
 
     @Override

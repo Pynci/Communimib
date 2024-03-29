@@ -34,6 +34,7 @@ public class ErrorMapper {
     public static final String USER_NOT_AUTHENTICATED_ERROR = "user_not_authenticated_error";
     public static final String LOCALDB_INSERT_ERROR = "localdb_insert_error";
     public static final String LOCALDB_DELETE_ERROR = "localdb_delete_error";
+    public static final String LOCALDB_GET_ERROR = "localdb_get_error";
     public static final String REMOTE_DATABASE_ERROR = "remote_database_error";
     public static final String USER_NOT_FOUND_ERROR = "user_not_found_error";
 }

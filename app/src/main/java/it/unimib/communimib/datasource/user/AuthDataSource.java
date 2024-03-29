@@ -17,6 +17,22 @@ public class AuthDataSource implements IAuthDataSource {
     }
 
     @Override
+    public boolean isSessionStillActive(){
+        firebaseUser = auth.getCurrentUser();
+        return firebaseUser != null;
+    }
+
+    @Override
+    public String getCurrentUserEmail(){
+        if(isSessionStillActive()){
+            return firebaseUser.getEmail();
+        }
+        else{
+            return "";
+        }
+    }
+
+    @Override
     public void signUp(String email, String password, Callback callback){
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
