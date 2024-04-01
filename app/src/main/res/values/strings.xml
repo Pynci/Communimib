@@ -33,4 +33,6 @@
     <string name="mail_not_received">Non hai ricevuto nessuna mail?</string>
     <string name="generate_new_mail">Per generare una nuova mail</string>
     <string name="click_here">Clicca qui</string>
+    <string name="insert_your_university_mail_to_reset_password">Inserisci la tua mail universitaria per effettuare il reset della password</string>
+    <string name="next">Avanti</string>
 </resources>
