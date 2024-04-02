@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -65,12 +66,7 @@ public class SignupFragment extends Fragment {
             if(!hasFocus){
                 String email = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextEmailAddress.getText());
                 String result = signupViewModel.checkEmail(email);
-
-                if (result.equals("ok"))
-                    fragmentSignupBinding.fragmentSignupTextViewEmailError.setText("");
-                else{
-                    fragmentSignupBinding.fragmentSignupTextViewEmailError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
-                }
+                checkAndPostResult(result, fragmentSignupBinding.fragmentSignupTextViewEmailError);
             }
         });
 
@@ -79,11 +75,7 @@ public class SignupFragment extends Fragment {
             if(!hasFocus){
                 String name = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextName.getText());
                 String result = signupViewModel.checkField(name);
-
-                if (result.equals("ok"))
-                    fragmentSignupBinding.fragmentSignupTextViewNameError.setText("");
-                else
-                    fragmentSignupBinding.fragmentSignupTextViewNameError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
+                checkAndPostResult(result, fragmentSignupBinding.fragmentSignupTextViewNameError);
             }
         });
 
@@ -92,11 +84,7 @@ public class SignupFragment extends Fragment {
             if(!hasFocus){
                 String surname = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextSurname.getText());
                 String result = signupViewModel.checkField(surname);
-
-                if (result.equals("ok"))
-                    fragmentSignupBinding.fragmentSignupTextViewSurnameError.setText("");
-                else
-                    fragmentSignupBinding.fragmentSignupTextViewSurnameError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
+                checkAndPostResult(result, fragmentSignupBinding.fragmentSignupTextViewSurnameError);
             }
         });
 
@@ -105,11 +93,7 @@ public class SignupFragment extends Fragment {
             if(!hasFocus){
                 String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
                 String result = signupViewModel.checkPassword(password);
-
-                if (result.equals("ok"))
-                    fragmentSignupBinding.fragmentSignupTextViewPasswordError.setText("");
-                else
-                    fragmentSignupBinding.fragmentSignupTextViewPasswordError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
+                checkAndPostResult(result, fragmentSignupBinding.fragmentSignupTextViewPasswordError);
             }
         });
 
@@ -119,11 +103,7 @@ public class SignupFragment extends Fragment {
                 String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
                 String confirmPassword = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextConfirmPassword.getText());
                 String result = signupViewModel.checkConfirmPassword(confirmPassword, password);
-
-                if (result.equals("ok"))
-                    fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setText("");
-                else
-                    fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
+                checkAndPostResult(result, fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError);
             }
         });
 
@@ -161,5 +141,12 @@ public class SignupFragment extends Fragment {
         Navigation.findNavController(requireView()).navigate(destination);
         if(finishActivity)
             requireActivity().finish();
+    }
+
+    private void checkAndPostResult(String result, TextView errorMessage) {
+        if (result.equals("ok"))
+            errorMessage.setText("");
+        else
+            errorMessage.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
     }
 }
