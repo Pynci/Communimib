@@ -77,15 +77,14 @@ public class AuthDataSource implements IAuthDataSource {
 
     @Override
     public void sendEmailVerification(Callback callback) {
-        firebaseUser = auth.getCurrentUser();
-        if(firebaseUser != null) {
+        if(isSessionStillActive()) {
             firebaseUser.sendEmailVerification()
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()) {
                             callback.onComplete(new Result.Success());
                         }
                         else{
-                            callback.onComplete(new Result.Error(ErrorMapper.EMAIL_VERIFICATION_ERROR));
+                            callback.onComplete(new Result.Error(ErrorMapper.EMAIL_SENDING_ERROR));
                         }
                     });
         }
@@ -96,10 +95,27 @@ public class AuthDataSource implements IAuthDataSource {
 
     @Override
     public void signOut(Callback callback){
-        firebaseUser = auth.getCurrentUser();
-        if(firebaseUser != null){
+        if(isSessionStillActive()){
             auth.signOut();
             callback.onComplete(new Result.Success());
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
+        }
+    }
+
+    @Override
+    public void resetPassword(Callback callback){
+        if(isSessionStillActive()){
+            auth.sendPasswordResetEmail(firebaseUser.getEmail())
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            callback.onComplete(new Result.Success());
+                        }
+                        else{
+                            callback.onComplete(new Result.Error(ErrorMapper.EMAIL_SENDING_ERROR));
+                        }
+                    });
         }
         else{
             callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));

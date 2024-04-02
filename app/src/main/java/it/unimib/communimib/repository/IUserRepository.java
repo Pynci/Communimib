@@ -20,6 +20,6 @@ public interface IUserRepository {
     void updateUserNameAndSurname(String name, String surname, Callback callback);
     void getUserByEmail(String email, Callback callback);
     // void updatePropic(Callback callback) e poi cosa?
-    void resetPassword(String email, Callback callback);
+    void resetPassword(Callback callback);
 }
 

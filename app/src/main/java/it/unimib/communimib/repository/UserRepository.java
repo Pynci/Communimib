@@ -170,7 +170,7 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
-    public void resetPassword(String email, Callback callback) {
-        // scrivo sto commento altrimenti Sonar mi picchia
+    public void resetPassword(Callback callback) {
+        authDataSource.resetPassword(callback);
     }
 }

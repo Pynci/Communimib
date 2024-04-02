@@ -15,4 +15,6 @@ public interface IAuthDataSource {
     void isEmailVerified(Callback callback);
 
     void signOut(Callback callback);
+
+    void resetPassword(Callback callback);
 }
