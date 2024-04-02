@@ -1,7 +1,6 @@
 package it.unimib.communimib.database;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -14,8 +13,8 @@ public interface UserDAO {
     @Query("SELECT * FROM User")
     User getUser();
 
-    @Delete
-    int deleteUser(User loggedUser);
+    @Query("DELETE FROM User")
+    void clearUser();
 
     @Update
     int updateUser(User newLoggedUser);

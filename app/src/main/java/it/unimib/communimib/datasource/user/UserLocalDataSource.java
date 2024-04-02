@@ -49,13 +49,8 @@ public class UserLocalDataSource implements IUserLocalDataSource{
     @Override
     public void deleteUser(User currentUser, Callback callback) {
         LocalDatabase.databaseWriteExecutor.execute(() -> {
-            int rowsDeleted = userDAO.deleteUser(currentUser);
-            if(rowsDeleted >= 0){
-                callback.onComplete(new Result.Success());
-            }
-            else{
-                callback.onComplete(new Result.Error(ErrorMapper.LOCALDB_DELETE_ERROR));
-            }
+            userDAO.clearUser();
+            callback.onComplete(new Result.Success());
         });
     }
 }

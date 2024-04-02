@@ -99,6 +99,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         });
+
+        findViewById(R.id.resetpassword).setOnClickListener(view -> {
+            userRepository.resetPassword(result -> {
+                if(result.isSuccessful()){
+                    Log.d(this.getClass().getSimpleName(), "RESET PASSWORD MAIL: INVIATA!");
+                }
+                else{
+                    Log.d(this.getClass().getSimpleName(), "RESET PASSWORD MAIL: errore - " + ((Result.Error) result).getMessage());
+                }
+            });
+        });
     }
 
 
