@@ -41,11 +41,12 @@ public class ErrorMapper {
     public static final String SIGNUP_ERROR = "signup_error";
     public static final String SIGNUP_FIREBASE_USER_ERROR = "signup_firebase_user_error";
     public static final String SIGNIN_ERROR = "signin_error";
-    public static final String EMAIL_VERIFICATION_ERROR = "email_verification_error";
+    public static final String EMAIL_SENDING_ERROR = "email_sending_error";
     public static final String USER_NOT_AUTHENTICATED_ERROR = "user_not_authenticated_error";
     public static final String LOCALDB_INSERT_ERROR = "localdb_insert_error";
-    public static final String LOCALDB_DELETE_ERROR = "localdb_delete_error";
-    public static final String REMOTE_DATABASE_ERROR = "remote_database_error";
+    public static final String LOCALDB_GET_ERROR = "localdb_get_error";
+    public static final String REMOTEDB_GET_ERROR = "remotedb_get_error";
+    public static final String REMOTEDB_INSERT_ERROR = "remotedb_insert_error";
     public static final String USER_NOT_FOUND_ERROR = "user_not_found_error";
 
 

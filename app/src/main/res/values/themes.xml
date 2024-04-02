@@ -1,5 +1,5 @@
 <resources>
-    <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Base.Theme.Communimib" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/seed</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
@@ -31,7 +31,7 @@
     <style name="Theme.Communimib" parent="Base.Theme.Communimib" />
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenBackground">#FFFFFF</item>
         <item name="postSplashScreenTheme">@style/Base.Theme.Communimib</item>
     </style>
 
