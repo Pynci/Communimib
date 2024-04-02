@@ -15,9 +15,11 @@ import android.view.ViewGroup;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentSigninBinding;
+import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.ui.viewmodels.SigninViewModel;
 import it.unimib.communimib.ui.viewmodels.SigninViewModelFactory;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.ServiceLocator;
 
 public class SigninFragment extends Fragment {
 
@@ -38,7 +40,8 @@ public class SigninFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        signinViewModel = new ViewModelProvider(requireActivity(), new SigninViewModelFactory()).get(SigninViewModel.class);
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        signinViewModel = new ViewModelProvider(requireActivity(), new SigninViewModelFactory(userRepository)).get(SigninViewModel.class);
     }
 
     @Override
