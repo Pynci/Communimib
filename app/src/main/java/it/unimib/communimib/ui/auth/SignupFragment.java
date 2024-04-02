@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.unimib.communimib.R;
-import it.unimib.communimib.databinding.FragmentSigninBinding;
 import it.unimib.communimib.databinding.FragmentSignupBinding;
 import it.unimib.communimib.ui.viewmodels.SignupViewModel;
 import it.unimib.communimib.ui.viewmodels.SignupViewModelFactory;
@@ -37,7 +35,7 @@ public class SignupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        signupViewModel = new ViewModelProvider(requireActivity(), new SignupViewModelFactory()).get(SignupViewModel.class);
+        signupViewModel = new ViewModelProvider(requireActivity(), new SignupViewModelFactory(this.getContext())).get(SignupViewModel.class);
     }
 
 
@@ -48,17 +46,15 @@ public class SignupFragment extends Fragment {
         return fragmentSignupBinding.getRoot();
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        ErrorMapper errorMapper = ErrorMapper.getInstance();
+        fragmentSignupBinding.fragmentSignupButtonLogin.setOnClickListener(v ->
+            getParentFragmentManager().popBackStackImmediate()
+        );
 
-        fragmentSignupBinding.fragmentSignupButtonLogin.setOnClickListener(v ->{
-            getParentFragmentManager().popBackStackImmediate();
-        });
-
-        //Listeners on fields
-
+        //Controllo in realtime su testo email
         fragmentSignupBinding.fragmentSignupEditTextEmailAddress.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 String email = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextEmailAddress.getText());
@@ -67,13 +63,12 @@ public class SignupFragment extends Fragment {
                 if (result.equals("ok"))
                     fragmentSignupBinding.fragmentSignupTextViewEmailError.setText("");
                 else{
-                    fragmentSignupBinding.fragmentSignupTextViewEmailError.setText(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSignupBinding.fragmentSignupTextViewEmailError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
                 }
-
-
             }
         });
 
+        //Controllo in realtime sul nome
         fragmentSignupBinding.fragmentSignupEditTextName.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 String name = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextName.getText());
@@ -82,10 +77,11 @@ public class SignupFragment extends Fragment {
                 if (result.equals("ok"))
                     fragmentSignupBinding.fragmentSignupTextViewNameError.setText("");
                 else
-                    fragmentSignupBinding.fragmentSignupTextViewNameError.setText(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSignupBinding.fragmentSignupTextViewNameError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
             }
         });
 
+        //Controllo in realtime sul congome
         fragmentSignupBinding.fragmentSignupEditTextSurname.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 String surname = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextSurname.getText());
@@ -94,10 +90,11 @@ public class SignupFragment extends Fragment {
                 if (result.equals("ok"))
                     fragmentSignupBinding.fragmentSignupTextViewSurnameError.setText("");
                 else
-                    fragmentSignupBinding.fragmentSignupTextViewSurnameError.setText(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSignupBinding.fragmentSignupTextViewSurnameError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
             }
         });
 
+        //Controllo in realtime sulla password
         fragmentSignupBinding.fragmentSignupEditTextPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
@@ -106,10 +103,11 @@ public class SignupFragment extends Fragment {
                 if (result.equals("ok"))
                     fragmentSignupBinding.fragmentSignupTextViewPasswordError.setText("");
                 else
-                    fragmentSignupBinding.fragmentSignupTextViewPasswordError.setText(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSignupBinding.fragmentSignupTextViewPasswordError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
             }
         });
 
+        //Controllo in realtime sulla conferma della password
         fragmentSignupBinding.fragmentSignupEditTextConfirmPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
@@ -119,7 +117,7 @@ public class SignupFragment extends Fragment {
                 if (result.equals("ok"))
                     fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setText("");
                 else
-                    fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setText(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
             }
         });
     }

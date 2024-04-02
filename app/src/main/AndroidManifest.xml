@@ -16,11 +16,6 @@
             android:name=".ui.LoadingScreen"
             android:exported="true"
             android:theme="@style/Theme.App.Starting">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
@@ -31,6 +26,11 @@
             android:name=".ui.auth.AuthActivity"
             android:exported="true"
             android:theme="@style/Theme.Communimib">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
