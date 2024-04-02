@@ -96,12 +96,23 @@ public class SigninFragment extends Fragment {
             String password = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextPassword.getText());
 
             if(!email.equals("") && !password.equals("")){
-                signinViewModel.signIn(email, password).observe(getViewLifecycleOwner(), result -> {
+                signinViewModel.signIn(email, password);
+                signinViewModel.getSignInResult().observe(getViewLifecycleOwner(), result -> {
                     if(result.isSuccessful()){
-
-                        navigateTo(R.id.action_signinFragment_to_mainActivity, false);
+                        signinViewModel.isEmailVerified();
+                        signinViewModel.getEmailVerifiedResult().observe(getViewLifecycleOwner(), result1 -> {
+                            if(result1.isSuccessful()){
+                                if(((Result.BooleanSuccess) result1).getBoolean()){
+                                    navigateTo(R.id.action_signinFragment_to_mainActivity, false);
+                                } else {
+                                    navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
+                                }
+                            } else {
+                                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result1).getMessage()), BaseTransientBottomBar.LENGTH_SHORT);
+                            }
+                        });
                     } else {
-                        Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
                     }
                 });
             }
