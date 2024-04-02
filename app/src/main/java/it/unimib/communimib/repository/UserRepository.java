@@ -15,7 +15,7 @@ import it.unimib.communimib.model.User;
 
 public class UserRepository implements IUserRepository{
 
-    private static final ScheduledExecutorService pollingExecutor =
+    private ScheduledExecutorService pollingExecutor =
             Executors.newSingleThreadScheduledExecutor();
     private final IAuthDataSource authDataSource;
     private final IUserRemoteDataSource userRemoteDataSource;
@@ -136,6 +136,10 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public void startEmailPolling(Callback callback){
+        if (pollingExecutor == null || pollingExecutor.isShutdown()) {
+            pollingExecutor = Executors.newSingleThreadScheduledExecutor();
+        }
+
         pollingExecutor.scheduleAtFixedRate(() -> {
             isEmailVerified(result -> {
                 Log.d(this.getClass().getSimpleName(), "MAIL: sto controllando...");
