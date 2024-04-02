@@ -16,6 +16,12 @@
         <action
             android:id="@+id/action_signinFragment_to_mainActivity"
             app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_signinFragment_to_passwordResetFragment"
+            app:destination="@id/passwordResetFragment" />
+        <action
+            android:id="@+id/action_signinFragment_to_emailVerificationFragment"
+            app:destination="@id/emailVerificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
@@ -31,4 +37,14 @@
         android:name="it.unimib.communimib.ui.main.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/passwordResetFragment"
+        android:name="it.unimib.communimib.ui.auth.PasswordResetFragment"
+        android:label="fragment_password_reset"
+        tools:layout="@layout/fragment_password_reset" />
+    <fragment
+        android:id="@+id/emailVerificationFragment"
+        android:name="it.unimib.communimib.ui.auth.EmailVerificationFragment"
+        android:label="fragment_email_verification"
+        tools:layout="@layout/fragment_email_verification" />
 </navigation>

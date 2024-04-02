@@ -21,9 +21,10 @@ public class SigninViewModel extends ViewModel {
 
     public SigninViewModel(IUserRepository userRepository){
         this.userRepository = userRepository;
+        this.currentUser = new MutableLiveData<>();
     }
 
-    public MutableLiveData<Result> signIn (String email, String password, Callback callback){
+    public MutableLiveData<Result> signIn (String email, String password){
         userRepository.signIn(email, password, result -> {
             currentUser.postValue(result);
         });
