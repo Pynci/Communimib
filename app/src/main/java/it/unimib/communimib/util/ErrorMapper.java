@@ -7,7 +7,7 @@ import it.unimib.communimib.R;
 
 public class ErrorMapper {
 
-    private Map<String, Integer> errorMap;
+    private final Map<String, Integer> errorMap;
     private static ErrorMapper instance;
 
     private ErrorMapper(){
@@ -60,4 +60,5 @@ public class ErrorMapper {
     public static final String NUMBER_NOT_ALLOWED = "number_not_allowed";
     public static final String SPECIAL_CHAR_NOT_ALLOWED = "special_char_not_allowed";
     public static final String NOT_EQUAL_PASSWORD = "not_equal_password";
+
 }

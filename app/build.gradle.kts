@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -52,6 +53,16 @@ dependencies {
     implementation("commons-validator:commons-validator:1.7")
     implementation("commons-io:commons-io:2.15.0")
 
+    //Dipendenze per firebase
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-analytics")
+
+    //Dipendenze per room
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    //Dipendenze per splash screen
+    implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
 }
