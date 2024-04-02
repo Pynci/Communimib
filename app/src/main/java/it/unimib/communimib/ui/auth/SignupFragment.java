@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.communimib.R;
@@ -141,6 +142,8 @@ public class SignupFragment extends Fragment {
         //Gestione del risultato della registrazione
         signupViewModel.getSignUpResult().observe(getViewLifecycleOwner(), result -> {
 
+            this.getView().clearFocus();
+
             if (result.isSuccessful()) {
                 navigateTo(R.id.action_signupFragment_to_emailVerificationFragment, false);
             }
@@ -149,7 +152,7 @@ public class SignupFragment extends Fragment {
                 Snackbar.make(
                         this.getView(),
                         ErrorMapper.getInstance().getErrorMessage(errore.getMessage()),
-                        Snackbar.LENGTH_SHORT).show();
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
     }

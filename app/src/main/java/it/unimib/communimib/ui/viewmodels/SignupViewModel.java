@@ -27,6 +27,7 @@ public class SignupViewModel extends ViewModel {
                 && checkConfirmPassword(confirmPassword, password).equals("ok")
                 && checkField(name).equals("ok")
                 && checkField(surname).equals("ok")) {
+
             iUserRepository.signUp(email, password, name, surname, signUpResult::postValue);
         }
         else{
