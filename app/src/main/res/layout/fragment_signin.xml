@@ -9,20 +9,19 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="312dp"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/fragmentSignin_cardView"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        android:alpha="0.9"
+        android:paddingBottom="-20dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:src="@drawable/ic_action_name"/>
+            android:layout_gravity="bottom|start"
+            android:alpha="0.7"
+            android:src="@mipmap/ic_banner_foreground" />
 
         <ImageView
             android:layout_width="320dp"
