@@ -1,3 +1,38 @@
 <resources>
     <string name="app_name">Communimib</string>
+    <string name="welcome">Benvenuto</string>
+    <string name="signin_with_your_information">Accedi con le tue credenziali</string>
+    <string name="Email_address">Indirizzo email</string>
+    <string name="password">Password</string>
+    <string name="forgotten_password">Password dimenticata</string>
+    <string name="login">Login</string>
+    <string name="not_signUp">Non hai un account?</string>
+    <string name="signup">Registrati</string>
+    <string name="insertUniversityCredential">Inserisci le tue credenziali universitarie</string>
+    <string name="name">Nome</string>
+    <string name="surname">Cognome</string>
+    <string name="confirm_password">Conferma password</string>
+    <string name="joinUs">Unisciti a noi</string>
+    <string name="alreadySignup">Sei già registrato?</string>
+    <string name="emptyField">Questo campo è obbligatorio</string>
+    <string name="invalidField">Valore inserito non valido</string>
+    <string name="tooShortField">Valore inserito troppo corto</string>
+    <string name="numberMissing">Inserisci almeno un numero</string>
+    <string name="capitalcaseMissing">Inserisci almeno un carattere maiuscolo</string>
+    <string name="specialcharMissing">Inserisci almeno un carattere speciale</string>
+    <string name="numberNotAllowed">Numeri non consentiti</string>
+    <string name="specialCharNotAllowed">Caratteri speciali non consentiti</string>
+    <string name="notEqualPassword">Le password non corrispondono</string>
+    <string name="not_university_email">Inserire la mail universitaria</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="confirmEmail">CONFERMA MAIL</string>
+    <string name="to_confirm_your_profile_click_on_link">Per confermare il tuo profilo, clicca sul link che hai ricevuto tramite mail</string>
+    <string name="Back_to_login">Torna al login</string>
+    <string name="update">Aggiorna</string>
+    <string name="mail_not_received">Non hai ricevuto nessuna mail?</string>
+    <string name="generate_new_mail">Per generare una nuova mail</string>
+    <string name="click_here">Clicca qui</string>
+    <string name="insert_your_university_mail_to_reset_password">Inserisci la tua mail universitaria per effettuare il reset della password</string>
+    <string name="next">Avanti</string>
 </resources>

@@ -146,6 +146,7 @@ public class UserRepository implements IUserRepository{
                     }
                 }
                 else{
+                    stopEmailPolling();
                     callback.onComplete(result);
                 }
             });
@@ -155,7 +156,7 @@ public class UserRepository implements IUserRepository{
     @Override
     public void stopEmailPolling(){
         if (pollingExecutor != null && !pollingExecutor.isShutdown()){
-            pollingExecutor.shutdownNow();
+            pollingExecutor.shutdown();
         }
     }
 

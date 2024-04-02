@@ -1,4 +1,4 @@
-package it.unimib.communimib;
+package it.unimib.communimib.ui.main;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import it.unimib.communimib.R;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.repository.UserRepository;
