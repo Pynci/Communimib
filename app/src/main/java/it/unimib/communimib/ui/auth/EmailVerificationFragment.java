@@ -30,10 +30,7 @@ public class EmailVerificationFragment extends Fragment {
     }
 
     public static EmailVerificationFragment newInstance() {
-        EmailVerificationFragment fragment = new EmailVerificationFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new EmailVerificationFragment();
     }
 
     @Override

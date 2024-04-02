@@ -12,13 +12,17 @@ public class EmailManagementViewModel extends ViewModel  {
     private final IUserRepository userRepository;
     MutableLiveData<Result> emailVerificationResult;
     MutableLiveData<Result> emailVerificationSendingResult;
-    MutableLiveData<Result> passwordResetSendingResult;
+    MutableLiveData<Result> resetPasswordSendingResult;
 
     public EmailManagementViewModel(IUserRepository userRepository){
         this.userRepository = userRepository;
         emailVerificationResult = new MutableLiveData<>();
         emailVerificationSendingResult = new MutableLiveData<>();
-        passwordResetSendingResult = new MutableLiveData<>();
+        resetPasswordSendingResult = new MutableLiveData<>();
+    }
+
+    public void resetPassword(){
+        userRepository.resetPassword(result -> resetPasswordSendingResult.postValue(result));
     }
 
     public void sendEmailVerification(){
