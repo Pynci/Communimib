@@ -108,11 +108,13 @@ public class SigninFragment extends Fragment {
                                     navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
                                 }
                             } else {
-                                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result1).getMessage()), BaseTransientBottomBar.LENGTH_SHORT);
+                                String error = ((Result.Error) result1).getMessage();
+                                Snackbar.make(requireView(), getString(ErrorMapper.getInstance().getErrorMessage(error)), BaseTransientBottomBar.LENGTH_SHORT);
                             }
                         });
                     } else {
-                        Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
+                        String error = ((Result.Error) result).getMessage();
+                        Snackbar.make(requireView(), getString(ErrorMapper.getInstance().getErrorMessage(error)), BaseTransientBottomBar.LENGTH_SHORT).show();
                     }
                 });
             }
