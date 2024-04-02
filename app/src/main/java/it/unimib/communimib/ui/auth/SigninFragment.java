@@ -60,6 +60,26 @@ public class SigninFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
+        signinViewModel.getSignInResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                signinViewModel.isEmailVerified();
+            } else {
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        signinViewModel.getEmailVerifiedResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                if(((Result.BooleanSuccess) result).getBoolean()){
+                    navigateTo(R.id.action_signinFragment_to_mainActivity, false);
+                } else {
+                    navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
+                }
+            } else {
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT);
+            }
+        });
+
 
         fragmentSigninBinding.fragmentSigninButtonSignup.setOnClickListener(v -> navigateTo(R.id.action_signinFragment_to_signupFragment, false));
 
@@ -97,26 +117,6 @@ public class SigninFragment extends Fragment {
 
             if(!email.equals("") && !password.equals("")){
                 signinViewModel.signIn(email, password);
-                signinViewModel.getSignInResult().observe(getViewLifecycleOwner(), result -> {
-                    if(result.isSuccessful()){
-                        signinViewModel.isEmailVerified();
-                        signinViewModel.getEmailVerifiedResult().observe(getViewLifecycleOwner(), result1 -> {
-                            if(result1.isSuccessful()){
-                                if(((Result.BooleanSuccess) result1).getBoolean()){
-                                    navigateTo(R.id.action_signinFragment_to_mainActivity, false);
-                                } else {
-                                    navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
-                                }
-                            } else {
-                                String error = ((Result.Error) result1).getMessage();
-                                Snackbar.make(requireView(), getString(ErrorMapper.getInstance().getErrorMessage(error)), BaseTransientBottomBar.LENGTH_SHORT);
-                            }
-                        });
-                    } else {
-                        String error = ((Result.Error) result).getMessage();
-                        Snackbar.make(requireView(), getString(ErrorMapper.getInstance().getErrorMessage(error)), BaseTransientBottomBar.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
 
