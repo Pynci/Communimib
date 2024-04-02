@@ -27,6 +27,11 @@
             android:exported="true"
             android:theme="@style/Theme.Communimib">
         </activity>
+        <activity
+            android:name=".ui.auth.AuthActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Communimib">
+        </activity>
     </application>
 
 </manifest>

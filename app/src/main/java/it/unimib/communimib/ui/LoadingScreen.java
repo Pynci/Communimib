@@ -2,10 +2,13 @@ package it.unimib.communimib.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import it.unimib.communimib.R;
+import it.unimib.communimib.ui.auth.AuthActivity;
 
 public class LoadingScreen extends AppCompatActivity {
 
@@ -38,43 +42,44 @@ public class LoadingScreen extends AppCompatActivity {
 
         splashScreen.setKeepOnScreenCondition(() -> !loadingScreenViewModel.areDataAvaible().getValue() );
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             getSplashScreen().setOnExitAnimationListener(splashScreenView -> {
-                final ObjectAnimator zoomX = ObjectAnimator.ofFloat(
-                        splashScreenView.getIconView(),
-                        View.SCALE_X,
-                        0.2f,
-                        0.0f
-                );
-                zoomX.setInterpolator(new OvershootInterpolator());
-                zoomX.setDuration(1000);
+                // Ottieni l'icona dalla SplashScreen
+                View iconView = splashScreenView.getIconView();
 
-                zoomX.addListener(new AnimatorListenerAdapter() {
+                // Crea un'animazione per rimpicciolire gradualmente l'icona lungo l'asse X
+                ObjectAnimator scaleX = ObjectAnimator.ofFloat(
+                        iconView, // L'oggetto da animare
+                        View.SCALE_X, // La proprietà da animare
+                        1.0f, // Valore iniziale
+                        0.0f // Valore finale
+                );
+                scaleX.setDuration(500); // Imposta la durata dell'animazione in millisecondi
+                scaleX.setInterpolator(new AccelerateInterpolator()); // Interpolatore per accelerare l'animazione
+
+                // Crea un'animazione per rimpicciolire gradualmente l'icona lungo l'asse Y
+                ObjectAnimator scaleY = ObjectAnimator.ofFloat(
+                        iconView, // L'oggetto da animare
+                        View.SCALE_Y, // La proprietà da animare
+                        1.0f, // Valore iniziale
+                        0.0f // Valore finale
+                );
+                scaleY.setDuration(500); // Imposta la durata dell'animazione in millisecondi
+                scaleY.setInterpolator(new AccelerateInterpolator()); // Interpolatore per accelerare l'animazione
+
+                // Crea un set di animazioni che eseguono le animazioni scaleX e scaleY contemporaneamente
+                AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.playTogether(scaleX, scaleY); // Esegue entrambe le animazioni contemporaneamente
+                animatorSet.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        splashScreenView.remove();
+                        splashScreenView.remove(); // Rimuovi la SplashScreen quando l'animazione è completata
                     }
                 });
 
-                final ObjectAnimator zoomY = ObjectAnimator.ofFloat(
-                        splashScreenView.getIconView(),
-                        View.SCALE_Y,
-                        0.2f,
-                        0.0f
-                );
-                zoomY.setInterpolator(new OvershootInterpolator());
-                zoomY.setDuration(1000);
-
-                zoomY.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        splashScreenView.remove();
-                    }
-                });
-
-                zoomX.start();
-                zoomY.start();
-
+                // Avvia l'insieme di animazioni
+                animatorSet.start();
             });
         }
 
