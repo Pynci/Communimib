@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +20,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.ui.main.MainActivity;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -81,7 +84,17 @@ public class AuthActivity extends AppCompatActivity {
                 animatorSet.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        splashScreenView.remove();
+
+                        boolean resultSession = ((Result.BooleanSuccess) loadingScreenViewModel.getSessionResult().getValue()).getBoolean();
+                        boolean resultEmail = ((Result.BooleanSuccess) loadingScreenViewModel.getEmailCheckResult().getValue()).getBoolean();
+
+                        if(resultSession && resultEmail) {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                        else{
+                            splashScreenView.remove();
+                        }
                     }
                 });
 
@@ -111,7 +124,12 @@ public class AuthActivity extends AppCompatActivity {
             if (emailCheckResult.isSuccessful()) {
                 boolean result = ((Result.BooleanSuccess) emailCheckResult).getBoolean();
                 if(!result){
-                    //TODO: utilizzare la navigazione per caricare il fragment di conferma email
+                    NavHostFragment navHostFragment = (NavHostFragment)
+                            getSupportFragmentManager().findFragmentById(R.id.activityAuth_navHostFragment);
+
+                    NavController navController = navHostFragment.getNavController();
+
+                    navController.navigate(R.id.emailVerificationFragment);
                 }
                 notifyDataAreAvaible();
             }

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(this.getApplicationContext());
 
         findViewById(R.id.registrazione).setOnClickListener(view -> {
-            userRepository.signUp("luca.pinciroli02@gmail.com", "pinselo", "Pueblo", "Scatarri", result -> {
+            userRepository.signUp("m.ferioli@campus.unimib.it", "pinselo", "Pueblo", "Scatarri", result -> {
                 if(result.isSuccessful()){
                     Log.d(this.getClass().getSimpleName(), "REGISTRAZIONE: successo");
                 }
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.login).setOnClickListener(view -> {
-            userRepository.signIn("luca.pinciroli02@gmail.com", "pinselo", result -> {
+            userRepository.signIn("m.ferioli@campus.unimib.it", "pinselo", result -> {
                 if(result.isSuccessful()){
                     Log.d(this.getClass().getSimpleName(), "LOGIN: successo");
                 }
