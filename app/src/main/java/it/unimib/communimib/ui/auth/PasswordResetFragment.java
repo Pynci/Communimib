@@ -15,10 +15,6 @@ public class PasswordResetFragment extends Fragment {
     public PasswordResetFragment() {
         // Required empty public constructor
     }
-    public static PasswordResetFragment newInstance() {
-        PasswordResetFragment fragment = new PasswordResetFragment();
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

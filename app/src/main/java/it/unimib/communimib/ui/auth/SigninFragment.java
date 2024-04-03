@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,12 +33,6 @@ public class SigninFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static SigninFragment newInstance() {
-        SigninFragment fragment = new SigninFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +43,7 @@ public class SigninFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         fragmentSigninBinding = FragmentSigninBinding.inflate(inflater, container, false);
@@ -76,7 +69,7 @@ public class SigninFragment extends Fragment {
                     navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
                 }
             } else {
-                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT);
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
 
@@ -115,7 +108,7 @@ public class SigninFragment extends Fragment {
             String email = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextEmailAddress.getText());
             String password = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextPassword.getText());
 
-            if(!email.equals("") && !password.equals("")){
+            if(!email.isEmpty() && !password.isEmpty()){
                 signinViewModel.signIn(email, password);
             }
         });
