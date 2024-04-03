@@ -16,11 +16,6 @@
         <action
             android:id="@+id/action_signinFragment_to_mainActivity"
             app:destination="@id/mainActivity" />
-
-        <!-- TODO: rimuovere finito il test -->
-        <action
-            android:id="@+id/action_signinFragment_to_emailVerificationFragment"
-            app:destination="@id/emailVerificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/signupFragment"

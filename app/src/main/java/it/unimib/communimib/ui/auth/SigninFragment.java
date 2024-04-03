@@ -52,9 +52,6 @@ public class SigninFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        // TODO: rimuovere finito il test
-        navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
-
         ErrorMapper errorMapper = ErrorMapper.getInstance();
 
         fragmentSigninBinding.fragmentSigninButtonSignup.setOnClickListener(v -> navigateTo(R.id.action_signinFragment_to_signupFragment, false));
