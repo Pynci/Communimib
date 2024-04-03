@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.loading;
+package it.unimib.communimib.ui.auth;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -23,6 +23,15 @@ public class LoadingScreenViewModel extends ViewModel {
 
     public void checkSession() {
         iUserRepository.isSessionStillActive(sessionResult::postValue);
+    }
+
+    public void checkEmailVerified() {
+        iUserRepository.isEmailVerified(emailCheckResult::postValue);
+    }
+
+    public void setAreAllDataAvaible() throws InterruptedException {
+        Thread.sleep(2000);
+        areAllDataAvaible.setValue(true);
     }
 
     public LiveData<Result> getSessionResult() {
