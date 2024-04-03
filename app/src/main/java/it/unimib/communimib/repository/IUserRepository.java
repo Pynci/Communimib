@@ -18,6 +18,7 @@ public interface IUserRepository {
     void stopEmailPolling();
 
     void updateUserNameAndSurname(String name, String surname, Callback callback);
+
     void getUserByEmail(String email, Callback callback);
     // void updatePropic(Callback callback) e poi cosa?
     void resetPassword(Callback callback);
