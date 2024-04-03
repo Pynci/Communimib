@@ -1,4 +1,4 @@
-    package it.unimib.communimib.ui.auth;
+    package it.unimib.communimib.ui.auth.loading;
 
     import android.animation.Animator;
     import android.animation.AnimatorListenerAdapter;
@@ -19,7 +19,6 @@
     import androidx.core.view.WindowInsetsCompat;
     import androidx.lifecycle.ViewModelProvider;
     import androidx.navigation.NavController;
-    import androidx.navigation.Navigation;
     import androidx.navigation.fragment.NavHostFragment;
 
     import it.unimib.communimib.R;

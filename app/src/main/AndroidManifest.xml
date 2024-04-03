@@ -18,7 +18,7 @@
             android:theme="@style/Theme.Communimib">
         </activity>
         <activity
-            android:name=".ui.auth.AuthActivity"
+            android:name=".ui.auth.loading.AuthActivity"
             android:exported="true"
             android:theme="@style/Theme.App.Starting">
             <intent-filter>

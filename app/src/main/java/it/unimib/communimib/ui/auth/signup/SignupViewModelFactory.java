@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.viewmodels;
+package it.unimib.communimib.ui.auth.signup;
 
 import android.content.Context;
 
@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import it.unimib.communimib.ui.auth.signup.SignupViewModel;
 import it.unimib.communimib.util.ServiceLocator;
 
 

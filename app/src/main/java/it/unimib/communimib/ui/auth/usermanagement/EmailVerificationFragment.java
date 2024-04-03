@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.auth;
+package it.unimib.communimib.ui.auth.usermanagement;
 
 import android.os.Bundle;
 
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,6 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentEmailVerificationBinding;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.ui.viewmodels.EmailManagementViewModel;
-import it.unimib.communimib.ui.viewmodels.EmailManagementViewModelFactory;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.ServiceLocator;
 

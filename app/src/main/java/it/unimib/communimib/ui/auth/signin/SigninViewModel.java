@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.viewmodels;
+package it.unimib.communimib.ui.auth.signin;
 
 
 import androidx.lifecycle.LiveData;

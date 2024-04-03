@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.auth;
+package it.unimib.communimib.ui.auth.signin;
 
 import android.os.Bundle;
 
@@ -19,8 +19,6 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentSigninBinding;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.ui.viewmodels.SigninViewModel;
-import it.unimib.communimib.ui.viewmodels.SigninViewModelFactory;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.ServiceLocator;
 

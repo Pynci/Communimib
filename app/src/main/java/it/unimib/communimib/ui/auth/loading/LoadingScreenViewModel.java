@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.auth;
+package it.unimib.communimib.ui.auth.loading;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

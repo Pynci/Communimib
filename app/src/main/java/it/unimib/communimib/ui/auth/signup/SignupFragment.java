@@ -1,11 +1,10 @@
-package it.unimib.communimib.ui.auth;
+package it.unimib.communimib.ui.auth.signup;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -20,8 +19,6 @@ import com.google.android.material.snackbar.Snackbar;
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentSignupBinding;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.ui.viewmodels.SignupViewModel;
-import it.unimib.communimib.ui.viewmodels.SignupViewModelFactory;
 import it.unimib.communimib.util.ErrorMapper;
 
 public class SignupFragment extends Fragment {

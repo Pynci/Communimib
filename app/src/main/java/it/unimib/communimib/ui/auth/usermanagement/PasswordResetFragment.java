@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.auth;
+package it.unimib.communimib.ui.auth.usermanagement;
 
 import android.os.Bundle;
 
@@ -17,8 +17,6 @@ import com.google.android.material.snackbar.Snackbar;
 import it.unimib.communimib.databinding.FragmentPasswordResetBinding;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.ui.viewmodels.EmailManagementViewModel;
-import it.unimib.communimib.ui.viewmodels.EmailManagementViewModelFactory;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.ServiceLocator;
 

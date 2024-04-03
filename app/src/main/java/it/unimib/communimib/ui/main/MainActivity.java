@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.ui.auth.AuthActivity;
+import it.unimib.communimib.ui.auth.loading.AuthActivity;
 import it.unimib.communimib.util.ServiceLocator;
 
 public class MainActivity extends AppCompatActivity {

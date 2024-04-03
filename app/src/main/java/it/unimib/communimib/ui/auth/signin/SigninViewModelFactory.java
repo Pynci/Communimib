@@ -1,22 +1,23 @@
-package it.unimib.communimib.ui.viewmodels;
+package it.unimib.communimib.ui.auth.signin;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import it.unimib.communimib.repository.IUserRepository;
+import it.unimib.communimib.ui.auth.signin.SigninViewModel;
 
-public class EmailManagementViewModelFactory implements ViewModelProvider.Factory {
+public class SigninViewModelFactory implements ViewModelProvider.Factory {
 
     private final IUserRepository userRepository;
 
-    public EmailManagementViewModelFactory(IUserRepository userRepository){
+    public SigninViewModelFactory(IUserRepository userRepository){
         this.userRepository = userRepository;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass){
-        return (T) new EmailManagementViewModel(userRepository);
+        return (T) new SigninViewModel(userRepository);
     }
 }
