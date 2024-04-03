@@ -17,6 +17,8 @@ import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Result;
@@ -96,11 +98,6 @@ public class AuthActivity extends AppCompatActivity {
                 if(result)
                     loadingScreenViewModel.checkEmailVerified();
                 else{
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.activityAuth_navHostFragment, SigninFragment.class, null)
-                            .commit();
-
                     notifyDataAreAvaible();
                 }
             }
@@ -113,12 +110,9 @@ public class AuthActivity extends AppCompatActivity {
         loadingScreenViewModel.getEmailCheckResult().observe(this, emailCheckResult -> {
             if (emailCheckResult.isSuccessful()) {
                 boolean result = ((Result.BooleanSuccess) emailCheckResult).getBoolean();
-                if(!result)
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.activityAuth_navHostFragment, EmailVerificationFragment.class, null)
-                            .commit();
-
+                if(!result){
+                    //TODO: utilizzare la navigazione per caricare il fragment di conferma email
+                }
                 notifyDataAreAvaible();
             }
             else{
