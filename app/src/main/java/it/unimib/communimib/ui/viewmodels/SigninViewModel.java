@@ -24,7 +24,11 @@ public class SigninViewModel extends ViewModel {
     }
 
     public void signIn (String email, String password){
-        userRepository.signIn(email, password, signInResult::postValue);
+        if(checkEmail(email).equals("ok") && !password.isEmpty()){
+            userRepository.signIn(email, password, signInResult::postValue);
+        } else {
+            signInResult.setValue(new Result.Error(ErrorMapper.NOT_ACCEPTED_PARAMETERS));
+        }
     }
     public LiveData<Result> getSignInResult(){
         return signInResult;
@@ -46,5 +50,10 @@ public class SigninViewModel extends ViewModel {
             return ErrorMapper.NOT_UNIVERSITY_EMAIL;
 
         return "ok";
+    }
+
+    public void cleanViewModel(){
+        signInResult = new MutableLiveData<>();
+        emailVerifiedResult = new MutableLiveData<>();
     }
 }

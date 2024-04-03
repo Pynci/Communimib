@@ -108,9 +108,8 @@ public class SigninFragment extends Fragment {
             String email = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextEmailAddress.getText());
             String password = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextPassword.getText());
 
-            if(!email.isEmpty() && !password.isEmpty()){
-                signinViewModel.signIn(email, password);
-            }
+            signinViewModel.signIn(email, password);
+
         });
 
         fragmentSigninBinding.fragmentSigninButtonForgottenPassword.setOnClickListener(r -> {
@@ -124,5 +123,11 @@ public class SigninFragment extends Fragment {
         Navigation.findNavController(requireView()).navigate(destination);
         if(finishActivity)
             requireActivity().finish();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        signinViewModel.cleanViewModel();
     }
 }

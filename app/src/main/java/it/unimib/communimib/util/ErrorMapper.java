@@ -34,7 +34,6 @@ public class ErrorMapper {
         errorMap.put(USER_NOT_FOUND_ERROR, R.string.user_not_found_error);
         errorMap.put(NOT_ACCEPTED_PARAMETERS, R.string.not_accepted_parameters);
 
-
     }
 
     public static ErrorMapper getInstance() {
@@ -48,7 +47,7 @@ public class ErrorMapper {
         if(errorMap.containsKey(errorCode)){
             return errorMap.get(errorCode);
         }
-        return 0;
+        return R.string.system_error;
     }
 
     public static final String SIGNUP_ERROR = "signup_error";
