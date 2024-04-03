@@ -73,5 +73,6 @@ public class ErrorMapper {
     public static final String NUMBER_NOT_ALLOWED = "number_not_allowed";
     public static final String SPECIAL_CHAR_NOT_ALLOWED = "special_char_not_allowed";
     public static final String NOT_EQUAL_PASSWORD = "not_equal_password";
+    public static final String NOT_ACCEPTED_PARAMETERS = "not_accepted_parameters";
 
 }

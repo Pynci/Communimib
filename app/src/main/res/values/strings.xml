@@ -24,7 +24,8 @@
     <string name="special_char_not_allowed">Caratteri speciali non consentiti</string>
     <string name="not_equal_password">Le password non corrispondono</string>
     <string name="not_university_email">Inserire la mail universitaria</string>
-    <string name="confirm_email">CONFERMA MAIL</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="confirmEmail">CONFERMA MAIL</string>
     <string name="to_confirm_your_profile_click_on_link">Per confermare il tuo profilo, clicca sul link che hai ricevuto tramite mail</string>
     <string name="back_to_login">Torna al login</string>
     <string name="update">Aggiorna</string>
@@ -46,4 +47,5 @@
     <string name="remotedb_get_error">Si è verificato un errore durante l\'acquisizione dei dati remoti</string>
     <string name="user_not_found_error">Utente non trovato</string>
 
+    <string name="not_accepted_parameters">"I parametri inseriti non sono accettabili"</string>
 </resources>
