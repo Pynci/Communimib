@@ -13,11 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentEmailVerificationBinding;
+import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.ui.viewmodels.EmailManagementViewModel;
 import it.unimib.communimib.ui.viewmodels.EmailManagementViewModelFactory;
+import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.ServiceLocator;
 
 public class EmailVerificationFragment extends Fragment {
@@ -49,13 +54,20 @@ public class EmailVerificationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         emailManagementViewModel.getEmailVerificationResult().observe(getViewLifecycleOwner(), result -> {
-            Log.d(this.getClass().getSimpleName(), "FUNZIONA!");
-            //gestire la transizione verso la schermata successiva
+            if(result.isSuccessful()){
+                navigateTo(R.id.action_emailVerificationFragment_to_mainActivity, true);
+            }
+            else{
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
         });
 
         emailManagementViewModel.getEmailVerificationSendingResult().observe(getViewLifecycleOwner(), result -> {
-            if(!result.isSuccessful()){
-                //gestire errore
+            if(result.isSuccessful()){
+                Snackbar.make(requireView(), getString(R.string.email_sent), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+            else{
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
 

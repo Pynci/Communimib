@@ -31,7 +31,6 @@ public class EmailManagementViewModel extends ViewModel  {
 
     public void startEmailPolling(){
         userRepository.startEmailPolling(result -> {
-            stopEmailPolling();
             emailVerificationResult.postValue(result);
         });
     }

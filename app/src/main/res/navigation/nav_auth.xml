@@ -46,5 +46,9 @@
         android:id="@+id/emailVerificationFragment"
         android:name="it.unimib.communimib.ui.auth.EmailVerificationFragment"
         android:label="fragment_email_verification"
-        tools:layout="@layout/fragment_email_verification" />
+        tools:layout="@layout/fragment_email_verification" >
+        <action
+            android:id="@+id/action_emailVerificationFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
 </navigation>
