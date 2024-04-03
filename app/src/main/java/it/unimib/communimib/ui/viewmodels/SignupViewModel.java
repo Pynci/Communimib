@@ -12,7 +12,7 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class SignupViewModel extends ViewModel {
 
-    private final MutableLiveData<Result> signUpResult;
+    private MutableLiveData<Result> signUpResult;
     private final IUserRepository iUserRepository;
 
     public SignupViewModel(IUserRepository iUserRepository){
@@ -107,6 +107,10 @@ public class SignupViewModel extends ViewModel {
             return ErrorMapper.SPECIAL_CHAR_NOT_ALLOWED;
 
         return "ok";
+    }
+
+    public void cleanViewModel(){
+        signUpResult = new MutableLiveData<>();
     }
 
 }
