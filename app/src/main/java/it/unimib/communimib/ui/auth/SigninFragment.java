@@ -114,7 +114,9 @@ public class SigninFragment extends Fragment {
         });
 
         fragmentSigninBinding.fragmentSigninButtonForgottenPassword.setOnClickListener(r -> {
-            navigateTo(R.id.action_signinFragment_to_passwordResetFragment, false);
+            if (!getParentFragmentManager().executePendingTransactions()) {
+                navigateTo(R.id.action_signinFragment_to_passwordResetFragment, false);
+            }
         });
     }
 

@@ -84,6 +84,7 @@ public class EmailVerificationFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         emailManagementViewModel.stopEmailPolling();
+        emailManagementViewModel.cleanViewModel();
     }
 
     private void navigateTo(int destination, boolean finishActivity){

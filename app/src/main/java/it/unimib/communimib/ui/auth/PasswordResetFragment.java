@@ -62,7 +62,20 @@ public class PasswordResetFragment extends Fragment {
 
         fragmentPasswordResetBinding.fragmentPasswordResetButtonSendEmail.setOnClickListener(v -> {
             String email = String.valueOf(fragmentPasswordResetBinding.fragmentPasswordResetEditTextEmail.getText());
-            emailManagementViewModel.resetPassword(email);
+
+            if(email.isEmpty()){
+                fragmentPasswordResetBinding.fragmentPasswordResetTextViewEmailError.setText(getString(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD)));
+            }
+            else{
+                fragmentPasswordResetBinding.fragmentPasswordResetTextViewEmailError.setText("");
+                emailManagementViewModel.resetPassword(email);
+            }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        emailManagementViewModel.cleanViewModel();
     }
 }

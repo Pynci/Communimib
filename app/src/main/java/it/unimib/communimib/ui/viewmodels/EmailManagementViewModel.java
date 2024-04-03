@@ -48,4 +48,10 @@ public class EmailManagementViewModel extends ViewModel  {
     public LiveData<Result> getResetPasswordSendingResult(){
         return resetPasswordSendingResult;
     }
+
+    public void cleanViewModel(){
+        emailVerificationResult = new MutableLiveData<>();
+        emailVerificationSendingResult = new MutableLiveData<>();
+        resetPasswordSendingResult = new MutableLiveData<>();
+    }
 }
