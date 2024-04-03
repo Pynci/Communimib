@@ -32,6 +32,7 @@ public class ErrorMapper {
         errorMap.put(REMOTEDB_GET_ERROR, R.string.remotedb_get_error);
         errorMap.put(REMOTEDB_INSERT_ERROR, R.string.remotedb_insert_error);
         errorMap.put(USER_NOT_FOUND_ERROR, R.string.user_not_found_error);
+        errorMap.put(NOT_ACCEPTED_PARAMETERS, R.string.not_accepted_parameters);
 
 
     }
