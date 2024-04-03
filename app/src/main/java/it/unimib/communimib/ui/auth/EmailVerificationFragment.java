@@ -64,7 +64,7 @@ public class EmailVerificationFragment extends Fragment {
 
         emailManagementViewModel.getEmailVerificationSendingResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
-                Snackbar.make(requireView(), getString(R.string.email_sent), BaseTransientBottomBar.LENGTH_SHORT).show();
+                Snackbar.make(requireView(), R.string.email_sent, BaseTransientBottomBar.LENGTH_SHORT).show();
             }
             else{
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();

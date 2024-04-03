@@ -26,7 +26,7 @@
     <string name="not_university_email">Inserire la mail universitaria</string>
     <string name="confirmEmail">CONFERMA MAIL</string>
     <string name="to_confirm_your_profile_click_on_link">Per confermare il tuo profilo, clicca sul link che hai ricevuto tramite mail</string>
-    <string name="Back_to_login">Torna al login</string>
+    <string name="back_to_login">Torna al login</string>
     <string name="update">Aggiorna</string>
     <string name="mail_not_received">Non hai ricevuto nessuna mail?</string>
     <string name="generate_new_mail">Per generare una nuova mail</string>
@@ -36,4 +36,5 @@
     <string name="user_not_authenticated_error"> Utente non autenticato </string>
     <string name="signin_error"> Errore durante il Login</string>
     <string name="email_sent">La mail è stata inviata, controlla la tua casella di posta elettronica</string>
+    <string name="send_email">Invia mail</string>
 </resources>

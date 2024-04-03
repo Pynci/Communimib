@@ -11,11 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.unimib.communimib.R;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import it.unimib.communimib.databinding.FragmentPasswordResetBinding;
+import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.ui.viewmodels.EmailManagementViewModel;
 import it.unimib.communimib.ui.viewmodels.EmailManagementViewModelFactory;
+import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.ServiceLocator;
 
 public class PasswordResetFragment extends Fragment {
@@ -49,14 +53,14 @@ public class PasswordResetFragment extends Fragment {
 
         emailManagementViewModel.getResetPasswordSendingResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
-               // snackbar mail inviata
+                getParentFragmentManager().popBackStackImmediate();
             }
             else{
-                // snackbar errore
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
 
-        fragmentPasswordResetBinding.fragmentPasswordResetButtonNext.setOnClickListener(v -> {
+        fragmentPasswordResetBinding.fragmentPasswordResetButtonSendEmail.setOnClickListener(v -> {
             String email = String.valueOf(fragmentPasswordResetBinding.fragmentPasswordResetEditTextEmail.getText());
             emailManagementViewModel.resetPassword(email);
         });
