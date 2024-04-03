@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
@@ -15,15 +16,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Result;
 
 public class AuthActivity extends AppCompatActivity {
 
+    private static final String TAG = "AuthActivity";
     private LoadingScreenViewModel loadingScreenViewModel;
 
     @Override
@@ -100,34 +100,40 @@ public class AuthActivity extends AppCompatActivity {
                             .beginTransaction()
                             .replace(R.id.activityAuth_navHostFragment, SigninFragment.class, null)
                             .commit();
+
+                    notifyDataAreAvaible();
                 }
             }
             else{
-                //TODO: gestiore errore
+                String error = ((Result.Error) sessionResult).getMessage();
+                Log.d(TAG, error);
             }
         });
 
         loadingScreenViewModel.getEmailCheckResult().observe(this, emailCheckResult -> {
             if (emailCheckResult.isSuccessful()) {
                 boolean result = ((Result.BooleanSuccess) emailCheckResult).getBoolean();
-                if(result) {
-                    try {
-                        loadingScreenViewModel.setAreAllDataAvaible();
-                    }
-                    catch (Exception e) {
-                        //TODO: gestire eccezione
-                    }
-                }
-                else{
+                if(!result)
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.activityAuth_navHostFragment, EmailVerificationFragment.class, null)
                             .commit();
-                }
+
+                notifyDataAreAvaible();
             }
             else{
-                //TODO: gestire errore
+                String error = ((Result.Error) emailCheckResult).getMessage();
+                Log.d(TAG, error);
             }
         });
+    }
+
+    private void notifyDataAreAvaible() {
+        try {
+            loadingScreenViewModel.setAreAllDataAvaible();
+        }
+        catch (InterruptedException exception) {
+            Log.d(TAG, exception.getMessage());
+        }
     }
 }
