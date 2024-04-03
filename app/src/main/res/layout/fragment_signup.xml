@@ -10,15 +10,24 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0.9"
-        android:layout_marginBottom="0dp"
+        android:layout_above="@+id/fragmentSignup_cardview"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="-20dp"
         android:gravity="center"
         android:orientation="vertical">
 
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="212dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|start"
+            android:alpha="0.4"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_banner_foreground" />
+
+        <ImageView
+            android:layout_width="320dp"
+            android:layout_height="297dp"
             android:layout_gravity="center"
             android:src="@mipmap/ic_launcher_foreground" />
 
@@ -30,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-20dp"
+        android:layout_marginBottom="-25dp"
         app:cardCornerRadius="32dp">
 
         <LinearLayout

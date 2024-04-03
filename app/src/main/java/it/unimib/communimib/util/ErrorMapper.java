@@ -22,6 +22,9 @@ public class ErrorMapper {
         errorMap.put(NUMBER_NOT_ALLOWED, R.string.numberNotAllowed);
         errorMap.put(SPECIAL_CHAR_NOT_ALLOWED, R.string.specialCharNotAllowed);
         errorMap.put(NOT_EQUAL_PASSWORD, R.string.notEqualPassword);
+        errorMap.put(USER_NOT_AUTHENTICATED_ERROR, R.string.user_not_authenticated_error);
+        errorMap.put(SIGNIN_ERROR, R.string.signin_error);
+
     }
 
     public static ErrorMapper getInstance() {

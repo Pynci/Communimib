@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.unimib.communimib.R;
-import it.unimib.communimib.databinding.FragmentSigninBinding;
 import it.unimib.communimib.databinding.FragmentSignupBinding;
 import it.unimib.communimib.ui.viewmodels.SignupViewModel;
 import it.unimib.communimib.ui.viewmodels.SignupViewModelFactory;
@@ -27,13 +25,6 @@ public class SignupFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static SignupFragment newInstance() {
-        SignupFragment fragment = new SignupFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +33,7 @@ public class SignupFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentSignupBinding = FragmentSignupBinding.inflate(inflater, container, false);
         return fragmentSignupBinding.getRoot();
