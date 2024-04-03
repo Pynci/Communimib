@@ -48,6 +48,7 @@ public class SigninFragment extends Fragment {
         return fragmentSigninBinding.getRoot();
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 

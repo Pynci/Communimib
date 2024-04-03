@@ -68,9 +68,7 @@ public class EmailVerificationFragment extends Fragment {
             }
         });
 
-        fragmentEmailVerificationBinding.fragmentEmailVerificationButtonNewMail.setOnClickListener(v -> {
-            emailManagementViewModel.sendEmailVerification();
-        });
+        fragmentEmailVerificationBinding.fragmentEmailVerificationButtonNewMail.setOnClickListener(v -> emailManagementViewModel.sendEmailVerification());
 
         emailManagementViewModel.sendEmailVerification();
         emailManagementViewModel.startEmailPolling();
