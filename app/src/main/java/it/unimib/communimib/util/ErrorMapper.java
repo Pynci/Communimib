@@ -22,6 +22,7 @@ public class ErrorMapper {
         errorMap.put(NUMBER_NOT_ALLOWED, R.string.numberNotAllowed);
         errorMap.put(SPECIAL_CHAR_NOT_ALLOWED, R.string.specialCharNotAllowed);
         errorMap.put(NOT_EQUAL_PASSWORD, R.string.notEqualPassword);
+        errorMap.put(NOT_ACCEPTED_PARAMETERS, R.string.not_accepted_parameters);
     }
 
     public static ErrorMapper getInstance() {
@@ -61,5 +62,6 @@ public class ErrorMapper {
     public static final String NUMBER_NOT_ALLOWED = "number_not_allowed";
     public static final String SPECIAL_CHAR_NOT_ALLOWED = "special_char_not_allowed";
     public static final String NOT_EQUAL_PASSWORD = "not_equal_password";
+    public static final String NOT_ACCEPTED_PARAMETERS = "not_accepted_parameters";
 
 }

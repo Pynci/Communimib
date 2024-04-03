@@ -183,6 +183,7 @@
                 android:inputType="textPassword" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/signUp_button"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
