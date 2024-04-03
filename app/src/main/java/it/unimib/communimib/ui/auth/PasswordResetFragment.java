@@ -26,9 +26,6 @@ public class PasswordResetFragment extends Fragment {
     public PasswordResetFragment() {
         // Required empty public constructor
     }
-    public static PasswordResetFragment newInstance() {
-        return new PasswordResetFragment();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,11 +39,26 @@ public class PasswordResetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_password_reset, container, false);
+        fragmentPasswordResetBinding = FragmentPasswordResetBinding.inflate(inflater, container, false);
+        return fragmentPasswordResetBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        emailManagementViewModel.getResetPasswordSendingResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+               // snackbar mail inviata
+            }
+            else{
+                // snackbar errore
+            }
+        });
+
+        fragmentPasswordResetBinding.fragmentPasswordResetButtonNext.setOnClickListener(v -> {
+            String email = String.valueOf(fragmentPasswordResetBinding.fragmentPasswordResetEditTextEmail.getText());
+            emailManagementViewModel.resetPassword(email);
+        });
     }
 }

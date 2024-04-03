@@ -21,8 +21,8 @@ public class EmailManagementViewModel extends ViewModel  {
         resetPasswordSendingResult = new MutableLiveData<>();
     }
 
-    public void resetPassword(){
-        userRepository.resetPassword(result -> resetPasswordSendingResult.postValue(result));
+    public void resetPassword(String email){
+        userRepository.resetPassword(email, result -> resetPasswordSendingResult.postValue(result));
     }
 
     public void sendEmailVerification(){
@@ -46,5 +46,9 @@ public class EmailManagementViewModel extends ViewModel  {
 
     public LiveData<Result> getEmailVerificationSendingResult(){
         return emailVerificationSendingResult;
+    }
+
+    public LiveData<Result> getResetPasswordSendingResult(){
+        return resetPasswordSendingResult;
     }
 }

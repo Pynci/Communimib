@@ -29,6 +29,11 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
+    public User getCurrentUser(){
+        return currentUser;
+    }
+
+    @Override
     public void signUp(String email, String password, String name, String surname, Callback callback) {
 
         authDataSource.signUp(email, password, authResult -> {
@@ -175,7 +180,7 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
-    public void resetPassword(Callback callback) {
-        authDataSource.resetPassword(callback);
+    public void resetPassword(String email, Callback callback) {
+        authDataSource.resetPassword(email, callback);
     }
 }

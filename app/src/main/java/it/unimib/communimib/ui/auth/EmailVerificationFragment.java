@@ -29,10 +29,6 @@ public class EmailVerificationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static EmailVerificationFragment newInstance() {
-        return new EmailVerificationFragment();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

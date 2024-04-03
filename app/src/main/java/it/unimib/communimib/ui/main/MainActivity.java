@@ -3,7 +3,6 @@ package it.unimib.communimib.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.repository.UserRepository;
 import it.unimib.communimib.ui.auth.AuthActivity;
 import it.unimib.communimib.util.ServiceLocator;
 
@@ -104,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.resetpassword).setOnClickListener(view -> {
-            userRepository.resetPassword(result -> {
+            userRepository.resetPassword("luca.pinciroli02@gmail.com", result -> {
                 if(result.isSuccessful()){
                     Log.d(this.getClass().getSimpleName(), "RESET PASSWORD MAIL: INVIATA!");
                 }

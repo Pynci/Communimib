@@ -16,5 +16,5 @@ public interface IAuthDataSource {
 
     void signOut(Callback callback);
 
-    void resetPassword(Callback callback);
+    void resetPassword(String email, Callback callback);
 }
