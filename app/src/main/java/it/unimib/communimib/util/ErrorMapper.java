@@ -24,6 +24,15 @@ public class ErrorMapper {
         errorMap.put(NOT_EQUAL_PASSWORD, R.string.not_equal_password);
         errorMap.put(USER_NOT_AUTHENTICATED_ERROR, R.string.user_not_authenticated_error);
         errorMap.put(SIGNIN_ERROR, R.string.signin_error);
+        errorMap.put(SIGNUP_ERROR, R.string.signup_error);
+        errorMap.put(SIGNUP_FIREBASE_USER_ERROR, R.string.signup_firebase_user_error);
+        errorMap.put(EMAIL_SENDING_ERROR, R.string.email_sending_error);
+        errorMap.put(LOCALDB_INSERT_ERROR, R.string.localdb_insert_error);
+        errorMap.put(LOCALDB_GET_ERROR, R.string.localdb_get_error);
+        errorMap.put(REMOTEDB_GET_ERROR, R.string.remotedb_get_error);
+        errorMap.put(REMOTEDB_INSERT_ERROR, R.string.remotedb_insert_error);
+        errorMap.put(USER_NOT_FOUND_ERROR, R.string.user_not_found_error);
+
 
     }
 
