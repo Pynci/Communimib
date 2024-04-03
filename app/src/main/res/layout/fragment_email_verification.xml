@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="188dp"
-        android:text="@string/confirmEmail"
+        android:text="@string/confirm_email"
         android:textColor="@color/seed"
         android:textSize="24sp"
         android:textStyle="bold"

@@ -12,16 +12,16 @@ public class ErrorMapper {
 
     private ErrorMapper(){
         errorMap = new HashMap<>();
-        errorMap.put(EMPTY_FIELD, R.string.emptyField);
-        errorMap.put(INVALID_FIELD, R.string.invalidField);
+        errorMap.put(EMPTY_FIELD, R.string.empty_field);
+        errorMap.put(INVALID_FIELD, R.string.invalid_field);
         errorMap.put(NOT_UNIVERSITY_EMAIL, R.string.not_university_email);
-        errorMap.put(TOO_SHORT_FIELD, R.string.tooShortField);
-        errorMap.put(NUMBER_MISSING, R.string.numberMissing);
-        errorMap.put(CAPITAL_CASE_MISSING, R.string.capitalcaseMissing);
-        errorMap.put(SPECIAL_CHAR_MISSING, R.string.specialcharMissing);
-        errorMap.put(NUMBER_NOT_ALLOWED, R.string.numberNotAllowed);
-        errorMap.put(SPECIAL_CHAR_NOT_ALLOWED, R.string.specialCharNotAllowed);
-        errorMap.put(NOT_EQUAL_PASSWORD, R.string.notEqualPassword);
+        errorMap.put(TOO_SHORT_FIELD, R.string.too_short_field);
+        errorMap.put(NUMBER_MISSING, R.string.number_missing);
+        errorMap.put(CAPITAL_CASE_MISSING, R.string.capital_case_missing);
+        errorMap.put(SPECIAL_CHAR_MISSING, R.string.special_char_missing);
+        errorMap.put(NUMBER_NOT_ALLOWED, R.string.number_not_allowed);
+        errorMap.put(SPECIAL_CHAR_NOT_ALLOWED, R.string.special_char_not_allowed);
+        errorMap.put(NOT_EQUAL_PASSWORD, R.string.not_equal_password);
         errorMap.put(USER_NOT_AUTHENTICATED_ERROR, R.string.user_not_authenticated_error);
         errorMap.put(SIGNIN_ERROR, R.string.signin_error);
 

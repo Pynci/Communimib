@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/joinUs"
+                android:text="@string/join_us"
                 android:textColor="@color/seed"
                 android:textSize="32sp"
                 android:textStyle="bold" />
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:alpha="0.9"
-                android:text="@string/insertUniversityCredential"
+                android:text="@string/insert_university_credential"
                 android:textColor="@color/md_theme_light_onSecondaryContainer"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -213,7 +213,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginBottom="6dp"
                     android:alpha="0.7"
-                    android:text="@string/alreadySignup"
+                    android:text="@string/already_signup"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
