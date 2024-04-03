@@ -11,7 +11,7 @@ import it.unimib.communimib.util.ServiceLocator;
 
 public class SignupViewModelFactory implements ViewModelProvider.Factory {
 
-    private Context context;
+    private final Context context;
 
     public SignupViewModelFactory(Context context){
         this.context = context;
