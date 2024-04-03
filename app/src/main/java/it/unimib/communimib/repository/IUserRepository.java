@@ -1,8 +1,11 @@
 package it.unimib.communimib.repository;
 
 import it.unimib.communimib.Callback;
+import it.unimib.communimib.model.User;
 
 public interface IUserRepository {
+    User getCurrentUser();
+
     void signUp(String email, String password, String name, String surname, Callback callback);
     void signIn(String email, String password, Callback callback);
     void signOut(Callback callback);
@@ -20,6 +23,6 @@ public interface IUserRepository {
     void updateUserNameAndSurname(String name, String surname, Callback callback);
     void getUserByEmail(String email, Callback callback);
     // void updatePropic(Callback callback) e poi cosa?
-    void resetPassword(Callback callback);
+    void resetPassword(String email, Callback callback);
 }
 

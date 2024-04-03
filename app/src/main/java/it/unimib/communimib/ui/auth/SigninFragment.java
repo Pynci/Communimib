@@ -12,11 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentSigninBinding;
+import it.unimib.communimib.model.Result;
+import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.ui.viewmodels.SigninViewModel;
 import it.unimib.communimib.ui.viewmodels.SigninViewModelFactory;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.ServiceLocator;
 
 public class SigninFragment extends Fragment {
 
@@ -27,21 +33,17 @@ public class SigninFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static SigninFragment newInstance() {
-        SigninFragment fragment = new SigninFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        signinViewModel = new ViewModelProvider(requireActivity(), new SigninViewModelFactory()).get(SigninViewModel.class);
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        signinViewModel = new ViewModelProvider(requireActivity(),
+                new SigninViewModelFactory(userRepository)).get(SigninViewModel.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         fragmentSigninBinding = FragmentSigninBinding.inflate(inflater, container, false);
@@ -51,7 +53,26 @@ public class SigninFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        ErrorMapper errorMapper = ErrorMapper.getInstance();
+        signinViewModel.getSignInResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                signinViewModel.isEmailVerified();
+            } else {
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        signinViewModel.getEmailVerifiedResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                if(((Result.BooleanSuccess) result).getBoolean()){
+                    navigateTo(R.id.action_signinFragment_to_mainActivity, false);
+                } else {
+                    navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
+                }
+            } else {
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
 
         fragmentSigninBinding.fragmentSigninButtonSignup.setOnClickListener(v -> navigateTo(R.id.action_signinFragment_to_signupFragment, false));
 
@@ -62,7 +83,7 @@ public class SigninFragment extends Fragment {
                 String result = signinViewModel.checkEmail(email);
 
                 if(!result.equals("ok"))
-                    fragmentSigninBinding.fragmentSigninTextViewEmailError.setText(getString(errorMapper.getErrorMessage(result)));
+                    fragmentSigninBinding.fragmentSigninTextViewEmailError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
                 else
                     fragmentSigninBinding.fragmentSigninTextViewEmailError.setText("");
             }
@@ -75,11 +96,26 @@ public class SigninFragment extends Fragment {
                 String password = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextPassword.getText());
 
                 if(password.isEmpty())
-                    fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText(getString(errorMapper.getErrorMessage(ErrorMapper.EMPTY_FIELD)));
+                    fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText(getString(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD)));
                 else
                     fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText("");
             }
 
+        });
+
+        fragmentSigninBinding.fragmentSigninButtonSignin.setOnClickListener(r -> {
+
+            String email = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextEmailAddress.getText());
+            String password = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextPassword.getText());
+
+            signinViewModel.signIn(email, password);
+
+        });
+
+        fragmentSigninBinding.fragmentSigninButtonForgottenPassword.setOnClickListener(r -> {
+            if (!getParentFragmentManager().executePendingTransactions()) {
+                navigateTo(R.id.action_signinFragment_to_passwordResetFragment, false);
+            }
         });
     }
 
@@ -87,5 +123,11 @@ public class SigninFragment extends Fragment {
         Navigation.findNavController(requireView()).navigate(destination);
         if(finishActivity)
             requireActivity().finish();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        signinViewModel.cleanViewModel();
     }
 }

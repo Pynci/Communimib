@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -141,5 +142,11 @@ public class SignupFragment extends Fragment {
             errorMessage.setText("");
         else
             errorMessage.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
+    }
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        signupViewModel.cleanViewModel();
     }
 }

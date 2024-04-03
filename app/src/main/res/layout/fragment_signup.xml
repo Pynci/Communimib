@@ -10,15 +10,24 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0.9"
-        android:layout_marginBottom="0dp"
+        android:layout_above="@+id/fragmentSignup_cardview"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="-20dp"
         android:gravity="center"
         android:orientation="vertical">
 
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="212dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|start"
+            android:alpha="0.4"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_banner_foreground" />
+
+        <ImageView
+            android:layout_width="320dp"
+            android:layout_height="297dp"
             android:layout_gravity="center"
             android:src="@mipmap/ic_launcher_foreground" />
 
@@ -30,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-20dp"
+        android:layout_marginBottom="-25dp"
         app:cardCornerRadius="32dp">
 
         <LinearLayout
@@ -42,7 +51,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/joinUs"
+                android:text="@string/join_us"
                 android:textColor="@color/seed"
                 android:textSize="32sp"
                 android:textStyle="bold" />
@@ -52,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:alpha="0.9"
-                android:text="@string/insertUniversityCredential"
+                android:text="@string/insert_university_credential"
                 android:textColor="@color/md_theme_light_onSecondaryContainer"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -62,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:alpha="0.7"
-                android:text="@string/Email_address"
+                android:text="@string/email_address"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -205,7 +214,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginBottom="6dp"
                     android:alpha="0.7"
-                    android:text="@string/alreadySignup"
+                    android:text="@string/already_signup"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -1,5 +1,9 @@
 package it.unimib.communimib.datasource.user;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -105,21 +109,16 @@ public class AuthDataSource implements IAuthDataSource {
     }
 
     @Override
-    public void resetPassword(Callback callback){
-        if(isSessionStillActive()){
-            auth.sendPasswordResetEmail(firebaseUser.getEmail())
-                    .addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
-                            callback.onComplete(new Result.Success());
-                        }
-                        else{
-                            callback.onComplete(new Result.Error(ErrorMapper.EMAIL_SENDING_ERROR));
-                        }
-                    });
-        }
-        else{
-            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
-        }
+    public void resetPassword(String email, Callback callback){
+        auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                   if(task.isSuccessful()){
+                       callback.onComplete(new Result.Success());
+                   }
+                   else{
+                       callback.onComplete(new Result.Error(ErrorMapper.EMAIL_SENDING_ERROR));
+                   }
+                });
     }
 
 }
