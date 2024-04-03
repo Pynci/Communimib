@@ -34,7 +34,16 @@
     <string name="insert_your_university_mail_to_reset_password">Inserisci la tua mail universitaria per effettuare il reset della password</string>
     <string name="next">Avanti</string>
     <string name="user_not_authenticated_error"> Utente non autenticato </string>
-    <string name="signin_error"> Errore durante il Login</string>
     <string name="email_sent">La mail è stata inviata, controlla la tua casella di posta elettronica</string>
     <string name="send_email">Invia mail</string>
+    <string name="signup_error">Registrazione fallita, controlla i dati e riprova</string>
+    <string name="signup_firebase_user_error">Registrazione fallita, si è verificato un errore inaspettato</string>
+    <string name="signin_error">Login fallito, controlla i dati e riprova</string>
+    <string name="email_sending_error">Si è verificato un errore durante l\'invio della mail</string>
+    <string name="localdb_insert_error">Si è verificato un errore durante il salvataggio locale</string>
+    <string name="localdb_get_error">Si è verificato un errore durante l\'acquisizione dei dati locali</string>
+    <string name="remotedb_insert_error">Si è verificato un errore durante il salvataggio remoto</string>
+    <string name="remotedb_get_error">Si è verificato un errore durante l\'acquisizione dei dati remoti</string>
+    <string name="user_not_found_error">Utente non trovato</string>
+
 </resources>
