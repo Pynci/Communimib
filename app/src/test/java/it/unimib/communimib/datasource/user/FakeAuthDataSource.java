@@ -41,6 +41,7 @@ public class FakeAuthDataSource implements IAuthDataSource {
         for(int i = 0; i < signedupUsers.size(); i++) {
             if(signedupUsers.get(i).getEmail().equals(email)){
                 emailAlreadyInUse = true;
+                break;
             }
         }
         if(emailAlreadyInUse){
