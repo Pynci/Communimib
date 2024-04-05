@@ -47,6 +47,7 @@ public class FakeAuthDataSource implements IAuthDataSource {
             callback.onComplete(new Result.Error(ErrorMapper.SIGNUP_ERROR));
         }
         else{
+            currentUser = new User(email);
             signedupUsers.add(new User(email));
             callback.onComplete(new Result.SignupSuccess("12345"));
         }
