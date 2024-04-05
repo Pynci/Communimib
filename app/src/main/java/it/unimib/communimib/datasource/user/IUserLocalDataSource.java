@@ -8,5 +8,5 @@ public interface IUserLocalDataSource {
     void getUser(Callback callback);
     void insertUser(User user, Callback callback);
     void updateUser(User user, Callback callback);
-    void deleteUser(User currentUser, Callback callback);
+    void deleteUser(Callback callback);
 }

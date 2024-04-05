@@ -30,7 +30,7 @@ public class ServiceLocator {
         return new UserRepository(
                 new AuthDataSource(),
                 new UserRemoteDataSource(),
-                new UserLocalDataSource(getLocalDatabase(context)));
+                new UserLocalDataSource(getLocalDatabase(context).userDAO()));
     }
 
     public LocalDatabase getLocalDatabase(Context context) {

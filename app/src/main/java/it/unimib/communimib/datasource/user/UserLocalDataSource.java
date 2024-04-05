@@ -11,8 +11,8 @@ public class UserLocalDataSource implements IUserLocalDataSource{
 
     private final UserDAO userDAO;
 
-    public UserLocalDataSource(LocalDatabase localDatabase) {
-        userDAO = localDatabase.userDAO();
+    public UserLocalDataSource(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UserLocalDataSource implements IUserLocalDataSource{
     }
 
     @Override
-    public void deleteUser(User currentUser, Callback callback) {
+    public void deleteUser(Callback callback) {
         LocalDatabase.databaseWriteExecutor.execute(() -> {
             userDAO.clearUser();
             callback.onComplete(new Result.Success());
