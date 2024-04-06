@@ -10,9 +10,9 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class FakeAuthDataSource implements IAuthDataSource {
 
-    private List<User> signedupUsers;
-    private User currentUser;
-    private boolean emailVerified;
+    public List<User> signedupUsers;
+    public User currentUser;
+    public boolean emailVerified;
 
     public FakeAuthDataSource(){
         signedupUsers = new ArrayList<>();

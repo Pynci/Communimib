@@ -1,5 +1,6 @@
 package it.unimib.communimib.datasource.user;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,11 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
 
-    private Map<String, User> users;
+    public Map<String, User> users;
+
+    public FakeUserRemoteDataSource(){
+        users = new HashMap<>();
+    }
 
     @Override
     public void storeUserParameters(String uid, String email, String name, String surname, Callback callback) {
@@ -33,7 +38,7 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
             }
         }
         if (foundUser != null) {
-            callback.onComplete(new Result.Success());
+            callback.onComplete(new Result.UserSuccess(foundUser));
         } else {
             callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_FOUND_ERROR));
         }
