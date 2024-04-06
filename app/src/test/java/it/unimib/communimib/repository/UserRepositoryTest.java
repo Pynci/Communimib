@@ -208,27 +208,8 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void startEmailPolling() {
-
-    }
-
-    @Test
-    public void stopEmailPolling() {
-
-    }
-
-    @Test
     public void updateUserNameAndSurname() {
-
-    }
-
-    @Test
-    public void getUserByEmail() {
-
-    }
-
-    @Test
-    public void resetPassword() {
+        //TODO: implementare il test
     }
 
     private void clearAll(){
