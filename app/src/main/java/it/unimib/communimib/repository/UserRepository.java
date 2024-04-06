@@ -152,7 +152,7 @@ public class UserRepository implements IUserRepository{
                     callback.onComplete(result);
                 }
             });
-        }, 0, 2, TimeUnit.SECONDS);
+        }, 0, 4, TimeUnit.SECONDS);
     }
 
     @Override
