@@ -78,10 +78,11 @@ public class SignupViewModel extends ViewModel {
     }
 
     public String checkConfirmPassword(String confirmPassword, String password){
-        if(!password.equals(confirmPassword))
-            return ErrorMapper.NOT_EQUAL_PASSWORD;
+
         if(confirmPassword.isEmpty())
             return ErrorMapper.EMPTY_FIELD;
+        if(!password.equals(confirmPassword))
+            return ErrorMapper.NOT_EQUAL_PASSWORD;
 
         return "ok";
 
