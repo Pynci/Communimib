@@ -76,10 +76,16 @@ public class EmailVerificationFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onPause() {
+        super.onPause();
         emailManagementViewModel.stopEmailPolling();
         emailManagementViewModel.cleanViewModel();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        emailManagementViewModel.startEmailPolling();
     }
 
     private void navigateTo(int destination, boolean finishActivity){

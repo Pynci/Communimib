@@ -79,7 +79,7 @@ public class UserRepository implements IUserRepository{
     public void signOut(Callback callback) {
         authDataSource.signOut(authResult -> {
             if(authResult.isSuccessful()){
-                userLocalDataSource.deleteUser(currentUser, localResult -> {
+                userLocalDataSource.deleteUser(localResult -> {
                     if(localResult.isSuccessful()){
                         currentUser = null;
                     }
@@ -111,7 +111,7 @@ public class UserRepository implements IUserRepository{
             }
         }
         else{
-            userLocalDataSource.deleteUser(new User(authDataSource.getCurrentUserEmail()), localResult -> {
+            userLocalDataSource.deleteUser(localResult -> {
                 if(localResult.isSuccessful()){
                     callback.onComplete(new Result.BooleanSuccess(false));
                 }
@@ -152,7 +152,7 @@ public class UserRepository implements IUserRepository{
                     callback.onComplete(result);
                 }
             });
-        }, 0, 2, TimeUnit.SECONDS);
+        }, 0, 4, TimeUnit.SECONDS);
     }
 
     @Override

@@ -21,6 +21,7 @@ import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.ServiceLocator;
+import it.unimib.communimib.util.Validation;
 
 public class SigninFragment extends Fragment {
 
@@ -79,7 +80,7 @@ public class SigninFragment extends Fragment {
 
             if(!hasFocus){
                 String email = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextEmailAddress.getText());
-                String result = signinViewModel.checkEmail(email);
+                String result = Validation.checkEmail(email);
 
                 if(!result.equals("ok"))
                     fragmentSigninBinding.fragmentSigninTextViewEmailError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));

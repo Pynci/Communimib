@@ -20,6 +20,7 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentSignupBinding;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.Validation;
 
 public class SignupFragment extends Fragment {
 
@@ -56,7 +57,7 @@ public class SignupFragment extends Fragment {
         fragmentSignupBinding.fragmentSignupEditTextEmailAddress.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 String email = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextEmailAddress.getText());
-                String result = signupViewModel.checkEmail(email);
+                String result = Validation.checkEmail(email);
                 checkAndPostResult(result, fragmentSignupBinding.fragmentSignupTextViewEmailError);
             }
         });
@@ -65,7 +66,7 @@ public class SignupFragment extends Fragment {
         fragmentSignupBinding.fragmentSignupEditTextName.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 String name = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextName.getText());
-                String result = signupViewModel.checkField(name);
+                String result = Validation.checkField(name);
                 checkAndPostResult(result, fragmentSignupBinding.fragmentSignupTextViewNameError);
             }
         });
@@ -74,7 +75,7 @@ public class SignupFragment extends Fragment {
         fragmentSignupBinding.fragmentSignupEditTextSurname.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 String surname = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextSurname.getText());
-                String result = signupViewModel.checkField(surname);
+                String result = Validation.checkField(surname);
                 checkAndPostResult(result, fragmentSignupBinding.fragmentSignupTextViewSurnameError);
             }
         });
@@ -83,7 +84,7 @@ public class SignupFragment extends Fragment {
         fragmentSignupBinding.fragmentSignupEditTextPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
-                String result = signupViewModel.checkPassword(password);
+                String result = Validation.checkPassword(password);
                 checkAndPostResult(result, fragmentSignupBinding.fragmentSignupTextViewPasswordError);
             }
         });
@@ -93,7 +94,7 @@ public class SignupFragment extends Fragment {
             if(!hasFocus){
                 String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
                 String confirmPassword = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextConfirmPassword.getText());
-                String result = signupViewModel.checkConfirmPassword(confirmPassword, password);
+                String result = Validation.checkConfirmPassword(confirmPassword, password);
                 checkAndPostResult(result, fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError);
             }
         });
