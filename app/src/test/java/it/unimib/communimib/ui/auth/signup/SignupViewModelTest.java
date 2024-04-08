@@ -20,7 +20,7 @@ import it.unimib.communimib.repository.UserRepository;
 public class SignupViewModelTest {
 
     private SignupViewModel signupViewModel;
-    UserRepository mockUserRepository;
+    private UserRepository mockUserRepository;
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
