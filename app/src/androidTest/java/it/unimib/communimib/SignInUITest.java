@@ -69,6 +69,24 @@ public class SignInUITest {
                 .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD))));
     }
 
+    public void testEmailValidationEmailNotUniversity() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignin_EditText_emailAddress))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignin_EditText_emailAddress))
+                .perform(typeText("g@gmail.com"), closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignin_EditText_password))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignin_textView_emailError))
+                .check(matches(isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignin_textView_emailError))
+                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.NOT_UNIVERSITY_EMAIL))));
+    }
+
     @Test
     public void testPasswordEmpty() {
 
