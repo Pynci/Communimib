@@ -31,18 +31,6 @@ public class SignInUITest {
     @Rule
     public ActivityScenarioRule<AuthActivity> activityScenarioRule = new ActivityScenarioRule<>(AuthActivity.class);
 
-    @Before
-    public void setUp() {
-        activityScenarioRule.getScenario().onActivity(activity -> {
-            NavHostFragment navHostFragment = (NavHostFragment)
-                    activity.getSupportFragmentManager().findFragmentById(R.id.activityAuth_navHostFragment);
-
-            NavController navController = navHostFragment.getNavController();
-
-            navController.navigate(R.id.signinFragment);
-        });
-    }
-
     @Test
     public void testEmailValidationNotAnEmail() {
 
