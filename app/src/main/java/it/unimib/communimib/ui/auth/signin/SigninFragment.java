@@ -20,6 +20,7 @@ import it.unimib.communimib.databinding.FragmentSigninBinding;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.NavigationHelper;
 import it.unimib.communimib.util.ServiceLocator;
 import it.unimib.communimib.util.Validation;
 
@@ -64,9 +65,9 @@ public class SigninFragment extends Fragment {
         signinViewModel.getEmailVerifiedResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 if(((Result.BooleanSuccess) result).getBoolean()){
-                    navigateTo(R.id.action_signinFragment_to_mainActivity, false);
+                    NavigationHelper.navigateTo(requireActivity(), requireView(), R.id.action_signinFragment_to_mainActivity, false);
                 } else {
-                    navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
+                    NavigationHelper.navigateTo(requireActivity(), requireView(), R.id.action_signinFragment_to_emailVerificationFragment, false);
                 }
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
@@ -74,7 +75,8 @@ public class SigninFragment extends Fragment {
         });
 
 
-        fragmentSigninBinding.fragmentSigninButtonSignup.setOnClickListener(v -> navigateTo(R.id.action_signinFragment_to_signupFragment, false));
+        fragmentSigninBinding.fragmentSigninButtonSignup.setOnClickListener(v ->
+                NavigationHelper.navigateTo(requireActivity(), requireView(),R.id.action_signinFragment_to_signupFragment, false));
 
         fragmentSigninBinding.fragmentSigninEditTextEmailAddress.setOnFocusChangeListener((v, hasFocus) -> {
 
@@ -114,15 +116,9 @@ public class SigninFragment extends Fragment {
 
         fragmentSigninBinding.fragmentSigninButtonForgottenPassword.setOnClickListener(r -> {
             if (!getParentFragmentManager().executePendingTransactions()) {
-                navigateTo(R.id.action_signinFragment_to_passwordResetFragment, false);
+                NavigationHelper.navigateTo(requireActivity(), requireView(), R.id.action_signinFragment_to_passwordResetFragment, false);
             }
         });
-    }
-
-    private void navigateTo(int destination, boolean finishActivity){
-        Navigation.findNavController(requireView()).navigate(destination);
-        if(finishActivity)
-            requireActivity().finish();
     }
 
     @Override
