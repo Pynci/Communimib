@@ -10,6 +10,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.test.espresso.Espresso;
+import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -101,7 +102,7 @@ public class SignUpUITest {
     }
 
     @Test
-    public void checkPasswordLength() {
+    public void testPasswordLength() {
 
         Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_password))
                 .perform(click());
@@ -120,7 +121,7 @@ public class SignUpUITest {
     }
 
     @Test
-    public void checkPasswordNumberMissing() {
+    public void testPasswordNumberMissing() {
 
         Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_password))
                 .perform(click());
@@ -139,7 +140,7 @@ public class SignUpUITest {
     }
 
     @Test
-    public void checkPasswordCapitalCaseMissing() {
+    public void testPasswordCapitalCaseMissing() {
 
         Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_password))
                 .perform(click());
@@ -158,7 +159,7 @@ public class SignUpUITest {
     }
 
     @Test
-    public void checkPasswordSpecialChar() {
+    public void testPasswordSpecialChar() {
 
         Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_password))
                 .perform(click());
@@ -174,5 +175,173 @@ public class SignUpUITest {
 
         Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_passwordError))
                 .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.SPECIAL_CHAR_MISSING))));
+    }
+
+    @Test
+    public void testEmptyConfirmPassword() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_confirmPassword))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_confirmPassword))
+                .perform(typeText(""), closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_emailAddress))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_confirmPasswordError))
+                .check(matches(isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_confirmPasswordError))
+                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD))));
+    }
+
+    @Test
+    public void testNotEqualConfirmPassword() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_password))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_password))
+                .perform(typeText("Password1!"), closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_confirmPassword))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_confirmPassword))
+                .perform(typeText("Password2!"), closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_emailAddress))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_confirmPasswordError))
+                .check(matches(isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_confirmPasswordError))
+                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.NOT_EQUAL_PASSWORD))));
+    }
+
+    @Test
+    public void testEmptyName() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_name))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_name))
+                .perform(typeText(""), closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_emailAddress))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_nameError))
+                .check(matches(isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_nameError))
+                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD))));
+    }
+
+    @Test
+    public void testNameWithNumber() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_name))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_name))
+                .perform(typeText("Marco1"), closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_emailAddress))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_nameError))
+                .check(matches(isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_nameError))
+                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.NUMBER_NOT_ALLOWED))));
+    }
+
+    @Test
+    public void testNameWithSpecialChar() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_name))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_name))
+                .perform(typeText("Marco!"), closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_emailAddress))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_nameError))
+                .check(matches(isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_nameError))
+                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.SPECIAL_CHAR_NOT_ALLOWED))));
+    }
+
+    @Test
+    public void testEmptySurname() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_surname))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_surname))
+                .perform(typeText(""), closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_emailAddress))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_surnameError))
+                .check(matches(isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_surnameError))
+                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD))));
+    }
+
+    @Test
+    public void testSurnameWithNumber() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_surname))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_surname))
+                .perform(typeText("Ferioli1"), closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_emailAddress))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_surnameError))
+                .check(matches(isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_surnameError))
+                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.NUMBER_NOT_ALLOWED))));
+    }
+
+    @Test
+    public void testSurnameWithSpecialChar() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_surname))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_surname))
+                .perform(typeText("Ferioli!"), closeSoftKeyboard());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_emailAddress))
+                .perform(click());
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_surnameError))
+                .check(matches(isDisplayed()));
+
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_surnameError))
+                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.SPECIAL_CHAR_NOT_ALLOWED))));
+    }
+
+    @Test
+    public void testInvalidDataSnackbar() {
+
+        Espresso.onView(ViewMatchers.withId(R.id.signUp_button))
+                .perform(click());
+
+        Espresso.onView(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.NOT_ACCEPTED_PARAMETERS)))
+                .check(ViewAssertions.matches(isDisplayed()));
     }
 }
