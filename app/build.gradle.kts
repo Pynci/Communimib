@@ -52,6 +52,11 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    //Dipendenze per espresso
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test:rules:1.4.0")
+
     implementation("commons-validator:commons-validator:1.7")
     implementation("commons-io:commons-io:2.15.0")
 
