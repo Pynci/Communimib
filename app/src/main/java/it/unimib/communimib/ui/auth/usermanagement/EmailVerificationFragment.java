@@ -20,6 +20,7 @@ import it.unimib.communimib.databinding.FragmentEmailVerificationBinding;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.NavigationHelper;
 import it.unimib.communimib.util.ServiceLocator;
 
 public class EmailVerificationFragment extends Fragment {
@@ -52,7 +53,7 @@ public class EmailVerificationFragment extends Fragment {
 
         emailManagementViewModel.getEmailVerificationResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
-                navigateTo(R.id.action_emailVerificationFragment_to_mainActivity, true);
+                NavigationHelper.navigateTo(requireActivity(), requireView(), R.id.action_emailVerificationFragment_to_mainActivity, true);
             }
             else{
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
@@ -86,11 +87,5 @@ public class EmailVerificationFragment extends Fragment {
     public void onResume() {
         super.onResume();
         emailManagementViewModel.startEmailPolling();
-    }
-
-    private void navigateTo(int destination, boolean finishActivity){
-        Navigation.findNavController(requireView()).navigate(destination);
-        if(finishActivity)
-            requireActivity().finish();
     }
 }

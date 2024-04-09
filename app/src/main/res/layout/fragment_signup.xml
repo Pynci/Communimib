@@ -199,13 +199,13 @@
                     android:drawableEnd="@drawable/baseline_key_24"
                     android:inputType="textPassword" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/signUp_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/signup"
-                    app:cornerRadius="32dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fragmentSignup_button_signup"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/signup"
+                app:cornerRadius="32dp" />
 
                 <View
                     android:layout_width="wrap_content"

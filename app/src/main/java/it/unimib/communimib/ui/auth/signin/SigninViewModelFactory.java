@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.ui.auth.signin.SigninViewModel;
 
 public class SigninViewModelFactory implements ViewModelProvider.Factory {
 

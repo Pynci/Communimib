@@ -26,6 +26,7 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentSignupBinding;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.NavigationHelper;
 import it.unimib.communimib.util.Validation;
 
 public class SignupFragment extends Fragment {
@@ -142,7 +143,7 @@ public class SignupFragment extends Fragment {
         });
 
         //Gestione del pulsante di registrazione
-        fragmentSignupBinding.signUpButton.setOnClickListener(v -> {
+        fragmentSignupBinding.fragmentSignupButtonSignup.setOnClickListener(v -> {
 
             String email = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextEmailAddress.getText());
             String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
@@ -159,7 +160,7 @@ public class SignupFragment extends Fragment {
             this.getView().clearFocus();
 
             if (result.isSuccessful()) {
-                navigateTo(R.id.action_signupFragment_to_emailVerificationFragment, false);
+                NavigationHelper.navigateTo(requireActivity(), requireView(), R.id.action_signupFragment_to_emailVerificationFragment, false);
             }
             else{
                 Result.Error errore = (Result.Error) result;
@@ -171,12 +172,6 @@ public class SignupFragment extends Fragment {
         });
 
         onSaveInstanceState(savedInstanceState);
-    }
-
-    private void navigateTo(int destination, boolean finishActivity){
-        Navigation.findNavController(requireView()).navigate(destination);
-        if(finishActivity)
-            requireActivity().finish();
     }
 
     @Override
