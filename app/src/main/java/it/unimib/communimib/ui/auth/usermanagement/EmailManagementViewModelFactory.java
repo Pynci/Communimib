@@ -3,9 +3,7 @@ package it.unimib.communimib.ui.auth.usermanagement;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.ui.auth.usermanagement.EmailManagementViewModel;
 
 public class EmailManagementViewModelFactory implements ViewModelProvider.Factory {
 

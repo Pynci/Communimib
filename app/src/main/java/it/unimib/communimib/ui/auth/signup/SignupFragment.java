@@ -130,12 +130,6 @@ public class SignupFragment extends Fragment {
         });
     }
 
-    private void navigateTo(int destination, boolean finishActivity){
-        Navigation.findNavController(requireView()).navigate(destination);
-        if(finishActivity)
-            requireActivity().finish();
-    }
-
     private void checkAndPostResult(String result, TextView errorMessage) {
         if (result.equals("ok"))
             errorMessage.setText("");

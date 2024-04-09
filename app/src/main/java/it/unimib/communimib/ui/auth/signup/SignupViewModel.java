@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import org.apache.commons.validator.routines.EmailValidator;
-
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.util.ErrorMapper;

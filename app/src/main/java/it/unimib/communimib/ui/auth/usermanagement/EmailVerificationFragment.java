@@ -88,10 +88,4 @@ public class EmailVerificationFragment extends Fragment {
         super.onResume();
         emailManagementViewModel.startEmailPolling();
     }
-
-    private void navigateTo(int destination, boolean finishActivity){
-        Navigation.findNavController(requireView()).navigate(destination);
-        if(finishActivity)
-            requireActivity().finish();
-    }
 }
