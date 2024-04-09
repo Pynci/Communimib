@@ -108,7 +108,8 @@ public class AuthActivity extends AppCompatActivity {
                     }
                 });
 
-                animatorSet.start();
+                if(iconView != null)
+                    animatorSet.start();
             });
         }
 
