@@ -101,7 +101,7 @@ public class SignupFragment extends Fragment {
         });
 
         //Gestione del pulsante di registrazione
-        fragmentSignupBinding.signUpButton.setOnClickListener(v -> {
+        fragmentSignupBinding.fragmentSignupButtonSignup.setOnClickListener(v -> {
 
             String email = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextEmailAddress.getText());
             String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
