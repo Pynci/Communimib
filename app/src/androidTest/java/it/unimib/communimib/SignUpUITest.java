@@ -338,7 +338,7 @@ public class SignUpUITest {
     @Test
     public void testInvalidDataSnackbar() {
 
-        Espresso.onView(ViewMatchers.withId(R.id.signUp_button))
+        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_button_signup))
                 .perform(click());
 
         Espresso.onView(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.NOT_ACCEPTED_PARAMETERS)))
