@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "316831735879",
+    "project_id": "communimib",
+    "storage_bucket": "communimib.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316831735879:android:99a69635aef37e2d929162",
+        "android_client_info": {
+          "package_name": "it.unimib.communimib"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUixV-B_Y8scbE1NuQyngrYUcSzpen0aU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

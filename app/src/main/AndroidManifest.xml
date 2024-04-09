@@ -10,11 +10,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Communimib"
+        android:theme="@style/Theme.App.Starting"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Communimib">
+        </activity>
+        <activity
+            android:name=".ui.auth.loading.AuthActivity"
+            android:exported="true"
+            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
