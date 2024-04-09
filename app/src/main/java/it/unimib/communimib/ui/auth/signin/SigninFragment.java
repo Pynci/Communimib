@@ -1,5 +1,8 @@
 package it.unimib.communimib.ui.auth.signin;
 
+import static it.unimib.communimib.util.Constants.EMAIL_ERROR;
+import static it.unimib.communimib.util.Constants.PASSWORD_ERROR;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +31,9 @@ public class SigninFragment extends Fragment {
     private FragmentSigninBinding fragmentSigninBinding;
     private SigninViewModel signinViewModel;
 
+    private String emailError = "";
+    private String passwordError = "";
+
     public SigninFragment() {
         // Required empty public constructor
     }
@@ -39,6 +45,11 @@ public class SigninFragment extends Fragment {
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         signinViewModel = new ViewModelProvider(requireActivity(),
                 new SigninViewModelFactory(userRepository)).get(SigninViewModel.class);
+
+        if(savedInstanceState != null){
+            emailError = savedInstanceState.getString(EMAIL_ERROR);
+            passwordError = savedInstanceState.getString(PASSWORD_ERROR);
+        }
     }
 
     @Override
@@ -51,7 +62,11 @@ public class SigninFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        savedInstanceState = new Bundle();
         super.onViewCreated(view, savedInstanceState);
+
+        fragmentSigninBinding.fragmentSigninTextViewEmailError.setText(emailError);
+        fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText(passwordError);
 
         signinViewModel.getSignInResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
@@ -82,10 +97,12 @@ public class SigninFragment extends Fragment {
                 String email = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextEmailAddress.getText());
                 String result = Validation.checkEmail(email);
 
-                if(!result.equals("ok"))
-                    fragmentSigninBinding.fragmentSigninTextViewEmailError.setText(getString(ErrorMapper.getInstance().getErrorMessage(result)));
-                else
-                    fragmentSigninBinding.fragmentSigninTextViewEmailError.setText("");
+                if(!result.equals("ok")){
+                    if(emailError.isEmpty()){
+                        emailError = getString(ErrorMapper.getInstance().getErrorMessage(result));
+                    }
+                    fragmentSigninBinding.fragmentSigninTextViewEmailError.setText(emailError);
+                }
             }
 
         });
@@ -95,13 +112,17 @@ public class SigninFragment extends Fragment {
             if(!hasFocus){
                 String password = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextPassword.getText());
 
-                if(password.isEmpty())
-                    fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText(getString(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD)));
-                else
-                    fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText("");
+                if(password.isEmpty()){
+                    if(passwordError.isEmpty()){
+                        passwordError = getString(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD));
+                    }
+                    fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText(passwordError);
+                }
             }
 
         });
+
+        onSaveInstanceState(savedInstanceState);
 
         fragmentSigninBinding.fragmentSigninButtonSignin.setOnClickListener(r -> {
 
@@ -129,5 +150,11 @@ public class SigninFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         signinViewModel.cleanViewModel();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putString(EMAIL_ERROR, emailError);
+        savedInstanceState.putString(PASSWORD_ERROR, passwordError);
     }
 }
