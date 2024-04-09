@@ -98,10 +98,8 @@ public class SigninFragment extends Fragment {
                 String result = Validation.checkEmail(email);
 
                 if(!result.equals("ok")){
-                    if(emailError.isEmpty()){
                         emailError = getString(ErrorMapper.getInstance().getErrorMessage(result));
-                    }
-                    fragmentSigninBinding.fragmentSigninTextViewEmailError.setText(emailError);
+                        fragmentSigninBinding.fragmentSigninTextViewEmailError.setText(emailError);
                 }
             }
 
@@ -113,10 +111,8 @@ public class SigninFragment extends Fragment {
                 String password = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextPassword.getText());
 
                 if(password.isEmpty()){
-                    if(passwordError.isEmpty()){
                         passwordError = getString(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD));
-                    }
-                    fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText(passwordError);
+                        fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText(passwordError);
                 }
             }
 
