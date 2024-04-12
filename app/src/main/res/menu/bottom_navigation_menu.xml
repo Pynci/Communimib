@@ -4,14 +4,17 @@
 
     <item
         android:id="@+id/menu_segnalazioni"
+        android:enabled="true"
         android:icon="@drawable/flag_fill0_wght400_grad0_opsz24"
         android:title="@string/segnalazioni" />
     <item
         android:id="@+id/menu_bacheca"
+        android:enabled="true"
         android:icon="@drawable/dashboard_fill0_wght400_grad0_opsz24"
         android:title="@string/bacheca" />
     <item
         android:id="@+id/menu_profilo"
+        android:enabled="true"
         android:icon="@drawable/person_fill0_wght400_grad0_opsz24"
         android:title="@string/profilo" />
 </menu>
