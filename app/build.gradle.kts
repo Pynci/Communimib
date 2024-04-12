@@ -72,4 +72,7 @@ dependencies {
 
     //Dipendenze per splash screen
     implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
+
+    //Dipendenze per material design bottom bar
+    implementation("com.google.android.material:material:1.11.0")
 }

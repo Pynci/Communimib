@@ -48,4 +48,7 @@
     <string name="user_not_found_error">Utente non trovato</string>
     <string name="not_accepted_parameters">"I parametri inseriti non sono accettabili"</string>
     <string name="system_error"> Si è verificato un errore nel sistema</string>
+    <string name="bacheca">Bacheca</string>
+    <string name="profilo">Profilo</string>
+    <string name="segnalazioni">Segnalazioni</string>
 </resources>

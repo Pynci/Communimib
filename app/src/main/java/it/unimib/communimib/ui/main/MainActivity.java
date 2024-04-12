@@ -1,121 +1,50 @@
 package it.unimib.communimib.ui.main;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import it.unimib.communimib.R;
-import it.unimib.communimib.model.Result;
-import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.ui.auth.loading.AuthActivity;
-import it.unimib.communimib.util.ServiceLocator;
 
 public class MainActivity extends AppCompatActivity {
 
+    private NavController navController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(this.getApplicationContext());
+        MaterialToolbar toolbar = findViewById(R.id.activityMainButtonMenu_topAppbar);
+        toolbar.setTitleTextColor(getColor(R.color.md_theme_light_onSecondary));
+        setSupportActionBar(toolbar);
 
-        findViewById(R.id.registrazione).setOnClickListener(view -> {
-            userRepository.signUp("m.ferioli@campus.unimib.it", "pinselo", "Pueblo", "Scatarri", result -> {
-                if(result.isSuccessful()){
-                    Log.d(this.getClass().getSimpleName(), "REGISTRAZIONE: successo");
-                }
-                else{
-                    Log.d(this.getClass().getSimpleName(), "REGISTRAZIONE: errore - " + ((Result.Error) result).getMessage());
-                }
-            });
-        });
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().
+                findFragmentById(R.id.nav_host_fragment);
 
-        findViewById(R.id.login).setOnClickListener(view -> {
-            userRepository.signIn("m.ferioli@campus.unimib.it", "pinselo", result -> {
-                if(result.isSuccessful()){
-                    Log.d(this.getClass().getSimpleName(), "LOGIN: successo");
-                }
-                else{
-                    Log.d(this.getClass().getSimpleName(), "LOGIN: errore - " + ((Result.Error) result).getMessage());
-                }
-            });
-        });
+        navController = navHostFragment.getNavController();
 
-        findViewById(R.id.logout).setOnClickListener(view -> {
-            userRepository.signOut(result -> {
-                if(result.isSuccessful()){
-                    Log.d(this.getClass().getSimpleName(), "LOGOUT: successo");
-                }
-                else{
-                    Log.d(this.getClass().getSimpleName(), "LOGOUT: errore - " + ((Result.Error) result).getMessage());
-                }
-            });
-        });
+        BottomNavigationView bottomNav = findViewById(R.id.activityMainButtonMenu_bottomNavigation);
 
-        findViewById(R.id.sessione).setOnClickListener(view -> {
-            userRepository.isSessionStillActive(result -> {
-                if(result.isSuccessful()){
-                    Log.d(this.getClass().getSimpleName(), "SESSIONE: successo - " + ((Result.BooleanSuccess) result).getBoolean());
-                }
-                else{
-                    Log.d(this.getClass().getSimpleName(), "SESSIONE: errore - " + ((Result.Error) result).getMessage());
-                }
-            });
-        });
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.reportsFragment, R.id.dashboardFragment,
+                R.id.profileFragment).build();
 
-        findViewById(R.id.avvioMail).setOnClickListener(view -> {
-            userRepository.startEmailPolling(result -> {
-                if(result.isSuccessful()){
-                    Log.d(this.getClass().getSimpleName(), "MAIL: VERIFICATA!");
-                }
-                else{
-                    Log.d(this.getClass().getSimpleName(), "MAIL: errore - " + ((Result.Error) result).getMessage());
-                }
-            });
-        });
+        // For the Toolbar
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        findViewById(R.id.stopMail).setOnClickListener(view -> {
-            userRepository.stopEmailPolling();
-        });
-
-        findViewById(R.id.mail).setOnClickListener(view -> {
-            userRepository.sendEmailVerification(result -> {
-                if(result.isSuccessful()){
-                    Log.d(this.getClass().getSimpleName(), "INVIO MAIL: INVIATA!");
-                }
-                else{
-                    Log.d(this.getClass().getSimpleName(), "INVIO MAIL: errore - " + ((Result.Error) result).getMessage());
-                }
-            });
-        });
-
-        findViewById(R.id.resetpassword).setOnClickListener(view -> {
-            userRepository.resetPassword("l.pinciroli3@campus.unimib.it", result -> {
-                if(result.isSuccessful()){
-                    Log.d(this.getClass().getSimpleName(), "RESET PASSWORD MAIL: INVIATA!");
-                }
-                else{
-                    Log.d(this.getClass().getSimpleName(), "RESET PASSWORD MAIL: errore - " + ((Result.Error) result).getMessage());
-                }
-            });
-        });
-
-        findViewById(R.id.vaiConfermaMail).setOnClickListener(view -> {
-            startActivity(new Intent(this, AuthActivity.class));
-        });
+        // For the BottomNavigationView
+        NavigationUI.setupWithNavController(bottomNav, navController);
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp() || super.onSupportNavigateUp();
+    }
 }
