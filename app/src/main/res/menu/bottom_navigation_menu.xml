@@ -3,17 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_segnalazioni"
+        android:id="@+id/reportsFragment"
         android:enabled="true"
         android:icon="@drawable/flag_fill0_wght400_grad0_opsz24"
         android:title="@string/segnalazioni" />
     <item
-        android:id="@+id/menu_bacheca"
+        android:id="@+id/dashboardFragment"
         android:enabled="true"
         android:icon="@drawable/dashboard_fill0_wght400_grad0_opsz24"
         android:title="@string/bacheca" />
     <item
-        android:id="@+id/menu_profilo"
+        android:id="@+id/profileFragment"
         android:enabled="true"
         android:icon="@drawable/person_fill0_wght400_grad0_opsz24"
         android:title="@string/profilo" />
