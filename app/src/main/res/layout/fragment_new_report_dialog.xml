@@ -72,7 +72,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="45dp"
                 android:layout_marginTop="20dp"
+                android:entries="@array/buildings"
+                android:gravity="center"
                 android:minHeight="48dp"
+                android:prompt="@string/edificio"
                 android:spinnerMode="dropdown"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -83,7 +86,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
+                android:entries="@array/reports_categories"
+                android:gravity="center"
                 android:minHeight="48dp"
+                android:prompt="@string/capital_case_missing"
                 app:layout_constraintStart_toEndOf="@+id/spinner_edifici"
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -97,7 +103,7 @@
                 android:gravity="center"
                 android:inputType="text"
                 android:minHeight="48dp"
-                android:text="Titolo della segnalazione"
+                android:text="@string/titolo_della_segnalazione"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_edifici" />
@@ -111,7 +117,7 @@
                 android:ems="10"
                 android:gravity="center|top"
                 android:inputType="text"
-                android:text="Inserisci una breve descrizione"
+                android:text="@string/inserisci_una_breve_descrizione"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_titoloSegnalazione" />
