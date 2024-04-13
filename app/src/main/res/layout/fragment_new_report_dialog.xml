@@ -65,17 +65,17 @@
                 android:text="@string/in_quale_edificio_si_verificato_il_problema"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.509"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_titoloSegnalazione" />
 
             <Spinner
                 android:id="@+id/spinner_edifici"
-                android:layout_width="wrap_content"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="45dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
                 android:dropDownWidth="wrap_content"
-                android:entries="@array/buildings"
                 android:gravity="center"
                 android:minHeight="48dp"
                 android:prompt="@string/edificio"
@@ -85,15 +85,14 @@
 
             <Spinner
                 android:id="@+id/spinner_categorie"
-                android:layout_width="wrap_content"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
                 android:entries="@array/reports_categories"
                 android:gravity="center"
                 android:minHeight="48dp"
-                android:prompt="@string/categoria"
-                app:layout_constraintStart_toEndOf="@+id/spinner_edifici"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
             <EditText
@@ -103,13 +102,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:ems="10"
-                android:gravity="center"
+                android:gravity="center|top|center_vertical"
                 android:inputType="text"
                 android:minHeight="48dp"
                 android:text="@string/titolo_della_segnalazione"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.52"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_edifici" />
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
             <EditText
                 android:id="@+id/edit_text_descrizioneSegnalazione"
@@ -123,7 +123,7 @@
                 android:text="@string/inserisci_una_breve_descrizione"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_titoloSegnalazione" />
+                app:layout_constraintTop_toBottomOf="@+id/spinner_edifici" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

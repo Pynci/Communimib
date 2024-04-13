@@ -22,11 +22,13 @@
         <item>U19</item>
         <item>U20</item>
         <item>U21</item>
+        <item>Edificio</item>
     </array>
 
     <array name="reports_categories">
         <item>Guasto</item>
         <item>Malfunzionamento</item>
         <item>Materiale mancante</item>
+        <item>Categoria</item>
     </array>
 </resources>
