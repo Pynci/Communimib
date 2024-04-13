@@ -105,11 +105,12 @@
                 android:gravity="center|top|center_vertical"
                 android:inputType="text"
                 android:minHeight="48dp"
-                android:text="@string/titolo_della_segnalazione"
+                android:hint="@string/titolo_della_segnalazione"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.52"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                app:layout_constraintTop_toBottomOf="@+id/textView8"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/edit_text_descrizioneSegnalazione"
@@ -120,10 +121,11 @@
                 android:ems="10"
                 android:gravity="center|top"
                 android:inputType="text"
-                android:text="@string/inserisci_una_breve_descrizione"
+                android:hint="@string/inserisci_una_breve_descrizione"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_edifici" />
+                app:layout_constraintTop_toBottomOf="@+id/spinner_edifici"
+                android:importantForAutofill="no" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
