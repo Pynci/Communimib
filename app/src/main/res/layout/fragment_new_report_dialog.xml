@@ -74,11 +74,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="45dp"
                 android:layout_marginTop="20dp"
+                android:dropDownWidth="wrap_content"
                 android:entries="@array/buildings"
                 android:gravity="center"
                 android:minHeight="48dp"
                 android:prompt="@string/edificio"
-                android:spinnerMode="dropdown"
+                android:spinnerMode="dialog"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -91,7 +92,7 @@
                 android:entries="@array/reports_categories"
                 android:gravity="center"
                 android:minHeight="48dp"
-                android:prompt="@string/capital_case_missing"
+                android:prompt="@string/categoria"
                 app:layout_constraintStart_toEndOf="@+id/spinner_edifici"
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
 

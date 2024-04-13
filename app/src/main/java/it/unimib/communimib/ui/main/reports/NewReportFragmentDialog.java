@@ -3,28 +3,40 @@ package it.unimib.communimib.ui.main.reports;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.view.View;
+import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import it.unimib.communimib.R;
+import it.unimib.communimib.databinding.FragmentNewReportDialogBinding;
 
 public class NewReportFragmentDialog extends DialogFragment {
+
+    private FragmentNewReportDialogBinding binding;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // Utilizza il binding per inflare il layout
+        binding = FragmentNewReportDialogBinding.inflate(LayoutInflater.from(getContext()));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = requireActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_new_report_dialog, null);
-        builder.setView(view);
+        builder.setView(binding.getRoot());
+
+        binding.rollbackNewReport.setOnClickListener(v -> {
+            this.dismiss();
+        });
 
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null; // Pulisci il binding quando la view viene distrutta
     }
 
 }
