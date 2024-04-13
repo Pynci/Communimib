@@ -36,5 +36,9 @@ public class ReportsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        fragmentReportsBinding.addNewReportButton.setOnClickListener(v -> {
+            NewReportFragmentDialog dialog = new NewReportFragmentDialog();
+            dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
+        });
     }
 }

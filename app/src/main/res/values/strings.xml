@@ -59,4 +59,5 @@
     <string name="titolo_della_segnalazione">Titolo della segnalazione</string>
     <string name="edificio">Edificio</string>
     <string name="categoria">Categoria</string>
+    <string name="bottone_per_aggiungere_una_nuova_segnalazione">Bottone per aggiungere una nuova segnalazione</string>
 </resources>
