@@ -10,6 +10,8 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="350dp"
         android:layout_height="550dp"
+        android:background="@color/ic_launcher_background"
+        android:backgroundTint="@color/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
