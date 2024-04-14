@@ -27,7 +27,7 @@
                 style="@android:style/Widget.DeviceDefault.Light.TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:text="@string/crea_una_nuova_segnalazione"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -56,78 +56,68 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="@string/in_quale_edificio_si_verificato_il_problema"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.509"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_titoloSegnalazione" />
-
             <Spinner
                 android:id="@+id/spinner_edifici"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:dropDownWidth="wrap_content"
                 android:gravity="center"
                 android:minHeight="48dp"
                 android:prompt="@string/edificio"
                 android:spinnerMode="dialog"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_titoloSegnalazione" />
 
             <Spinner
                 android:id="@+id/spinner_categorie"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
                 android:entries="@array/reports_categories"
                 android:gravity="center"
                 android:minHeight="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_titoloSegnalazione" />
 
             <EditText
                 android:id="@+id/edit_text_titoloSegnalazione"
                 style="@style/Widget.Material3.TextInputEditText.FilledBox.Dense"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/edit_text_background"
                 android:ems="10"
-                android:gravity="center|top|center_vertical"
+                android:gravity="center|top"
+                android:hint="@string/titolo_della_segnalazione"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 android:minHeight="48dp"
-                android:hint="@string/titolo_della_segnalazione"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.52"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8"
-                android:importantForAutofill="no"
-                android:background="@drawable/edit_text_background"/>
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
             <EditText
                 android:id="@+id/edit_text_descrizioneSegnalazione"
                 style="@style/Widget.Material3.TextInputEditText.FilledBox"
                 android:layout_width="300dp"
-                android:layout_height="175dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/edit_text_background"
                 android:ems="10"
                 android:gravity="center|top"
-                android:inputType="text"
                 android:hint="@string/inserisci_una_breve_descrizione"
+                android:importantForAutofill="no"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_edifici"
-                android:importantForAutofill="no"
-                android:background="@drawable/edit_text_background"/>
+                app:layout_constraintTop_toBottomOf="@+id/spinner_edifici" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
