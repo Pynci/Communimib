@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import it.unimib.communimib.util.ServiceLocator;
 
-public class ReportsCreationViewModelFactory implements ViewModelProvider.Factory {
+public class ReportsViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass){
-        return (T) new ReportsCreationViewModel(ServiceLocator.getInstance().getReportRepository());
+        return (T) new ReportsViewModel(ServiceLocator.getInstance().getReportRepository());
     }
 }

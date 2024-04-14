@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IReportRepository;
 
-public class ReportsCreationViewModel extends ViewModel {
+public class ReportsViewModel extends ViewModel {
 
     private final MutableLiveData<Result> createReportResult;
     private IReportRepository reportRepository;
 
-    public ReportsCreationViewModel(IReportRepository reportRepository) {
+    public ReportsViewModel(IReportRepository reportRepository) {
 
         createReportResult = new MutableLiveData<>();
         this.reportRepository = reportRepository;

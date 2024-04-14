@@ -17,17 +17,15 @@ import java.util.Objects;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentNewReportDialogBinding;
-import it.unimib.communimib.util.ErrorMapper;
-import it.unimib.communimib.util.Validation;
 
 public class NewReportFragmentDialog extends DialogFragment {
 
     private FragmentNewReportDialogBinding binding;
 
-    private final ReportsCreationViewModel reportsCreationViewModel;
+    private final ReportsViewModel reportsViewModel;
 
-    public NewReportFragmentDialog(ReportsCreationViewModel reportsCreationViewModel) {
-        this.reportsCreationViewModel = reportsCreationViewModel;
+    public NewReportFragmentDialog(ReportsViewModel reportsViewModel) {
+        this.reportsViewModel = reportsViewModel;
     }
 
     @NonNull
@@ -57,11 +55,14 @@ public class NewReportFragmentDialog extends DialogFragment {
         //Gestione del pulsante di conferma
         binding.confirmNewReport.setOnClickListener(v -> {
 
-            reportsCreationViewModel.createReport(
+            String buildingSpinnerSelectedItem = binding.buildingsSpinner.getSelectedItem().toString();
+            String categoriesSpinnerSelectedItem =  binding.categoriesSpinner.getSelectedItem().toString();
+
+            reportsViewModel.createReport(
                     binding.editTextReportTitle.getText().toString(),
                     binding.editTextReportDescription.getText().toString(),
-                    binding.buildingsSpinner.getSelectedItem().toString(),
-                    binding.categoriesSpinner.getSelectedItem().toString());
+                    buildingSpinnerSelectedItem,
+                    categoriesSpinnerSelectedItem);
 
         });
 
