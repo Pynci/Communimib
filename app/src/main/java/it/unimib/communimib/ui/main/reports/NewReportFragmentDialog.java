@@ -12,12 +12,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
+
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentNewReportDialogBinding;
+import it.unimib.communimib.model.Result;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.Validation;
 
@@ -141,6 +146,20 @@ public class NewReportFragmentDialog extends DialogFragment {
             }
         });
 
+        //Gestione osservazione creazione
+
+        /*
+        reportsViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()) {
+                Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
+                this.dismiss();
+            }
+            else{
+                String errorCode = ((Result.Error) result).getMessage();
+                Snackbar.make(view, ErrorMapper.getInstance().getErrorMessage(errorCode), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+         */
         return alertDialog;
     }
 

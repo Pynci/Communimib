@@ -11,7 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import it.unimib.communimib.databinding.FragmentReportsBinding;
+import it.unimib.communimib.model.Result;
+import it.unimib.communimib.util.ErrorMapper;
 
 public class ReportsFragment extends Fragment {
 

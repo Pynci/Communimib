@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IReportRepository;
+import it.unimib.communimib.util.Validation;
 
 public class ReportsViewModel extends ViewModel {
 
@@ -20,6 +21,15 @@ public class ReportsViewModel extends ViewModel {
 
     public void createReport(String titolo, String descrizione, String edificio, String categoria) {
 
+        String validationResult = Validation.validateNewReport(titolo, descrizione, edificio, categoria);
+
+        if(validationResult.equals("ok")) {
+            //TODO: Collegare con i livelli sottostanti
+            createReportResult.setValue(new Result.Success());
+        }
+        else{
+            createReportResult.setValue(new Result.Error(validationResult));
+        }
     }
     public LiveData<Result> getCreateReportResult() {
         return this.createReportResult;
