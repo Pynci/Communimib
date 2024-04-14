@@ -22,6 +22,12 @@ public class NewReportFragmentDialog extends DialogFragment {
 
     private FragmentNewReportDialogBinding binding;
 
+    private ReportsViewModel reportsViewModel;
+
+    public NewReportFragmentDialog(ReportsViewModel reportsViewModel) {
+        this.reportsViewModel = reportsViewModel;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import it.unimib.communimib.databinding.FragmentReportsBinding;
 public class ReportsFragment extends Fragment {
 
     private FragmentReportsBinding fragmentReportsBinding;
+    private ReportsViewModel reportsViewModel;
 
     public ReportsFragment() {
         // Required empty public constructor
@@ -23,6 +25,10 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        reportsViewModel = new ViewModelProvider(
+                this,
+                new ReportsViewModelFactory())
+                .get(ReportsViewModel.class);
     }
 
     @Override
@@ -37,7 +43,7 @@ public class ReportsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         fragmentReportsBinding.addNewReportButton.setOnClickListener(v -> {
-            NewReportFragmentDialog dialog = new NewReportFragmentDialog();
+            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsViewModel);
             dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
         });
     }
