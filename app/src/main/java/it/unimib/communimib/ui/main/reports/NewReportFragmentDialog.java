@@ -3,7 +3,6 @@ package it.unimib.communimib.ui.main.reports;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,47 +13,61 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentNewReportDialogBinding;
+import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.Validation;
 
 public class NewReportFragmentDialog extends DialogFragment {
 
     private FragmentNewReportDialogBinding binding;
 
-    private ReportsViewModel reportsViewModel;
+    private final ReportsCreationViewModel reportsCreationViewModel;
 
-    public NewReportFragmentDialog(ReportsViewModel reportsViewModel) {
-        this.reportsViewModel = reportsViewModel;
+    public NewReportFragmentDialog(ReportsCreationViewModel reportsCreationViewModel) {
+        this.reportsCreationViewModel = reportsCreationViewModel;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Utilizza il binding per inflare il layout
-        binding = FragmentNewReportDialogBinding.inflate(LayoutInflater.from(getContext()));
+        binding = FragmentNewReportDialogBinding.inflate(getLayoutInflater());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(binding.getRoot());
 
-        binding.rollbackNewReport.setOnClickListener(v -> {
-            this.dismiss();
-        });
-
         //Gestione spinner edifici
-        binding.spinnerEdifici.setPrompt("Edificio");
+        binding.buildingsSpinner.setPrompt("Edificio");
         ArrayAdapter<String> adapterEdificio = getBuildingsAdapter();
-        binding.spinnerEdifici.setAdapter(adapterEdificio);
-        binding.spinnerEdifici.setSelection(adapterEdificio.getCount());
+        binding.buildingsSpinner.setAdapter(adapterEdificio);
+        binding.buildingsSpinner.setSelection(adapterEdificio.getCount());
 
         //Gestione spinner categorie
-        binding.spinnerCategorie.setPrompt("Categoria");
+        binding.categoriesSpinner.setPrompt("Categoria");
         ArrayAdapter<String> adapterCategorie = getCategoriesAdapter();
-        binding.spinnerCategorie.setAdapter(adapterCategorie);
-        binding.spinnerCategorie.setSelection(adapterCategorie.getCount());
+        binding.categoriesSpinner.setAdapter(adapterCategorie);
+        binding.categoriesSpinner.setSelection(adapterCategorie.getCount());
 
         AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+
+        //Gestione del pulsante di conferma
+        binding.confirmNewReport.setOnClickListener(v -> {
+
+            reportsCreationViewModel.createReport(
+                    binding.editTextReportTitle.getText().toString(),
+                    binding.editTextReportDescription.getText().toString(),
+                    binding.buildingsSpinner.getSelectedItem().toString(),
+                    binding.categoriesSpinner.getSelectedItem().toString());
+
+        });
+
+        //Gestione del pulstante di annullamento
+        binding.rollbackNewReport.setOnClickListener(v -> this.dismiss());
+
         return alertDialog;
     }
 

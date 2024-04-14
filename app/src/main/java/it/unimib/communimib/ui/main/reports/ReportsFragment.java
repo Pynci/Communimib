@@ -16,7 +16,7 @@ import it.unimib.communimib.databinding.FragmentReportsBinding;
 public class ReportsFragment extends Fragment {
 
     private FragmentReportsBinding fragmentReportsBinding;
-    private ReportsViewModel reportsViewModel;
+    private ReportsCreationViewModel reportsCreationViewModel;
 
     public ReportsFragment() {
         // Required empty public constructor
@@ -25,10 +25,10 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        reportsViewModel = new ViewModelProvider(
+        reportsCreationViewModel = new ViewModelProvider(
                 this,
-                new ReportsViewModelFactory())
-                .get(ReportsViewModel.class);
+                new ReportsCreationViewModelFactory())
+                .get(ReportsCreationViewModel.class);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ReportsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         fragmentReportsBinding.addNewReportButton.setOnClickListener(v -> {
-            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsViewModel);
+            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsCreationViewModel);
             dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
         });
     }

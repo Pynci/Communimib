@@ -9,7 +9,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="350dp"
-        android:layout_height="550dp"
+        android:layout_height="600dp"
         android:background="@color/ic_launcher_background"
         android:backgroundTint="@color/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,7 +57,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Spinner
-                android:id="@+id/spinner_edifici"
+                android:id="@+id/buildings_spinner"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
@@ -68,10 +68,10 @@
                 android:prompt="@string/edificio"
                 android:spinnerMode="dialog"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_titoloSegnalazione" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_report_title" />
 
             <Spinner
-                android:id="@+id/spinner_categorie"
+                android:id="@+id/categories_spinner"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -81,10 +81,10 @@
                 android:minHeight="48dp"
                 android:spinnerMode="dialog"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_titoloSegnalazione" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_report_title" />
 
             <EditText
-                android:id="@+id/edit_text_titoloSegnalazione"
+                android:id="@+id/edit_text_report_title"
                 style="@style/Widget.Material3.TextInputEditText.FilledBox.Dense"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
@@ -105,20 +105,44 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
             <EditText
-                android:id="@+id/edit_text_descrizioneSegnalazione"
+                android:id="@+id/edit_text_report_description"
                 style="@style/Widget.Material3.TextInputEditText.FilledBox"
                 android:layout_width="300dp"
                 android:layout_height="200dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/edit_text_background"
                 android:ems="10"
                 android:gravity="center|top"
                 android:hint="@string/inserisci_una_breve_descrizione"
                 android:importantForAutofill="no"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_edifici" />
+                app:layout_constraintTop_toBottomOf="@+id/new_report_error_spinner_buildings" />
+
+            <TextView
+                android:id="@+id/new_report_error_spinner_buildings"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                android:textColor="@color/md_theme_light_error"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buildings_spinner" />
+
+            <TextView
+                android:id="@+id/new_report_error_spinner_categories"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="48dp"
+                android:text="TextView"
+                android:textColor="@color/md_theme_light_error"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/categories_spinner" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

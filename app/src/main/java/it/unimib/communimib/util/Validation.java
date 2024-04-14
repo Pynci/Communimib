@@ -78,4 +78,20 @@ public class Validation {
 
         return "ok";
     }
+
+    public static String checkBuildingsSpinner (String building) {
+
+        if(building.equals("Edificio"))
+            return ErrorMapper.EMPTY_FIELD;
+        else
+            return "ok";
+    }
+
+    public static String checkCategoriesSpinner (String category) {
+
+        if(category.equals("Categoria"))
+            return ErrorMapper.EMPTY_FIELD;
+        else
+            return "ok";
+    }
 }
