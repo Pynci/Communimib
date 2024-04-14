@@ -79,6 +79,19 @@ public class Validation {
         return "ok";
     }
 
+    public static String validateNewReport(String title, String description, String building, String category) {
+
+        String error = ErrorMapper.NOT_ACCEPTED_PARAMETERS;
+
+        if(!checkEmptyField(title).equals("ok") || !checkEmptyField(description).equals("ok")
+                || !checkBuildingsSpinner(building).equals("ok") || !checkCategoriesSpinner(category).equals("ok")) {
+            return error;
+        }
+        else{
+            return "ok";
+        }
+    }
+
     public static String checkBuildingsSpinner (String building) {
 
         if(building.equals("Edificio"))
@@ -93,5 +106,15 @@ public class Validation {
             return ErrorMapper.EMPTY_FIELD;
         else
             return "ok";
+    }
+
+    public static String checkEmptyField (String field) {
+
+        if(field.isEmpty()) {
+            return ErrorMapper.EMPTY_FIELD;
+        }
+        else{
+            return "ok";
+        }
     }
 }

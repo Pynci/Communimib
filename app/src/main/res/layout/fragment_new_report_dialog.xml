@@ -61,7 +61,7 @@
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:dropDownWidth="wrap_content"
                 android:gravity="center"
                 android:minHeight="48dp"
@@ -74,7 +74,7 @@
                 android:id="@+id/categories_spinner"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="30dp"
                 android:entries="@array/reports_categories"
                 android:gravity="center"
@@ -143,6 +143,30 @@
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categories_spinner" />
+
+            <TextView
+                android:id="@+id/new_report_title_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                android:textColor="@color/md_theme_light_error"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_report_title" />
+
+            <TextView
+                android:id="@+id/new_report_description_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                android:textColor="@color/md_theme_light_error"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_report_description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -94,17 +94,52 @@ public class NewReportFragmentDialog extends DialogFragment {
                 binding.newReportErrorSpinnerCategories.setVisibility(View.VISIBLE);
                 binding.newReportErrorSpinnerCategories.setText(ErrorMapper.getInstance().getErrorMessage(resultCategoriesValidation));
             }
-            if(resultBuildingsValidation.equals("ok") && resultCategoriesValidation.equals("ok"))
-                reportsViewModel.createReport(
-                        binding.editTextReportTitle.getText().toString(),
-                        binding.editTextReportDescription.getText().toString(),
-                        buildingSpinnerSelectedItem,
-                        categoriesSpinnerSelectedItem);
+
+            v.clearFocus();
+            reportsViewModel.createReport(
+                    binding.editTextReportTitle.getText().toString(),
+                    binding.editTextReportDescription.getText().toString(),
+                    buildingSpinnerSelectedItem,
+                    categoriesSpinnerSelectedItem);
 
         });
 
         //Gestione del pulstante di annullamento
         binding.rollbackNewReport.setOnClickListener(v -> this.dismiss());
+
+        //Gestione dell'errore del titolo
+        binding.editTextReportTitle.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                binding.newReportTitleError.setVisibility(View.INVISIBLE);
+            }
+            else{
+                String text = binding.editTextReportTitle.getText().toString();
+                String validationResult = Validation.checkEmptyField(text);
+                if (validationResult.equals("ok"))
+                    binding.newReportTitleError.setVisibility(View.INVISIBLE);
+                else{
+                    binding.newReportTitleError.setText(ErrorMapper.getInstance().getErrorMessage(validationResult));
+                    binding.newReportTitleError.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        //Gestione dell'errore della descrizione
+        binding.editTextReportDescription.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                binding.newReportDescriptionError.setVisibility(View.INVISIBLE);
+            }
+            else{
+                String text = binding.editTextReportDescription.getText().toString();
+                String validationResult = Validation.checkEmptyField(text);
+                if (validationResult.equals("ok"))
+                    binding.newReportDescriptionError.setVisibility(View.INVISIBLE);
+                else{
+                    binding.newReportDescriptionError.setText(ErrorMapper.getInstance().getErrorMessage(validationResult));
+                    binding.newReportDescriptionError.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         return alertDialog;
     }
