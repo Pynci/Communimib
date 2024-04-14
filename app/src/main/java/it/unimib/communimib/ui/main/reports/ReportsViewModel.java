@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import it.unimib.communimib.Callback;
 import it.unimib.communimib.DialogCallback;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IReportRepository;
@@ -25,6 +24,8 @@ public class ReportsViewModel extends ViewModel {
         String validationResult = Validation.validateNewReport(titolo, descrizione, edificio, categoria);
         if(validationResult.equals("ok")) {
             createReportResult.setValue(new Result.Success());
+
+            //Questa callback serve per togliere il framgnet di dialog dallo schermo
             callback.onComplete();
         }
     }
