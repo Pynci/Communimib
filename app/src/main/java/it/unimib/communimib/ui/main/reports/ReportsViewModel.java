@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import it.unimib.communimib.Callback;
+import it.unimib.communimib.DialogCallback;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IReportRepository;
 import it.unimib.communimib.util.Validation;
@@ -19,16 +21,11 @@ public class ReportsViewModel extends ViewModel {
         this.reportRepository = reportRepository;
     }
 
-    public void createReport(String titolo, String descrizione, String edificio, String categoria) {
-
+    public void createReport(String titolo, String descrizione, String edificio, String categoria, DialogCallback callback) {
         String validationResult = Validation.validateNewReport(titolo, descrizione, edificio, categoria);
-
         if(validationResult.equals("ok")) {
-            //TODO: Collegare con i livelli sottostanti
             createReportResult.setValue(new Result.Success());
-        }
-        else{
-            createReportResult.setValue(new Result.Error(validationResult));
+            callback.onComplete();
         }
     }
     public LiveData<Result> getCreateReportResult() {

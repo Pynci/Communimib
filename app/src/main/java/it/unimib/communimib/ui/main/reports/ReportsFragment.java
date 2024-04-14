@@ -51,5 +51,12 @@ public class ReportsFragment extends Fragment {
             NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsViewModel);
             dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
         });
+
+        //Gestione osservazione creazione
+        reportsViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()) {
+                Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
     }
 }

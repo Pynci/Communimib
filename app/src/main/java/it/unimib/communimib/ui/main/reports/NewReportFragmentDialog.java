@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Arrays;
 import java.util.Objects;
 
+import it.unimib.communimib.Callback;
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentNewReportDialogBinding;
 import it.unimib.communimib.model.Result;
@@ -85,28 +86,36 @@ public class NewReportFragmentDialog extends DialogFragment {
         //Gestione del pulsante di conferma
         binding.confirmNewReport.setOnClickListener(v -> {
 
+            String chosenTitle = binding.editTextReportTitle.getText().toString();
+            String chosenDescription = binding.editTextReportDescription.getText().toString();
             String buildingSpinnerSelectedItem = binding.buildingsSpinner.getSelectedItem().toString();
             String categoriesSpinnerSelectedItem =  binding.categoriesSpinner.getSelectedItem().toString();
 
             String resultBuildingsValidation = Validation.checkBuildingsSpinner(buildingSpinnerSelectedItem);
             String resultCategoriesValidation = Validation.checkCategoriesSpinner(categoriesSpinnerSelectedItem);
+            String resultValidationTitle = Validation.checkEmptyField(chosenTitle);
+            String resultValidationDescription = Validation.checkEmptyField(chosenTitle);
 
-            if(!resultBuildingsValidation.equals("ok")){
-                binding.newReportErrorSpinnerBuildings.setVisibility(View.VISIBLE);
-                binding.newReportErrorSpinnerBuildings.setText(ErrorMapper.getInstance().getErrorMessage(resultCategoriesValidation));
-            }
-            if(!resultCategoriesValidation.equals("ok")){
-                binding.newReportErrorSpinnerCategories.setVisibility(View.VISIBLE);
-                binding.newReportErrorSpinnerCategories.setText(ErrorMapper.getInstance().getErrorMessage(resultCategoriesValidation));
-            }
+            /*
+            * Ricorda: tutto sto casino nasce dal fatto che:
+            * 1) Lo spinner non ha un errore integrato e quindi si deve usare la label
+            * 2) Utilizzare l'observer qui dentro è impossibile (l'applicativo va in crash)
+            * 3) non puoi stamapre il messaggio di errore con la snackbar
+            *
+            * Ore perse per cercare di ottimizzare questa struttura: 3
+             */
+
+
+            checkAndSetErrors(resultBuildingsValidation, resultCategoriesValidation, resultValidationTitle, resultValidationDescription);
 
             v.clearFocus();
-            reportsViewModel.createReport(
-                    binding.editTextReportTitle.getText().toString(),
-                    binding.editTextReportDescription.getText().toString(),
-                    buildingSpinnerSelectedItem,
-                    categoriesSpinnerSelectedItem);
 
+            reportsViewModel.createReport(
+                    chosenTitle,
+                    chosenDescription,
+                    buildingSpinnerSelectedItem,
+                    categoriesSpinnerSelectedItem,
+                    this::dismiss);
         });
 
         //Gestione del pulstante di annullamento
@@ -146,21 +155,26 @@ public class NewReportFragmentDialog extends DialogFragment {
             }
         });
 
-        //Gestione osservazione creazione
-
-        /*
-        reportsViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()) {
-                Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
-                this.dismiss();
-            }
-            else{
-                String errorCode = ((Result.Error) result).getMessage();
-                Snackbar.make(view, ErrorMapper.getInstance().getErrorMessage(errorCode), BaseTransientBottomBar.LENGTH_SHORT).show();
-            }
-        });
-         */
         return alertDialog;
+    }
+
+    private void checkAndSetErrors(String resultBuildingsValidation, String resultCategoriesValidation, String resultValidationTitle, String resultValidationDescription) {
+        if(!resultBuildingsValidation.equals("ok")){
+            binding.newReportErrorSpinnerBuildings.setVisibility(View.VISIBLE);
+            binding.newReportErrorSpinnerBuildings.setText(ErrorMapper.getInstance().getErrorMessage(resultBuildingsValidation));
+        }
+        if(!resultCategoriesValidation.equals("ok")){
+            binding.newReportErrorSpinnerCategories.setVisibility(View.VISIBLE);
+            binding.newReportErrorSpinnerCategories.setText(ErrorMapper.getInstance().getErrorMessage(resultCategoriesValidation));
+        }
+        if(!resultValidationTitle.equals("ok")) {
+            binding.newReportTitleError.setVisibility(View.VISIBLE);
+            binding.newReportTitleError.setText(ErrorMapper.getInstance().getErrorMessage(resultValidationTitle));
+        }
+        if(!resultValidationDescription.equals("ok")) {
+            binding.newReportDescriptionError.setVisibility(View.VISIBLE);
+            binding.newReportDescriptionError.setText(ErrorMapper.getInstance().getErrorMessage(resultValidationDescription));
+        }
     }
 
     @NonNull
