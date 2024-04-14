@@ -79,6 +79,7 @@
                 android:entries="@array/reports_categories"
                 android:gravity="center"
                 android:minHeight="48dp"
+                android:spinnerMode="dialog"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_titoloSegnalazione" />
 

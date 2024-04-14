@@ -70,7 +70,7 @@ public class NewReportFragmentDialog extends DialogFragment {
 
             @Override
             public int getCount() {
-                return super.getCount()-1; // you dont display last item. It is used as hint.
+                return super.getCount() - 1; // you dont display last item. It is used as hint.
             }
 
         };
@@ -98,7 +98,7 @@ public class NewReportFragmentDialog extends DialogFragment {
 
             @Override
             public int getCount() {
-                return super.getCount()-1; // you dont display last item. It is used as hint.
+                return super.getCount() - 1; // you dont display last item. It is used as hint.
             }
 
         };
