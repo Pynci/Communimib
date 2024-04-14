@@ -110,7 +110,8 @@
                 app:layout_constraintHorizontal_bias="0.52"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView8"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no"
+                android:background="@drawable/edit_text_background"/>
 
             <EditText
                 android:id="@+id/edit_text_descrizioneSegnalazione"
@@ -125,7 +126,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_edifici"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no"
+                android:background="@drawable/edit_text_background"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
