@@ -44,13 +44,20 @@ public class MainActivity extends AppCompatActivity{
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.reportsFragment, R.id.dashboardFragment,
-                R.id.profileFragment).build();
+                R.id.profileFragment).setOpenableLayout(drawerLayout).build();
+
+        navigationView.setCheckedItem(R.id.reportsFragment);
+
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.app_name, R.string.app_name);
 
         // For the Toolbar
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         // For the BottomNavigationView
         NavigationUI.setupWithNavController(bottomNav, navController);
+
+        //navigationView.getMenu().add("U7");
     }
 
     @Override

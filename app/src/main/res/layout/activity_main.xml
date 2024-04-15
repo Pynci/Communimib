@@ -9,6 +9,8 @@
     tools:context=".ui.main.MainActivity"
     android:id="@+id/drawer_layout">
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -22,17 +24,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.navigation.NavigationView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/activityMain_navigationView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_gravity="start"
-            app:menu="@menu/nav_menu"
-            app:itemIconTint="@color/seed"
-            app:itemTextColor="@color/md_theme_light_secondary"/>
-
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
@@ -42,8 +33,10 @@
             app:defaultNavHost="true"
             app:layout_constraintBottom_toTopOf="@+id/activityMainButtonMenu_bottomNavigation"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activityMainButtonMenu_topAppbar"
+            app:layout_constraintVertical_bias="0.0"
             app:navGraph="@navigation/main_navigation" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -55,6 +48,16 @@
             app:menu="@menu/bottom_navigation_menu" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/activityMain_navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="start"
+        app:menu="@menu/nav_menu"
+        app:itemIconTint="@color/seed"
+        app:itemTextColor="@color/md_theme_light_secondary"
+        app:headerLayout="@layout/navigation_view_header"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
