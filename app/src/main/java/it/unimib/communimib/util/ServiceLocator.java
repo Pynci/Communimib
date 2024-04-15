@@ -29,7 +29,7 @@ public class ServiceLocator {
     }
 
     public IUserRepository getUserRepository(Context context){
-        return new UserRepository(
+        return UserRepository.getInstance(
                 new AuthDataSource(),
                 new UserRemoteDataSource(),
                 new UserLocalDataSource(getLocalDatabase(context).userDAO()));
