@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity{
         // For the BottomNavigationView
         NavigationUI.setupWithNavController(bottomNav, navController);
 
-        bottomNav.setOnNavigationItemSelectedListener(
+        /*bottomNav.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -77,9 +78,8 @@ public class MainActivity extends AppCompatActivity{
                         return true;
                     }
                 }
-        );
+        );*/
 
-        //navigationView.getMenu().add("U7");
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -91,9 +91,6 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
         );
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, new Fragment())
-                .commit();
 
         // Update navigation drawer menu based on the initial fragment
         updateNavigationMenu(R.id.reportsFragment);
