@@ -3,6 +3,7 @@ package it.unimib.communimib.util;
 import android.content.Context;
 
 import it.unimib.communimib.database.LocalDatabase;
+import it.unimib.communimib.datasource.report.ReportRemoteDataSource;
 import it.unimib.communimib.datasource.user.AuthDataSource;
 import it.unimib.communimib.datasource.user.UserLocalDataSource;
 import it.unimib.communimib.datasource.user.UserRemoteDataSource;
@@ -36,7 +37,7 @@ public class ServiceLocator {
     }
 
     public IReportRepository getReportRepository() {
-        return new ReportRepository(new UserRemoteDataSource());
+        return new ReportRepository(new ReportRemoteDataSource());
     }
 
     public LocalDatabase getLocalDatabase(Context context) {

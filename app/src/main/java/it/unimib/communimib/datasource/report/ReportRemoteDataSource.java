@@ -19,9 +19,12 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
 
     @Override
     public void addReport(Report report, Callback callback) {
+
+        String key = databaseReference.child(Constants.REPORTS_PATH).push().getKey();
+
         databaseReference
                 .child(Constants.REPORTS_PATH)
-                .child(report.getEmailCreator())
+                .child(key)
                 .setValue(report).addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
                         callback.onComplete(new Result.Success());
