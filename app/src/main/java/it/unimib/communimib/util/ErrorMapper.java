@@ -33,7 +33,7 @@ public class ErrorMapper {
         errorMap.put(REMOTEDB_INSERT_ERROR, R.string.remotedb_insert_error);
         errorMap.put(USER_NOT_FOUND_ERROR, R.string.user_not_found_error);
         errorMap.put(NOT_ACCEPTED_PARAMETERS, R.string.not_accepted_parameters);
-
+        errorMap.put(REPORT_CREATION_ERROR, R.string.report_creation_error);
     }
 
     public static ErrorMapper getInstance() {
@@ -75,4 +75,6 @@ public class ErrorMapper {
     public static final String NOT_EQUAL_PASSWORD = "not_equal_password";
     public static final String NOT_ACCEPTED_PARAMETERS = "not_accepted_parameters";
 
+    // Errori gestione reports
+    public static final String REPORT_CREATION_ERROR = "report_creation_error";
 }

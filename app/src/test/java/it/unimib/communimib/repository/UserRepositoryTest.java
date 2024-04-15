@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.CountDownLatch;
 
 import it.unimib.communimib.database.FakeUserDAO;
@@ -16,7 +17,7 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class UserRepositoryTest {
 
-    UserRepository userRepository;
+    IUserRepository userRepository;
     FakeUserRemoteDataSource remoteDataSource;
     UserLocalDataSource localDataSource;
     FakeAuthDataSource authDataSource;
@@ -25,14 +26,14 @@ public class UserRepositoryTest {
     volatile Result result;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         userDAO = new FakeUserDAO();
         remoteDataSource = new FakeUserRemoteDataSource();
         localDataSource = new UserLocalDataSource(userDAO);
         authDataSource = new FakeAuthDataSource();
         marco = new User("marco@unimib.it", "Marco", "Ferioli");
 
-        userRepository = new UserRepository(
+        userRepository = UserRepository.getInstance(
                 authDataSource,
                 remoteDataSource,
                 localDataSource
@@ -40,7 +41,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void signUpSuccess() throws InterruptedException {
+    public void signUpSuccess() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
 
@@ -54,7 +55,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void signUpFailure() throws InterruptedException {
+    public void signUpFailure() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
 
@@ -70,7 +71,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void signInSuccess() throws InterruptedException {
+    public void signInSuccess() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
 
@@ -87,7 +88,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void signInFailureWrongPassword() throws InterruptedException {
+    public void signInFailureWrongPassword() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
 
@@ -104,7 +105,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void signInFailureWrongEmail() throws InterruptedException {
+    public void signInFailureWrongEmail() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
 
@@ -121,7 +122,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void signInFailureDataInconsistency() throws InterruptedException {
+    public void signInFailureDataInconsistency() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
 
@@ -138,7 +139,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void signOutSuccess() throws InterruptedException {
+    public void signOutSuccess() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
         userDAO.insertUser(marco);
@@ -157,7 +158,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void signOutFailure() throws InterruptedException {
+    public void signOutFailure() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
         remoteDataSource.users.put("12345", marco);
@@ -173,7 +174,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void isSessionStillActiveTrue() throws InterruptedException {
+    public void isSessionStillActiveTrue() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
         userDAO.insertUser(marco);
@@ -191,7 +192,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void isSessionStillActiveFalse() throws InterruptedException {
+    public void isSessionStillActiveFalse() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
         userDAO.insertUser(marco);
@@ -212,10 +213,12 @@ public class UserRepositoryTest {
         //TODO: implementare il test
     }
 
-    private void clearAll(){
+    private void clearAll() throws NoSuchFieldException, IllegalAccessException {
         remoteDataSource.users.clear();
         userDAO.clearUser();
         authDataSource.signedupUsers.clear();
-        userRepository = new UserRepository(authDataSource, remoteDataSource, localDataSource);
+        Field instance = UserRepository.class.getDeclaredField("INSTANCE");
+        instance.setAccessible(true);
+        instance.set(null, null);
     }
 }

@@ -51,4 +51,13 @@
     <string name="bacheca">Bacheca</string>
     <string name="profilo">Profilo</string>
     <string name="segnalazioni">Segnalazioni</string>
+    <string name="crea_una_nuova_segnalazione">Crea una nuova segnalazione</string>
+    <string name="conferma">Conferma</string>
+    <string name="annulla">Annulla</string>
+    <string name="inserisci_una_breve_descrizione">Inserisci una breve descrizione</string>
+    <string name="titolo_della_segnalazione">Titolo della segnalazione</string>
+    <string name="edificio">Edificio</string>
+    <string name="categoria">Categoria</string>
+    <string name="bottone_per_aggiungere_una_nuova_segnalazione">Bottone per aggiungere una nuova segnalazione</string>
+    <string name="report_creation_error">Si è verificato un errore durante la memorizzazione della segnalazione nel sistema</string>
 </resources>

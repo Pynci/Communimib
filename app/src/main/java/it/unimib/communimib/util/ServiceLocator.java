@@ -3,10 +3,13 @@ package it.unimib.communimib.util;
 import android.content.Context;
 
 import it.unimib.communimib.database.LocalDatabase;
+import it.unimib.communimib.datasource.report.ReportRemoteDataSource;
 import it.unimib.communimib.datasource.user.AuthDataSource;
 import it.unimib.communimib.datasource.user.UserLocalDataSource;
 import it.unimib.communimib.datasource.user.UserRemoteDataSource;
+import it.unimib.communimib.repository.IReportRepository;
 import it.unimib.communimib.repository.IUserRepository;
+import it.unimib.communimib.repository.ReportRepository;
 import it.unimib.communimib.repository.UserRepository;
 
 public class ServiceLocator {
@@ -27,10 +30,14 @@ public class ServiceLocator {
     }
 
     public IUserRepository getUserRepository(Context context){
-        return new UserRepository(
+        return UserRepository.getInstance(
                 new AuthDataSource(),
                 new UserRemoteDataSource(),
                 new UserLocalDataSource(getLocalDatabase(context).userDAO()));
+    }
+
+    public IReportRepository getReportRepository() {
+        return new ReportRepository(new ReportRemoteDataSource());
     }
 
     public LocalDatabase getLocalDatabase(Context context) {

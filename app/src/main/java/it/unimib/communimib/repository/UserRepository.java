@@ -12,9 +12,11 @@ import it.unimib.communimib.datasource.user.IUserLocalDataSource;
 import it.unimib.communimib.datasource.user.IUserRemoteDataSource;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
+import it.unimib.communimib.util.ServiceLocator;
 
 public class UserRepository implements IUserRepository{
 
+    private static volatile IUserRepository INSTANCE;
     private ScheduledExecutorService pollingExecutor =
             Executors.newSingleThreadScheduledExecutor();
     private final IAuthDataSource authDataSource;
@@ -22,10 +24,21 @@ public class UserRepository implements IUserRepository{
     private final IUserLocalDataSource userLocalDataSource;
     private User currentUser;
 
-    public UserRepository(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource, IUserLocalDataSource localDataSource){
+    private UserRepository(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource, IUserLocalDataSource localDataSource){
         this.authDataSource = authDataSource;
         this.userRemoteDataSource = userRemoteDataSource;
         this.userLocalDataSource = localDataSource;
+    }
+
+    public static IUserRepository getInstance(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource, IUserLocalDataSource localDataSource) {
+        if (INSTANCE == null) {
+            synchronized(ServiceLocator.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new UserRepository(authDataSource, userRemoteDataSource, localDataSource);
+                }
+            }
+        }
+        return INSTANCE;
     }
 
     @Override
