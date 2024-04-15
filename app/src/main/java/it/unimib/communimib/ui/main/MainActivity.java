@@ -1,11 +1,13 @@
 package it.unimib.communimib.ui.main;
 
 import android.os.Bundle;
+import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.XmlRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,8 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.lang.reflect.Array;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.ui.main.dashboard.DashboardFragment;
@@ -99,22 +103,18 @@ public class MainActivity extends AppCompatActivity{
         Menu menu = navigationView.getMenu();
         menu.clear(); // Clear previous menu items
 
+        menu.add(R.string.home).setIcon(R.drawable.baseline_home_24);
+
         if(id == R.id.reportsFragment){
-            menu.add("U7");
-            //inserire edifici
+            String[] buildingsArray = getResources().getStringArray(R.array.buildings);
+            for(int i = 0; i<buildingsArray.length-1; i++){
+                menu.add(buildingsArray[i]).setIcon(R.drawable.baseline_apartment_24);
+            }
 
         } else if(id == R.id.dashboardFragment) {
-            menu.add("U8");
             //inserire categorie
         }
         navigationView.invalidate();
-    }
-
-    private void switchFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, fragment)
-                .commit();
-        //updateNavigationMenu(fragment); // Update menu based on new fragment
     }
 
         @Override
