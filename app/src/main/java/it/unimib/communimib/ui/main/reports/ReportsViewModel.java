@@ -15,7 +15,6 @@ public class ReportsViewModel extends ViewModel {
     private IReportRepository reportRepository;
 
     public ReportsViewModel(IReportRepository reportRepository) {
-
         createReportResult = new MutableLiveData<>();
         this.reportRepository = reportRepository;
     }
@@ -23,9 +22,6 @@ public class ReportsViewModel extends ViewModel {
     public void createReport(String titolo, String descrizione, String edificio, String categoria, DialogCallback callback) {
         String validationResult = Validation.validateNewReport(titolo, descrizione, edificio, categoria);
         if(validationResult.equals("ok")) {
-            createReportResult.setValue(new Result.Success());
-
-            //Questa callback serve per togliere il framgnet di dialog dallo schermo
             callback.onComplete();
         }
     }
