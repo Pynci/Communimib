@@ -30,7 +30,7 @@ public class ReportsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         reportsViewModel = new ViewModelProvider(
                 this,
-                new ReportsViewModelFactory())
+                new ReportsViewModelFactory(this.getContext()))
                 .get(ReportsViewModel.class);
     }
 

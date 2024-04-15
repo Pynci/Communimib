@@ -36,7 +36,7 @@ public class ServiceLocator {
     }
 
     public IReportRepository getReportRepository() {
-        return new ReportRepository();
+        return new ReportRepository(new UserRemoteDataSource());
     }
 
     public LocalDatabase getLocalDatabase(Context context) {

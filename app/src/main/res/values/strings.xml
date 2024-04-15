@@ -59,4 +59,5 @@
     <string name="edificio">Edificio</string>
     <string name="categoria">Categoria</string>
     <string name="bottone_per_aggiungere_una_nuova_segnalazione">Bottone per aggiungere una nuova segnalazione</string>
+    <string name="report_creation_error">Si è verificato un errore durante la memorizzazione della segnalazione nel sistema</string>
 </resources>

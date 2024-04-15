@@ -8,11 +8,21 @@ public class Report {
 
     private String category;
 
-    public Report(String title, String description, String building, String category) {
+    private String emailCreator;
+    public Report(String title, String description, String building, String category, String emailCreator) {
         this.title = title;
         this.description = description;
         this.building = building;
         this.category = category;
+        this.emailCreator = emailCreator;
+    }
+
+    public String getEmailCreator() {
+        return emailCreator;
+    }
+
+    public void setEmailCreator(String emailCreator) {
+        this.emailCreator = emailCreator;
     }
 
     public String getTitle() {
