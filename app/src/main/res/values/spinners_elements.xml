@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="buildings">
+        <item>U1</item>
+        <item>U2</item>
+        <item>U3</item>
+        <item>U4</item>
+        <item>U5</item>
+        <item>U6</item>
+        <item>U7</item>
+        <item>U8</item>
+        <item>U9</item>
+        <item>U10</item>
+        <item>U11</item>
+        <item>U12</item>
+        <item>U13</item>
+        <item>U14</item>
+        <item>U15</item>
+        <item>U16</item>
+        <item>U17</item>
+        <item>U18</item>
+        <item>U19</item>
+        <item>U20</item>
+        <item>U21</item>
+        <item>Edificio</item>
+    </array>
+
+    <array name="reports_categories">
+        <item>Guasto</item>
+        <item>Malfunzionamento</item>
+        <item>Materiale mancante</item>
+        <item>Categoria</item>
+    </array>
+</resources>
