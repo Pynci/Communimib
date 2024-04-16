@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -69,16 +70,22 @@ public class MainActivity extends AppCompatActivity{
         // For the BottomNavigationView
         NavigationUI.setupWithNavController(bottomNav, navController);
 
-        /*bottomNav.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        // Handle bottom navigation item selection
-                        updateNavigationMenu(item.getItemId());
-                        return true;
-                    }
-                }
-        );*/
+
+        bottomNav.setItemOnTouchListener(R.id.reportsFragment, new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                updateNavigationMenu(R.id.reportsFragment);
+                return false;
+            }
+        });
+
+        bottomNav.setItemOnTouchListener(R.id.dashboardFragment, new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                updateNavigationMenu(R.id.dashboardFragment);
+                return false;
+            }
+        });
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
