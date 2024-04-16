@@ -28,11 +28,49 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
         databaseReference = FirebaseDatabase.getInstance(Constants.DATABASE).getReference();
     }
 
-    public void getAllReports(Callback callback){
+    public void getAllReports(Callback addedCallback,
+                              Callback changedCallback,
+                              Callback removedCallback,
+                              Callback movedCallback){
+        removeCurrentListener();
+        Query query = databaseReference
+                .child(Constants.REPORTS_PATH);
+        currentReference = query.getRef();
+        currentListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        query.addChildEventListener(currentListener);
     }
 
-    public void getReportsByBuilding(String building, Callback callback){
+    public void getReportsByBuilding(String building,
+                                     Callback addedCallback,
+                                     Callback changedCallback,
+                                     Callback removedCallback,
+                                     Callback movedCallback){
         removeCurrentListener();
 
         Query query = databaseReference
@@ -70,7 +108,11 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
         query.addChildEventListener(currentListener);
     }
 
-    public void getReportsByCategory(String category, Callback callback){
+    public void getReportsByCategory(String category,
+                                     Callback addedCallback,
+                                     Callback changedCallback,
+                                     Callback removedCallback,
+                                     Callback movedCallback){
         removeCurrentListener();
 
         Query query = databaseReference
@@ -108,27 +150,46 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
         query.addChildEventListener(currentListener);
     }
 
-    public void test1(){
-        databaseReference.child(Constants.REPORTS_PATH).child("123")
-                .setValue(new Report("a", "b", "U2", "asd", "Luca"));
-    }
+    public void getReportsByUID(String author,
+                                Callback addedCallback,
+                                Callback changedCallback,
+                                Callback removedCallback,
+                                Callback movedCallback){
+        removeCurrentListener();
 
-    public void test2(){
-        databaseReference.child(Constants.REPORTS_PATH).child("456")
-                .setValue(new Report("a", "b", "U24", "asd", "Luca"));
-    }
-    public void test3(){
-        databaseReference.child(Constants.REPORTS_PATH).child("789")
-                .setValue(new Report("a", "b", "U2", "asd", "Marco"));
-    }
+        Query query = databaseReference
+                .child(Constants.REPORTS_PATH)
+                .orderByChild("author")
+                .equalTo(author);
+        currentReference = query.getRef();
+        currentListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-    public void test4(){
-        databaseReference.child(Constants.REPORTS_PATH).child("000")
-                .setValue(new Report("a", "b", "U2", "asd", "Giulia"));
-    }
+            }
 
-    public void getReportsByUID(){
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        query.addChildEventListener(currentListener);
     }
 
     @Override

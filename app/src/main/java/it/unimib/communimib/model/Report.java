@@ -8,21 +8,21 @@ public class Report {
 
     private String category;
 
-    private String emailCreator;
-    public Report(String title, String description, String building, String category, String emailCreator) {
+    private String author;
+    public Report(String title, String description, String building, String category, String author) {
         this.title = title;
         this.description = description;
         this.building = building;
         this.category = category;
-        this.emailCreator = emailCreator;
+        this.author = author;
     }
 
-    public String getEmailCreator() {
-        return emailCreator;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setEmailCreator(String emailCreator) {
-        this.emailCreator = emailCreator;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getTitle() {
