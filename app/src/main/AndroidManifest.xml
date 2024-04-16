@@ -13,19 +13,24 @@
         android:theme="@style/Theme.App.Starting"
         tools:targetApi="31">
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.Test"
             android:exported="true"
             android:theme="@style/Theme.Communimib">
-        </activity>
-        <activity
-            android:name=".ui.auth.loading.AuthActivity"
-            android:exported="true"
-            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Communimib"></activity>
+        <activity
+            android:name=".ui.auth.loading.AuthActivity"
+            android:exported="true"
+            android:theme="@style/Theme.App.Starting">
+
         </activity>
     </application>
 
