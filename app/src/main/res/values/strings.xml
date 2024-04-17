@@ -60,4 +60,7 @@
     <string name="categoria">Categoria</string>
     <string name="bottone_per_aggiungere_una_nuova_segnalazione">Bottone per aggiungere una nuova segnalazione</string>
     <string name="report_creation_error">Si è verificato un errore durante la memorizzazione della segnalazione nel sistema</string>
+    <string name="bottone_per_selezionare_gli_edifici_preferiti">Bottone per selezionare gli edifici preferiti</string>
+    <string name="bottone_per_selezionare_i_filtri_degli_edifici">Bottone per selezionare i filtri degli edifici</string>
+    <string name="bottone_principale_del_menu">bottone_principale_del_menu</string>
 </resources>

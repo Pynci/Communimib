@@ -8,11 +8,37 @@
 
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="segnalazioni"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton_filter_buildings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:contentDescription="@string/bottone_per_selezionare_i_filtri_degli_edifici"
+        android:src="@drawable/location_city_fill0_wght400_grad0_opsz24"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_favorite"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:contentDescription="@string/bottone_per_selezionare_gli_edifici_preferiti"
+        android:focusable="true"
+        android:src="@drawable/favorite_fill0_wght400_grad0_opsz24"
+        app:layout_constraintBottom_toTopOf="@+id/add_new_report_button"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_new_report_button"
@@ -21,7 +47,21 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:contentDescription="@string/bottone_per_aggiungere_una_nuova_segnalazione"
+        android:focusable="true"
         android:src="@drawable/add_fill0_wght400_grad0_opsz24"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_menu"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:contentDescription="@string/bottone_principale_del_menu"
+        android:focusable="true"
+        android:src="@drawable/menu_fill0_wght400_grad0_opsz24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
