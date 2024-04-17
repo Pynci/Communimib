@@ -32,10 +32,10 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
     }
 
     @Override
-    public void getAllReports(Callback addedCallback,
-                              Callback changedCallback,
-                              Callback removedCallback,
-                              Callback cancelledCallback){
+    public void readAllReports(Callback addedCallback,
+                               Callback changedCallback,
+                               Callback removedCallback,
+                               Callback cancelledCallback){
         removeAllQueryListeners();
         Query query = databaseReference
                 .child(Constants.REPORTS_PATH);
@@ -71,11 +71,11 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
     }
 
     @Override
-    public void getReportsByBuilding(String[] buildings,
-                                     Callback addedCallback,
-                                     Callback changedCallback,
-                                     Callback removedCallback,
-                                     Callback cancelledCallback){
+    public void readReportsByBuildings(String[] buildings,
+                                       Callback addedCallback,
+                                       Callback changedCallback,
+                                       Callback removedCallback,
+                                       Callback cancelledCallback){
         removeAllQueryListeners();
         for (String building : buildings) {
             addQueryListener("building", building, addedCallback, changedCallback, removedCallback, cancelledCallback);
@@ -84,11 +84,11 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
     }
 
     @Override
-    public void getReportsByCategory(String[] categories,
-                                     Callback addedCallback,
-                                     Callback changedCallback,
-                                     Callback removedCallback,
-                                     Callback cancelledCallback){
+    public void readReportsByCategories(String[] categories,
+                                        Callback addedCallback,
+                                        Callback changedCallback,
+                                        Callback removedCallback,
+                                        Callback cancelledCallback){
         removeAllQueryListeners();
         for (String category : categories) {
             addQueryListener("category", category, addedCallback, changedCallback, removedCallback, cancelledCallback);
@@ -96,17 +96,17 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
     }
 
     @Override
-    public void getReportsByUID(String author,
-                                Callback addedCallback,
-                                Callback changedCallback,
-                                Callback removedCallback,
-                                Callback cancelledCallback){
+    public void readReportsByUID(String author,
+                                 Callback addedCallback,
+                                 Callback changedCallback,
+                                 Callback removedCallback,
+                                 Callback cancelledCallback){
         removeAllQueryListeners();
         addQueryListener("author", author, addedCallback, changedCallback, removedCallback, cancelledCallback);
     }
 
     @Override
-    public void addReport(Report report, Callback callback) {
+    public void createReport(Report report, Callback callback) {
 
         String key = databaseReference.child(Constants.REPORTS_PATH).push().getKey();
 
