@@ -10,16 +10,23 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentReportsBinding;
+import it.unimib.communimib.ui.main.MainActivity;
 
 public class ReportsFragment extends Fragment {
 
     private FragmentReportsBinding fragmentReportsBinding;
     private ReportsViewModel reportsViewModel;
+
+    TextView textView;
+
+    private String dataFromDrawer = "";
 
     public ReportsFragment() {
         // Required empty public constructor
@@ -32,11 +39,13 @@ public class ReportsFragment extends Fragment {
                 this,
                 new ReportsViewModelFactory(this.getContext()))
                 .get(ReportsViewModel.class);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         fragmentReportsBinding = FragmentReportsBinding.inflate(inflater, container, false);
         return fragmentReportsBinding.getRoot();
     }
@@ -50,6 +59,13 @@ public class ReportsFragment extends Fragment {
             dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
         });
 
+        MainActivity activity = (MainActivity) getActivity();
+        dataFromDrawer = activity.getData();
+
+
+
+        textView = view.findViewById(R.id.textView7);
+        textView.setText(dataFromDrawer);
         //Gestione osservazione creazione
         reportsViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {

@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity{
     private NavController navController;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    String data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,8 +92,7 @@ public class MainActivity extends AppCompatActivity{
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        // Handle navigation item selection
-                        // Close the navigation drawer
+                        data = String.valueOf(item.getTitle());
                         drawerLayout.closeDrawers();
                         return true;
                     }
@@ -126,11 +126,7 @@ public class MainActivity extends AppCompatActivity{
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.onNavDestinationSelected(item, navController)
-                || super.onOptionsItemSelected(item);
+    public String getData(){
+        return data;
     }
 }
