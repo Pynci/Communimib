@@ -19,7 +19,7 @@
 
             <TextView
                 android:id="@+id/reportListItem_title"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:paddingStart="16dp"
@@ -30,6 +30,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/titolo_della_segnalazione" />
+
+            <TextView
+                android:id="@+id/reportListItem_building"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="5dp"
+                android:background="@color/md_theme_light_onSecondaryContainer"
+                tools:text="U1"
+                android:textColor="@color/seed"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/reportListItem_description"
@@ -88,6 +103,8 @@
                 android:text="@string/close"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
