@@ -43,17 +43,24 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
         currentListeners.add(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                addedCallback.onComplete(new Result.ReportSuccess(snapshot.getValue(Report.class)));
+                Report report = snapshot.getValue(Report.class);
+                report.setRid(snapshot.getKey());
+
+                addedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                changedCallback.onComplete(new Result.ReportSuccess(snapshot.getValue(Report.class)));
+                Report report = snapshot.getValue(Report.class);
+                report.setRid(snapshot.getKey());
+                changedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                removedCallback.onComplete(new Result.ReportSuccess(snapshot.getValue(Report.class)));
+                Report report = snapshot.getValue(Report.class);
+                report.setRid(snapshot.getKey());
+                removedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
             @Override
@@ -123,6 +130,20 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
                 });
     }
 
+    public void deleteReport(Report report, Callback callback){
+
+        databaseReference
+                .child(Constants.REPORTS_PATH)
+                .child(report.getRid())
+                .removeValue().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                callback.onComplete(new Result.Success());
+            } else {
+                callback.onComplete(new Result.Error(ErrorMapper.REPORT_DELETING_ERROR));
+            }
+        });
+    }
+
     private void removeAllQueryListeners(){
         if(!currentListeners.isEmpty() && !currentReferences.isEmpty()){
             for (int i = 0; i < currentListeners.size(); i++) {
@@ -146,17 +167,24 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
         ChildEventListener listener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                addedCallback.onComplete(new Result.ReportSuccess(snapshot.getValue(Report.class)));
+                Report report = snapshot.getValue(Report.class);
+                report.setRid(snapshot.getKey());
+
+                addedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                changedCallback.onComplete(new Result.ReportSuccess(snapshot.getValue(Report.class)));
+                Report report = snapshot.getValue(Report.class);
+                report.setRid(snapshot.getKey());
+                changedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                removedCallback.onComplete(new Result.ReportSuccess(snapshot.getValue(Report.class)));
+                Report report = snapshot.getValue(Report.class);
+                report.setRid(snapshot.getKey());
+                removedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
             @Override

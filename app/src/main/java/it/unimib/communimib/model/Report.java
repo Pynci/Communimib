@@ -2,6 +2,7 @@ package it.unimib.communimib.model;
 
 public class Report {
 
+    private String rid;
     private String title;
     private String description;
     private String building;
@@ -15,6 +16,14 @@ public class Report {
         this.building = building;
         this.category = category;
         this.author = author;
+    }
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
     }
 
     public String getAuthor() {

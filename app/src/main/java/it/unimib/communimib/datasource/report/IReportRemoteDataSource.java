@@ -28,4 +28,6 @@ public interface IReportRemoteDataSource {
                           Callback cancelledCallback);
 
     void createReport(Report report, Callback callback);
+
+    void deleteReport(Report report, Callback callback);
 }

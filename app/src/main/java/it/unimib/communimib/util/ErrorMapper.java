@@ -34,6 +34,8 @@ public class ErrorMapper {
         errorMap.put(USER_NOT_FOUND_ERROR, R.string.user_not_found_error);
         errorMap.put(NOT_ACCEPTED_PARAMETERS, R.string.not_accepted_parameters);
         errorMap.put(REPORT_CREATION_ERROR, R.string.report_creation_error);
+        errorMap.put(REPORT_DELETING_ERROR, R.string.report_deleting_error);
+
     }
 
     public static ErrorMapper getInstance() {
@@ -77,4 +79,5 @@ public class ErrorMapper {
 
     // Errori gestione reports
     public static final String REPORT_CREATION_ERROR = "report_creation_error";
+    public static final String REPORT_DELETING_ERROR = "report_deleting_error";
 }

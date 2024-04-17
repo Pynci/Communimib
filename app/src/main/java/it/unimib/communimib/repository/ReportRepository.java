@@ -16,4 +16,8 @@ public class ReportRepository implements IReportRepository {
         reportRemoteDataSource.createReport(new Report(titolo, descrizione, edificio, categoria, emailCreator), callback);
     }
 
+    public void deleteReport(Report report, Callback callback){
+        reportRemoteDataSource.deleteReport(report, callback);
+    }
+
 }
