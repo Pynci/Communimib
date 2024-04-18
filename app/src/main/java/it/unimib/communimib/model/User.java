@@ -6,9 +6,12 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.database.Exclude;
+
 @Entity
 public class User {
 
+    @Exclude private String uid;
     @PrimaryKey @NonNull private String email;
     @ColumnInfo(name = "name") private String name;
     @ColumnInfo(name = "surname") private String surname;
@@ -27,6 +30,14 @@ public class User {
         this.email = email;
         this.name = name;
         this.surname = surname;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(@NonNull String uid) {
+        this.uid = uid;
     }
 
     @NonNull

@@ -1,16 +1,18 @@
 package it.unimib.communimib.model;
 
+import com.google.firebase.database.Exclude;
+
 public class Report {
 
+    @Exclude
     private String rid;
     private String title;
     private String description;
     private String building;
-
     private String category;
+    private User author;
 
-    private String author;
-    public Report(String title, String description, String building, String category, String author) {
+    public Report(String title, String description, String building, String category, User author) {
         this.title = title;
         this.description = description;
         this.building = building;
@@ -26,11 +28,11 @@ public class Report {
         this.rid = rid;
     }
 
-    public String getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 

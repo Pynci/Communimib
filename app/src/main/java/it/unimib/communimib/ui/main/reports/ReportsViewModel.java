@@ -29,7 +29,7 @@ public class ReportsViewModel extends ViewModel {
     public void createReport(String titolo, String descrizione, String edificio, String categoria, DialogCallback callback) {
         String validationResult = Validation.validateNewReport(titolo, descrizione, edificio, categoria);
         if(validationResult.equals("ok")) {
-            reportRepository.createReport(titolo, descrizione, edificio, categoria, userRepository.getCurrentUser().getEmail(), result -> {
+            reportRepository.createReport(titolo, descrizione, edificio, categoria, userRepository.getCurrentUser(), result -> {
                 createReportResult.postValue(result);
                 callback.onComplete();
             });
