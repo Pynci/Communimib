@@ -66,6 +66,8 @@ public class ReportsFragment extends Fragment {
             }
         });
 
+
+
         reportList = new ArrayList<>();
         reportList.add(new Report("cesso rotto", "il bagno non va", "U14", "Guasto", "giu"));
         reportList.add(new Report("finestra rotto", "la finestra non si apre", "U7", "Guasto", "luca"));
@@ -74,7 +76,7 @@ public class ReportsFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(reportList, getContext(), true, R.layout.fragment_reports, new ReportsRecyclerViewAdapter.OnItemClickListener() {
+        reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(reportList, getContext(), true, R.layout.report_horizontal_item, new ReportsRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onCloseReportClick(Report report) {
                 reportsViewModel.deleteReport(report);
