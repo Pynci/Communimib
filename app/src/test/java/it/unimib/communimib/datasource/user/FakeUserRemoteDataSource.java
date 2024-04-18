@@ -19,10 +19,10 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
     @Override
     public void storeUserParameters(String uid, String email, String name, String surname, Callback callback) {
         if(users.containsKey(uid)){
-            users.replace(uid, new User(email, name, surname));
+            users.replace(uid, new User(uid, email, name, surname));
         }
         else{
-            users.put(uid, new User(email, name, surname));
+            users.put(uid, new User(uid, email, name, surname));
         }
         callback.onComplete(new Result.Success());
     }
@@ -42,7 +42,6 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
             callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_FOUND_ERROR));
         }
     }
-
 
     @Override
     public void updateNameAndSurname(String uid, String name, String surname, Callback callback) {

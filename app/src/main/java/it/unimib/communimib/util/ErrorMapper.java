@@ -29,6 +29,7 @@ public class ErrorMapper {
         errorMap.put(EMAIL_SENDING_ERROR, R.string.email_sending_error);
         errorMap.put(LOCALDB_INSERT_ERROR, R.string.localdb_insert_error);
         errorMap.put(LOCALDB_GET_ERROR, R.string.localdb_get_error);
+        errorMap.put(LOCALDB_UPDATE_ERROR, R.string.localdb_update_error);
         errorMap.put(REMOTEDB_GET_ERROR, R.string.remotedb_get_error);
         errorMap.put(REMOTEDB_INSERT_ERROR, R.string.remotedb_insert_error);
         errorMap.put(REMOTEDB_UPDATE_ERROR, R.string.remotedb_update_error);
@@ -60,6 +61,7 @@ public class ErrorMapper {
     public static final String USER_NOT_AUTHENTICATED_ERROR = "user_not_authenticated_error";
     public static final String LOCALDB_INSERT_ERROR = "localdb_insert_error";
     public static final String LOCALDB_GET_ERROR = "localdb_get_error";
+    public static final String LOCALDB_UPDATE_ERROR = "locadb_update_error";
     public static final String REMOTEDB_GET_ERROR = "remotedb_get_error";
     public static final String REMOTEDB_INSERT_ERROR = "remotedb_insert_error";
     public static final String REMOTEDB_UPDATE_ERROR = "remotedb_update_error";

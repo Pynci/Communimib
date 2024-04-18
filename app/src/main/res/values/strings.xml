@@ -43,6 +43,7 @@
     <string name="email_sending_error">Si è verificato un errore durante l\'invio della mail</string>
     <string name="localdb_insert_error">Si è verificato un errore durante il salvataggio locale</string>
     <string name="localdb_get_error">Si è verificato un errore durante l\'acquisizione dei dati locali</string>
+    <string name="localdb_update_error">Si è verificato un errore durante l\'aggiornamento dei dati locali</string>
     <string name="remotedb_insert_error">Si è verificato un errore durante il salvataggio remoto</string>
     <string name="remotedb_get_error">Si è verificato un errore durante l\'acquisizione dei dati remoti</string>
     <string name="remotedb_update_error">Si è verificato un errore durante l\'aggiornamento dei dati remoti</string>
