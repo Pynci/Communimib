@@ -50,22 +50,26 @@ public class ReportsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Gestione menu
+        //Gestione pulsanti del menu
         fragmentReportsBinding.floatingActionButtonMenu.setOnClickListener(v -> {
             onMenuButtonClicked(getContext());
         });
 
         fragmentReportsBinding.floatingActionButtonFavorite.setOnClickListener(v -> {
 
+            onMenuButtonClicked(getContext());
         });
 
         fragmentReportsBinding.floatingActionButtonFilterBuildings.setOnClickListener(v -> {
 
+            onMenuButtonClicked(getContext());
         });
 
         fragmentReportsBinding.floatingActionButtonAddNewReport.setOnClickListener(v -> {
             NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsViewModel);
             dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
+
+            onMenuButtonClicked(getContext());
         });
 
         //Gestione osservazione creazione
