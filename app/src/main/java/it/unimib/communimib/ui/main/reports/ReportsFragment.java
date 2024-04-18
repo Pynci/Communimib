@@ -61,7 +61,8 @@ public class ReportsFragment extends Fragment {
         });
 
         fragmentReportsBinding.floatingActionButtonFilterBuildings.setOnClickListener(v -> {
-
+            FiltersFragmentDialog filtersFragmentDialog = new FiltersFragmentDialog();
+            filtersFragmentDialog.show(getParentFragmentManager(), "New Filter Fragment Dialog");
             onMenuButtonClicked(getContext());
         });
 
