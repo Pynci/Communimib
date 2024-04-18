@@ -26,7 +26,8 @@ public class User {
         this.email = email;
     }
 
-    public User(@NonNull String email, String name, String surname) {
+    public User(String uid, @NonNull String email, String name, String surname) {
+        this.uid = uid;
         this.email = email;
         this.name = name;
         this.surname = surname;

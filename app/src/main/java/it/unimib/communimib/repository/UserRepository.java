@@ -53,7 +53,7 @@ public class UserRepository implements IUserRepository{
             if(authResult.isSuccessful()){
                 userRemoteDataSource.storeUserParameters(((Result.SignupSuccess) authResult).getUid(), email, name, surname, dbResult -> {
                     if(dbResult.isSuccessful()) {
-                        currentUser = new User(email, name, surname);
+                        currentUser = new User(((Result.SignupSuccess) authResult).getUid(), email, name, surname);
                         userLocalDataSource.insertUser(currentUser, callback);
                     }
                     else{

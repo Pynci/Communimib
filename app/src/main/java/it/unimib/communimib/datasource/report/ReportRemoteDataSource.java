@@ -21,8 +21,8 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class ReportRemoteDataSource implements IReportRemoteDataSource {
     private final DatabaseReference databaseReference;
-    private List<ChildEventListener> currentListeners;
-    private List<DatabaseReference> currentReferences;
+    private final List<ChildEventListener> currentListeners;
+    private final List<DatabaseReference> currentReferences;
 
     public ReportRemoteDataSource(){
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -120,9 +120,22 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
         databaseReference
                 .child(Constants.REPORTS_PATH)
                 .child(key)
-                .setValue(report).addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
-                        callback.onComplete(new Result.Success());
+                .setValue(report).addOnCompleteListener(reportTask -> {
+                    if(reportTask.isSuccessful()) {
+                        databaseReference
+                                .child(Constants.USERSREPORTS_PATH)
+                                .child(report.getAuthor().getUid())
+                                .child(report.getRid())
+                                .setValue(true)
+                                .addOnCompleteListener(userReportTask -> {
+                                    if(userReportTask.isSuccessful()){
+                                        callback.onComplete(new Result.Success());
+                                    }
+                                    else{
+                                        //TODO: inserire un errore più specifico qui
+                                        callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
+                                    }
+                                });
                     }
                     else{
                         callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
@@ -131,16 +144,27 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
     }
 
     public void deleteReport(Report report, Callback callback){
-
         databaseReference
                 .child(Constants.REPORTS_PATH)
                 .child(report.getRid())
-                .removeValue().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                callback.onComplete(new Result.Success());
-            } else {
-                callback.onComplete(new Result.Error(ErrorMapper.REPORT_DELETING_ERROR));
-            }
+                .removeValue().addOnCompleteListener(reportTask -> {
+                    if(reportTask.isSuccessful()){
+                        databaseReference
+                                .child(Constants.USERSREPORTS_PATH)
+                                .child(report.getAuthor().getUid())
+                                .child(report.getRid())
+                                .removeValue()
+                                .addOnCompleteListener(userReportTask -> {
+                                    if(userReportTask.isSuccessful()){
+                                        callback.onComplete(new Result.Success());
+                                    }
+                                    else{
+                                        callback.onComplete(new Result.Error(ErrorMapper.REPORT_DELETING_ERROR));
+                                    }
+                                });
+                    } else {
+                        callback.onComplete(new Result.Error(ErrorMapper.REPORT_DELETING_ERROR));
+                    }
         });
     }
 
