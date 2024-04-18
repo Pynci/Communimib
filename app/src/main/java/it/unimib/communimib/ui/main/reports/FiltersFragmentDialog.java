@@ -8,6 +8,12 @@ import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentFilterDialogBinding;
 
 
@@ -22,6 +28,16 @@ public class FiltersFragmentDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(binding.getRoot());
 
+        //Gestione della listView
+        List<String> listaDati = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.buildings)));
+        if (!listaDati.isEmpty()) {
+            listaDati.remove(listaDati.size() - 1);
+        }
+        FilterReportListViewAdapter filterReportListViewAdapter = new FilterReportListViewAdapter(this.getContext(), listaDati);
+        binding.ListView.setAdapter(filterReportListViewAdapter);
+        binding.ListView.setDivider(null);
+
+        //Gestione del pulsante di uscita
         binding.roolbackButton.setOnClickListener(v -> {
             this.dismiss();
         });
