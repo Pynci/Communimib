@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +16,19 @@ import android.view.ViewGroup;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentReportsBinding;
+import it.unimib.communimib.model.Report;
 
 public class ReportsFragment extends Fragment {
 
     private FragmentReportsBinding fragmentReportsBinding;
     private ReportsViewModel reportsViewModel;
+    private List<Report> reportList;
+    private ReportsRecyclerViewAdapter reportsRecyclerViewAdapter;
 
     public ReportsFragment() {
         // Required empty public constructor
@@ -56,5 +65,23 @@ public class ReportsFragment extends Fragment {
                 Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
+
+        reportList = new ArrayList<>();
+        reportList.add(new Report("cesso rotto", "il bagno non va", "U14", "Guasto", "giu"));
+        reportList.add(new Report("finestra rotto", "la finestra non si apre", "U7", "Guasto", "luca"));
+
+        RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(reportList, getContext(), true, R.layout.fragment_reports, new ReportsRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onCloseReportClick(Report report) {
+                reportsViewModel.deleteReport(report);
+            }
+        });
+
+        recyclerViewReports.setLayoutManager(layoutManager);
+        recyclerViewReports.setAdapter(reportsRecyclerViewAdapter);
     }
 }
