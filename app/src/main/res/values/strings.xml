@@ -63,4 +63,7 @@
     <string name="bottone_per_selezionare_gli_edifici_preferiti">Bottone per selezionare gli edifici preferiti</string>
     <string name="bottone_per_selezionare_i_filtri_degli_edifici">Bottone per selezionare i filtri degli edifici</string>
     <string name="bottone_principale_del_menu">bottone_principale_del_menu</string>
+    <string name="seleziona_gli_edifici_per_filtrare_le_segnalazioni">Seleziona gli edifici per filtrare le segnalazioni</string>
+    <string name="filtra_per_gli_edfici_preferiti">Visualizza le segnalazioni dei miei edifici preferiti</string>
+    <string name="visualizza_le_seganalzioni_di_tutti_gli_edifici">Visualizza le seganalzioni di tutti gli edifici</string>
 </resources>
