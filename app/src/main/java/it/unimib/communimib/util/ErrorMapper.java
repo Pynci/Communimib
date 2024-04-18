@@ -31,6 +31,7 @@ public class ErrorMapper {
         errorMap.put(LOCALDB_GET_ERROR, R.string.localdb_get_error);
         errorMap.put(REMOTEDB_GET_ERROR, R.string.remotedb_get_error);
         errorMap.put(REMOTEDB_INSERT_ERROR, R.string.remotedb_insert_error);
+        errorMap.put(REMOTEDB_UPDATE_ERROR, R.string.remotedb_update_error);
         errorMap.put(USER_NOT_FOUND_ERROR, R.string.user_not_found_error);
         errorMap.put(NOT_ACCEPTED_PARAMETERS, R.string.not_accepted_parameters);
         errorMap.put(REPORT_CREATION_ERROR, R.string.report_creation_error);
@@ -61,6 +62,7 @@ public class ErrorMapper {
     public static final String LOCALDB_GET_ERROR = "localdb_get_error";
     public static final String REMOTEDB_GET_ERROR = "remotedb_get_error";
     public static final String REMOTEDB_INSERT_ERROR = "remotedb_insert_error";
+    public static final String REMOTEDB_UPDATE_ERROR = "remotedb_update_error";
     public static final String USER_NOT_FOUND_ERROR = "user_not_found_error";
 
 

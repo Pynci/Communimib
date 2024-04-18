@@ -45,6 +45,7 @@
     <string name="localdb_get_error">Si è verificato un errore durante l\'acquisizione dei dati locali</string>
     <string name="remotedb_insert_error">Si è verificato un errore durante il salvataggio remoto</string>
     <string name="remotedb_get_error">Si è verificato un errore durante l\'acquisizione dei dati remoti</string>
+    <string name="remotedb_update_error">Si è verificato un errore durante l\'aggiornamento dei dati remoti</string>
     <string name="user_not_found_error">Utente non trovato</string>
     <string name="not_accepted_parameters">"I parametri inseriti non sono accettabili"</string>
     <string name="system_error"> Si è verificato un errore nel sistema</string>

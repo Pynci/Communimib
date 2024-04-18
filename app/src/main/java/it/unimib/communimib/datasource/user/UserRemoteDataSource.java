@@ -3,7 +3,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.model.Result;
@@ -25,7 +27,7 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
         databaseReference
                 .child(Constants.USERS_PATH)
                 .child(uid)
-                .setValue(new User(email, name, surname))
+                .setValue(new User(uid, email, name, surname))
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         callback.onComplete(new Result.Success());
@@ -61,7 +63,35 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
     }
 
     @Override
-    public void updateNameAndSurname(String name, String surname) {
-        // scrivo questo commento altrimenti sonar mi picchia
+    public void updateNameAndSurname(String uid, String name, String surname, Callback callback) {
+        Map<String, Object> updateMap = new HashMap<>();
+        databaseReference
+                .child(Constants.USERSREPORTS_PATH)
+                .child(uid)
+                .get()
+                .addOnCompleteListener(getTask -> {
+                    if(getTask.isSuccessful()){
+                        DataSnapshot snapshot = getTask.getResult();
+                        final Iterator<DataSnapshot> iterator = snapshot.getChildren().iterator();
+                        while(iterator.hasNext()){
+                            String rid = iterator.next().getKey();
+                            updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/name", name);
+                            updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/surname", surname);
+                        }
+                        updateMap.put(Constants.USERS_PATH + "/" + uid + "/name", name);
+                        updateMap.put(Constants.USERS_PATH + "/" + uid + "/surname", surname);
+                        databaseReference
+                                .child(Constants.REPORTS_PATH)
+                                .updateChildren(updateMap)
+                                .addOnCompleteListener(updateTask -> {
+                                    if(updateTask.isSuccessful()){
+                                        callback.onComplete(new Result.Success());
+                                    }
+                                    else{
+                                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                                    }
+                                });
+                    }
+                });
     }
 }

@@ -1,7 +1,6 @@
 package it.unimib.communimib.datasource.user;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import it.unimib.communimib.Callback;
@@ -46,7 +45,7 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
 
 
     @Override
-    public void updateNameAndSurname(String name, String surname) {
+    public void updateNameAndSurname(String uid, String name, String surname, Callback callback) {
         //TODO: implementare questo metodo
     }
 }
