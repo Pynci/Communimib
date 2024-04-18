@@ -177,7 +177,15 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public void updateUserNameAndSurname(String name, String surname, Callback callback) {
-        // scrivo sto commento altrimenti Sonar mi picchia
+        if(currentUser != null){
+            userRemoteDataSource.updateNameAndSurname(currentUser.getUid(), name, surname, remoteResult -> {
+                if(remoteResult.isSuccessful()){
+                    currentUser.setName(name);
+                    currentUser.setSurname(surname);
+                    userLocalDataSource.updateUser(currentUser, callback);
+                }
+            });
+        }
     }
 
     @Override

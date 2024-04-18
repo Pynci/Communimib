@@ -11,7 +11,7 @@ import com.google.firebase.database.Exclude;
 @Entity
 public class User {
 
-    @Exclude private String uid;
+    private String uid;
     @PrimaryKey @NonNull private String email;
     @ColumnInfo(name = "name") private String name;
     @ColumnInfo(name = "surname") private String surname;
