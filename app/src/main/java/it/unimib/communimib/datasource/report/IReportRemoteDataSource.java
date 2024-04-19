@@ -7,7 +7,7 @@ public interface IReportRemoteDataSource {
     void readAllReports(Callback addedCallback,
                         Callback changedCallback,
                         Callback removedCallback,
-                        Callback movedCallback);
+                        Callback cancelledCallback);
 
     void readReportsByBuildings(String[] buildings,
                                 Callback addedCallback,

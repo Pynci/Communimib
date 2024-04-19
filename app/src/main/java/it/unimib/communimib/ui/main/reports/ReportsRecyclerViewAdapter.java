@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.communimib.R;
@@ -25,11 +26,30 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
     private final List<Report> reportList;
     private final OnItemClickListener onItemClickListener;
     private final int layout;
-    private final Context context;
 
-    public ReportsRecyclerViewAdapter(List<Report> reportList,Context context, boolean isUnimibUser,int layout, OnItemClickListener onItemClickListener){
-        this.reportList = reportList;
-        this.context = context;
+    public void addItem(Report newReport) {
+        reportList.add(newReport);
+        notifyItemInserted(reportList.size() - 1);
+    }
+
+    public void editItem(Report editedReport) {
+        int position = reportList.indexOf(editedReport);
+        if (position != -1) {
+            reportList.set(position, editedReport);
+            notifyItemChanged(position);
+        }
+    }
+
+    public void removeItem(Report removedReport) {
+        int position = reportList.indexOf(removedReport);
+        if (position != -1) {
+            reportList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public ReportsRecyclerViewAdapter(boolean isUnimibUser, int layout, OnItemClickListener onItemClickListener){
+        reportList = new ArrayList<>();
         this.isUnimibUser = isUnimibUser;
         this.layout = layout;
         this.onItemClickListener = onItemClickListener;

@@ -6,7 +6,10 @@ import it.unimib.communimib.model.User;
 
 public interface IReportRepository {
 
-    void readAllReports(Callback callback);
+    void readAllReports(Callback addedCallback,
+                        Callback changedCallback,
+                        Callback removedCallback,
+                        Callback cancelledCallback);
 
     void createReport(String titolo, String descrizione, String edificio, String categoria, User author, Callback callback);
 

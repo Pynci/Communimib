@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import java.util.List;
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentReportsBinding;
 import it.unimib.communimib.model.Report;
+import it.unimib.communimib.model.Result;
+import it.unimib.communimib.util.ErrorMapper;
 
 public class ReportsFragment extends Fragment {
 
@@ -53,6 +56,7 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        reportList = new ArrayList<>();
 
         fragmentReportsBinding.addNewReportButton.setOnClickListener(v -> {
             NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsViewModel);
@@ -66,24 +70,64 @@ public class ReportsFragment extends Fragment {
             }
         });
 
-
-
-        reportList = new ArrayList<>();
-        reportList.add(new Report("cesso rotto", "il bagno non va", "U14", "Guasto", "giu"));
-        reportList.add(new Report("finestra rotto", "la finestra non si apre", "U7", "Guasto", "luca"));
-
-        RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-
-        reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(reportList, getContext(), true, R.layout.report_horizontal_item, new ReportsRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onCloseReportClick(Report report) {
-                reportsViewModel.deleteReport(report);
+        reportsViewModel.getReportAddedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.addItem(report);
+                Log.d("vaffanculo", "dentro");
+            }
+            else{
+                Snackbar
+                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
             }
         });
 
+        reportsViewModel.getReportChangedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.editItem(report);
+            }
+            else{
+                Snackbar
+                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        reportsViewModel.getReportRemovedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.removeItem(report);
+            }
+            else{
+                Snackbar
+                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        reportsViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result -> {
+            Snackbar
+                    .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                    .show();
+        });
+
+
+//        reportList.add(new Report("cesso rotto", "il bagno non va", "U14", "Guasto",
+//                new User("uid1", "giulia@unimib.it", "Giulia Raffaella Giulia", "Vitale")));
+//        reportList.add(new Report("finestra rotto", "la finestra non si apre", "U7", "Guasto",
+//                new User("uid2", "luca@unimib.it", "Luca", "Pincincincinciroli")));
+
+        RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+        reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(
+                true,
+                R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
+
         recyclerViewReports.setLayoutManager(layoutManager);
         recyclerViewReports.setAdapter(reportsRecyclerViewAdapter);
+
+        reportsViewModel.readAllReports();
     }
 }

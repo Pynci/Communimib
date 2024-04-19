@@ -12,6 +12,10 @@ public class Report {
     private String category;
     private User author;
 
+    public Report(){
+
+    }
+
     public Report(String title, String description, String building, String category, User author) {
         this.title = title;
         this.description = description;

@@ -17,20 +17,31 @@ public class ReportsViewModel extends ViewModel {
 
     private final MutableLiveData<Result> createReportResult;
     private final MutableLiveData<Result> deleteReportResult;
-    private final MutableLiveData<Result> readAllReportsResult;
+    private final MutableLiveData<Result> reportAddedReadResult;
+    private final MutableLiveData<Result> reportChangedReadResult;
+    private final MutableLiveData<Result> reportRemovedReadResult;
+    private final MutableLiveData<Result> readCancelledResult;
     private final IReportRepository reportRepository;
     private final IUserRepository userRepository;
 
     public ReportsViewModel(IReportRepository reportRepository, IUserRepository userRepository) {
         createReportResult = new MutableLiveData<>();
         deleteReportResult = new MutableLiveData<>();
-        readAllReportsResult = new MutableLiveData<>();
         this.reportRepository = reportRepository;
         this.userRepository = userRepository;
+
+        reportAddedReadResult = new MutableLiveData<>();
+        reportChangedReadResult = new MutableLiveData<>();
+        reportRemovedReadResult = new MutableLiveData<>();
+        readCancelledResult = new MutableLiveData<>();
     }
 
     public void readAllReports(){
-        reportRepository.readAllReports(readAllReportsResult :: postValue);
+        reportRepository.readAllReports(
+                reportAddedReadResult :: postValue,
+                reportChangedReadResult :: postValue,
+                reportRemovedReadResult :: postValue,
+                readCancelledResult :: postValue);
     }
 
     public void createReport(String titolo, String descrizione, String edificio, String categoria, DialogCallback callback) {
@@ -45,6 +56,22 @@ public class ReportsViewModel extends ViewModel {
 
     public void deleteReport(Report report){
         reportRepository.deleteReport(report, deleteReportResult::postValue);
+    }
+
+    public LiveData<Result> getReportAddedReadResult() {
+        return reportAddedReadResult;
+    }
+
+    public LiveData<Result> getReportChangedReadResult() {
+        return reportChangedReadResult;
+    }
+
+    public LiveData<Result> getReportRemovedReadResult() {
+        return reportRemovedReadResult;
+    }
+
+    public LiveData<Result> getReadCancelledResult() {
+        return readCancelledResult;
     }
 
     public LiveData<Result> getCreateReportResult() {
