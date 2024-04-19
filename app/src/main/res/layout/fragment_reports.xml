@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.reports.ReportsFragment">
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="segnalazioni"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragmentReport_recyclerView"
         android:layout_width="match_parent"

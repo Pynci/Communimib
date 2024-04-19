@@ -30,7 +30,6 @@ public class ReportsFragment extends Fragment {
 
     private FragmentReportsBinding fragmentReportsBinding;
     private ReportsViewModel reportsViewModel;
-    private List<Report> reportList;
     private ReportsRecyclerViewAdapter reportsRecyclerViewAdapter;
 
     public ReportsFragment() {
@@ -56,7 +55,6 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        reportList = new ArrayList<>();
 
         fragmentReportsBinding.addNewReportButton.setOnClickListener(v -> {
             NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsViewModel);
@@ -74,7 +72,6 @@ public class ReportsFragment extends Fragment {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
                 reportsRecyclerViewAdapter.addItem(report);
-                Log.d("vaffanculo", "dentro");
             }
             else{
                 Snackbar
@@ -113,16 +110,10 @@ public class ReportsFragment extends Fragment {
                     .show();
         });
 
-
-//        reportList.add(new Report("cesso rotto", "il bagno non va", "U14", "Guasto",
-//                new User("uid1", "giulia@unimib.it", "Giulia Raffaella Giulia", "Vitale")));
-//        reportList.add(new Report("finestra rotto", "la finestra non si apre", "U7", "Guasto",
-//                new User("uid2", "luca@unimib.it", "Luca", "Pincincincinciroli")));
-
         RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
         reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(
-                true,
+                false,
                 R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
 
         recyclerViewReports.setLayoutManager(layoutManager);

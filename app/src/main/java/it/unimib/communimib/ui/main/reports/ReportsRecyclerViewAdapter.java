@@ -41,7 +41,13 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
     }
 
     public void removeItem(Report removedReport) {
-        int position = reportList.indexOf(removedReport);
+        int position = -1;
+        for (int i = 0; i < reportList.size(); i++) {
+            if(reportList.get(i).getRid().equals(removedReport.getRid())){
+                position = i;
+                break;
+            }
+        }
         if (position != -1) {
             reportList.remove(position);
             notifyItemRemoved(position);
@@ -107,8 +113,8 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
             title.setText(report.getTitle());
             description.setText(report.getDescription());
             buiding.setText(report.getBuilding());
-            //name.setText(report.getAuthor().getName());
-            //surname.setText(report.getAuthor().getSurname());
+            name.setText(report.getAuthor().getName());
+            surname.setText(report.getAuthor().getSurname());
             //propic.setImageResource();
 
         }
