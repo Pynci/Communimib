@@ -30,17 +30,38 @@ public class FiltersFragmentDialog extends DialogFragment {
 
         //Gestione della listView
         List<String> listaDati = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.buildings)));
-        if (!listaDati.isEmpty()) {
+
+        if (!listaDati.isEmpty())
             listaDati.remove(listaDati.size() - 1);
-        }
-        FilterReportListViewAdapter filterReportListViewAdapter = new FilterReportListViewAdapter(this.getContext(), listaDati);
+
+        FilterReportListViewAdapter filterReportListViewAdapter = new FilterReportListViewAdapter(
+                this.getContext(),
+                listaDati,
+                () -> {
+                    binding.fragmentFilterCheckboxFavoriteBuildings.setChecked(false);
+                    binding.fragmentFilterCheckboxAllBuildings.setChecked(false);
+                }
+        );
         binding.ListView.setAdapter(filterReportListViewAdapter);
         binding.ListView.setDivider(null);
 
-        //Gestione del pulsante di uscita
-        binding.roolbackButton.setOnClickListener(v -> {
-            this.dismiss();
+        //Gestione delle checkbox
+        binding.fragmentFilterCheckboxFavoriteBuildings.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.fragmentFilterCheckboxAllBuildings.setChecked(false);
+                filterReportListViewAdapter.setAllItemsUnchecked();
+            }
         });
+
+        binding.fragmentFilterCheckboxAllBuildings.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                binding.fragmentFilterCheckboxFavoriteBuildings.setChecked(false);
+                filterReportListViewAdapter.setAllItemsUnchecked();
+            }
+        });
+
+        //Gestione del pulsante di uscita
+        binding.roolbackButton.setOnClickListener(v -> this.dismiss());
 
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

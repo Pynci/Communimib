@@ -17,10 +17,13 @@ public class FilterReportListViewAdapter extends BaseAdapter {
     private final List<String> data;
     private final List<String> checkedItems;
 
-    public FilterReportListViewAdapter(Context context, List<String> data) {
+    private final OnListViewItemCheck onListViewItemCheck;
+
+    public FilterReportListViewAdapter(Context context, List<String> data, OnListViewItemCheck onListViewItemCheck) {
         this.context = context;
         this.data = data;
         checkedItems = new ArrayList<>();
+        this.onListViewItemCheck = onListViewItemCheck;
     }
 
     @Override
@@ -47,16 +50,34 @@ public class FilterReportListViewAdapter extends BaseAdapter {
         }
 
         CheckBox checkBoxItem = listItemView.findViewById(R.id.building_listview_element_checkbox);
+
+        //checkBoxItem.setChecked(checkedItems.contains(data.get(position)));
         checkBoxItem.setText(data.get(position));
+        /*
         checkBoxItem.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            checkedItems.add(data.get(position));
+            if(isChecked) {
+                checkedItems.add(data.get(position));
+                onListViewItemCheck.execute();
+            }
+            else
+                checkedItems.remove(data.get(position));
         });
+         */
 
         return listItemView;
     }
 
     public List<String> getCheckedItems() {
         return checkedItems;
+    }
+
+    public void setAllItemsUnchecked() {
+        checkedItems.clear();
+        notifyDataSetChanged();
+    }
+
+    public interface OnListViewItemCheck{
+        void execute();
     }
 }
 
