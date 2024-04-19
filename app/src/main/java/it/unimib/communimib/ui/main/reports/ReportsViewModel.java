@@ -78,5 +78,5 @@ public class ReportsViewModel extends ViewModel {
         return this.createReportResult;
     }
 
-    public LiveData<Result> getDeleteReportResult() {return  this.deleteReportResult;}
+    public LiveData<Result> getDeleteReportResult() {return this.deleteReportResult;}
 }

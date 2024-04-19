@@ -105,7 +105,9 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
             name = itemView.findViewById(R.id.reportListItem_user_name);
             surname = itemView.findViewById(R.id.reportListItem_user_surname);
             closeButton = itemView.findViewById(R.id.reportListItem_closeButton);
-
+            if (isUnimibUser){
+                closeButton.setVisibility(View.VISIBLE);
+            }
             closeButton.setOnClickListener(this);
         }
 

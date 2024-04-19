@@ -110,15 +110,30 @@ public class ReportsFragment extends Fragment {
                     .show();
         });
 
+        reportsViewModel.getDeleteReportResult().observe(getViewLifecycleOwner(), result ->{
+            if(result.isSuccessful()){
+                Snackbar.make(view, R.string.report_closed_correctly, BaseTransientBottomBar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
         RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
         reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(
-                false,
-                R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
+                true,
+                R.layout.report_horizontal_item, new ReportsRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onCloseReportClick(Report report) {
+                reportsViewModel.deleteReport(report);
+            }
+        });
 
         recyclerViewReports.setLayoutManager(layoutManager);
         recyclerViewReports.setAdapter(reportsRecyclerViewAdapter);
 
         reportsViewModel.readAllReports();
+
+
     }
 }
