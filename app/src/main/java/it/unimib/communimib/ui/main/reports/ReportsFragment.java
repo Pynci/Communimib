@@ -19,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentReportsBinding;
+import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersFragmentDialog;
 
 public class ReportsFragment extends Fragment {
 

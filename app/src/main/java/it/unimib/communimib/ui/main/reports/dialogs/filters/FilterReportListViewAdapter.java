@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.reports;
+package it.unimib.communimib.ui.main.reports.dialogs.filters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -56,18 +56,15 @@ public class FilterReportListViewAdapter extends BaseAdapter {
         checkBoxItem.setChecked(checkedItems.contains(data.get(position)));
 
         // Gestisce il click sulla checkbox
-        checkBoxItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CheckBox checkBox = (CheckBox) v;
-                String item = data.get(position);
-                if (checkBox.isChecked()) {
-                    checkedItems.add(item);
-                } else {
-                    checkedItems.remove(item);
-                }
-                onListViewItemCheck.execute();
+        checkBoxItem.setOnClickListener(v -> {
+            CheckBox checkBox = (CheckBox) v;
+            String item = data.get(position);
+            if (checkBox.isChecked()) {
+                checkedItems.add(item);
+            } else {
+                checkedItems.remove(item);
             }
+            onListViewItemCheck.execute();
         });
 
         return listItemView;

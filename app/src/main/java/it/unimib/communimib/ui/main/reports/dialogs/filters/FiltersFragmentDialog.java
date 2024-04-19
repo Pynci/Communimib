@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.reports;
+package it.unimib.communimib.ui.main.reports.dialogs.filters;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,10 +19,11 @@ import it.unimib.communimib.databinding.FragmentFilterDialogBinding;
 
 public class FiltersFragmentDialog extends DialogFragment {
 
-    private FragmentFilterDialogBinding binding;
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
+        FragmentFilterDialogBinding binding;
         binding = FragmentFilterDialogBinding.inflate(LayoutInflater.from(getContext()));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -58,6 +59,10 @@ public class FiltersFragmentDialog extends DialogFragment {
                 binding.fragmentFilterCheckboxFavoriteBuildings.setChecked(false);
                 filterReportListViewAdapter.setAllItemsUnchecked();
             }
+        });
+
+        //Gestione del pulsante di conferma
+        binding.confirmButton.setOnClickListener(v -> {
         });
 
         //Gestione del pulsante di uscita
