@@ -50,19 +50,25 @@ public class FilterReportListViewAdapter extends BaseAdapter {
         }
 
         CheckBox checkBoxItem = listItemView.findViewById(R.id.building_listview_element_checkbox);
-
-        //checkBoxItem.setChecked(checkedItems.contains(data.get(position)));
         checkBoxItem.setText(data.get(position));
-        /*
-        checkBoxItem.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked) {
-                checkedItems.add(data.get(position));
+
+        // Imposta lo stato della checkbox basato sullo stato dell'elemento nella lista dei dati
+        checkBoxItem.setChecked(checkedItems.contains(data.get(position)));
+
+        // Gestisce il click sulla checkbox
+        checkBoxItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox checkBox = (CheckBox) v;
+                String item = data.get(position);
+                if (checkBox.isChecked()) {
+                    checkedItems.add(item);
+                } else {
+                    checkedItems.remove(item);
+                }
                 onListViewItemCheck.execute();
             }
-            else
-                checkedItems.remove(data.get(position));
         });
-         */
 
         return listItemView;
     }
