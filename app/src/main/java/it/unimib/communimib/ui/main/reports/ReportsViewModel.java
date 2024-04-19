@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.DialogCallback;
+import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IReportRepository;
@@ -16,14 +17,20 @@ public class ReportsViewModel extends ViewModel {
 
     private final MutableLiveData<Result> createReportResult;
     private final MutableLiveData<Result> deleteReportResult;
+    private final MutableLiveData<Result> readAllReportsResult;
     private final IReportRepository reportRepository;
     private final IUserRepository userRepository;
 
     public ReportsViewModel(IReportRepository reportRepository, IUserRepository userRepository) {
         createReportResult = new MutableLiveData<>();
         deleteReportResult = new MutableLiveData<>();
+        readAllReportsResult = new MutableLiveData<>();
         this.reportRepository = reportRepository;
         this.userRepository = userRepository;
+    }
+
+    public void readAllReports(){
+        reportRepository.readAllReports(readAllReportsResult :: postValue);
     }
 
     public void createReport(String titolo, String descrizione, String edificio, String categoria, DialogCallback callback) {
@@ -43,4 +50,6 @@ public class ReportsViewModel extends ViewModel {
     public LiveData<Result> getCreateReportResult() {
         return this.createReportResult;
     }
+
+    public LiveData<Result> getDeleteReportResult() {return  this.deleteReportResult;}
 }
