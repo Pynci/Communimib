@@ -17,14 +17,18 @@ import android.view.animation.AnimationUtils;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
+
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentReportsBinding;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersFragmentDialog;
+import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersViewModel;
 
 public class ReportsFragment extends Fragment {
 
     private FragmentReportsBinding fragmentReportsBinding;
     private ReportsViewModel reportsViewModel;
+    private FiltersViewModel filtersViewModel;
 
     private boolean menuVisibile;
     public ReportsFragment() {
@@ -38,6 +42,8 @@ public class ReportsFragment extends Fragment {
                 this,
                 new ReportsViewModelFactory(this.getContext()))
                 .get(ReportsViewModel.class);
+
+        filtersViewModel = new ViewModelProvider(this).get(FiltersViewModel.class);
     }
 
     @Override
@@ -62,7 +68,7 @@ public class ReportsFragment extends Fragment {
         });
 
         fragmentReportsBinding.floatingActionButtonFilterBuildings.setOnClickListener(v -> {
-            FiltersFragmentDialog filtersFragmentDialog = new FiltersFragmentDialog();
+            FiltersFragmentDialog filtersFragmentDialog = new FiltersFragmentDialog(filtersViewModel);
             filtersFragmentDialog.show(getParentFragmentManager(), "New Filter Fragment Dialog");
             onMenuButtonClicked(getContext());
         });
@@ -81,6 +87,18 @@ public class ReportsFragment extends Fragment {
             }
         });
 
+        //Gestine osservazione filtri
+        filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), strings -> {
+            /*
+            * TODO: implementare collegamento con viewmodel
+            *
+            * NOTA BENE: strings è SEMPRE UNA LISTA a prescindere dal filtro applicato. Se si filtra per preferiti o per tutti
+            * gli edifici si ha una LISTA di un solo elemento!!!
+            *
+            * Se vuoi filtrare per i preferiti il codice è filter-by-favorite, se vuoi filtrare per tutti gli edifici
+            * è filter-by-all, altrimenti la lista contiene gli edifici selezionati
+             */
+        });
     }
 
     private void onMenuButtonClicked(Context context) {

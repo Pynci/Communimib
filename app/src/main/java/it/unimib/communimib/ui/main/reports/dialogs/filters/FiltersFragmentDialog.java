@@ -19,6 +19,11 @@ import it.unimib.communimib.databinding.FragmentFilterDialogBinding;
 
 public class FiltersFragmentDialog extends DialogFragment {
 
+    private FiltersViewModel filtersViewModel;
+
+    public FiltersFragmentDialog (FiltersViewModel filtersViewModel) {
+        this.filtersViewModel = filtersViewModel;
+    }
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -63,6 +68,21 @@ public class FiltersFragmentDialog extends DialogFragment {
 
         //Gestione del pulsante di conferma
         binding.confirmButton.setOnClickListener(v -> {
+            List<String> selectedBuildings = filterReportListViewAdapter.getCheckedItems();
+
+            if(selectedBuildings.isEmpty()) {
+                List<String> checkedBox = new ArrayList<>();
+
+                if(binding.fragmentFilterCheckboxFavoriteBuildings.isChecked())
+                    checkedBox.add("filter-by-favorite");
+                else
+                    checkedBox.add("filter-by-all");
+
+                filtersViewModel.setFilters(checkedBox);
+            }
+            else{
+                filtersViewModel.setFilters(selectedBuildings);
+            }
         });
 
         //Gestione del pulsante di uscita
