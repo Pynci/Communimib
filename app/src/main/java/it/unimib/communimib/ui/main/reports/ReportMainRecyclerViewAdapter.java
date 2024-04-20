@@ -3,6 +3,7 @@ package it.unimib.communimib.ui.main.reports;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,13 +38,23 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
     @Override
     public int getItemCount() {
+        if(categoryList != null){
+            return categoryList.size();
+        }
         return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        private TextView categoryName;
+        private RecyclerView horizontalRecyclerView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            categoryName = itemView.findViewById(R.id.reportHorizontalRecyclerViewItem_categoryName);
+            horizontalRecyclerView = itemView.findViewById(R.id.reportHorizontalRecyclerViewItem_recyclerView);
+
         }
 
         @Override
