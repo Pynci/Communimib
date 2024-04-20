@@ -33,7 +33,7 @@ public class ReportsFragment extends Fragment {
     private ReportsViewModel reportsViewModel;
     private FiltersViewModel filtersViewModel;
     private ReportsCreationViewModel reportsCreationViewModel;
-    private ReportsRecyclerViewAdapter reportsRecyclerViewAdapter;
+    private ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter;
     private boolean menuVisibile;
 
     public ReportsFragment() {
@@ -98,7 +98,7 @@ public class ReportsFragment extends Fragment {
         reportsViewModel.getReportAddedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
-                reportsRecyclerViewAdapter.addItem(report);
+                reportsHorizontalRecyclerViewAdapter.addItem(report);
             }
             else{
                 Snackbar
@@ -109,7 +109,7 @@ public class ReportsFragment extends Fragment {
         reportsViewModel.getReportChangedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
-                reportsRecyclerViewAdapter.editItem(report);
+                reportsHorizontalRecyclerViewAdapter.editItem(report);
             }
             else{
                 Snackbar
@@ -121,7 +121,7 @@ public class ReportsFragment extends Fragment {
         reportsViewModel.getReportRemovedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
-                reportsRecyclerViewAdapter.removeItem(report);
+                reportsHorizontalRecyclerViewAdapter.removeItem(report);
             }
             else{
                 Snackbar
@@ -146,11 +146,11 @@ public class ReportsFragment extends Fragment {
 
         RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-        reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(
+        reportsHorizontalRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(
                 true,
                 R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
         recyclerViewReports.setLayoutManager(layoutManager);
-        recyclerViewReports.setAdapter(reportsRecyclerViewAdapter);
+        recyclerViewReports.setAdapter(reportsHorizontalRecyclerViewAdapter);
 
         reportsViewModel.readAllReports();
 
