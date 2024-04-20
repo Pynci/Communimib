@@ -9,6 +9,7 @@ import it.unimib.communimib.DialogCallback;
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IReportRepository;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.util.Validation;
@@ -32,6 +33,10 @@ public class ReportsViewModel extends ViewModel {
         reportChangedReadResult = new MutableLiveData<>();
         reportRemovedReadResult = new MutableLiveData<>();
         readCancelledResult = new MutableLiveData<>();
+    }
+
+    public User getCurrentUser(){
+        return userRepository.getCurrentUser();
     }
 
     public void readAllReports(){

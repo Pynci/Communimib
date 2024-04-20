@@ -51,9 +51,9 @@ public class UserRepository implements IUserRepository{
 
         authDataSource.signUp(email, password, authResult -> {
             if(authResult.isSuccessful()){
-                userRemoteDataSource.storeUserParameters(((Result.SignupSuccess) authResult).getUid(), email, name, surname, dbResult -> {
+                userRemoteDataSource.storeUserParameters(((Result.SignupSuccess) authResult).getUid(), email, name, surname, isUnimibEmployee(email), dbResult -> {
                     if(dbResult.isSuccessful()) {
-                        currentUser = new User(((Result.SignupSuccess) authResult).getUid(), email, name, surname);
+                        currentUser = new User(((Result.SignupSuccess) authResult).getUid(), email, name, surname, isUnimibEmployee(email));
                         userLocalDataSource.insertUser(currentUser, callback);
                     }
                     else{
@@ -196,5 +196,9 @@ public class UserRepository implements IUserRepository{
     @Override
     public void resetPassword(String email, Callback callback) {
         authDataSource.resetPassword(email, callback);
+    }
+
+    private boolean isUnimibEmployee(String email){
+        return email.substring(email.indexOf("@")).equals("@unimib.it");
     }
 }

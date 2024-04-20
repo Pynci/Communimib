@@ -23,11 +23,11 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
     }
 
     @Override
-    public void storeUserParameters(String uid, String email, String name, String surname, Callback callback) {
+    public void storeUserParameters(String uid, String email, String name, String surname, boolean isUnimibEmployee, Callback callback) {
         databaseReference
                 .child(Constants.USERS_PATH)
                 .child(uid)
-                .setValue(new User(uid, email, name, surname))
+                .setValue(new User(uid, email, name, surname, isUnimibEmployee))
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         callback.onComplete(new Result.Success());
