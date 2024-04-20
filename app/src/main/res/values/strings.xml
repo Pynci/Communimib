@@ -71,4 +71,7 @@
     <string name="seleziona_gli_edifici_per_filtrare_le_segnalazioni">Seleziona gli edifici per filtrare le segnalazioni</string>
     <string name="filtra_per_gli_edfici_preferiti">Visualizza le segnalazioni dei miei edifici preferiti</string>
     <string name="visualizza_le_seganalzioni_di_tutti_gli_edifici">Visualizza le seganalzioni di tutti gli edifici</string>
+    <string name="scegli_i_tuoi_edifici_preferiti">Scegli i tuoi edifici preferiti</string>
+    <string name="favorite_explain_1">Riceverai notifiche in tempo reale delle segnalazioni associate agli edifici selezionati</string>
+    <string name="favorite_explain_2">Quando aprirai l\'applicazione le segnalazioni verranno filtrate automaticamente tramite gli edifici scelti</string>
 </resources>
