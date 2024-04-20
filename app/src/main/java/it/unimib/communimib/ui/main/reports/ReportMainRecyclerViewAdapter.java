@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.communimib.R;
+import it.unimib.communimib.model.CategoryReport;
 import it.unimib.communimib.model.Report;
 
 public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMainRecyclerViewAdapter.ViewHolder> {
@@ -55,6 +56,10 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
             categoryName = itemView.findViewById(R.id.reportHorizontalRecyclerViewItem_categoryName);
             horizontalRecyclerView = itemView.findViewById(R.id.reportHorizontalRecyclerViewItem_recyclerView);
 
+        }
+
+        public void bind(CategoryReport categoryReport){
+            categoryName.setText(categoryReport.getCategoryName());
         }
 
         @Override
