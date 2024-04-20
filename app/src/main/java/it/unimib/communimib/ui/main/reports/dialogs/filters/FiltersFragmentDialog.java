@@ -78,10 +78,10 @@ public class FiltersFragmentDialog extends DialogFragment {
                 else
                     checkedBox.add("filter-by-all");
 
-                filtersViewModel.setFilters(checkedBox);
+                filtersViewModel.setFilters(checkedBox, this::dismiss);
             }
             else{
-                filtersViewModel.setFilters(selectedBuildings);
+                filtersViewModel.setFilters(selectedBuildings, this::dismiss);
             }
         });
 

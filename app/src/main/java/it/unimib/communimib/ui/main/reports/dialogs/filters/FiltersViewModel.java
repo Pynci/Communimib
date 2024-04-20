@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
+import it.unimib.communimib.DialogCallback;
+
 public class FiltersViewModel extends ViewModel {
 
     private final MutableLiveData<List<String>> chosenFilter;
@@ -18,7 +20,8 @@ public class FiltersViewModel extends ViewModel {
         return chosenFilter;
     }
 
-    protected void setFilters(List<String> list) {
+    protected void setFilters(List<String> list, DialogCallback callback) {
         chosenFilter.setValue(list);
+        callback.onComplete();
     }
 }
