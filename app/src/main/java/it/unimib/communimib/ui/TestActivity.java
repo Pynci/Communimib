@@ -30,7 +30,7 @@ public class TestActivity extends AppCompatActivity {
         });
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance(Constants.DATABASE).getReference().child(Constants.REPORTS_PATH);
-        User user = new User("uid", "luca@campus.unimib.it", "luca", "pinciroli", );
+        User user = new User("uid", "luca@campus.unimib.it", "luca", "pinciroli", false);
         user.setUid("uid");
         Report report = new Report("guasto ascensore", "l'ascensore principale è rotto",
                 "U14", "guasto", user);

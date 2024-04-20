@@ -19,10 +19,10 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
     @Override
     public void storeUserParameters(String uid, String email, String name, String surname, boolean isUnimibEmployee, Callback callback) {
         if(users.containsKey(uid)){
-            users.replace(uid, new User(uid, email, name, surname, ));
+            users.replace(uid, new User(uid, email, name, surname, isUnimibEmployee));
         }
         else{
-            users.put(uid, new User(uid, email, name, surname, ));
+            users.put(uid, new User(uid, email, name, surname, isUnimibEmployee));
         }
         callback.onComplete(new Result.Success());
     }
