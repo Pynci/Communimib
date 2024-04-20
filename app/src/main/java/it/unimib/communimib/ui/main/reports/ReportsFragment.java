@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,6 @@ import android.view.animation.AnimationUtils;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import it.unimib.communimib.R;
-import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentReportsBinding;
@@ -72,9 +65,6 @@ public class ReportsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fragmentReportsBinding.addNewReportButton.setOnClickListener(v -> {
-            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsCreationViewModel);
-
         //Gestione pulsanti del menu
         fragmentReportsBinding.floatingActionButtonMenu.setOnClickListener(v -> {
             onMenuButtonClicked(getContext());
@@ -92,7 +82,7 @@ public class ReportsFragment extends Fragment {
         });
 
         fragmentReportsBinding.floatingActionButtonAddNewReport.setOnClickListener(v -> {
-            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsViewModel);
+            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsCreationViewModel);
             dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
 
             onMenuButtonClicked(getContext());
@@ -112,8 +102,7 @@ public class ReportsFragment extends Fragment {
             }
             else{
                 Snackbar
-                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
-                        .show();
+                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
 
@@ -159,13 +148,7 @@ public class ReportsFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
         reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(
                 true,
-                R.layout.report_horizontal_item, new ReportsRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onCloseReportClick(Report report) {
-                reportsViewModel.deleteReport(report);
-            }
-        });
-
+                R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
         recyclerViewReports.setLayoutManager(layoutManager);
         recyclerViewReports.setAdapter(reportsRecyclerViewAdapter);
 
@@ -179,7 +162,7 @@ public class ReportsFragment extends Fragment {
             * TODO: implementare collegamento con viewmodel
             *
             * NOTA BENE: strings è SEMPRE UNA LISTA a prescindere dal filtro applicato. Se si filtra per preferiti o per tutti
-            * gli edifici si ha una LISTA di un solo elemento!!!
+            * gli edifici si ha una LISTA di un solo elemento!!!!!!!!!
             *
             * Se vuoi filtrare per i preferiti il codice è filter-by-favorite, se vuoi filtrare per tutti gli edifici
             * è filter-by-all, altrimenti la lista contiene gli edifici selezionati
