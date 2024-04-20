@@ -7,7 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +20,17 @@ import android.view.animation.AnimationUtils;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unimib.communimib.R;
 import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentReportsBinding;
+import it.unimib.communimib.model.Report;
+import it.unimib.communimib.model.Result;
+import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersFragmentDialog;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersViewModel;
 
@@ -29,8 +39,10 @@ public class ReportsFragment extends Fragment {
     private FragmentReportsBinding fragmentReportsBinding;
     private ReportsViewModel reportsViewModel;
     private FiltersViewModel filtersViewModel;
-
+    private ReportsCreationViewModel reportsCreationViewModel;
+    private ReportsRecyclerViewAdapter reportsRecyclerViewAdapter;
     private boolean menuVisibile;
+
     public ReportsFragment() {
         // Required empty public constructor
     }
@@ -38,10 +50,13 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        reportsViewModel = new ViewModelProvider(
-                this,
-                new ReportsViewModelFactory(this.getContext()))
+        reportsViewModel =
+                new ViewModelProvider(this, new ReportsViewModelFactory(this.getContext()))
                 .get(ReportsViewModel.class);
+
+        reportsCreationViewModel =
+                new ViewModelProvider(this, new ReportsCreationViewModelFactory(this.getContext()))
+                        .get(ReportsCreationViewModel.class);
 
         filtersViewModel = new ViewModelProvider(this).get(FiltersViewModel.class);
     }
@@ -56,6 +71,9 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        fragmentReportsBinding.addNewReportButton.setOnClickListener(v -> {
+            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsCreationViewModel);
 
         //Gestione pulsanti del menu
         fragmentReportsBinding.floatingActionButtonMenu.setOnClickListener(v -> {
@@ -81,13 +99,81 @@ public class ReportsFragment extends Fragment {
         });
 
         //Gestione osservazione creazione
-        reportsViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
+        reportsCreationViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
                 Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
 
-        //Gestine osservazione filtri
+        reportsViewModel.getReportAddedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.addItem(report);
+            }
+            else{
+                Snackbar
+                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        reportsViewModel.getReportChangedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.editItem(report);
+            }
+            else{
+                Snackbar
+                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        reportsViewModel.getReportRemovedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.removeItem(report);
+            }
+            else{
+                Snackbar
+                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        reportsViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result -> {
+            Snackbar
+                    .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                    .show();
+        });
+
+        reportsViewModel.getDeleteReportResult().observe(getViewLifecycleOwner(), result ->{
+            if(result.isSuccessful()){
+                Snackbar.make(view, R.string.report_closed_correctly, BaseTransientBottomBar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+        reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(
+                true,
+                R.layout.report_horizontal_item, new ReportsRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onCloseReportClick(Report report) {
+                reportsViewModel.deleteReport(report);
+            }
+        });
+
+        recyclerViewReports.setLayoutManager(layoutManager);
+        recyclerViewReports.setAdapter(reportsRecyclerViewAdapter);
+
+        reportsViewModel.readAllReports();
+
+
+
+        //Gestione osservazione filtri
         filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), strings -> {
             /*
             * TODO: implementare collegamento con viewmodel

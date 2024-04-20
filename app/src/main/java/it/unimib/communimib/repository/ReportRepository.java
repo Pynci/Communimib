@@ -1,8 +1,12 @@
 package it.unimib.communimib.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.datasource.report.IReportRemoteDataSource;
 import it.unimib.communimib.model.Report;
+import it.unimib.communimib.model.User;
 
 public class ReportRepository implements IReportRepository {
 
@@ -11,8 +15,22 @@ public class ReportRepository implements IReportRepository {
     public ReportRepository (IReportRemoteDataSource reportRemoteDataSource) {
         this.reportRemoteDataSource = reportRemoteDataSource;
     }
+
     @Override
-    public void createReport(String titolo, String descrizione, String edificio, String categoria, String emailCreator, Callback callback) {
-        reportRemoteDataSource.addReport(new Report(titolo, descrizione, edificio, categoria, emailCreator), callback);
+    public void readAllReports(Callback addedCallback,
+                               Callback changedCallback,
+                               Callback removedCallback,
+                               Callback cancelledCallback) {
+        reportRemoteDataSource.readAllReports(addedCallback, changedCallback, removedCallback, cancelledCallback);
     }
+
+    @Override
+    public void createReport(String titolo, String descrizione, String edificio, String categoria, User author, Callback callback) {
+        reportRemoteDataSource.createReport(new Report(titolo, descrizione, edificio, categoria, author), callback);
+    }
+
+    public void deleteReport(Report report, Callback callback){
+        reportRemoteDataSource.deleteReport(report, callback);
+    }
+
 }

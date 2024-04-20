@@ -25,10 +25,10 @@ public class NewReportFragmentDialog extends DialogFragment {
 
     private FragmentNewReportDialogBinding binding;
 
-    private final ReportsViewModel reportsViewModel;
+    private final ReportsCreationViewModel reportsCreationViewModel;
 
-    public NewReportFragmentDialog(ReportsViewModel reportsViewModel) {
-        this.reportsViewModel = reportsViewModel;
+    public NewReportFragmentDialog(ReportsCreationViewModel reportsCreationViewModel) {
+        this.reportsCreationViewModel = reportsCreationViewModel;
     }
 
     @NonNull
@@ -104,7 +104,7 @@ public class NewReportFragmentDialog extends DialogFragment {
 
             v.clearFocus();
 
-            reportsViewModel.createReport(
+            reportsCreationViewModel.createReport(
                     chosenTitle,
                     chosenDescription,
                     buildingSpinnerSelectedItem,
@@ -232,5 +232,7 @@ public class NewReportFragmentDialog extends DialogFragment {
         super.onDestroyView();
         binding = null; // Pulisci il binding quando la view viene distrutta
     }
+
+
 
 }

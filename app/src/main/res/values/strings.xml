@@ -43,8 +43,10 @@
     <string name="email_sending_error">Si è verificato un errore durante l\'invio della mail</string>
     <string name="localdb_insert_error">Si è verificato un errore durante il salvataggio locale</string>
     <string name="localdb_get_error">Si è verificato un errore durante l\'acquisizione dei dati locali</string>
+    <string name="localdb_update_error">Si è verificato un errore durante l\'aggiornamento dei dati locali</string>
     <string name="remotedb_insert_error">Si è verificato un errore durante il salvataggio remoto</string>
     <string name="remotedb_get_error">Si è verificato un errore durante l\'acquisizione dei dati remoti</string>
+    <string name="remotedb_update_error">Si è verificato un errore durante l\'aggiornamento dei dati remoti</string>
     <string name="user_not_found_error">Utente non trovato</string>
     <string name="not_accepted_parameters">"I parametri inseriti non sono accettabili"</string>
     <string name="system_error"> Si è verificato un errore nel sistema</string>
@@ -60,6 +62,9 @@
     <string name="categoria">Categoria</string>
     <string name="bottone_per_aggiungere_una_nuova_segnalazione">Bottone per aggiungere una nuova segnalazione</string>
     <string name="report_creation_error">Si è verificato un errore durante la memorizzazione della segnalazione nel sistema</string>
+    <string name="report_deleting_error">Si è verificato un errore durante cancellazione della segnalazione</string>
+    <string name="close"> Chiudi </string>
+    <string name="report_closed_correctly"> Segnalazione chiusa correttamente </string>
     <string name="bottone_per_selezionare_gli_edifici_preferiti">Bottone per selezionare gli edifici preferiti</string>
     <string name="bottone_per_selezionare_i_filtri_degli_edifici">Bottone per selezionare i filtri degli edifici</string>
     <string name="bottone_principale_del_menu">bottone_principale_del_menu</string>
