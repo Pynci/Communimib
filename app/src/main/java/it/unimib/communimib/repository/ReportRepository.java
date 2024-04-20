@@ -12,11 +12,8 @@ public class ReportRepository implements IReportRepository {
 
     private final IReportRemoteDataSource reportRemoteDataSource;
 
-    private final List<Report> reportList;
-
     public ReportRepository (IReportRemoteDataSource reportRemoteDataSource) {
         this.reportRemoteDataSource = reportRemoteDataSource;
-        reportList = new ArrayList<>();
     }
 
     @Override
@@ -34,15 +31,6 @@ public class ReportRepository implements IReportRepository {
 
     public void deleteReport(Report report, Callback callback){
         reportRemoteDataSource.deleteReport(report, callback);
-    }
-
-    private Report findOldReport(Report newReport){
-        for (Report report: reportList) {
-            if(report.getRid().equals(newReport.getRid())){
-                return report;
-            }
-        }
-        return null;
     }
 
 }
