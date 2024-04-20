@@ -28,8 +28,8 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
     private final int layout;
 
     public void addItem(Report newReport) {
-        reportList.add(newReport);
-        notifyItemInserted(reportList.size() - 1);
+        reportList.add(0, newReport);
+        notifyItemInserted(0);
     }
 
     public void editItem(Report editedReport) {
