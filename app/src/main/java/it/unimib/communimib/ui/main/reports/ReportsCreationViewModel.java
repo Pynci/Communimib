@@ -14,7 +14,7 @@ public class ReportsCreationViewModel extends ViewModel {
 
     private final IReportRepository reportRepository;
     private final IUserRepository userRepository;
-    private final MutableLiveData<Result> createReportResult;
+    private MutableLiveData<Result> createReportResult;
 
     public ReportsCreationViewModel(IReportRepository reportRepository, IUserRepository userRepository){
         this.reportRepository = reportRepository;
@@ -35,5 +35,9 @@ public class ReportsCreationViewModel extends ViewModel {
 
     public LiveData<Result> getCreateReportResult() {
         return this.createReportResult;
+    }
+
+    public void cleanViewModel(){
+        createReportResult = new MutableLiveData<>();
     }
 }

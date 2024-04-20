@@ -84,7 +84,6 @@ public class ReportsFragment extends Fragment {
         fragmentReportsBinding.floatingActionButtonAddNewReport.setOnClickListener(v -> {
             NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsCreationViewModel);
             dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
-
             onMenuButtonClicked(getContext());
         });
 
@@ -147,7 +146,7 @@ public class ReportsFragment extends Fragment {
         RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
         reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(
-                true,
+                reportsViewModel.getCurrentUser().isUnimibEmployee(),
                 R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
         recyclerViewReports.setLayoutManager(layoutManager);
         recyclerViewReports.setAdapter(reportsRecyclerViewAdapter);
@@ -168,6 +167,13 @@ public class ReportsFragment extends Fragment {
             * è filter-by-all, altrimenti la lista contiene gli edifici selezionati
              */
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        reportsViewModel.cleanViewModel();
+        reportsCreationViewModel.cleanViewModel();
     }
 
     private void onMenuButtonClicked(Context context) {

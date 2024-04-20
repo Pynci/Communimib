@@ -16,11 +16,11 @@ import it.unimib.communimib.util.Validation;
 
 public class ReportsViewModel extends ViewModel {
 
-    private final MutableLiveData<Result> deleteReportResult;
-    private final MutableLiveData<Result> reportAddedReadResult;
-    private final MutableLiveData<Result> reportChangedReadResult;
-    private final MutableLiveData<Result> reportRemovedReadResult;
-    private final MutableLiveData<Result> readCancelledResult;
+    private MutableLiveData<Result> deleteReportResult;
+    private MutableLiveData<Result> reportAddedReadResult;
+    private MutableLiveData<Result> reportChangedReadResult;
+    private MutableLiveData<Result> reportRemovedReadResult;
+    private MutableLiveData<Result> readCancelledResult;
     private final IReportRepository reportRepository;
     private final IUserRepository userRepository;
 
@@ -68,4 +68,12 @@ public class ReportsViewModel extends ViewModel {
     }
 
     public LiveData<Result> getDeleteReportResult() {return this.deleteReportResult;}
+
+    public void cleanViewModel(){
+        deleteReportResult = new MutableLiveData<>();
+        reportAddedReadResult = new MutableLiveData<>();
+        reportChangedReadResult = new MutableLiveData<>();
+        reportRemovedReadResult = new MutableLiveData<>();
+        readCancelledResult = new MutableLiveData<>();
+    }
 }
