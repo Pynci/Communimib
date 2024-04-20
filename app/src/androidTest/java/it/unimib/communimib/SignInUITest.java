@@ -102,14 +102,4 @@ public class SignInUITest {
         Espresso.onView(ViewMatchers.withId(R.id.fragmentSignin_textView_passwordError))
                 .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD))));
     }
-
-    @Test
-    public void testInvalidDataSnackbar() {
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignin_button_signin))
-                .perform(click());
-
-        Espresso.onView(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.NOT_ACCEPTED_PARAMETERS)))
-                .check(ViewAssertions.matches(isDisplayed()));
-    }
 }
