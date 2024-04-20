@@ -15,7 +15,6 @@ import it.unimib.communimib.util.Validation;
 
 public class ReportsViewModel extends ViewModel {
 
-    private final MutableLiveData<Result> createReportResult;
     private final MutableLiveData<Result> deleteReportResult;
     private final MutableLiveData<Result> reportAddedReadResult;
     private final MutableLiveData<Result> reportChangedReadResult;
@@ -25,7 +24,6 @@ public class ReportsViewModel extends ViewModel {
     private final IUserRepository userRepository;
 
     public ReportsViewModel(IReportRepository reportRepository, IUserRepository userRepository) {
-        createReportResult = new MutableLiveData<>();
         deleteReportResult = new MutableLiveData<>();
         this.reportRepository = reportRepository;
         this.userRepository = userRepository;
@@ -42,16 +40,6 @@ public class ReportsViewModel extends ViewModel {
                 reportChangedReadResult :: postValue,
                 reportRemovedReadResult :: postValue,
                 readCancelledResult :: postValue);
-    }
-
-    public void createReport(String titolo, String descrizione, String edificio, String categoria, DialogCallback callback) {
-        String validationResult = Validation.validateNewReport(titolo, descrizione, edificio, categoria);
-        if(validationResult.equals("ok")) {
-            reportRepository.createReport(titolo, descrizione, edificio, categoria, userRepository.getCurrentUser(), result -> {
-                createReportResult.postValue(result);
-                callback.onComplete();
-            });
-        }
     }
 
     public void deleteReport(Report report){
@@ -72,10 +60,6 @@ public class ReportsViewModel extends ViewModel {
 
     public LiveData<Result> getReadCancelledResult() {
         return readCancelledResult;
-    }
-
-    public LiveData<Result> getCreateReportResult() {
-        return this.createReportResult;
     }
 
     public LiveData<Result> getDeleteReportResult() {return this.deleteReportResult;}

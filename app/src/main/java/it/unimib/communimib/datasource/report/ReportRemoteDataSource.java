@@ -125,7 +125,7 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
                         databaseReference
                                 .child(Constants.USERSREPORTS_PATH)
                                 .child(report.getAuthor().getUid())
-                                .child(report.getRid())
+                                .child(key)
                                 .setValue(true)
                                 .addOnCompleteListener(userReportTask -> {
                                     if(userReportTask.isSuccessful()){

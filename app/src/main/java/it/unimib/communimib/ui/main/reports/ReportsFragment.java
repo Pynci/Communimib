@@ -30,6 +30,7 @@ public class ReportsFragment extends Fragment {
 
     private FragmentReportsBinding fragmentReportsBinding;
     private ReportsViewModel reportsViewModel;
+    private ReportsCreationViewModel reportsCreationViewModel;
     private ReportsRecyclerViewAdapter reportsRecyclerViewAdapter;
 
     public ReportsFragment() {
@@ -39,10 +40,13 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        reportsViewModel = new ViewModelProvider(
-                this,
-                new ReportsViewModelFactory(this.getContext()))
+        reportsViewModel =
+                new ViewModelProvider(this, new ReportsViewModelFactory(this.getContext()))
                 .get(ReportsViewModel.class);
+
+        reportsCreationViewModel =
+                new ViewModelProvider(this, new ReportsCreationViewModelFactory(this.getContext()))
+                .get(ReportsCreationViewModel.class);
     }
 
     @Override
@@ -57,12 +61,12 @@ public class ReportsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         fragmentReportsBinding.addNewReportButton.setOnClickListener(v -> {
-            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsViewModel);
+            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsCreationViewModel);
             dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
         });
 
         //Gestione osservazione creazione
-        reportsViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
+        reportsCreationViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
                 Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
             }
