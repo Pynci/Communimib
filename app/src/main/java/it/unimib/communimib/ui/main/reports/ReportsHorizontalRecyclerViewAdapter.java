@@ -1,6 +1,5 @@
 package it.unimib.communimib.ui.main.reports;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,13 @@ import java.util.List;
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
 
-public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecyclerViewAdapter.ViewHolder> {
+public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<ReportsHorizontalRecyclerViewAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
         void onCloseReportClick(Report report);
     }
     private final boolean isUnimibUser;
+    private String category;
     private final List<Report> reportList;
     private final OnItemClickListener onItemClickListener;
     private final int layout;
@@ -54,7 +54,15 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
         }
     }
 
-    public ReportsRecyclerViewAdapter(boolean isUnimibUser, int layout, OnItemClickListener onItemClickListener){
+    public void setCategory(String category){
+        this.category = category;
+    }
+
+    public String getCategory(){
+        return category;
+    }
+
+    public ReportsHorizontalRecyclerViewAdapter(boolean isUnimibUser, int layout, OnItemClickListener onItemClickListener){
         reportList = new ArrayList<>();
         this.isUnimibUser = isUnimibUser;
         this.layout = layout;
@@ -65,7 +73,7 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-        return new ReportsRecyclerViewAdapter.ViewHolder(view);
+        return new ReportsHorizontalRecyclerViewAdapter.ViewHolder(view);
     }
 
     @Override
@@ -83,6 +91,7 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
         private final TextView title;
         private final TextView description;
         private final TextView buiding;
+        private final TextView category;
         private final ImageView propic;
         private final TextView name;
         private final TextView surname;
@@ -100,6 +109,7 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
             name = itemView.findViewById(R.id.reportListItem_user_name);
             surname = itemView.findViewById(R.id.reportListItem_user_surname);
             closeButton = itemView.findViewById(R.id.reportListItem_closeButton);
+            category = itemView.findViewById(R.id.reportListItem_category);
             if (isUnimibUser){
                 closeButton.setVisibility(View.VISIBLE);
             }
@@ -112,6 +122,7 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
             buiding.setText(report.getBuilding());
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
+            category.setText(report.getCategory());
             //propic.setImageResource();
         }
 
