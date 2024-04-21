@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:textSize="28sp"
         android:textStyle="bold"
+        android:layout_marginStart="10dp"
         tools:text= "@string/category_name"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="10dp"/>
