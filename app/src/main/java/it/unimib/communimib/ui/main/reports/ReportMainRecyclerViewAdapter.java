@@ -13,34 +13,61 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.CategoryReport;
+import it.unimib.communimib.model.Report;
 
 public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMainRecyclerViewAdapter.ViewHolder> {
 
-    private final List<CategoryReport> categoryReportList;
+    private final List<String> categoryList;
+    private final List<ReportsHorizontalRecyclerViewAdapter> reportsHorizontalRecyclerViewAdapterList;
 
-    public ReportMainRecyclerViewAdapter(List<CategoryReport> categoryReportList) {
-        this.categoryReportList = categoryReportList;
+    public ReportMainRecyclerViewAdapter(List<String> categoryList,
+                                         List<ReportsHorizontalRecyclerViewAdapter> reportsHorizontalRecyclerViewAdapterList) {
+        this.categoryList = categoryList;
+        this.reportsHorizontalRecyclerViewAdapterList = reportsHorizontalRecyclerViewAdapterList;
+
     }
 
+    public void addItem(String category, Report report){
+        for (ReportsHorizontalRecyclerViewAdapter horizontalRecyclerView: reportsHorizontalRecyclerViewAdapterList) {
+            if(horizontalRecyclerView.getCategory().equals(category)){
+            horizontalRecyclerView.addItem(report);
+            }
+        }
+    }
 
+    public void editItem(String category, Report report){
+        for (ReportsHorizontalRecyclerViewAdapter horizontalRecyclerView: reportsHorizontalRecyclerViewAdapterList) {
+            if(horizontalRecyclerView.getCategory().equals(category)){
+                horizontalRecyclerView.editItem(report);
+            }
+        }
+    }
+
+    public void removeItem(String category, Report report){
+        for (ReportsHorizontalRecyclerViewAdapter horizontalRecyclerView: reportsHorizontalRecyclerViewAdapterList) {
+            if(horizontalRecyclerView.getCategory().equals(category)){
+                horizontalRecyclerView.removeItem(report);
+            }
+        }
+    }
 
 
     @NonNull
     @Override
     public ReportMainRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.report_horizontal_recycler_view_item, parent, false);
-        return new ViewHolder(view); //TODO da riguardare se ci sono errori
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ReportMainRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.bind(categoryReportList.get(position));
+        holder.bind(categoryList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if(categoryReportList != null){
-            return categoryReportList.size();
+        if(categoryList != null){
+            return categoryList.size();
         }
         return 0;
     }
@@ -58,15 +85,13 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
         }
 
-        public void bind(CategoryReport categoryReport){
-            categoryName.setText(categoryReport.getCategoryName());
+        public void bind(String category){
+            categoryName.setText(category);
 
+            //reportsHorizontalRecyclerViewAdapter.setCategory(category);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-            ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(categoryReport.getReportList(),
-                    true,
-                    R.layout.report_horizontal_item, report -> {} /*reportsViewModel.deleteReport(report)*/);
             horizontalRecyclerView.setLayoutManager(layoutManager);
-            horizontalRecyclerView.setAdapter(reportsHorizontalRecyclerViewAdapter);
+            //horizontalRecyclerView.setAdapter(reportsHorizontalRecyclerViewAdapter);
         }
 
         @Override

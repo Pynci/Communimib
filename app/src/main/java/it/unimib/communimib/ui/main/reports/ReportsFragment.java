@@ -39,7 +39,7 @@ public class ReportsFragment extends Fragment {
     private FiltersViewModel filtersViewModel;
     private ReportsCreationViewModel reportsCreationViewModel;
     private ReportMainRecyclerViewAdapter reportMainRecyclerViewAdapter;
-    private List<CategoryReport> categoryReportList;
+    private List<String> categoryList;
     //private ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter;
     private boolean menuVisibile;
 
@@ -101,11 +101,11 @@ public class ReportsFragment extends Fragment {
                 Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
-/*
+
         reportsViewModel.getReportAddedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
-                reportsHorizontalRecyclerViewAdapter.addItem(report);
+                reportMainRecyclerViewAdapter.addItem(report.getCategory(), report);
             }
             else{
                 Snackbar
@@ -116,7 +116,7 @@ public class ReportsFragment extends Fragment {
         reportsViewModel.getReportChangedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
-                reportsHorizontalRecyclerViewAdapter.editItem(report);
+                reportMainRecyclerViewAdapter.editItem(report.getCategory(),report);
             }
             else{
                 Snackbar
@@ -128,7 +128,7 @@ public class ReportsFragment extends Fragment {
         reportsViewModel.getReportRemovedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
-                reportsHorizontalRecyclerViewAdapter.removeItem(report);
+                reportMainRecyclerViewAdapter.removeItem(report.getCategory(),report);
             }
             else{
                 Snackbar
@@ -150,7 +150,7 @@ public class ReportsFragment extends Fragment {
                 Snackbar.make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
-*/
+
         /*RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
         reportsHorizontalRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(
@@ -158,20 +158,20 @@ public class ReportsFragment extends Fragment {
                 R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
         recyclerViewReports.setLayoutManager(layoutManager);
         recyclerViewReports.setAdapter(reportsHorizontalRecyclerViewAdapter);*/
-        categoryReportList = new ArrayList<>();
-        List<Report> reportList = new ArrayList<>();
-        reportList.add(new Report("ascensore rotto", "KJZCIE", "U5", "guasto", new User("jadlwej")));
-        reportList.add(new Report("bagno rotto", "KJZCIE", "U5", "guasto", new User("jadlwej")));
+        categoryList = new ArrayList<>();
+        //List<Report> reportList = new ArrayList<>();
+        //reportList.add(new Report("ascensore rotto", "KJZCIE", "U5", "guasto", new User("jadlwej")));
+        //reportList.add(new Report("bagno rotto", "KJZCIE", "U5", "guasto", new User("jadlwej")));
 
 
         String[] categories = getResources().getStringArray(R.array.reports_categories);
         for (int i = 0; i<categories.length-1; i++) {
-            categoryReportList.add(new CategoryReport(categories[i], reportList));
+            categoryList.add(categories[i]);
         }
 
         RecyclerView mainRecyclerView = fragmentReportsBinding.fragmentReportRecyclerView;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        reportMainRecyclerViewAdapter = new ReportMainRecyclerViewAdapter(categoryReportList);
+        //reportMainRecyclerViewAdapter = new ReportMainRecyclerViewAdapter(categoryList);
         mainRecyclerView.setAdapter(reportMainRecyclerViewAdapter);
         mainRecyclerView.setLayoutManager(layoutManager);
 

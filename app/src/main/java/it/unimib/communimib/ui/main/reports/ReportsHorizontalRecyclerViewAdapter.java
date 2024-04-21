@@ -22,6 +22,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         void onCloseReportClick(Report report);
     }
     private final boolean isUnimibUser;
+    private String category;
     private final List<Report> reportList;
     private final OnItemClickListener onItemClickListener;
     private final int layout;
@@ -53,9 +54,16 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         }
     }
 
-    public ReportsHorizontalRecyclerViewAdapter(List<Report> reportList, boolean isUnimibUser, int layout, OnItemClickListener onItemClickListener){
-        //reportList = new ArrayList<>();
-        this.reportList = reportList;
+    public void setCategory(String category){
+        this.category = category;
+    }
+
+    public String getCategory(){
+        return category;
+    }
+
+    public ReportsHorizontalRecyclerViewAdapter(boolean isUnimibUser, int layout, OnItemClickListener onItemClickListener){
+        reportList = new ArrayList<>();
         this.isUnimibUser = isUnimibUser;
         this.layout = layout;
         this.onItemClickListener = onItemClickListener;
