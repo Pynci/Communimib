@@ -9,7 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentFavoriteDialogBinding;
+
 public class FavoriteFragmentDialog extends DialogFragment {
 
     private FragmentFavoriteDialogBinding binding;
@@ -22,6 +28,19 @@ public class FavoriteFragmentDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(binding.getRoot());
+
+        //Gestione Listview
+        List<String> listaDati = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.buildings)));
+
+        if (!listaDati.isEmpty())
+            listaDati.remove(listaDati.size() - 1);
+
+        FavoriteBuildingsAdapter filterReportListViewAdapter = new FavoriteBuildingsAdapter(
+                this.getContext(),
+                listaDati
+        );
+        binding.favoriteFragmentListview.setAdapter(filterReportListViewAdapter);
+        binding.favoriteFragmentListview.setDivider(null);
 
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
