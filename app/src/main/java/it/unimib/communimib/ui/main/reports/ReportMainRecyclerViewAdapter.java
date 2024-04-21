@@ -25,7 +25,7 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
 
     public void addItem(String category, Report report){
-        for (CategoryReport categoryReport: categoryReportList) {
+        for (CategoryReport categoryReport : categoryReportList) {
             if(categoryReport.getCategoryName().equals(category)){
                 categoryReport.getReportsHorizontalRecyclerViewAdapter().addItem(report);
             }

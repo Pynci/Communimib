@@ -3,16 +3,11 @@ package it.unimib.communimib.ui.main.reports;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import it.unimib.communimib.Callback;
-import it.unimib.communimib.DialogCallback;
-import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IReportRepository;
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.util.Validation;
 
 public class ReportsViewModel extends ViewModel {
 
@@ -41,10 +36,11 @@ public class ReportsViewModel extends ViewModel {
 
     public void readAllReports(){
         reportRepository.readAllReports(
-                reportAddedReadResult :: postValue,
-                reportChangedReadResult :: postValue,
-                reportRemovedReadResult :: postValue,
-                readCancelledResult :: postValue);
+                result -> reportAddedReadResult.setValue(result),
+                result -> reportChangedReadResult.setValue(result),
+                result -> reportRemovedReadResult.setValue(result),
+                result -> readCancelledResult.setValue(result)
+        );
     }
 
     public void deleteReport(Report report){
