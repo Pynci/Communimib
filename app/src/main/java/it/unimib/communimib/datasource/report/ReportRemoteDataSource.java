@@ -91,18 +91,6 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
     }
 
     @Override
-    public void readReportsByCategories(String[] categories,
-                                        Callback addedCallback,
-                                        Callback changedCallback,
-                                        Callback removedCallback,
-                                        Callback cancelledCallback){
-        removeAllQueryListeners();
-        for (String category : categories) {
-            addQueryListener("category", category, addedCallback, changedCallback, removedCallback, cancelledCallback);
-        }
-    }
-
-    @Override
     public void readReportsByUID(String author,
                                  Callback addedCallback,
                                  Callback changedCallback,

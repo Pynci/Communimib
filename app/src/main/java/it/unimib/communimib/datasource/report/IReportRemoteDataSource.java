@@ -15,12 +15,6 @@ public interface IReportRemoteDataSource {
                                 Callback removedCallback,
                                 Callback cancelledCallback);
 
-    void readReportsByCategories(String[] categories,
-                                 Callback addedCallback,
-                                 Callback changedCallback,
-                                 Callback removedCallback,
-                                 Callback cancelledCallback);
-
     void readReportsByUID(String author,
                           Callback addedCallback,
                           Callback changedCallback,

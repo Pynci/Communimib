@@ -75,12 +75,7 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
 
     @Override
     public int getItemCount() {
-        if(reportList != null){
-            return reportList.size();
-        }
-        else{
-            return 0;
-        }
+        return reportList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -118,7 +113,6 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
             //propic.setImageResource();
-
         }
 
         @Override
