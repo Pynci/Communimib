@@ -8,8 +8,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
@@ -29,12 +32,8 @@ public class TestActivity extends AppCompatActivity {
             return insets;
         });
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance(Constants.DATABASE).getReference().child(Constants.REPORTS_PATH);
-        User user = new User("uid", "luca@campus.unimib.it", "luca", "pinciroli", false);
-        user.setUid("uid");
-        Report report = new Report("guasto ascensore", "l'ascensore principale è rotto",
-                "U14", "guasto", user);
-        databaseReference.child("rid").setValue(report);
-
+        StorageReference cane = FirebaseStorage
+                .getInstance()
+                .getReference("cane.jpg");
     }
 }
