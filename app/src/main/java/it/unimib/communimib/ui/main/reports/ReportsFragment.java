@@ -150,22 +150,13 @@ public class ReportsFragment extends Fragment {
             }
         });
 
-        /*RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-        reportsHorizontalRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(
-                true,
-                R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
-        recyclerViewReports.setLayoutManager(layoutManager);
-        recyclerViewReports.setAdapter(reportsHorizontalRecyclerViewAdapter);*/
+
         categoryReportList = new ArrayList<>();
-        //List<Report> reportList = new ArrayList<>();
-        //reportList.add(new Report("ascensore rotto", "KJZCIE", "U5", "guasto", new User("jadlwej")));
-        //reportList.add(new Report("bagno rotto", "KJZCIE", "U5", "guasto", new User("jadlwej")));
-
-
         String[] categories = getResources().getStringArray(R.array.reports_categories);
-        for (int i = 0; i<categories.length-1; i++) {
-            ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(true, R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
+        for (int i = 0; i<categories.length - 1; i++) {
+            ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter =
+                    new ReportsHorizontalRecyclerViewAdapter(reportsViewModel.getCurrentUser().isUnimibEmployee(), R.layout.report_horizontal_item,
+                            report -> reportsViewModel.deleteReport(report));
             reportsHorizontalRecyclerViewAdapter.setCategory(categories[i]);
             categoryReportList.add(new CategoryReport(categories[i],reportsHorizontalRecyclerViewAdapter));
         }
