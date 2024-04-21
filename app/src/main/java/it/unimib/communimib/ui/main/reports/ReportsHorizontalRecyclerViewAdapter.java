@@ -96,6 +96,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         private final TextView title;
         private final TextView description;
         private final TextView buiding;
+        private final TextView category;
         private final ImageView propic;
         private final TextView name;
         private final TextView surname;
@@ -113,6 +114,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             name = itemView.findViewById(R.id.reportListItem_user_name);
             surname = itemView.findViewById(R.id.reportListItem_user_surname);
             closeButton = itemView.findViewById(R.id.reportListItem_closeButton);
+            category = itemView.findViewById(R.id.reportListItem_category);
             if (isUnimibUser){
                 closeButton.setVisibility(View.VISIBLE);
             }
@@ -125,6 +127,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             buiding.setText(report.getBuilding());
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
+            category.setText(report.getCategory());
             //propic.setImageResource();
 
         }
