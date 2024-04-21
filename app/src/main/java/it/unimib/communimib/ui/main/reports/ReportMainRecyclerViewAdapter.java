@@ -17,9 +17,6 @@ import it.unimib.communimib.model.Report;
 
 public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMainRecyclerViewAdapter.ViewHolder> {
 
-    //private final List<String> categoryList;
-    //private final List<ReportsHorizontalRecyclerViewAdapter> reportsHorizontalRecyclerViewAdapterList;
-
     private final List<CategoryReport> categoryReportList;
 
     public ReportMainRecyclerViewAdapter(List<CategoryReport> categoryReportList) {
