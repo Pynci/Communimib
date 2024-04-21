@@ -39,7 +39,7 @@ public class ReportsFragment extends Fragment {
     private FiltersViewModel filtersViewModel;
     private ReportsCreationViewModel reportsCreationViewModel;
     private ReportMainRecyclerViewAdapter reportMainRecyclerViewAdapter;
-    private List<String> categoryList;
+    private List<CategoryReport> categoryReportList;
     //private ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter;
     private boolean menuVisibile;
 
@@ -158,7 +158,7 @@ public class ReportsFragment extends Fragment {
                 R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
         recyclerViewReports.setLayoutManager(layoutManager);
         recyclerViewReports.setAdapter(reportsHorizontalRecyclerViewAdapter);*/
-        categoryList = new ArrayList<>();
+        categoryReportList = new ArrayList<>();
         //List<Report> reportList = new ArrayList<>();
         //reportList.add(new Report("ascensore rotto", "KJZCIE", "U5", "guasto", new User("jadlwej")));
         //reportList.add(new Report("bagno rotto", "KJZCIE", "U5", "guasto", new User("jadlwej")));
@@ -166,12 +166,14 @@ public class ReportsFragment extends Fragment {
 
         String[] categories = getResources().getStringArray(R.array.reports_categories);
         for (int i = 0; i<categories.length-1; i++) {
-            categoryList.add(categories[i]);
+            ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(true, R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
+            reportsHorizontalRecyclerViewAdapter.setCategory(categories[i]);
+            categoryReportList.add(new CategoryReport(categories[i],reportsHorizontalRecyclerViewAdapter));
         }
 
         RecyclerView mainRecyclerView = fragmentReportsBinding.fragmentReportRecyclerView;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        //reportMainRecyclerViewAdapter = new ReportMainRecyclerViewAdapter(categoryList);
+        reportMainRecyclerViewAdapter = new ReportMainRecyclerViewAdapter(categoryReportList);
         mainRecyclerView.setAdapter(reportMainRecyclerViewAdapter);
         mainRecyclerView.setLayoutManager(layoutManager);
 

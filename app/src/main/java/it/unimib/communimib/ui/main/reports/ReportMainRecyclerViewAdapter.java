@@ -17,36 +17,36 @@ import it.unimib.communimib.model.Report;
 
 public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMainRecyclerViewAdapter.ViewHolder> {
 
-    private final List<String> categoryList;
-    private final List<ReportsHorizontalRecyclerViewAdapter> reportsHorizontalRecyclerViewAdapterList;
+    //private final List<String> categoryList;
+    //private final List<ReportsHorizontalRecyclerViewAdapter> reportsHorizontalRecyclerViewAdapterList;
 
-    public ReportMainRecyclerViewAdapter(List<String> categoryList,
-                                         List<ReportsHorizontalRecyclerViewAdapter> reportsHorizontalRecyclerViewAdapterList) {
-        this.categoryList = categoryList;
-        this.reportsHorizontalRecyclerViewAdapterList = reportsHorizontalRecyclerViewAdapterList;
+    private final List<CategoryReport> categoryReportList;
 
+    public ReportMainRecyclerViewAdapter(List<CategoryReport> categoryReportList) {
+        this.categoryReportList = categoryReportList;
     }
 
+
     public void addItem(String category, Report report){
-        for (ReportsHorizontalRecyclerViewAdapter horizontalRecyclerView: reportsHorizontalRecyclerViewAdapterList) {
-            if(horizontalRecyclerView.getCategory().equals(category)){
-            horizontalRecyclerView.addItem(report);
+        for (CategoryReport categoryReport: categoryReportList) {
+            if(categoryReport.getCategoryName().equals(category)){
+                categoryReport.getReportsHorizontalRecyclerViewAdapter().addItem(report);
             }
         }
     }
 
     public void editItem(String category, Report report){
-        for (ReportsHorizontalRecyclerViewAdapter horizontalRecyclerView: reportsHorizontalRecyclerViewAdapterList) {
-            if(horizontalRecyclerView.getCategory().equals(category)){
-                horizontalRecyclerView.editItem(report);
+        for (CategoryReport categoryReport: categoryReportList) {
+            if(categoryReport.getCategoryName().equals(category)){
+                categoryReport.getReportsHorizontalRecyclerViewAdapter().editItem(report);
             }
         }
     }
 
     public void removeItem(String category, Report report){
-        for (ReportsHorizontalRecyclerViewAdapter horizontalRecyclerView: reportsHorizontalRecyclerViewAdapterList) {
-            if(horizontalRecyclerView.getCategory().equals(category)){
-                horizontalRecyclerView.removeItem(report);
+        for (CategoryReport categoryReport: categoryReportList) {
+            if(categoryReport.getCategoryName().equals(category)){
+                categoryReport.getReportsHorizontalRecyclerViewAdapter().removeItem(report);
             }
         }
     }
@@ -61,13 +61,13 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
     @Override
     public void onBindViewHolder(@NonNull ReportMainRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.bind(categoryList.get(position));
+        holder.bind(categoryReportList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if(categoryList != null){
-            return categoryList.size();
+        if(categoryReportList != null){
+            return categoryReportList.size();
         }
         return 0;
     }
@@ -85,13 +85,11 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
         }
 
-        public void bind(String category){
-            categoryName.setText(category);
-
-            //reportsHorizontalRecyclerViewAdapter.setCategory(category);
+        public void bind(CategoryReport categoryReport){
+            categoryName.setText(categoryReport.getCategoryName());
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
             horizontalRecyclerView.setLayoutManager(layoutManager);
-            //horizontalRecyclerView.setAdapter(reportsHorizontalRecyclerViewAdapter);
+            horizontalRecyclerView.setAdapter(categoryReport.getReportsHorizontalRecyclerViewAdapter());
         }
 
         @Override

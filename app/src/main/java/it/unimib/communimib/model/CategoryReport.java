@@ -2,14 +2,16 @@ package it.unimib.communimib.model;
 
 import java.util.List;
 
+import it.unimib.communimib.ui.main.reports.ReportsHorizontalRecyclerViewAdapter;
+
 public class CategoryReport {
 
     private String categoryName;
-    private List<Report> reportList;
+    private ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter;
 
-    public CategoryReport(String categoryName, List<Report> reportList) {
+    public CategoryReport(String categoryName, ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter) {
         this.categoryName = categoryName;
-        this.reportList = reportList;
+        this.reportsHorizontalRecyclerViewAdapter = reportsHorizontalRecyclerViewAdapter;
     }
 
     public String getCategoryName() {
@@ -20,11 +22,12 @@ public class CategoryReport {
         this.categoryName = categoryName;
     }
 
-    public List<Report> getReportList() {
-        return reportList;
+    public ReportsHorizontalRecyclerViewAdapter getReportsHorizontalRecyclerViewAdapter() {
+        return reportsHorizontalRecyclerViewAdapter;
     }
 
-    public void setReportList(List<Report> reportList) {
-        this.reportList = reportList;
+    public void setReportsHorizontalRecyclerViewAdapter(ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter) {
+        this.reportsHorizontalRecyclerViewAdapter = reportsHorizontalRecyclerViewAdapter;
     }
+
 }
