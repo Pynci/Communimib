@@ -1,10 +1,12 @@
 package it.unimib.communimib.ui.main.reports.dialogs.favourites;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ToggleButton;
 
 import java.util.List;
 
@@ -40,6 +42,12 @@ public class FavoriteBuildingsAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(context);
             listItemView = inflater.inflate(R.layout.favorite_building_list_item, parent, false);
         }
+
+        ToggleButton button = listItemView.findViewById(R.id.favorite_building_toggle_button);
+        button.setOnClickListener(v -> {
+            Drawable icon = context.getDrawable(R.drawable.favorite_heart_fill);
+            button.setBackground(icon);
+        });
 
         return listItemView;
     }
