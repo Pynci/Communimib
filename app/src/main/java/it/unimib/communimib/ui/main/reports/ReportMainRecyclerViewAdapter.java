@@ -9,20 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.CategoryReport;
-import it.unimib.communimib.model.Report;
 
 public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMainRecyclerViewAdapter.ViewHolder> {
 
-    private final List<String> categoryList;
+    private final List<CategoryReport> categoryReportList;
 
-    public ReportMainRecyclerViewAdapter(List<String> categoryList) {
-        this.categoryList = categoryList;
+    public ReportMainRecyclerViewAdapter(List<CategoryReport> categoryReportList) {
+        this.categoryReportList = categoryReportList;
     }
+
+
 
 
     @NonNull
@@ -34,13 +34,13 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
     @Override
     public void onBindViewHolder(@NonNull ReportMainRecyclerViewAdapter.ViewHolder holder, int position) {
-
+        holder.bind(categoryReportList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if(categoryList != null){
-            return categoryList.size();
+        if(categoryReportList != null){
+            return categoryReportList.size();
         }
         return 0;
     }
@@ -60,6 +60,13 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
         public void bind(CategoryReport categoryReport){
             categoryName.setText(categoryReport.getCategoryName());
+
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+            ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(categoryReport.getReportList(),
+                    true,
+                    R.layout.report_horizontal_item, report -> {} /*reportsViewModel.deleteReport(report)*/);
+            horizontalRecyclerView.setLayoutManager(layoutManager);
+            horizontalRecyclerView.setAdapter(reportsHorizontalRecyclerViewAdapter);
         }
 
         @Override

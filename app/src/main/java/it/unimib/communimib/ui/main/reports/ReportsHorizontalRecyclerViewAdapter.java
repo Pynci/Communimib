@@ -53,8 +53,9 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         }
     }
 
-    public ReportsHorizontalRecyclerViewAdapter(boolean isUnimibUser, int layout, OnItemClickListener onItemClickListener){
-        reportList = new ArrayList<>();
+    public ReportsHorizontalRecyclerViewAdapter(List<Report> reportList, boolean isUnimibUser, int layout, OnItemClickListener onItemClickListener){
+        //reportList = new ArrayList<>();
+        this.reportList = reportList;
         this.isUnimibUser = isUnimibUser;
         this.layout = layout;
         this.onItemClickListener = onItemClickListener;
