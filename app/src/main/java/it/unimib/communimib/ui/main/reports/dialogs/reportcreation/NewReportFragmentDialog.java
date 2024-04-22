@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.reports;
+package it.unimib.communimib.ui.main.reports.dialogs.reportcreation;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

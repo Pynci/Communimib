@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.reports.dialogs.favourites;
+package it.unimib.communimib.ui.main.reports.dialogs.favorites;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.reports;
+package it.unimib.communimib.ui.main.reports.dialogs.reportcreation;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.reports.dialogs.favourites.FavoriteFragmentDialog">
+    tools:context=".ui.main.reports.dialogs.favorites.FavoriteFragmentDialog">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="350dp"

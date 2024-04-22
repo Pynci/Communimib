@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.reports.dialogs.favourites;
+package it.unimib.communimib.ui.main.reports.dialogs.favorites;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
