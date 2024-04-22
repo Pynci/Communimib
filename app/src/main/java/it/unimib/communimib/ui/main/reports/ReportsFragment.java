@@ -1,25 +1,44 @@
 package it.unimib.communimib.ui.main.reports;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentReportsBinding;
+import it.unimib.communimib.model.Report;
+import it.unimib.communimib.model.Result;
+import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingsFragmentDialog;
+import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.NewReportFragmentDialog;
+import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.ReportsCreationViewModel;
+import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.ReportsCreationViewModelFactory;
+import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersFragmentDialog;
+import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersViewModel;
 
 public class ReportsFragment extends Fragment {
 
     private FragmentReportsBinding fragmentReportsBinding;
     private ReportsViewModel reportsViewModel;
+    private FiltersViewModel filtersViewModel;
+    private ReportsCreationViewModel reportsCreationViewModel;
+    private ReportsRecyclerViewAdapter reportsRecyclerViewAdapter;
+    private boolean menuVisibile;
 
     public ReportsFragment() {
         // Required empty public constructor
@@ -28,10 +47,15 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        reportsViewModel = new ViewModelProvider(
-                this,
-                new ReportsViewModelFactory(this.getContext()))
+        reportsViewModel =
+                new ViewModelProvider(this, new ReportsViewModelFactory(this.getContext()))
                 .get(ReportsViewModel.class);
+
+        reportsCreationViewModel =
+                new ViewModelProvider(this, new ReportsCreationViewModelFactory(this.getContext()))
+                        .get(ReportsCreationViewModel.class);
+
+        filtersViewModel = new ViewModelProvider(this).get(FiltersViewModel.class);
     }
 
     @Override
@@ -45,16 +69,148 @@ public class ReportsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fragmentReportsBinding.addNewReportButton.setOnClickListener(v -> {
-            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsViewModel);
+        //Gestione pulsanti del menu
+        fragmentReportsBinding.floatingActionButtonMenu.setOnClickListener(v -> {
+            onMenuButtonClicked(getContext());
+        });
+
+        fragmentReportsBinding.floatingActionButtonFavorite.setOnClickListener(v -> {
+            FavoriteBuildingsFragmentDialog favoriteBuildingsFragmentDialog = new FavoriteBuildingsFragmentDialog();
+            favoriteBuildingsFragmentDialog.show(getParentFragmentManager(), "New Favorite Dialog");
+            onMenuButtonClicked(getContext());
+        });
+
+        fragmentReportsBinding.floatingActionButtonFilterBuildings.setOnClickListener(v -> {
+            FiltersFragmentDialog filtersFragmentDialog = new FiltersFragmentDialog(filtersViewModel);
+            filtersFragmentDialog.show(getParentFragmentManager(), "New Filter Fragment Dialog");
+            onMenuButtonClicked(getContext());
+        });
+
+        fragmentReportsBinding.floatingActionButtonAddNewReport.setOnClickListener(v -> {
+            NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsCreationViewModel);
             dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
+
+            onMenuButtonClicked(getContext());
         });
 
         //Gestione osservazione creazione
-        reportsViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
+        reportsCreationViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
                 Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
+
+        reportsViewModel.getReportAddedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.addItem(report);
+            }
+            else{
+                Snackbar
+                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        reportsViewModel.getReportChangedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.editItem(report);
+            }
+            else{
+                Snackbar
+                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        reportsViewModel.getReportRemovedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.removeItem(report);
+            }
+            else{
+                Snackbar
+                        .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        reportsViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result -> {
+            Snackbar
+                    .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
+                    .show();
+        });
+
+        reportsViewModel.getDeleteReportResult().observe(getViewLifecycleOwner(), result ->{
+            if(result.isSuccessful()){
+                Snackbar.make(view, R.string.report_closed_correctly, BaseTransientBottomBar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        RecyclerView recyclerViewReports = fragmentReportsBinding.fragmentReportRecyclerView;
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+        reportsRecyclerViewAdapter = new ReportsRecyclerViewAdapter(
+                true,
+                R.layout.report_horizontal_item, report -> reportsViewModel.deleteReport(report));
+        recyclerViewReports.setLayoutManager(layoutManager);
+        recyclerViewReports.setAdapter(reportsRecyclerViewAdapter);
+
+        reportsViewModel.readAllReports();
+
+
+
+        //Gestione osservazione filtri
+        filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), strings -> {
+            /*
+            * TODO: implementare collegamento con viewmodel
+            *
+            * NOTA BENE: strings è SEMPRE UNA LISTA a prescindere dal filtro applicato. Se si filtra per preferiti o per tutti
+            * gli edifici si ha una LISTA di un solo elemento!!!!!!!!!
+            *
+            * Se vuoi filtrare per i preferiti il codice è filter-by-favorite, se vuoi filtrare per tutti gli edifici
+            * è filter-by-all, altrimenti la lista contiene gli edifici selezionati
+             */
+        });
+    }
+
+    private void onMenuButtonClicked(Context context) {
+        setVisibility();
+        setAnimation(context);
+        menuVisibile = !menuVisibile;
+    }
+
+    private void setVisibility() {
+        if(!menuVisibile) {
+            fragmentReportsBinding.floatingActionButtonAddNewReport.setVisibility(View.VISIBLE);
+            fragmentReportsBinding.floatingActionButtonFavorite.setVisibility(View.VISIBLE);
+            fragmentReportsBinding.floatingActionButtonFilterBuildings.setVisibility(View.VISIBLE);
+        }
+        else{
+            fragmentReportsBinding.floatingActionButtonAddNewReport.setVisibility(View.INVISIBLE);
+            fragmentReportsBinding.floatingActionButtonFavorite.setVisibility(View.INVISIBLE);
+            fragmentReportsBinding.floatingActionButtonFilterBuildings.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setAnimation(Context context) {
+        Animation animationFromBottom = AnimationUtils.loadAnimation(context, R.anim.from_bottom_anim);
+        Animation animationToBottom = AnimationUtils.loadAnimation(context, R.anim.to_bottom_anim);
+        Animation animationRotateOpen = AnimationUtils.loadAnimation(context, R.anim.rotate_open_anim);
+        Animation animationRotateClose = AnimationUtils.loadAnimation(context, R.anim.rotate_close_anim);
+
+        if(!menuVisibile) {
+            fragmentReportsBinding.floatingActionButtonAddNewReport.startAnimation(animationFromBottom);
+            fragmentReportsBinding.floatingActionButtonFavorite.startAnimation(animationFromBottom);
+            fragmentReportsBinding.floatingActionButtonFilterBuildings.startAnimation(animationFromBottom);
+            fragmentReportsBinding.floatingActionButtonMenu.startAnimation(animationRotateOpen);
+        }
+        else{
+            fragmentReportsBinding.floatingActionButtonAddNewReport.startAnimation(animationToBottom);
+            fragmentReportsBinding.floatingActionButtonFavorite.startAnimation(animationToBottom);
+            fragmentReportsBinding.floatingActionButtonFilterBuildings.startAnimation(animationToBottom);
+            fragmentReportsBinding.floatingActionButtonMenu.startAnimation(animationRotateClose);
+        }
     }
 }

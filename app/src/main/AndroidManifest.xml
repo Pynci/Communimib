@@ -13,10 +13,14 @@
         android:theme="@style/Theme.App.Starting"
         tools:targetApi="31">
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.TestActivity"
             android:exported="true"
             android:theme="@style/Theme.Communimib">
         </activity>
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Communimib" />
         <activity
             android:name=".ui.auth.loading.AuthActivity"
             android:exported="true"

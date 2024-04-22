@@ -53,7 +53,7 @@ public class UserRepository implements IUserRepository{
             if(authResult.isSuccessful()){
                 userRemoteDataSource.storeUserParameters(((Result.SignupSuccess) authResult).getUid(), email, name, surname, dbResult -> {
                     if(dbResult.isSuccessful()) {
-                        currentUser = new User(email, name, surname);
+                        currentUser = new User(((Result.SignupSuccess) authResult).getUid(), email, name, surname);
                         userLocalDataSource.insertUser(currentUser, callback);
                     }
                     else{
@@ -177,7 +177,15 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public void updateUserNameAndSurname(String name, String surname, Callback callback) {
-        // scrivo sto commento altrimenti Sonar mi picchia
+        if(currentUser != null){
+            userRemoteDataSource.updateNameAndSurname(currentUser.getUid(), name, surname, remoteResult -> {
+                if(remoteResult.isSuccessful()){
+                    currentUser.setName(name);
+                    currentUser.setSurname(surname);
+                    userLocalDataSource.updateUser(currentUser, callback);
+                }
+            });
+        }
     }
 
     @Override

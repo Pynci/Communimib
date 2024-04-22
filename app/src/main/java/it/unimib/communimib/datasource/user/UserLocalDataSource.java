@@ -43,7 +43,15 @@ public class UserLocalDataSource implements IUserLocalDataSource{
 
     @Override
     public void updateUser(User user, Callback callback) {
-        //scrivo questo commento altrimenti sonar mi picchia
+        LocalDatabase.databaseWriteExecutor.execute(() -> {
+            int rows = userDAO.updateUser(user);
+            if(rows == 1){
+                callback.onComplete(new Result.Success());
+            }
+            else{
+                callback.onComplete(new Result.Error(ErrorMapper.LOCALDB_UPDATE_ERROR));
+            }
+        });
     }
 
     @Override

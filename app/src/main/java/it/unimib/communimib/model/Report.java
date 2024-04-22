@@ -1,28 +1,43 @@
 package it.unimib.communimib.model;
 
+import com.google.firebase.database.Exclude;
+
 public class Report {
 
+    @Exclude
+    private String rid;
     private String title;
     private String description;
     private String building;
-
     private String category;
+    private User author;
 
-    private String emailCreator;
-    public Report(String title, String description, String building, String category, String emailCreator) {
+    public Report(){
+
+    }
+
+    public Report(String title, String description, String building, String category, User author) {
         this.title = title;
         this.description = description;
         this.building = building;
         this.category = category;
-        this.emailCreator = emailCreator;
+        this.author = author;
     }
 
-    public String getEmailCreator() {
-        return emailCreator;
+    public String getRid() {
+        return rid;
     }
 
-    public void setEmailCreator(String emailCreator) {
-        this.emailCreator = emailCreator;
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getTitle() {
