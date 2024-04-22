@@ -1,5 +1,7 @@
 package it.unimib.communimib.ui.main.reports;
 
+import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
     private final List<Report> reportList;
     private final OnItemClickListener onItemClickListener;
     private final int layout;
+    private final Context context;
 
     public void addItem(Report newReport) {
         reportList.add(0, newReport);
@@ -62,11 +67,13 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         return category;
     }
 
-    public ReportsHorizontalRecyclerViewAdapter(boolean isUnimibUser, int layout, OnItemClickListener onItemClickListener){
+    public ReportsHorizontalRecyclerViewAdapter(boolean isUnimibUser, OnItemClickListener onItemClickListener,
+                                                Context context, int layout){
         reportList = new ArrayList<>();
         this.isUnimibUser = isUnimibUser;
         this.layout = layout;
         this.onItemClickListener = onItemClickListener;
+        this.context = context;
     }
 
     @NonNull
@@ -123,7 +130,11 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
             category.setText(report.getCategory());
-            //propic.setImageResource();
+            Glide
+                    .with(context)
+                    .load(Uri.parse(report.getAuthor().getPropic()))
+                    .into(propic);
+
         }
 
         @Override

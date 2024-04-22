@@ -27,7 +27,6 @@ import it.unimib.communimib.databinding.FragmentReportsBinding;
 import it.unimib.communimib.model.CategoryReport;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.model.User;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersFragmentDialog;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersViewModel;
@@ -155,8 +154,10 @@ public class ReportsFragment extends Fragment {
         String[] categories = getResources().getStringArray(R.array.reports_categories);
         for (int i = 0; i<categories.length - 1; i++) {
             ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter =
-                    new ReportsHorizontalRecyclerViewAdapter(reportsViewModel.getCurrentUser().isUnimibEmployee(), R.layout.report_horizontal_item,
-                            report -> reportsViewModel.deleteReport(report));
+                    new ReportsHorizontalRecyclerViewAdapter(reportsViewModel.getCurrentUser().isUnimibEmployee(),
+                            report -> reportsViewModel.deleteReport(report),
+                            requireContext(),
+                            R.layout.report_horizontal_item);
             reportsHorizontalRecyclerViewAdapter.setCategory(categories[i]);
             categoryReportList.add(new CategoryReport(categories[i],reportsHorizontalRecyclerViewAdapter));
         }
