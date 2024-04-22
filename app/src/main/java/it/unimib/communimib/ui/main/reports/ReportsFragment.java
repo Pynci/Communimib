@@ -23,7 +23,7 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentReportsBinding;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteFragmentDialog;
+import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingsFragmentDialog;
 import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.NewReportFragmentDialog;
 import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.ReportsCreationViewModel;
 import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.ReportsCreationViewModelFactory;
@@ -75,8 +75,8 @@ public class ReportsFragment extends Fragment {
         });
 
         fragmentReportsBinding.floatingActionButtonFavorite.setOnClickListener(v -> {
-            FavoriteFragmentDialog favoriteFragmentDialog = new FavoriteFragmentDialog();
-            favoriteFragmentDialog.show(getParentFragmentManager(), "New Favorite Dialog");
+            FavoriteBuildingsFragmentDialog favoriteBuildingsFragmentDialog = new FavoriteBuildingsFragmentDialog();
+            favoriteBuildingsFragmentDialog.show(getParentFragmentManager(), "New Favorite Dialog");
             onMenuButtonClicked(getContext());
         });
 

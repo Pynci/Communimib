@@ -16,7 +16,7 @@ import java.util.List;
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentFavoriteDialogBinding;
 
-public class FavoriteFragmentDialog extends DialogFragment {
+public class FavoriteBuildingsFragmentDialog extends DialogFragment {
 
     private FragmentFavoriteDialogBinding binding;
 

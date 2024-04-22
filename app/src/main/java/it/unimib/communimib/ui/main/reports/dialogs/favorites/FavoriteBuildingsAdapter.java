@@ -73,7 +73,6 @@ public class FavoriteBuildingsAdapter extends BaseAdapter {
                 likeButton.setBackground(AppCompatResources.getDrawable(context, R.drawable.heart_unfilled));
             }
             onButtonClicked(context, isChecked, likeButton);
-            notifyDataSetChanged();
         });
 
         textViewBuilding.setText("Edificio " + item);
