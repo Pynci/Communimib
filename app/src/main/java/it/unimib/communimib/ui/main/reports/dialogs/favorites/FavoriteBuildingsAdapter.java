@@ -2,7 +2,6 @@ package it.unimib.communimib.ui.main.reports.dialogs.favorites;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,49 +46,39 @@ public class FavoriteBuildingsAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View listItemView = convertView;
-        ViewHolder holder;
-
         if (listItemView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             listItemView = inflater.inflate(R.layout.favorite_building_listview_element, parent, false);
-            holder = new ViewHolder();
-            holder.likeButton = listItemView.findViewById(R.id.favorite_building_toggle_button);
-            holder.textViewBuilding = listItemView.findViewById(R.id.favorite_building_textview);
-            listItemView.setTag(holder);
-        } else {
-            holder = (ViewHolder) listItemView.getTag();
         }
+
+        ToggleButton likeButton = listItemView.findViewById(R.id.favorite_building_toggle_button);
+        TextView textViewBuilding = listItemView.findViewById(R.id.favorite_building_textview);
 
         String item = data.get(position);
 
-        holder.likeButton.setOnCheckedChangeListener(null);
-        holder.likeButton.setChecked(checkedItems.contains(item));
+        likeButton.setOnCheckedChangeListener(null);
+        likeButton.setChecked(checkedItems.contains(item));
 
-        Drawable icon = holder.likeButton.isChecked() ?
+        Drawable icon = likeButton.isChecked() ?
                 AppCompatResources.getDrawable(context, R.drawable.heart_filled) :
                 AppCompatResources.getDrawable(context, R.drawable.heart_unfilled);
-        holder.likeButton.setBackground(icon);
+        likeButton.setBackground(icon);
 
-        holder.likeButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        likeButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 checkedItems.add(item);
-                holder.likeButton.setBackground(AppCompatResources.getDrawable(context, R.drawable.heart_filled));
+                likeButton.setBackground(AppCompatResources.getDrawable(context, R.drawable.heart_filled));
             } else {
                 checkedItems.remove(item);
-                holder.likeButton.setBackground(AppCompatResources.getDrawable(context, R.drawable.heart_unfilled));
+                likeButton.setBackground(AppCompatResources.getDrawable(context, R.drawable.heart_unfilled));
             }
-            onButtonClicked(context, isChecked, holder.likeButton);
+            onButtonClicked(context, isChecked, likeButton);
             notifyDataSetChanged();
         });
 
-        holder.textViewBuilding.setText("Edificio " + item);
+        textViewBuilding.setText("Edificio " + item);
 
         return listItemView;
-    }
-
-    static class ViewHolder {
-        ToggleButton likeButton;
-        TextView textViewBuilding;
     }
 
     private void onButtonClicked(Context context, boolean checked, ToggleButton toggleButton) {
