@@ -11,10 +11,10 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/favorite_colored_fill0_wght400_grad0_opsz24"
+        android:background="@drawable/heart_unfilled"
+        android:textOff=""
+        android:textOn=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textOn=""
-        android:textOff=""/>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

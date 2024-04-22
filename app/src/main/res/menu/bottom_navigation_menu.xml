@@ -5,16 +5,16 @@
     <item
         android:id="@+id/reportsFragment"
         android:enabled="true"
-        android:icon="@drawable/flag_fill0_wght400_grad0_opsz24"
+        android:icon="@drawable/flag"
         android:title="@string/segnalazioni" />
     <item
         android:id="@+id/dashboardFragment"
         android:enabled="true"
-        android:icon="@drawable/dashboard_fill0_wght400_grad0_opsz24"
+        android:icon="@drawable/dashboard"
         android:title="@string/bacheca" />
     <item
         android:id="@+id/profileFragment"
         android:enabled="true"
-        android:icon="@drawable/person_fill0_wght400_grad0_opsz24"
+        android:icon="@drawable/user_unfilled"
         android:title="@string/profilo" />
 </menu>

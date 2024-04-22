@@ -19,7 +19,7 @@
         android:clickable="true"
         android:contentDescription="@string/bottone_per_selezionare_i_filtri_degli_edifici"
         android:focusable="true"
-        android:src="@drawable/location_city_fill0_wght400_grad0_opsz24"
+        android:src="@drawable/building"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_favorite"
         app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_menu" />
@@ -32,7 +32,7 @@
         android:clickable="true"
         android:contentDescription="@string/bottone_per_selezionare_gli_edifici_preferiti"
         android:focusable="true"
-        android:src="@drawable/favorite_fill0_wght400_grad0_opsz24"
+        android:src="@drawable/heart_unfilled1"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_add_new_report"
         app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_menu" />
@@ -44,7 +44,7 @@
         android:layout_marginBottom="40dp"
         android:contentDescription="@string/bottone_per_aggiungere_una_nuova_segnalazione"
         android:focusable="true"
-        android:src="@drawable/add_fill0_wght400_grad0_opsz24"
+        android:src="@drawable/add_logo"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_menu"
         app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_menu" />
@@ -58,7 +58,7 @@
         android:clickable="true"
         android:contentDescription="@string/bottone_principale_del_menu"
         android:focusable="true"
-        android:src="@drawable/menu_fill0_wght400_grad0_opsz24"
+        android:src="@drawable/menu_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

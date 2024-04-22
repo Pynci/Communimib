@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ToggleButton;
 
+import androidx.appcompat.content.res.AppCompatResources;
+
 import java.util.List;
 
 import it.unimib.communimib.R;
@@ -45,7 +47,13 @@ public class FavoriteBuildingsAdapter extends BaseAdapter {
 
         ToggleButton button = listItemView.findViewById(R.id.favorite_building_toggle_button);
         button.setOnClickListener(v -> {
-            Drawable icon = context.getDrawable(R.drawable.favorite_heart_fill);
+            Drawable icon;
+
+            if(button.isChecked())
+                icon = AppCompatResources.getDrawable(context, R.drawable.heart_filled);
+            else
+                icon = AppCompatResources.getDrawable(context, R.drawable.heart_unfilled);
+
             button.setBackground(icon);
         });
 
