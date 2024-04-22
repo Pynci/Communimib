@@ -14,7 +14,7 @@ public class User {
     @ColumnInfo(name = "name") private String name;
     @ColumnInfo(name = "surname") private String surname;
     @ColumnInfo(name = "is_verified") private boolean isUnimibEmployee;
-    @ColumnInfo(name = "propic_uri") private String propicUri;
+    @ColumnInfo(name = "propic") private String propic;
 
     @Ignore
     public User(){
@@ -32,7 +32,6 @@ public class User {
         this.name = name;
         this.surname = surname;
         this.isUnimibEmployee = isUnimibEmployee;
-        propicUri = null;
     }
 
     public String getUid() {
@@ -76,11 +75,11 @@ public class User {
         isUnimibEmployee = unimibEmployee;
     }
 
-    public String getPropicUri() {
-        return propicUri;
+    public String getPropic() {
+        return propic;
     }
 
-    public void setPropicUri(String propicUri) {
-        this.propicUri = propicUri;
+    public void setPropic(String propic) {
+        this.propic = propic;
     }
 }

@@ -79,7 +79,7 @@ public class TestActivity extends AppCompatActivity {
         findViewById(R.id.button_glide).setOnClickListener(v -> {
             Glide
                     .with(getApplicationContext())
-                    .load(Uri.parse(userRepository.getCurrentUser().getPropicUri()))
+                    .load(Uri.parse(userRepository.getCurrentUser().getPropic()))
                     .into((ImageView) findViewById(R.id.imageViewTest));
         });
     }

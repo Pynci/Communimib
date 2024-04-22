@@ -199,7 +199,7 @@ public class UserRepository implements IUserRepository{
             userRemoteDataSource.uploadPropic(currentUser.getUid(), uri, remoteResult -> {
                 if(remoteResult.isSuccessful()){
                     String downloadUri = ((Result.UriSuccess) remoteResult).getUri();
-                    currentUser.setPropicUri(downloadUri);
+                    currentUser.setPropic(downloadUri);
                     userLocalDataSource.updateUser(currentUser, callback);
                 }
                 else{
