@@ -25,6 +25,7 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
 
     public void addItem(String category, Report report){
+        notifyDataSetChanged();
         for (CategoryReport categoryReport : categoryReportList) {
             if(categoryReport.getCategoryName().equals(category)){
                 categoryReport.getReportsHorizontalRecyclerViewAdapter().addItem(report);
@@ -41,6 +42,7 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
     }
 
     public void removeItem(String category, Report report){
+        notifyDataSetChanged();
         for (CategoryReport categoryReport: categoryReportList) {
             if(categoryReport.getCategoryName().equals(category)){
                 categoryReport.getReportsHorizontalRecyclerViewAdapter().removeItem(report);
@@ -84,6 +86,11 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
         public void bind(CategoryReport categoryReport){
             categoryName.setText(categoryReport.getCategoryName());
+            if(categoryReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
+                categoryName.setVisibility(View.INVISIBLE);
+            } else {
+                categoryName.setVisibility(View.VISIBLE);
+            }
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
             horizontalRecyclerView.setLayoutManager(layoutManager);
             horizontalRecyclerView.setAdapter(categoryReport.getReportsHorizontalRecyclerViewAdapter());
