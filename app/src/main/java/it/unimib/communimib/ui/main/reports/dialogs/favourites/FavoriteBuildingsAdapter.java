@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -42,20 +43,25 @@ public class FavoriteBuildingsAdapter extends BaseAdapter {
         View listItemView = convertView;
         if (listItemView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            listItemView = inflater.inflate(R.layout.favorite_building_list_item, parent, false);
+            listItemView = inflater.inflate(R.layout.favorite_building_listview_element, parent, false);
         }
 
-        ToggleButton button = listItemView.findViewById(R.id.favorite_building_toggle_button);
-        button.setOnClickListener(v -> {
+        //Gestione del bottone
+        ToggleButton likeButton = listItemView.findViewById(R.id.favorite_building_toggle_button);
+        likeButton.setOnClickListener(v -> {
             Drawable icon;
 
-            if(button.isChecked())
+            if(likeButton.isChecked())
                 icon = AppCompatResources.getDrawable(context, R.drawable.heart_filled);
             else
                 icon = AppCompatResources.getDrawable(context, R.drawable.heart_unfilled);
 
-            button.setBackground(icon);
+            likeButton.setBackground(icon);
         });
+
+        //Gestione del testo dell'edificio
+        TextView textViewBuilding = listItemView.findViewById(R.id.favorite_building_textview);
+        textViewBuilding.setText("Edificio " + data.get(position));
 
         return listItemView;
     }
