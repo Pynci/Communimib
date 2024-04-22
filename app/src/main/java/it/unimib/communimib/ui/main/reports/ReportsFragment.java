@@ -155,7 +155,7 @@ public class ReportsFragment extends Fragment {
         String[] categories = getResources().getStringArray(R.array.reports_categories);
         for (int i = 0; i<categories.length - 1; i++) {
             ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter =
-                    new ReportsHorizontalRecyclerViewAdapter(reportsViewModel.getCurrentUser().isUnimibEmployee(), R.layout.report_horizontal_item,
+                    new ReportsHorizontalRecyclerViewAdapter(true, R.layout.report_horizontal_item,
                             report -> reportsViewModel.deleteReport(report));
             reportsHorizontalRecyclerViewAdapter.setCategory(categories[i]);
             categoryReportList.add(new CategoryReport(categories[i],reportsHorizontalRecyclerViewAdapter));
