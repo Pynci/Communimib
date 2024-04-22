@@ -22,7 +22,7 @@ public class UserLocalDataSourceTest {
     public void setUp() throws Exception {
         fakeUserDAO = new FakeUserDAO();
         userLocalDataSource = new UserLocalDataSource(fakeUserDAO);
-        marco = new User("userId","marco@unimib.it", "Marco", "Ferioli");
+        marco = new User("123456","marco@unimib.it", "Marco", "Ferioli");
     }
 
     @Test

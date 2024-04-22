@@ -31,7 +31,7 @@ public class UserRepositoryTest {
         remoteDataSource = new FakeUserRemoteDataSource();
         localDataSource = new UserLocalDataSource(userDAO);
         authDataSource = new FakeAuthDataSource();
-        marco = new User("marco@unimib.it", "Marco", "Ferioli");
+        marco = new User("123456", "marco@unimib.it", "Marco", "Ferioli");
 
         userRepository = UserRepository.getInstance(
                 authDataSource,
