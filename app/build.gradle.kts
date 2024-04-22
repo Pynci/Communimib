@@ -76,4 +76,7 @@ dependencies {
 
     //Dipendenze per material design bottom bar
     implementation("com.google.android.material:material:1.11.0")
+
+    //Dipendenze per immagini
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
