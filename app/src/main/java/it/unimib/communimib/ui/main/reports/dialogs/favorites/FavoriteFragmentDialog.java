@@ -37,7 +37,8 @@ public class FavoriteFragmentDialog extends DialogFragment {
 
         FavoriteBuildingsAdapter filterReportListViewAdapter = new FavoriteBuildingsAdapter(
                 this.getContext(),
-                listaDati
+                listaDati,
+                new ArrayList<>()
         );
         binding.favoriteFragmentListview.setAdapter(filterReportListViewAdapter);
         binding.favoriteFragmentListview.setDivider(null);
