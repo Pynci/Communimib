@@ -25,9 +25,11 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
 
     public void addItem(String category, Report report){
-        notifyDataSetChanged();
         for (CategoryReport categoryReport : categoryReportList) {
             if(categoryReport.getCategoryName().equals(category)){
+                if(categoryReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
+                    notifyDataSetChanged();
+                }
                 categoryReport.getReportsHorizontalRecyclerViewAdapter().addItem(report);
             }
         }
@@ -42,10 +44,12 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
     }
 
     public void removeItem(String category, Report report){
-        notifyDataSetChanged();
         for (CategoryReport categoryReport: categoryReportList) {
             if(categoryReport.getCategoryName().equals(category)){
                 categoryReport.getReportsHorizontalRecyclerViewAdapter().removeItem(report);
+                if(categoryReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
+                    notifyDataSetChanged();
+                }
             }
         }
     }
