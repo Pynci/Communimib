@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -50,13 +52,15 @@ public class FavoriteBuildingsAdapter extends BaseAdapter {
         ToggleButton likeButton = listItemView.findViewById(R.id.favorite_building_toggle_button);
         likeButton.setOnClickListener(v -> {
             Drawable icon;
+            boolean checked = likeButton.isChecked();
 
-            if(likeButton.isChecked())
+            if(checked)
                 icon = AppCompatResources.getDrawable(context, R.drawable.heart_filled);
             else
                 icon = AppCompatResources.getDrawable(context, R.drawable.heart_unfilled);
 
             likeButton.setBackground(icon);
+            onButtonClicked(context, checked, likeButton);
         });
 
         //Gestione del testo dell'edificio
@@ -64,5 +68,15 @@ public class FavoriteBuildingsAdapter extends BaseAdapter {
         textViewBuilding.setText("Edificio " + data.get(position));
 
         return listItemView;
+    }
+
+    private void onButtonClicked(Context context, boolean checked, ToggleButton toggleButton) {
+        if(checked)
+            beatDownAnimation(context, toggleButton);
+    }
+
+    private void beatDownAnimation(Context context, ToggleButton toggleButton) {
+        Animation beatDown = AnimationUtils.loadAnimation(context, R.anim.heart_beat);
+        toggleButton.startAnimation(beatDown);
     }
 }
