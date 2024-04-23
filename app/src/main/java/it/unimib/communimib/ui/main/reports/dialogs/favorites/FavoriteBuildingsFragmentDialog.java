@@ -49,9 +49,11 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
         binding.favoriteFragmentListview.setDivider(null);
 
         //Gestione pulsante chiusura
-        binding.fragmentFavoriteRollbackButton.setOnClickListener(v -> {
-            this.dismiss();
-        });
+        binding.fragmentFavoriteRollbackButton.setOnClickListener(v -> this.dismiss());
+
+        //Gestione pulsante conferma
+        binding.fragmentFavoriteConfirmButton.setOnClickListener(v ->
+                favoriteBuildingViewModel.setUserInterests(filterReportListViewAdapter.getCheckedItems(), this::dismiss));
 
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
