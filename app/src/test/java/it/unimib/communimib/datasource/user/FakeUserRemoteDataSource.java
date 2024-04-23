@@ -1,5 +1,7 @@
 package it.unimib.communimib.datasource.user;
 
+import android.net.Uri;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,12 +19,12 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
     }
 
     @Override
-    public void storeUserParameters(String uid, String email, String name, String surname, Callback callback) {
+    public void storeUserParameters(String uid, String email, String name, String surname, boolean isUnimibEmployee, Callback callback) {
         if(users.containsKey(uid)){
-            users.replace(uid, new User(uid, email, name, surname));
+            users.replace(uid, new User(uid, email, name, surname, isUnimibEmployee));
         }
         else{
-            users.put(uid, new User(uid, email, name, surname));
+            users.put(uid, new User(uid, email, name, surname, isUnimibEmployee));
         }
         callback.onComplete(new Result.Success());
     }
@@ -46,5 +48,10 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
     @Override
     public void updateNameAndSurname(String uid, String name, String surname, Callback callback) {
         //TODO: implementare questo metodo
+    }
+
+    @Override
+    public void uploadPropic(String uid, Uri uri, Callback callback) {
+        //TODO: implementare questo
     }
 }

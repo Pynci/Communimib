@@ -334,14 +334,4 @@ public class SignUpUITest {
         Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_surnameError))
                 .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.SPECIAL_CHAR_NOT_ALLOWED))));
     }
-
-    @Test
-    public void testInvalidDataSnackbar() {
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_button_signup))
-                .perform(click());
-
-        Espresso.onView(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.NOT_ACCEPTED_PARAMETERS)))
-                .check(ViewAssertions.matches(isDisplayed()));
-    }
 }

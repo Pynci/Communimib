@@ -24,6 +24,14 @@ public class ReportRepository implements IReportRepository {
         reportRemoteDataSource.readAllReports(addedCallback, changedCallback, removedCallback, cancelledCallback);
     }
 
+    public void readReportsByBuildings(String[] buildings,
+                                       Callback addedCallback,
+                                       Callback changedCallback,
+                                       Callback removedCallback,
+                                       Callback cancelledCallback){
+        reportRemoteDataSource.readReportsByBuildings(buildings, addedCallback, changedCallback, removedCallback, cancelledCallback);
+    }
+
     @Override
     public void createReport(String titolo, String descrizione, String edificio, String categoria, User author, Callback callback) {
         reportRemoteDataSource.createReport(new Report(titolo, descrizione, edificio, categoria, author), callback);

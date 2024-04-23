@@ -6,8 +6,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.google.firebase.database.Exclude;
-
 @Entity
 public class User {
 
@@ -15,6 +13,8 @@ public class User {
     @PrimaryKey @NonNull private String email;
     @ColumnInfo(name = "name") private String name;
     @ColumnInfo(name = "surname") private String surname;
+    @ColumnInfo(name = "is_verified") private boolean isUnimibEmployee;
+    @ColumnInfo(name = "propic") private String propic;
 
     @Ignore
     public User(){
@@ -26,11 +26,12 @@ public class User {
         this.email = email;
     }
 
-    public User(String uid, @NonNull String email, String name, String surname) {
+    public User(String uid, @NonNull String email, String name, String surname, boolean isUnimibEmployee) {
         this.uid = uid;
         this.email = email;
         this.name = name;
         this.surname = surname;
+        this.isUnimibEmployee = isUnimibEmployee;
     }
 
     public String getUid() {
@@ -64,5 +65,21 @@ public class User {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public boolean isUnimibEmployee() {
+        return isUnimibEmployee;
+    }
+
+    public void setUnimibEmployee(boolean unimibEmployee) {
+        isUnimibEmployee = unimibEmployee;
+    }
+
+    public String getPropic() {
+        return propic;
+    }
+
+    public void setPropic(String propic) {
+        this.propic = propic;
     }
 }

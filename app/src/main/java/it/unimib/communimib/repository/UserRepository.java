@@ -1,5 +1,6 @@
 package it.unimib.communimib.repository;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.util.concurrent.Executors;
@@ -12,6 +13,7 @@ import it.unimib.communimib.datasource.user.IUserLocalDataSource;
 import it.unimib.communimib.datasource.user.IUserRemoteDataSource;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
+import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.ServiceLocator;
 
 public class UserRepository implements IUserRepository{
@@ -51,9 +53,9 @@ public class UserRepository implements IUserRepository{
 
         authDataSource.signUp(email, password, authResult -> {
             if(authResult.isSuccessful()){
-                userRemoteDataSource.storeUserParameters(((Result.SignupSuccess) authResult).getUid(), email, name, surname, dbResult -> {
+                userRemoteDataSource.storeUserParameters(((Result.SignupSuccess) authResult).getUid(), email, name, surname, isUnimibEmployee(email), dbResult -> {
                     if(dbResult.isSuccessful()) {
-                        currentUser = new User(((Result.SignupSuccess) authResult).getUid(), email, name, surname);
+                        currentUser = new User(((Result.SignupSuccess) authResult).getUid(), email, name, surname, isUnimibEmployee(email));
                         userLocalDataSource.insertUser(currentUser, callback);
                     }
                     else{
@@ -184,6 +186,25 @@ public class UserRepository implements IUserRepository{
                     currentUser.setSurname(surname);
                     userLocalDataSource.updateUser(currentUser, callback);
                 }
+                else{
+                    callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                }
+            });
+        }
+    }
+
+    @Override
+    public void uploadPropic(Uri uri, Callback callback){
+        if(currentUser != null){
+            userRemoteDataSource.uploadPropic(currentUser.getUid(), uri, remoteResult -> {
+                if(remoteResult.isSuccessful()){
+                    String downloadUri = ((Result.UriSuccess) remoteResult).getUri();
+                    currentUser.setPropic(downloadUri);
+                    userLocalDataSource.updateUser(currentUser, callback);
+                }
+                else{
+                    callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                }
             });
         }
     }
@@ -196,5 +217,9 @@ public class UserRepository implements IUserRepository{
     @Override
     public void resetPassword(String email, Callback callback) {
         authDataSource.resetPassword(email, callback);
+    }
+
+    private boolean isUnimibEmployee(String email){
+        return email.substring(email.indexOf("@")).equals("@unimib.it");
     }
 }

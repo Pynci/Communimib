@@ -83,6 +83,7 @@ public class FiltersFragmentDialog extends DialogFragment {
             else{
                 filtersViewModel.setFilters(selectedBuildings, this::dismiss);
             }
+            this.dismiss();
         });
 
         //Gestione del pulsante di uscita

@@ -50,6 +50,18 @@ public abstract class Result {
         }
     }
 
+    public static final class UriSuccess extends Result {
+        private final String uri;
+
+        public UriSuccess(String uri){
+            this.uri = uri;
+        }
+
+        public String getUri(){
+            return uri;
+        }
+    }
+
     public static final class BooleanSuccess extends Result {
 
         private final boolean aBoolean;

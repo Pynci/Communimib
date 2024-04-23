@@ -39,7 +39,6 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
         removeAllQueryListeners();
         Query query = databaseReference
                 .child(Constants.REPORTS_PATH);
-        currentReferences.add(query.getRef());
         currentListeners.add(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -88,18 +87,6 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
             addQueryListener("building", building, addedCallback, changedCallback, removedCallback, cancelledCallback);
         }
 
-    }
-
-    @Override
-    public void readReportsByCategories(String[] categories,
-                                        Callback addedCallback,
-                                        Callback changedCallback,
-                                        Callback removedCallback,
-                                        Callback cancelledCallback){
-        removeAllQueryListeners();
-        for (String category : categories) {
-            addQueryListener("category", category, addedCallback, changedCallback, removedCallback, cancelledCallback);
-        }
     }
 
     @Override

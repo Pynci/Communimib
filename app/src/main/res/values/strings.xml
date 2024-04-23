@@ -74,4 +74,5 @@
     <string name="scegli_i_tuoi_edifici_preferiti">Scegli i tuoi edifici preferiti</string>
     <string name="favorite_explain_1">Riceverai notifiche in tempo reale delle segnalazioni associate agli edifici selezionati</string>
     <string name="favorite_explain_2">Quando aprirai l\'applicazione le segnalazioni verranno filtrate automaticamente tramite gli edifici scelti</string>
+    <string name="category_name"> Nome categoria</string>
 </resources>

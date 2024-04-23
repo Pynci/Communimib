@@ -1,6 +1,7 @@
 package it.unimib.communimib.ui.main.reports;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,25 +12,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
 
-public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecyclerViewAdapter.ViewHolder> {
+public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<ReportsHorizontalRecyclerViewAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
         void onCloseReportClick(Report report);
     }
     private final boolean isUnimibUser;
+    private String category;
     private final List<Report> reportList;
     private final OnItemClickListener onItemClickListener;
     private final int layout;
+    private final Context context;
 
     public void addItem(Report newReport) {
-        reportList.add(newReport);
-        notifyItemInserted(reportList.size() - 1);
+        reportList.add(0, newReport);
+        notifyItemInserted(0);
     }
 
     public void editItem(Report editedReport) {
@@ -54,18 +59,33 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
         }
     }
 
-    public ReportsRecyclerViewAdapter(boolean isUnimibUser, int layout, OnItemClickListener onItemClickListener){
+    public void setCategory(String category){
+        this.category = category;
+    }
+
+    public String getCategory(){
+        return category;
+    }
+
+    public boolean isReportListEmpty(){
+        return reportList.isEmpty();
+    }
+
+
+    public ReportsHorizontalRecyclerViewAdapter(boolean isUnimibUser, OnItemClickListener onItemClickListener,
+                                                Context context, int layout){
         reportList = new ArrayList<>();
         this.isUnimibUser = isUnimibUser;
         this.layout = layout;
         this.onItemClickListener = onItemClickListener;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-        return new ReportsRecyclerViewAdapter.ViewHolder(view);
+        return new ReportsHorizontalRecyclerViewAdapter.ViewHolder(view);
     }
 
     @Override
@@ -75,12 +95,7 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
 
     @Override
     public int getItemCount() {
-        if(reportList != null){
-            return reportList.size();
-        }
-        else{
-            return 0;
-        }
+        return reportList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -88,6 +103,7 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
         private final TextView title;
         private final TextView description;
         private final TextView buiding;
+        private final TextView category;
         private final ImageView propic;
         private final TextView name;
         private final TextView surname;
@@ -105,6 +121,7 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
             name = itemView.findViewById(R.id.reportListItem_user_name);
             surname = itemView.findViewById(R.id.reportListItem_user_surname);
             closeButton = itemView.findViewById(R.id.reportListItem_closeButton);
+            category = itemView.findViewById(R.id.reportListItem_category);
             if (isUnimibUser){
                 closeButton.setVisibility(View.VISIBLE);
             }
@@ -117,7 +134,11 @@ public class ReportsRecyclerViewAdapter extends RecyclerView.Adapter<ReportsRecy
             buiding.setText(report.getBuilding());
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
-            //propic.setImageResource();
+            category.setText(report.getCategory());
+            Glide
+                    .with(context)
+                    .load(Uri.parse(report.getAuthor().getPropic()))
+                    .into(propic);
 
         }
 
