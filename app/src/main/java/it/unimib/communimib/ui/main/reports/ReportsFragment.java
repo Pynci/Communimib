@@ -48,7 +48,7 @@ public class ReportsFragment extends Fragment {
     private FavoriteBuildingViewModel favoriteBuildingViewModel;
     private ReportMainRecyclerViewAdapter reportMainRecyclerViewAdapter;
     private List<CategoryReport> categoryReportList;
-    //private ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter;
+    private List<String> favoriteBuildings;
     private boolean menuVisibile;
 
     public ReportsFragment() {
@@ -184,25 +184,34 @@ public class ReportsFragment extends Fragment {
 
         reportsViewModel.readAllReports();
 
-
+        favoriteBuildings = new ArrayList<>();
+        favoriteBuildingViewModel.getUserInterestsResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
+            } else {
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
 
         //Gestione osservazione filtri
         filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), strings -> {
-            /*
-            * TODO: implementare collegamento con viewmodel
-            *
-            * NOTA BENE: strings è SEMPRE UNA LISTA a prescindere dal filtro applicato. Se si filtra per preferiti o per tutti
-            * gli edifici si ha una LISTA di un solo elemento!!!!!!!!!
-            *
-            * Se vuoi filtrare per i preferiti il codice è filter-by-favorite, se vuoi filtrare per tutti gli edifici
-            * è filter-by-all, altrimenti la lista contiene gli edifici selezionati
-             */
 
             if(strings.get(0).equals("filter-by-favorite")) {
-
+                if(!favoriteBuildings.isEmpty()){
+                    String[] building = new String[favoriteBuildings.size()];
+                    for (int i = 0; i<strings.size(); i++){
+                        building[i] = favoriteBuildings.get(i);
+                    }
+                    reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                    reportsViewModel.readReportsByBuildings(building);
+                } else {
+                    Snackbar.make(requireView(), R.string.no_favorites_building, BaseTransientBottomBar.LENGTH_SHORT).show();
+                }
             } else if (strings.get(0).equals("filter-by-all")) {
                 reportsViewModel.readAllReports();
             } else {
+
                 String[] building = new String[strings.size()];
                 for (int i = 0; i<strings.size(); i++){
                     building[i] = strings.get(i);
@@ -210,7 +219,6 @@ public class ReportsFragment extends Fragment {
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                 reportsViewModel.readReportsByBuildings(building);
             }
-
         });
     }
 
