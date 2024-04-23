@@ -8,6 +8,8 @@ public class Constants {
     public static final String USERSREPORTS_PATH = "usersreports";
     public static final String STORAGE_USERSPROPICS = "user_propics";
 
+    public static final String USER_FAVORITE_BUILDINGS_PATH = "userfavoritebuildings";
+
     public static final String EMAIL_ERROR = "email_error";
     public static final String PASSWORD_ERROR = "password_error";
     public static final String CONFIRM_PASSWORD_ERROR = "confirm_password_error";

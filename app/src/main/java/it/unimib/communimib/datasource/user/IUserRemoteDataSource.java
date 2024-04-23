@@ -2,6 +2,8 @@ package it.unimib.communimib.datasource.user;
 
 import android.net.Uri;
 
+import java.util.List;
+
 import it.unimib.communimib.Callback;
 
 public interface IUserRemoteDataSource {
@@ -11,4 +13,6 @@ public interface IUserRemoteDataSource {
     void updateNameAndSurname(String uid, String name, String surname, Callback callback);
 
     void uploadPropic(String uid, Uri uri, Callback callback);
+
+    void storeUserInterests(List<String> userInterests, String userId, Callback callback);
 }

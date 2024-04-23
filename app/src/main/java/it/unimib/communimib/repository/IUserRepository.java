@@ -2,6 +2,8 @@ package it.unimib.communimib.repository;
 
 import android.net.Uri;
 
+import java.util.List;
+
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.model.User;
 
@@ -29,5 +31,7 @@ public interface IUserRepository {
     void getUserByEmail(String email, Callback callback);
     // void updatePropic(Callback callback) e poi cosa?
     void resetPassword(String email, Callback callback);
+
+    void createUserInterests(List<String> userInterests, Callback callback);
 }
 

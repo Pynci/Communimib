@@ -37,7 +37,7 @@ public class ErrorMapper {
         errorMap.put(NOT_ACCEPTED_PARAMETERS, R.string.not_accepted_parameters);
         errorMap.put(REPORT_CREATION_ERROR, R.string.report_creation_error);
         errorMap.put(REPORT_DELETING_ERROR, R.string.report_deleting_error);
-
+        errorMap.put(SAVE_USER_FAVORITE_BUILDINGS_ERROR, R.string.save_user_favorite_buildings_error);
     }
 
     public static ErrorMapper getInstance() {
@@ -84,4 +84,6 @@ public class ErrorMapper {
     // Errori gestione reports
     public static final String REPORT_CREATION_ERROR = "report_creation_error";
     public static final String REPORT_DELETING_ERROR = "report_deleting_error";
+
+    public static final String SAVE_USER_FAVORITE_BUILDINGS_ERROR = "save_user_interest_error";
 }

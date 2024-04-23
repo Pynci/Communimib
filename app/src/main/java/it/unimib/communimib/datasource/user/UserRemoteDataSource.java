@@ -1,19 +1,15 @@
 package it.unimib.communimib.datasource.user;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import it.unimib.communimib.Callback;
@@ -117,6 +113,21 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                     else{
 
                     }
+                });
+    }
+
+    @Override
+    public void storeUserInterests(List<String> userInterests, String userId, Callback callback) {
+
+        databaseReference
+                .child(Constants.USER_FAVORITE_BUILDINGS_PATH)
+                .child(userId)
+                .setValue(userInterests)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        callback.onComplete(new Result.Success());
+                    else
+                        callback.onComplete(new Result.Error(ErrorMapper.SAVE_USER_FAVORITE_BUILDINGS_ERROR));
                 });
     }
 

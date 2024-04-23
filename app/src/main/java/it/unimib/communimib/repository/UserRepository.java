@@ -3,6 +3,7 @@ package it.unimib.communimib.repository;
 import android.net.Uri;
 import android.util.Log;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -217,6 +218,20 @@ public class UserRepository implements IUserRepository{
     @Override
     public void resetPassword(String email, Callback callback) {
         authDataSource.resetPassword(email, callback);
+    }
+
+    @Override
+    public void createUserInterests(List<String> userInterests, Callback callback) {
+
+        if(getCurrentUser() != null)
+            userRemoteDataSource.storeUserInterests(userInterests, getCurrentUser().getUid(), result -> {
+                if(result.isSuccessful()){
+                    //Salva locale
+                }
+                else{
+                    callback.onComplete(result);
+                }
+            });
     }
 
     private boolean isUnimibEmployee(String email){

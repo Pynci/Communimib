@@ -25,7 +25,7 @@ public class FavoriteBuildingViewModel extends ViewModel {
     }
 
     public void setUserInterests(List<String> userInterests, DialogCallback dialogCallback) {
-        Log.d("Pizza", userInterests.toString());
+        iUserRepository.createUserInterests(userInterests, setUserInterestsResult::postValue);
         dialogCallback.onComplete();
     }
 
