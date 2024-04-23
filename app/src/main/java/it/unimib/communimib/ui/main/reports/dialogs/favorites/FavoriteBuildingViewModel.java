@@ -1,7 +1,5 @@
 package it.unimib.communimib.ui.main.reports.dialogs.favorites;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -24,12 +22,12 @@ public class FavoriteBuildingViewModel extends ViewModel {
         this.iUserRepository = iUserRepository;
     }
 
-    public void setUserInterests(List<String> userInterests, DialogCallback dialogCallback) {
+    public void setUserFavoriteBuildings(List<String> userInterests, DialogCallback dialogCallback) {
         iUserRepository.createUserInterests(userInterests, setUserInterestsResult::postValue);
         dialogCallback.onComplete();
     }
 
-    public void getUserInterests() {
+    public void getUserFavoriteBuildings() {
         iUserRepository.readUserInterests(getUserInterestsResult::postValue);
     }
 
