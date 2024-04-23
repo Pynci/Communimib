@@ -25,18 +25,6 @@ public abstract class Result {
         }
     }
 
-    public static final class SigninSuccess extends Result {
-        private final boolean emailVerified;
-
-        public SigninSuccess(boolean emailVerified){
-            this.emailVerified = emailVerified;
-        }
-
-        public boolean isEmailVerified(){
-            return emailVerified;
-        }
-    }
-
     public static final class UserSuccess extends Result {
 
         private final User user;
