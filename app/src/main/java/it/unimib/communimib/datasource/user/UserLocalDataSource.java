@@ -102,9 +102,12 @@ public class UserLocalDataSource implements IUserLocalDataSource{
                 ArrayList<String> favoriteBuildings = gson.fromJson(json, type);
                 callback.onComplete(new Result.UserFavoriteBuildings(favoriteBuildings));
             }
+            else{
+                callback.onComplete(new Result.Error(ErrorMapper.LOCAL_READ_USER_FAVORITE_BUILDINGS_ERROR));
+            }
         }
         catch (Exception e) {
-            callback.onComplete(new Result.Error(ErrorMapper.LOCAL_SAVE_USER_FAVORITE_BUILDINGS_ERROR));
+            callback.onComplete(new Result.Error(ErrorMapper.LOCAL_READ_USER_FAVORITE_BUILDINGS_ERROR));
         }
     }
 }
