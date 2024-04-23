@@ -40,26 +40,30 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
         favoriteBuildingViewModel.getUserFavoriteBuildings();
 
         favoriteBuildingViewModel.getUserInterestsResult().observe(this, result -> {
+
+            List<String> favoriteBuildings = new ArrayList<>();
+
             if(result.isSuccessful()) {
-                //Gestione Listview
-                List<String> listaDati = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.buildings)));
-                List<String> favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
-
-                if (!listaDati.isEmpty())
-                    listaDati.remove(listaDati.size() - 1);
-
-                FavoriteBuildingsAdapter filterReportListViewAdapter = new FavoriteBuildingsAdapter(
-                        this.getContext(),
-                        listaDati,
-                        favoriteBuildings
-                );
-                binding.favoriteFragmentListview.setAdapter(filterReportListViewAdapter);
-                binding.favoriteFragmentListview.setDivider(null);
-
-                //Gestione pulsante conferma
-                binding.fragmentFavoriteConfirmButton.setOnClickListener(v ->
-                        favoriteBuildingViewModel.setUserFavoriteBuildings(filterReportListViewAdapter.getCheckedItems(), this::dismiss));
+                favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
             }
+
+            //Gestione Listview
+            List<String> listaDati = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.buildings)));
+
+            if (!listaDati.isEmpty())
+                listaDati.remove(listaDati.size() - 1);
+
+            FavoriteBuildingsAdapter filterReportListViewAdapter = new FavoriteBuildingsAdapter(
+                    this.getContext(),
+                    listaDati,
+                    favoriteBuildings
+            );
+            binding.favoriteFragmentListview.setAdapter(filterReportListViewAdapter);
+            binding.favoriteFragmentListview.setDivider(null);
+
+            //Gestione pulsante conferma
+            binding.fragmentFavoriteConfirmButton.setOnClickListener(v ->
+                    favoriteBuildingViewModel.setUserFavoriteBuildings(filterReportListViewAdapter.getCheckedItems(), this::dismiss));
         });
 
         //Gestione pulsante chiusura

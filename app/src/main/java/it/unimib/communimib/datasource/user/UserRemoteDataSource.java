@@ -118,7 +118,7 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
     }
 
     @Override
-    public void storeUserInterests(List<String> userInterests, String userId, Callback callback) {
+    public void storeUserFavoriteBuildings(List<String> userInterests, String userId, Callback callback) {
         databaseReference
                 .child(Constants.USER_FAVORITE_BUILDINGS_PATH)
                 .child(userId)
@@ -132,7 +132,7 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
     }
 
     @Override
-    public void getUserInterests(String userId, Callback callback) {
+    public void getUserFavoriteBuildings(String userId, Callback callback) {
         databaseReference
                 .child(Constants.USER_FAVORITE_BUILDINGS_PATH)
                 .child(userId)
