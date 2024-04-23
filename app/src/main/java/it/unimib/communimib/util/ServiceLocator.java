@@ -1,6 +1,7 @@
 package it.unimib.communimib.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import it.unimib.communimib.database.LocalDatabase;
 import it.unimib.communimib.datasource.report.ReportRemoteDataSource;
@@ -33,7 +34,7 @@ public class ServiceLocator {
         return UserRepository.getInstance(
                 new AuthDataSource(),
                 new UserRemoteDataSource(),
-                new UserLocalDataSource(getLocalDatabase(context).userDAO()));
+                new UserLocalDataSource(getLocalDatabase(context).userDAO(), getFavoriteBuildingsSharedPreferences(context)));
     }
 
     public IReportRepository getReportRepository() {
@@ -44,4 +45,7 @@ public class ServiceLocator {
         return LocalDatabase.getDatabase(context);
     }
 
+    public SharedPreferences getFavoriteBuildingsSharedPreferences(Context context) {
+        return context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+    }
 }
