@@ -67,6 +67,11 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         return category;
     }
 
+    public boolean isReportListEmpty(){
+        return reportList.isEmpty();
+    }
+
+
     public ReportsHorizontalRecyclerViewAdapter(boolean isUnimibUser, OnItemClickListener onItemClickListener,
                                                 Context context, int layout){
         reportList = new ArrayList<>();

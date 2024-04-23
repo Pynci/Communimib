@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -183,6 +184,19 @@ public class ReportsFragment extends Fragment {
             * Se vuoi filtrare per i preferiti il codice è filter-by-favorite, se vuoi filtrare per tutti gli edifici
             * è filter-by-all, altrimenti la lista contiene gli edifici selezionati
              */
+
+            if(strings.get(0).equals("filter-by-favorite")) {
+
+            } else if (strings.get(0).equals("filter-by-all")) {
+                reportsViewModel.readAllReports();
+            } else {
+                String[] building = new String[strings.size()];
+                for (int i = 0; i<strings.size(); i++){
+                    building[i] = strings.get(i);
+                }
+                reportsViewModel.readReportsByBuildings(building);
+            }
+
         });
     }
 
