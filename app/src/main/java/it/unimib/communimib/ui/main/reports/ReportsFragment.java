@@ -28,6 +28,8 @@ import it.unimib.communimib.databinding.FragmentReportsBinding;
 import it.unimib.communimib.model.CategoryReport;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingViewModel;
+import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingViewModelFactory;
 import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingsFragmentDialog;
 import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.NewReportFragmentDialog;
 import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.ReportsCreationViewModel;
@@ -42,6 +44,8 @@ public class ReportsFragment extends Fragment {
     private ReportsViewModel reportsViewModel;
     private FiltersViewModel filtersViewModel;
     private ReportsCreationViewModel reportsCreationViewModel;
+
+    private FavoriteBuildingViewModel favoriteBuildingViewModel;
     private ReportMainRecyclerViewAdapter reportMainRecyclerViewAdapter;
     private List<CategoryReport> categoryReportList;
     //private ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter;
@@ -63,6 +67,10 @@ public class ReportsFragment extends Fragment {
                         .get(ReportsCreationViewModel.class);
 
         filtersViewModel = new ViewModelProvider(this).get(FiltersViewModel.class);
+
+
+        favoriteBuildingViewModel = new ViewModelProvider(this, new FavoriteBuildingViewModelFactory(this.getContext()))
+                .get(FavoriteBuildingViewModel.class);
     }
 
     @Override
@@ -82,7 +90,7 @@ public class ReportsFragment extends Fragment {
         });
 
         fragmentReportsBinding.floatingActionButtonFavorite.setOnClickListener(v -> {
-            FavoriteBuildingsFragmentDialog favoriteBuildingsFragmentDialog = new FavoriteBuildingsFragmentDialog();
+            FavoriteBuildingsFragmentDialog favoriteBuildingsFragmentDialog = new FavoriteBuildingsFragmentDialog(favoriteBuildingViewModel);
             favoriteBuildingsFragmentDialog.show(getParentFragmentManager(), "New Favorite Dialog");
             onMenuButtonClicked(getContext());
         });

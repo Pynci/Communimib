@@ -19,6 +19,11 @@ import it.unimib.communimib.databinding.FragmentFavoriteDialogBinding;
 public class FavoriteBuildingsFragmentDialog extends DialogFragment {
 
     private FragmentFavoriteDialogBinding binding;
+    private FavoriteBuildingViewModel favoriteBuildingViewModel;
+
+    public FavoriteBuildingsFragmentDialog (FavoriteBuildingViewModel favoriteBuildingViewModel) {
+        this.favoriteBuildingViewModel = favoriteBuildingViewModel;
+    }
 
     @NonNull
     @Override
