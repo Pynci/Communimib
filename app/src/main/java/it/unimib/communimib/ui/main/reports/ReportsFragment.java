@@ -199,6 +199,7 @@ public class ReportsFragment extends Fragment {
                 for (int i = 0; i<strings.size(); i++){
                     building[i] = strings.get(i);
                 }
+                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                 reportsViewModel.readReportsByBuildings(building);
             }
 

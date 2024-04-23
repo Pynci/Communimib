@@ -27,7 +27,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
     }
     private final boolean isUnimibUser;
     private String category;
-    private final List<Report> reportList;
+    private List<Report> reportList;
     private final OnItemClickListener onItemClickListener;
     private final int layout;
     private final Context context;
@@ -63,12 +63,12 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         this.category = category;
     }
 
-    public String getCategory(){
-        return category;
-    }
-
     public boolean isReportListEmpty(){
         return reportList.isEmpty();
+    }
+
+    public void clearReportList(){
+        this.reportList = new ArrayList<>();
     }
 
 
