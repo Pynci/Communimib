@@ -224,12 +224,12 @@ public class UserRepository implements IUserRepository{
     public void createUserInterests(List<String> userInterests, Callback callback) {
 
         if(getCurrentUser() != null)
-            userRemoteDataSource.storeUserInterests(userInterests, getCurrentUser().getUid(), result -> {
-                if(result.isSuccessful()){
-                    //Salva locale
+            userRemoteDataSource.storeUserInterests(userInterests, getCurrentUser().getUid(), resultRemote -> {
+                if(resultRemote.isSuccessful()){
+                    userLocalDataSource.saveUserFavoriteBuildings(userInterests, callback);
                 }
                 else{
-                    callback.onComplete(result);
+                    callback.onComplete(resultRemote);
                 }
             });
     }

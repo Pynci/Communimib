@@ -127,7 +127,7 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                     if (task.isSuccessful())
                         callback.onComplete(new Result.Success());
                     else
-                        callback.onComplete(new Result.Error(ErrorMapper.SAVE_USER_FAVORITE_BUILDINGS_ERROR));
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTE_SAVE_USER_FAVORITE_BUILDINGS_ERROR));
                 });
     }
 
