@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +73,7 @@ public class ReportsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentReportsBinding = FragmentReportsBinding.inflate(inflater, container, false);
         return fragmentReportsBinding.getRoot();
@@ -85,9 +84,9 @@ public class ReportsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //Gestione pulsanti del menu
-        fragmentReportsBinding.floatingActionButtonMenu.setOnClickListener(v -> {
-            onMenuButtonClicked(getContext());
-        });
+        fragmentReportsBinding.floatingActionButtonMenu.setOnClickListener(v ->
+            onMenuButtonClicked(getContext())
+        );
 
         fragmentReportsBinding.floatingActionButtonFavorite.setOnClickListener(v -> {
             FavoriteBuildingsFragmentDialog favoriteBuildingsFragmentDialog = new FavoriteBuildingsFragmentDialog(favoriteBuildingViewModel);
@@ -149,11 +148,11 @@ public class ReportsFragment extends Fragment {
             }
         });
 
-        reportsViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result -> {
+        reportsViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result ->
             Snackbar
                     .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
-                    .show();
-        });
+                    .show()
+        );
 
         reportsViewModel.getDeleteReportResult().observe(getViewLifecycleOwner(), result ->{
             if(result.isSuccessful()){
@@ -185,6 +184,7 @@ public class ReportsFragment extends Fragment {
         reportsViewModel.readAllReports();
 
         favoriteBuildings = new ArrayList<>();
+        favoriteBuildingViewModel.getUserFavoriteBuildings();
         favoriteBuildingViewModel.getUserInterestsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
@@ -200,7 +200,7 @@ public class ReportsFragment extends Fragment {
             if(strings.get(0).equals("filter-by-favorite")) {
                 if(!favoriteBuildings.isEmpty()){
                     String[] building = new String[favoriteBuildings.size()];
-                    for (int i = 0; i<strings.size(); i++){
+                    for (int i = 0; i<favoriteBuildings.size(); i++){
                         building[i] = favoriteBuildings.get(i);
                     }
                     reportMainRecyclerViewAdapter.clearHorizontalAdapters();
@@ -209,6 +209,7 @@ public class ReportsFragment extends Fragment {
                     Snackbar.make(requireView(), R.string.no_favorites_building, BaseTransientBottomBar.LENGTH_SHORT).show();
                 }
             } else if (strings.get(0).equals("filter-by-all")) {
+                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                 reportsViewModel.readAllReports();
             } else {
 
