@@ -222,7 +222,6 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public void createUserInterests(List<String> userInterests, Callback callback) {
-
         if(getCurrentUser() != null)
             userRemoteDataSource.storeUserInterests(userInterests, getCurrentUser().getUid(), resultRemote -> {
                 if(resultRemote.isSuccessful()){
@@ -232,6 +231,17 @@ public class UserRepository implements IUserRepository{
                     callback.onComplete(resultRemote);
                 }
             });
+    }
+
+    public void readUserInterests(Callback callback) {
+        userLocalDataSource.getUserFavoriteBuildings(localResult -> {
+            if(localResult.isSuccessful()){
+                callback.onComplete(localResult);
+            }
+            else{
+                userRemoteDataSource.getUserInterests(currentUser.getUid(), callback);
+            }
+        });
     }
 
     private boolean isUnimibEmployee(String email){

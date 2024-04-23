@@ -29,6 +29,10 @@ public class FavoriteBuildingViewModel extends ViewModel {
         dialogCallback.onComplete();
     }
 
+    public void getUserInterests() {
+        iUserRepository.readUserInterests(getUserInterestsResult::postValue);
+    }
+
     public LiveData<Result> getUserInterestsResult () {
         return getUserInterestsResult;
     }

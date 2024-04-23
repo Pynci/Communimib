@@ -78,5 +78,6 @@
     <string name="remote_save_user_favorite_buildings_error">Errore nel salvataggio remoto degli edifici preferiti dell\'utente</string>
     <string name="local_save_user_favorite_buildings_error">Errore nel salvataggio locale degli edifici preferiti dell\'utente</string>
     <string name="local_read_user_favorite_buildings_error">Errore nella lettura locale degli edifici preferiti dell\'utente</string>
+    <string name="remote_read_user_favorite_buildings_error">Errore nella lettura locale degli edifici preferiti dell\'utente</string>
 
 </resources>

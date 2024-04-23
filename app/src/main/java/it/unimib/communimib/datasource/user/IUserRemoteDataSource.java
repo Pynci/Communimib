@@ -15,4 +15,6 @@ public interface IUserRemoteDataSource {
     void uploadPropic(String uid, Uri uri, Callback callback);
 
     void storeUserInterests(List<String> userInterests, String userId, Callback callback);
+
+    void getUserInterests(String userId, Callback callback);
 }

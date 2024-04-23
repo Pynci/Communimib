@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -118,7 +119,6 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
 
     @Override
     public void storeUserInterests(List<String> userInterests, String userId, Callback callback) {
-
         databaseReference
                 .child(Constants.USER_FAVORITE_BUILDINGS_PATH)
                 .child(userId)
@@ -129,6 +129,28 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                     else
                         callback.onComplete(new Result.Error(ErrorMapper.REMOTE_SAVE_USER_FAVORITE_BUILDINGS_ERROR));
                 });
+    }
+
+    @Override
+    public void getUserInterests(String userId, Callback callback) {
+        databaseReference
+                .child(Constants.USER_FAVORITE_BUILDINGS_PATH)
+                .child(userId)
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<String> userInterests = new ArrayList<>();
+                        for (DataSnapshot snapshot : task.getResult().getChildren()) {
+                            // Itera attraverso tutti i figli della snapshot
+                            String interest = snapshot.getValue(String.class);
+                            userInterests.add(interest);
+                        }
+                        callback.onComplete(new Result.UserFavoriteBuildings(userInterests));
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR));
+                    }
+                });
+
     }
 
     private void updatePropicUri(String uid, StorageReference reference, Callback callback){
@@ -166,8 +188,4 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                     }
                 });
     }
-
-
-
-
 }

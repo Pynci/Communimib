@@ -39,7 +39,8 @@ public class ErrorMapper {
         errorMap.put(REPORT_DELETING_ERROR, R.string.report_deleting_error);
         errorMap.put(REMOTE_SAVE_USER_FAVORITE_BUILDINGS_ERROR, R.string.remote_save_user_favorite_buildings_error);
         errorMap.put(LOCAL_SAVE_USER_FAVORITE_BUILDINGS_ERROR, R.string.local_save_user_favorite_buildings_error);
-        errorMap.put(LOCAl_READ_USER_FAVORITE_BUILDINGS_ERROR, R.string.local_read_user_favorite_buildings_error);
+        errorMap.put(LOCAL_READ_USER_FAVORITE_BUILDINGS_ERROR, R.string.local_read_user_favorite_buildings_error);
+        errorMap.put(REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR, R.string.remote_read_user_favorite_buildings_error);
     }
 
     public static ErrorMapper getInstance() {
@@ -71,7 +72,10 @@ public class ErrorMapper {
     public static final String REMOTE_SAVE_USER_FAVORITE_BUILDINGS_ERROR = "remote_save_user_interest_error";
     public static final String LOCAL_SAVE_USER_FAVORITE_BUILDINGS_ERROR = "local_save_user_interest_error";
 
-    public static final String LOCAl_READ_USER_FAVORITE_BUILDINGS_ERROR = "local_read_user_favorite_buildings";
+    public static final String REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR = "remote_read_user_favorite_buildings";
+    public static final String LOCAL_READ_USER_FAVORITE_BUILDINGS_ERROR = "local_read_user_favorite_buildings";
+
+
     //Signup controls errors
     public static final String EMPTY_FIELD = "empty_field";
     public static final String INVALID_FIELD = "invalid_field";

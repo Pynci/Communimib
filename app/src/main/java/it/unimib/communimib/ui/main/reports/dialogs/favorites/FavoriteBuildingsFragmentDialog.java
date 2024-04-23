@@ -28,6 +28,12 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
+
+
+        favoriteBuildingViewModel.getUserInterests();
+
+
         // Utilizza il binding per inflare il layout
         binding = FragmentFavoriteDialogBinding.inflate(LayoutInflater.from(getContext()));
 
