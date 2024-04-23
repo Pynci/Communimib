@@ -223,7 +223,7 @@ public class UserRepository implements IUserRepository{
     @Override
     public void createUserInterests(List<String> userInterests, Callback callback) {
         if(getCurrentUser() != null)
-            userRemoteDataSource.storeUserInterests(userInterests, getCurrentUser().getUid(), resultRemote -> {
+            userRemoteDataSource.storeUserFavoriteBuildings(userInterests, getCurrentUser().getUid(), resultRemote -> {
                 if(resultRemote.isSuccessful()){
                     userLocalDataSource.saveUserFavoriteBuildings(userInterests, callback);
                 }
@@ -239,7 +239,7 @@ public class UserRepository implements IUserRepository{
                 callback.onComplete(localResult);
             }
             else{
-                userRemoteDataSource.getUserInterests(currentUser.getUid(), callback);
+                userRemoteDataSource.getUserFavoriteBuildings(currentUser.getUid(), callback);
             }
         });
     }
