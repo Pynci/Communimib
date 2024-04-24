@@ -22,6 +22,10 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
     private FragmentFavoriteDialogBinding binding;
     private FavoriteBuildingViewModel favoriteBuildingViewModel;
 
+    public FavoriteBuildingsFragmentDialog () {
+
+    }
+
     public FavoriteBuildingsFragmentDialog (FavoriteBuildingViewModel favoriteBuildingViewModel) {
         this.favoriteBuildingViewModel = favoriteBuildingViewModel;
     }

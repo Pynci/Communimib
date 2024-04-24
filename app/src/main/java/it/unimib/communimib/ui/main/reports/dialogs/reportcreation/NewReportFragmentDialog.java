@@ -25,7 +25,11 @@ public class NewReportFragmentDialog extends DialogFragment {
 
     private FragmentNewReportDialogBinding binding;
 
-    private final ReportsCreationViewModel reportsCreationViewModel;
+    private ReportsCreationViewModel reportsCreationViewModel;
+
+    public NewReportFragmentDialog() {
+
+    }
 
     public NewReportFragmentDialog(ReportsCreationViewModel reportsCreationViewModel) {
         this.reportsCreationViewModel = reportsCreationViewModel;
