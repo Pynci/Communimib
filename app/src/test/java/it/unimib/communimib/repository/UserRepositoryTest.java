@@ -1,8 +1,11 @@
 package it.unimib.communimib.repository;
 
+import android.content.SharedPreferences;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.CountDownLatch;
@@ -22,14 +25,18 @@ public class UserRepositoryTest {
     UserLocalDataSource localDataSource;
     FakeAuthDataSource authDataSource;
     FakeUserDAO userDAO;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     User marco;
     volatile Result result;
 
     @Before
     public void setUp() {
+        sharedPreferences = Mockito.mock(SharedPreferences.class);
+        editor = Mockito.mock(SharedPreferences.Editor.class);
         userDAO = new FakeUserDAO();
         remoteDataSource = new FakeUserRemoteDataSource();
-        localDataSource = new UserLocalDataSource(userDAO);
+        localDataSource = new UserLocalDataSource(userDAO, sharedPreferences);
         authDataSource = new FakeAuthDataSource();
         marco = new User("123456", "marco@unimib.it", "Marco", "Ferioli", true);
 
@@ -210,7 +217,11 @@ public class UserRepositoryTest {
 
     @Test
     public void updateUserNameAndSurname() {
-        //TODO: implementare il test
+        
+    }
+
+    @Test
+    public void uploadPropic() {
     }
 
     private void clearAll() throws NoSuchFieldException, IllegalAccessException {
@@ -221,4 +232,6 @@ public class UserRepositoryTest {
         instance.setAccessible(true);
         instance.set(null, null);
     }
+
+
 }

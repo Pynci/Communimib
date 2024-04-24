@@ -3,6 +3,7 @@ package it.unimib.communimib.datasource.user;
 import android.net.Uri;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import it.unimib.communimib.Callback;
@@ -52,6 +53,16 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
 
     @Override
     public void uploadPropic(String uid, Uri uri, Callback callback) {
-        //TODO: implementare questo
+        //TODO: implementare questo metodo
+    }
+
+    @Override
+    public void storeUserFavoriteBuildings(List<String> userInterests, String userId, Callback callback) {
+        //TODO: implementare questo metodo
+    }
+
+    @Override
+    public void getUserFavoriteBuildings(String userId, Callback callback) {
+        //TODO: implementare questo metodo
     }
 }
