@@ -32,8 +32,8 @@ public interface IUserRepository {
     // void updatePropic(Callback callback) e poi cosa?
     void resetPassword(String email, Callback callback);
 
-    void createUserInterests(List<String> userInterests, Callback callback);
+    void storeUserFavoriteBuildings(List<String> userInterests, Callback callback);
 
-    void readUserInterests(Callback callback);
+    void readUserFavoriteBuildings(Callback callback);
 }
 

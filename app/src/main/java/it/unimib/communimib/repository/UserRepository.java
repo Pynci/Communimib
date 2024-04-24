@@ -14,6 +14,7 @@ import it.unimib.communimib.datasource.user.IUserLocalDataSource;
 import it.unimib.communimib.datasource.user.IUserRemoteDataSource;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
+import it.unimib.communimib.util.Constants;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.ServiceLocator;
 
@@ -26,11 +27,13 @@ public class UserRepository implements IUserRepository{
     private final IUserRemoteDataSource userRemoteDataSource;
     private final IUserLocalDataSource userLocalDataSource;
     private User currentUser;
+    private long lastFavoriteBuildingsUpdate;
 
     private UserRepository(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource, IUserLocalDataSource localDataSource){
         this.authDataSource = authDataSource;
         this.userRemoteDataSource = userRemoteDataSource;
         this.userLocalDataSource = localDataSource;
+        this.lastFavoriteBuildingsUpdate = -1;
     }
 
     public static IUserRepository getInstance(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource, IUserLocalDataSource localDataSource) {
@@ -188,7 +191,7 @@ public class UserRepository implements IUserRepository{
                     userLocalDataSource.updateUser(currentUser, callback);
                 }
                 else{
-                    callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                    callback.onComplete(remoteResult);
                 }
             });
         }
@@ -204,7 +207,7 @@ public class UserRepository implements IUserRepository{
                     userLocalDataSource.updateUser(currentUser, callback);
                 }
                 else{
-                    callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                    callback.onComplete(remoteResult);
                 }
             });
         }
@@ -221,8 +224,8 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
-    public void createUserInterests(List<String> userInterests, Callback callback) {
-        if(getCurrentUser() != null)
+    public void storeUserFavoriteBuildings(List<String> userInterests, Callback callback) {
+        if(currentUser != null){
             userRemoteDataSource.storeUserFavoriteBuildings(userInterests, getCurrentUser().getUid(), resultRemote -> {
                 if(resultRemote.isSuccessful()){
                     userLocalDataSource.saveUserFavoriteBuildings(userInterests, callback);
@@ -231,17 +234,47 @@ public class UserRepository implements IUserRepository{
                     callback.onComplete(resultRemote);
                 }
             });
+        }
     }
 
-    public void readUserInterests(Callback callback) {
-        userLocalDataSource.getUserFavoriteBuildings(localResult -> {
-            if(localResult.isSuccessful()){
-                callback.onComplete(localResult);
-            }
-            else{
-                userRemoteDataSource.getUserFavoriteBuildings(currentUser.getUid(), callback);
-            }
-        });
+    public void readUserFavoriteBuildings(Callback callback) {
+
+        long currentTime = System.currentTimeMillis();
+
+        if(currentTime - lastFavoriteBuildingsUpdate > Constants.FAVORITE_BUILDINGS_TIMEOUT){
+            userRemoteDataSource.getUserFavoriteBuildings(currentUser.getUid(), remoteResult -> {
+                if(remoteResult.isSuccessful()){
+                    userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildings) remoteResult).getFavoriteBuildings(), localResult -> {
+                        if(localResult.isSuccessful()){
+                            callback.onComplete(remoteResult);
+                        }
+                        else{
+                            callback.onComplete(localResult);
+                        }
+                    });
+                }
+                else{
+                    callback.onComplete(remoteResult);
+                }
+            });
+        }
+        else{
+            userLocalDataSource.getUserFavoriteBuildings(localResult -> {
+                if(localResult.isSuccessful()){
+                    callback.onComplete(localResult);
+                }
+                else{
+                    userRemoteDataSource.getUserFavoriteBuildings(currentUser.getUid(), remoteResult -> {
+                        if(remoteResult.isSuccessful()){
+                            userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildings) remoteResult).getFavoriteBuildings(), callback);
+                        }
+                        else{
+                            callback.onComplete(remoteResult);
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private boolean isUnimibEmployee(String email){

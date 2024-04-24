@@ -23,12 +23,12 @@ public class FavoriteBuildingViewModel extends ViewModel {
     }
 
     public void setUserFavoriteBuildings(List<String> userInterests, DialogCallback dialogCallback) {
-        iUserRepository.createUserInterests(userInterests, setUserInterestsResult::postValue);
+        iUserRepository.storeUserFavoriteBuildings(userInterests, setUserInterestsResult::postValue);
         dialogCallback.onComplete();
     }
 
     public void getUserFavoriteBuildings() {
-        iUserRepository.readUserInterests(getUserInterestsResult::postValue);
+        iUserRepository.readUserFavoriteBuildings(getUserInterestsResult::postValue);
     }
 
     public LiveData<Result> getUserInterestsResult () {
