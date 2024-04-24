@@ -21,6 +21,10 @@ public class FiltersFragmentDialog extends DialogFragment {
 
     private FiltersViewModel filtersViewModel;
 
+    public FiltersFragmentDialog () {
+
+    }
+
     public FiltersFragmentDialog (FiltersViewModel filtersViewModel) {
         this.filtersViewModel = filtersViewModel;
     }

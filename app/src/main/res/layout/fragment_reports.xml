@@ -24,43 +24,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton_filter_buildings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:clickable="true"
-        android:contentDescription="@string/bottone_per_selezionare_i_filtri_degli_edifici"
-        android:focusable="true"
-        android:src="@drawable/building"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_favorite"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_menu" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton_filter_buildings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:contentDescription="@string/bottone_per_selezionare_i_filtri_degli_edifici"
+            android:focusable="true"
+            android:src="@drawable/building"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_favorite"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_menu"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionButton_menu" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton_favorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:clickable="true"
-        android:contentDescription="@string/bottone_per_selezionare_gli_edifici_preferiti"
-        android:focusable="true"
-        android:src="@drawable/heart_unfilled1"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_add_new_report"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_menu" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:contentDescription="@string/bottone_per_selezionare_gli_edifici_preferiti"
+            android:focusable="true"
+            android:src="@drawable/heart_unfilled1"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_add_new_report"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_menu"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionButton_menu" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton_add_new_report"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:contentDescription="@string/bottone_per_aggiungere_una_nuova_segnalazione"
-        android:focusable="true"
-        android:src="@drawable/add_logo"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_menu"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_menu" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton_add_new_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="@string/bottone_per_aggiungere_una_nuova_segnalazione"
+            android:focusable="true"
+            android:src="@drawable/add_logo"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_menu"
+            app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_menu"
+            app:layout_constraintStart_toStartOf="@+id/floatingActionButton_menu" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton_menu"
