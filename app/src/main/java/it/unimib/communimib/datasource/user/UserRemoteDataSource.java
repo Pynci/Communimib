@@ -1,19 +1,16 @@
 package it.unimib.communimib.datasource.user;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import it.unimib.communimib.Callback;
@@ -120,6 +117,42 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                 });
     }
 
+    @Override
+    public void storeUserFavoriteBuildings(List<String> userInterests, String userId, Callback callback) {
+        databaseReference
+                .child(Constants.USER_FAVORITE_BUILDINGS_PATH)
+                .child(userId)
+                .setValue(userInterests)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        callback.onComplete(new Result.Success());
+                    else
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTE_SAVE_USER_FAVORITE_BUILDINGS_ERROR));
+                });
+    }
+
+    @Override
+    public void getUserFavoriteBuildings(String userId, Callback callback) {
+        databaseReference
+                .child(Constants.USER_FAVORITE_BUILDINGS_PATH)
+                .child(userId)
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<String> userInterests = new ArrayList<>();
+                        for (DataSnapshot snapshot : task.getResult().getChildren()) {
+                            // Itera attraverso tutti i figli della snapshot
+                            String interest = snapshot.getValue(String.class);
+                            userInterests.add(interest);
+                        }
+                        callback.onComplete(new Result.UserFavoriteBuildings(userInterests));
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR));
+                    }
+                });
+
+    }
+
     private void updatePropicUri(String uid, StorageReference reference, Callback callback){
         Map<String, Object> updateMap = new HashMap<>();
         reference
@@ -155,8 +188,4 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                     }
                 });
     }
-
-
-
-
 }

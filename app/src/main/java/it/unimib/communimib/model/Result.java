@@ -1,5 +1,7 @@
 package it.unimib.communimib.model;
 
+import java.util.List;
+
 public abstract class Result {
 
     private Result(){
@@ -88,4 +90,16 @@ public abstract class Result {
         }
     }
 
+    public static final class UserFavoriteBuildings extends Result {
+
+        private final List<String> favoriteBuildings;
+
+        public UserFavoriteBuildings(List<String> favoriteBuildings) {
+            this.favoriteBuildings = favoriteBuildings;
+        }
+
+        public List<String> getFavoriteBuildings() {
+            return favoriteBuildings;
+        }
+    }
 }

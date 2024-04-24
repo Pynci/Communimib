@@ -75,4 +75,9 @@
     <string name="favorite_explain_1">Riceverai notifiche in tempo reale delle segnalazioni associate agli edifici selezionati</string>
     <string name="favorite_explain_2">Quando aprirai l\'applicazione le segnalazioni verranno filtrate automaticamente tramite gli edifici scelti</string>
     <string name="category_name"> Nome categoria</string>
+    <string name="remote_save_user_favorite_buildings_error">Errore nel salvataggio remoto degli edifici preferiti dell\'utente</string>
+    <string name="local_save_user_favorite_buildings_error">Errore nel salvataggio locale degli edifici preferiti dell\'utente</string>
+    <string name="local_read_user_favorite_buildings_error">Errore nella lettura locale degli edifici preferiti dell\'utente</string>
+    <string name="remote_read_user_favorite_buildings_error">Errore nella lettura locale degli edifici preferiti dell\'utente</string>
+
 </resources>

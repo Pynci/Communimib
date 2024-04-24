@@ -15,41 +15,63 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentFavoriteDialogBinding;
+import it.unimib.communimib.model.Result;
 
 public class FavoriteBuildingsFragmentDialog extends DialogFragment {
 
     private FragmentFavoriteDialogBinding binding;
+    private FavoriteBuildingViewModel favoriteBuildingViewModel;
+
+    public FavoriteBuildingsFragmentDialog (FavoriteBuildingViewModel favoriteBuildingViewModel) {
+        this.favoriteBuildingViewModel = favoriteBuildingViewModel;
+    }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
         // Utilizza il binding per inflare il layout
         binding = FragmentFavoriteDialogBinding.inflate(LayoutInflater.from(getContext()));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(binding.getRoot());
 
-        //Gestione Listview
-        List<String> listaDati = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.buildings)));
+        //Leggo gli interessi dell'utente
+        favoriteBuildingViewModel.getUserFavoriteBuildings();
 
-        if (!listaDati.isEmpty())
-            listaDati.remove(listaDati.size() - 1);
+        favoriteBuildingViewModel.getUserInterestsResult().observe(this, result -> {
 
-        FavoriteBuildingsAdapter filterReportListViewAdapter = new FavoriteBuildingsAdapter(
-                this.getContext(),
-                listaDati,
-                new ArrayList<>()
-        );
-        binding.favoriteFragmentListview.setAdapter(filterReportListViewAdapter);
-        binding.favoriteFragmentListview.setDivider(null);
+            List<String> favoriteBuildings = new ArrayList<>();
+
+            if(result.isSuccessful()) {
+                favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
+            }
+
+            //Gestione Listview
+            List<String> listaDati = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.buildings)));
+
+            if (!listaDati.isEmpty())
+                listaDati.remove(listaDati.size() - 1);
+
+            FavoriteBuildingsAdapter filterReportListViewAdapter = new FavoriteBuildingsAdapter(
+                    this.getContext(),
+                    listaDati,
+                    favoriteBuildings
+            );
+            binding.favoriteFragmentListview.setAdapter(filterReportListViewAdapter);
+            binding.favoriteFragmentListview.setDivider(null);
+
+            //Gestione pulsante conferma
+            binding.fragmentFavoriteConfirmButton.setOnClickListener(v ->
+                    favoriteBuildingViewModel.setUserFavoriteBuildings(filterReportListViewAdapter.getCheckedItems(), this::dismiss));
+        });
 
         //Gestione pulsante chiusura
-        binding.fragmentFavoriteRollbackButton.setOnClickListener(v -> {
-            this.dismiss();
-        });
+        binding.fragmentFavoriteRollbackButton.setOnClickListener(v -> this.dismiss());
 
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
         return alertDialog;
     }
 
