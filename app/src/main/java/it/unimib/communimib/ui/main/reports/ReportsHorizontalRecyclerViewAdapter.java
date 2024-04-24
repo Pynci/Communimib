@@ -108,6 +108,8 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         private final TextView surname;
         private final Button closeButton;
 
+        private final ImageView buildingImage;
+
 
         public ViewHolder(@NonNull View itemView) {
 
@@ -120,6 +122,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             name = itemView.findViewById(R.id.reportListItem_user_name);
             surname = itemView.findViewById(R.id.reportListItem_user_surname);
             closeButton = itemView.findViewById(R.id.reportListItem_closeButton);
+            buildingImage = itemView.findViewById(R.id.reportListItem_buildingImage);
             if (isUnimibUser){
                 closeButton.setVisibility(View.VISIBLE);
             }
@@ -132,6 +135,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             buiding.setText(report.getBuilding());
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
+            setBuildingImage(report.getBuilding());
             Glide
                     .with(context)
                     .load(Uri.parse(report.getAuthor().getPropic()))
@@ -143,6 +147,78 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         public void onClick(View v) {
             if(v.getId() == R.id.reportListItem_closeButton){
                 onItemClickListener.onCloseReportClick(reportList.get(getAdapterPosition()));
+            }
+        }
+
+        public void setBuildingImage(String building){
+            switch (building){
+                case "U1": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou1_foreground);
+                    break;
+                }
+                case "U2": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou2_foreground);
+                    break;
+                }
+                case "U3": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou3_foreground);
+                    break;
+                }
+                case "U4": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou4_foreground);
+                    break;
+                }
+                case "U5": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou5_foreground);
+                    break;
+                }
+                case "U6": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou6_foreground);
+                    break;
+                }
+                case "U7": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou7_foreground);
+                    break;
+                }
+                case "U9": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou9_foreground);
+                    break;
+                }
+                case "U10": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou10_foreground);
+                    break;
+                }
+                case "U11": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou11_foreground);
+                    break;
+                }
+                case "U14": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou14_foreground);
+                    break;
+                }
+                case "U16": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou16_foreground);
+                    break;
+                }
+                case "U17": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou17_foreground);
+                    break;
+                }
+                case "U19": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou19_foreground);
+                    break;
+                }
+                case "U22": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou22_foreground);
+                    break;
+                }
+                case "U24": {
+                    buildingImage.setBackgroundResource(R.mipmap.edificiou24_foreground);
+                    break;
+                }
+                default: {
+                    buildingImage.setBackgroundResource(R.mipmap.no_image_foreground);
+                }
             }
         }
     }
