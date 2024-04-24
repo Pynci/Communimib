@@ -246,6 +246,7 @@ public class UserRepository implements IUserRepository{
                 if(remoteResult.isSuccessful()){
                     userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildings) remoteResult).getFavoriteBuildings(), localResult -> {
                         if(localResult.isSuccessful()){
+                            lastFavoriteBuildingsUpdate = currentTime;
                             callback.onComplete(remoteResult);
                         }
                         else{
