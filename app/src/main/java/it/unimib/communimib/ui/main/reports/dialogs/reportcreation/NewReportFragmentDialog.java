@@ -78,9 +78,6 @@ public class NewReportFragmentDialog extends DialogFragment {
             }
         });
 
-        AlertDialog alertDialog = builder.create();
-        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
-
         //Gestione del pulsante di conferma
         binding.confirmNewReport.setOnClickListener(v -> {
 
@@ -95,12 +92,12 @@ public class NewReportFragmentDialog extends DialogFragment {
             String resultValidationDescription = Validation.checkEmptyField(chosenTitle);
 
             /*
-            * Ricorda: tutto sto casino nasce dal fatto che:
-            * 1) Lo spinner non ha un errore integrato e quindi si deve usare la label
-            * 2) Utilizzare l'observer qui dentro è impossibile (l'applicativo va in crash)
-            * 3) non puoi stamapre il messaggio di errore con la snackbar
-            *
-            * Ore perse per cercare di ottimizzare questa struttura: 3
+             * Ricorda: tutto sto casino nasce dal fatto che:
+             * 1) Lo spinner non ha un errore integrato e quindi si deve usare la label
+             * 2) Utilizzare l'observer qui dentro è impossibile (l'applicativo va in crash)
+             * 3) non puoi stamapre il messaggio di errore con la snackbar
+             *
+             * Ore perse per cercare di ottimizzare questa struttura: 3
              */
 
 
@@ -153,6 +150,8 @@ public class NewReportFragmentDialog extends DialogFragment {
             }
         });
 
+        AlertDialog alertDialog = builder.create();
+        Objects.requireNonNull(alertDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
 
