@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="320dp"
     android:padding="8dp"
-    android:layout_height="250dp">
+    android:layout_height="260dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"
-        android:layout_height="220dp"
+        android:layout_height="235dp"
         app:cardCornerRadius="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -17,59 +17,52 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@color/md_theme_light_primary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageView4"
-                android:layout_width="130dp"
-                android:layout_height="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
                 android:background="@mipmap/edificiou14_foreground"
+                android:backgroundTint="@color/md_theme_dark_tertiary"
+                android:backgroundTintMode="multiply"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/reportListItem_title"
-                android:layout_width="169dp"
-                android:layout_height="59dp"
-                android:layout_marginTop="12dp"
+                android:layout_width="235dp"
+                android:layout_height="57dp"
+                android:layout_marginTop="60dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:textColor="@color/md_theme_light_onBackground"
+                android:textColor="@color/md_theme_light_secondaryContainer"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imageView4"
                 tools:text="@string/titolo_della_segnalazione" />
 
-
             <TextView
                 android:id="@+id/reportListItem_building"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/md_theme_light_onSecondaryContainer"
+                android:backgroundTint="@color/md_theme_light_secondaryContainer"
                 android:paddingStart="5dp"
                 android:paddingEnd="15dp"
                 android:textColor="@color/seed"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView6"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="U14" />
 
             <TextView
                 android:id="@+id/reportListItem_description"
-                android:layout_width="230dp"
-                android:layout_height="59dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingTop="4dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:textColor="@color/md_theme_light_onSecondaryContainer"
@@ -84,7 +77,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="10dp"
                 app:cardCornerRadius="30dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reportListItem_description">
@@ -95,6 +88,7 @@
                     android:layout_height="48dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
+
             </androidx.cardview.widget.CardView>
 
 
@@ -132,7 +126,6 @@
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
