@@ -192,7 +192,9 @@ public class ReportsFragment extends Fragment {
             * TODO: implementare collegamento con viewmodel
             *
             * NOTA BENE: strings è SEMPRE UNA LISTA a prescindere dal filtro applicato. Se si filtra per preferiti o per tutti
-            * gli edifici si ha una LISTA di un solo elemento!!!!!!!!!
+            * gli edifici si ha una LISTA di un solo elemento!!!
+            *
+            * NOTA BENE 2: se l'utente non seleziona alcun filtro, la lista contiene comunque filter-by-all!!!
             *
             * Se vuoi filtrare per i preferiti il codice è filter-by-favorite, se vuoi filtrare per tutti gli edifici
             * è filter-by-all, altrimenti la lista contiene gli edifici selezionati
