@@ -1,5 +1,12 @@
 package it.unimib.communimib.repository;
 
+import static com.google.common.base.Verify.verify;
+import static org.hamcrest.CoreMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+
 import android.content.SharedPreferences;
 
 import org.junit.Assert;
@@ -10,6 +17,7 @@ import org.mockito.Mockito;
 import java.lang.reflect.Field;
 import java.util.concurrent.CountDownLatch;
 
+import it.unimib.communimib.Callback;
 import it.unimib.communimib.database.FakeUserDAO;
 import it.unimib.communimib.datasource.user.FakeAuthDataSource;
 import it.unimib.communimib.datasource.user.FakeUserRemoteDataSource;
@@ -32,8 +40,8 @@ public class UserRepositoryTest {
 
     @Before
     public void setUp() {
-        sharedPreferences = Mockito.mock(SharedPreferences.class);
-        editor = Mockito.mock(SharedPreferences.Editor.class);
+        sharedPreferences = mock(SharedPreferences.class);
+        editor = mock(SharedPreferences.Editor.class);
         userDAO = new FakeUserDAO();
         remoteDataSource = new FakeUserRemoteDataSource();
         localDataSource = new UserLocalDataSource(userDAO, sharedPreferences);
@@ -217,7 +225,7 @@ public class UserRepositoryTest {
 
     @Test
     public void updateUserNameAndSurname() {
-        
+
     }
 
     @Test

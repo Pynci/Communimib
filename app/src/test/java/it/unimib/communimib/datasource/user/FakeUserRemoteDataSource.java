@@ -48,7 +48,16 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
 
     @Override
     public void updateNameAndSurname(String uid, String name, String surname, Callback callback) {
-        //TODO: implementare questo metodo
+        if(users.containsKey(uid)){
+            User user = users.get(uid);
+            user.setName(name);
+            user.setSurname(surname);
+            users.replace(uid, user);
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+        }
+        callback.onComplete(new Result.Success());
     }
 
     @Override
