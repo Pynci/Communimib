@@ -36,38 +36,37 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(binding.getRoot());
 
+        //Gestione Listview
+        List<String> listaDati = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.buildings)));
+
+        if (!listaDati.isEmpty())
+            listaDati.remove(listaDati.size() - 1);
+
+        FavoriteBuildingsAdapter filterReportListViewAdapter = new FavoriteBuildingsAdapter(
+                this.getContext(),
+                listaDati,
+                new ArrayList<>()
+        );
+        binding.favoriteFragmentListview.setAdapter(filterReportListViewAdapter);
+        binding.favoriteFragmentListview.setDivider(null);
+
+        //Gestione pulsante conferma
+        binding.fragmentFavoriteConfirmButton.setOnClickListener(v ->
+                favoriteBuildingViewModel.setUserFavoriteBuildings(filterReportListViewAdapter.getCheckedItems(), this::dismiss));
+
+        //Gestione pulsante chiusura
+        binding.fragmentFavoriteRollbackButton.setOnClickListener(v -> this.dismiss());
+
         //Leggo gli interessi dell'utente
         favoriteBuildingViewModel.getUserFavoriteBuildings();
 
         favoriteBuildingViewModel.getUserInterestsResult().observe(this, result -> {
-
-            List<String> favoriteBuildings = new ArrayList<>();
-
+            List<String> favoriteBuildings;
             if(result.isSuccessful()) {
                 favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
+                filterReportListViewAdapter.setCheckedItems(favoriteBuildings);
             }
-
-            //Gestione Listview
-            List<String> listaDati = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.buildings)));
-
-            if (!listaDati.isEmpty())
-                listaDati.remove(listaDati.size() - 1);
-
-            FavoriteBuildingsAdapter filterReportListViewAdapter = new FavoriteBuildingsAdapter(
-                    this.getContext(),
-                    listaDati,
-                    favoriteBuildings
-            );
-            binding.favoriteFragmentListview.setAdapter(filterReportListViewAdapter);
-            binding.favoriteFragmentListview.setDivider(null);
-
-            //Gestione pulsante conferma
-            binding.fragmentFavoriteConfirmButton.setOnClickListener(v ->
-                    favoriteBuildingViewModel.setUserFavoriteBuildings(filterReportListViewAdapter.getCheckedItems(), this::dismiss));
         });
-
-        //Gestione pulsante chiusura
-        binding.fragmentFavoriteRollbackButton.setOnClickListener(v -> this.dismiss());
 
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

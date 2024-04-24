@@ -21,7 +21,7 @@ public class FavoriteBuildingsAdapter extends BaseAdapter {
     private final Context context;
     private final List<String> data;
 
-    private final List<String> checkedItems;
+    private List<String> checkedItems;
     public FavoriteBuildingsAdapter(Context context, List<String> data, List<String> checkedItems) {
         this.context = context;
         this.data = data;
@@ -92,5 +92,10 @@ public class FavoriteBuildingsAdapter extends BaseAdapter {
 
     public List<String> getCheckedItems() {
         return checkedItems;
+    }
+
+    protected void setCheckedItems(List<String> checkedItems) {
+        this.checkedItems = checkedItems;
+        notifyDataSetChanged();
     }
 }
