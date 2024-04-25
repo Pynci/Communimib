@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -178,12 +179,10 @@ public class ReportsFragment extends Fragment {
                                 }
 
                                 @Override
-                                public void onCardClick() {
-                                    NavigationHelper.navigateTo(
-                                            requireActivity(),
-                                            requireView(),
-                                            R.id.action_reportsFragment_to_detailedReportFragment,
-                                            false);
+                                public void onCardClick(Report report) {
+                                    ReportsFragmentDirections.ActionReportsFragmentToDetailedReportFragment action =
+                                            ReportsFragmentDirections.actionReportsFragmentToDetailedReportFragment(report);
+                                    Navigation.findNavController(view).navigate(action);
                                 }
                             },
                             requireContext(),

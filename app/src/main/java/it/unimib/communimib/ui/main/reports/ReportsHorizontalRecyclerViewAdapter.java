@@ -25,7 +25,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
 
     public interface OnItemClickListener {
         void onCloseReportClick(Report report);
-        void onCardClick();
+        void onCardClick(Report report);
     }
     private final boolean isUnimibUser;
     private String category;
@@ -155,7 +155,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
                 onItemClickListener.onCloseReportClick(reportList.get(getAdapterPosition()));
             }
             if(v.getId() == R.id.cardview_report) {
-                onItemClickListener.onCardClick();
+                onItemClickListener.onCardClick(reportList.get(getAdapterPosition()));
             }
         }
 

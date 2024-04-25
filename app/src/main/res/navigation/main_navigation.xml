@@ -27,6 +27,11 @@
     <fragment
         android:id="@+id/detailedReportFragment"
         android:name="it.unimib.communimib.ui.main.reports.DetailedReportFragment"
-        android:label="fragment_detailed_report"
-        tools:layout="@layout/fragment_detailed_report" />
+        android:label=""
+        tools:layout="@layout/fragment_detailed_report">
+
+        <argument
+            android:name="report"
+            app:argType="it.unimib.communimib.model.Report" />
+    </fragment>
 </navigation>

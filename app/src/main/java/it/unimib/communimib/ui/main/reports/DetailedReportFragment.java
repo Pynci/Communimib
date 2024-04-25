@@ -5,16 +5,20 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.R;
+import it.unimib.communimib.model.Report;
 
 public class DetailedReportFragment extends Fragment {
 
     private BottomNavigationBarListener mListener;
+
+    private Report report;
 
     @Override
     public void onAttach(Context context) {
@@ -40,6 +44,14 @@ public class DetailedReportFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hideBottomNavigationBar();
+
+        try {
+            DetailedReportFragmentArgs args = DetailedReportFragmentArgs.fromBundle(getArguments());
+            this.report = args.getReport();
+        }
+        catch (Exception e) {
+            report = null;
+        }
     }
 
     @Override
