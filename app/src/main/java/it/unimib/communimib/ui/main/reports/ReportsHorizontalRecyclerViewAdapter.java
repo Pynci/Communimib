@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +25,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
 
     public interface OnItemClickListener {
         void onCloseReportClick(Report report);
+        void onCardClick();
     }
     private final boolean isUnimibUser;
     private String category;
@@ -100,6 +102,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        private final CardView card;
         private final TextView title;
         private final TextView description;
         private final TextView buiding;
@@ -123,10 +126,13 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             surname = itemView.findViewById(R.id.reportListItem_user_surname);
             closeButton = itemView.findViewById(R.id.reportListItem_closeButton);
             buildingImage = itemView.findViewById(R.id.reportListItem_buildingImage);
+            card = itemView.findViewById(R.id.cardview_report);
+
             if (isUnimibUser){
                 closeButton.setVisibility(View.VISIBLE);
             }
             closeButton.setOnClickListener(this);
+            card.setOnClickListener(this);
         }
 
         public void bind(Report report){
@@ -147,6 +153,9 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         public void onClick(View v) {
             if(v.getId() == R.id.reportListItem_closeButton){
                 onItemClickListener.onCloseReportClick(reportList.get(getAdapterPosition()));
+            }
+            if(v.getId() == R.id.cardview_report) {
+                onItemClickListener.onCardClick();
             }
         }
 

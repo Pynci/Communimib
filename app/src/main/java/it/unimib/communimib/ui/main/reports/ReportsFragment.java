@@ -36,6 +36,7 @@ import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.ReportsCreati
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersFragmentDialog;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersViewModel;
+import it.unimib.communimib.util.NavigationHelper;
 
 public class ReportsFragment extends Fragment {
 
@@ -170,7 +171,21 @@ public class ReportsFragment extends Fragment {
         for (int i = 0; i<categories.length - 1; i++) {
             ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter =
                     new ReportsHorizontalRecyclerViewAdapter(reportsViewModel.getCurrentUser().isUnimibEmployee(),
-                            report -> reportsViewModel.deleteReport(report),
+                            new ReportsHorizontalRecyclerViewAdapter.OnItemClickListener() {
+                                @Override
+                                public void onCloseReportClick(Report report) {
+                                    reportsViewModel.deleteReport(report);
+                                }
+
+                                @Override
+                                public void onCardClick() {
+                                    NavigationHelper.navigateTo(
+                                            requireActivity(),
+                                            requireView(),
+                                            R.id.action_reportsFragment_to_detailedReportFragment,
+                                            false);
+                                }
+                            },
                             requireContext(),
                             R.layout.report_horizontal_item);
             reportsHorizontalRecyclerViewAdapter.setCategory(categories[i]);

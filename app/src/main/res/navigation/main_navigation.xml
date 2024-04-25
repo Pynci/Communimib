@@ -19,5 +19,14 @@
         android:id="@+id/reportsFragment"
         android:name="it.unimib.communimib.ui.main.reports.ReportsFragment"
         android:label=""
-        tools:layout="@layout/fragment_reports" />
+        tools:layout="@layout/fragment_reports" >
+        <action
+            android:id="@+id/action_reportsFragment_to_detailedReportFragment"
+            app:destination="@id/detailedReportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedReportFragment"
+        android:name="it.unimib.communimib.ui.main.reports.DetailedReportFragment"
+        android:label="fragment_detailed_report"
+        tools:layout="@layout/fragment_detailed_report" />
 </navigation>

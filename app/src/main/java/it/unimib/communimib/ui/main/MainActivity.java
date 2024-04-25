@@ -1,6 +1,7 @@
 package it.unimib.communimib.ui.main;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -11,10 +12,11 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.R;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements BottomNavigationBarListener {
+    BottomNavigationView bottomNav;
     private NavController navController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         navController = navHostFragment.getNavController();
 
-        BottomNavigationView bottomNav = findViewById(R.id.activityMainButtonMenu_bottomNavigation);
+        bottomNav = findViewById(R.id.activityMainButtonMenu_bottomNavigation);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.reportsFragment, R.id.dashboardFragment,
@@ -48,4 +50,13 @@ public class MainActivity extends AppCompatActivity {
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
 
+    @Override
+    public void hideBottomNavigationBar() {
+        bottomNav.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showBottomNavigationBar() {
+        bottomNav.setVisibility(View.VISIBLE);
+    }
 }

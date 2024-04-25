@@ -7,6 +7,7 @@
     android:layout_height="260dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_report"
         android:layout_width="300dp"
         android:layout_height="240dp"
         app:cardCornerRadius="30dp"
