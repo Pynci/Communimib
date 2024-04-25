@@ -54,6 +54,12 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
         }
     }
 
+    public void clearHorizontalAdapters(){
+        for (CategoryReport categoryReport: categoryReportList) {
+            categoryReport.getReportsHorizontalRecyclerViewAdapter().clearReportList();
+        }
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override

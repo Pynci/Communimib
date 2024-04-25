@@ -39,6 +39,7 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
         removeAllQueryListeners();
         Query query = databaseReference
                 .child(Constants.REPORTS_PATH);
+        currentReferences.add(query.getRef());
         currentListeners.add(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
