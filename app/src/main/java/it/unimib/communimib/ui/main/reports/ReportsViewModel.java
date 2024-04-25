@@ -51,6 +51,14 @@ public class ReportsViewModel extends ViewModel {
                 result -> readCancelledResult.setValue(result));
     }
 
+    public void readReportsByTitleAndDescription(String keyword){
+        reportRepository.readReportsByTitleAndDescription(keyword,
+                result -> reportAddedReadResult.setValue(result),
+                result -> reportChangedReadResult.setValue(result),
+                result -> reportRemovedReadResult.setValue(result),
+                result -> readCancelledResult.setValue(result));
+    }
+
     public void deleteReport(Report report){
         reportRepository.deleteReport(report, deleteReportResult::postValue);
     }
