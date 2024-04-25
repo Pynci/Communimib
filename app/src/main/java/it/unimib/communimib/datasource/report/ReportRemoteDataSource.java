@@ -78,7 +78,7 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
     }
 
     @Override
-    public void readReportsByBuildings(String[] buildings,
+    public void readReportsByBuildings(List<String> buildings,
                                        Callback addedCallback,
                                        Callback changedCallback,
                                        Callback removedCallback,

@@ -1,5 +1,7 @@
 package it.unimib.communimib.repository;
 
+import java.util.List;
+
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.User;
@@ -11,11 +13,11 @@ public interface IReportRepository {
                         Callback removedCallback,
                         Callback cancelledCallback);
 
-    void readReportsByBuildings(String[] buildings,
-                               Callback addedCallback,
-                               Callback changedCallback,
-                               Callback removedCallback,
-                               Callback cancelledCallback);
+    void readReportsByBuildings(List<String> buildings,
+                                Callback addedCallback,
+                                Callback changedCallback,
+                                Callback removedCallback,
+                                Callback cancelledCallback);
 
     void readReportsByTitleAndDescription(String keyword,
                                           Callback addedCallback,

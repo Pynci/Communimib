@@ -3,6 +3,9 @@ package it.unimib.communimib.ui.main.reports;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.util.List;
+
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
@@ -43,7 +46,7 @@ public class ReportsViewModel extends ViewModel {
         );
     }
 
-    public void readReportsByBuildings(String[] buildings){
+    public void readReportsByBuildings(List<String> buildings){
         reportRepository.readReportsByBuildings(buildings,
                 result -> reportAddedReadResult.setValue(result),
                 result -> reportChangedReadResult.setValue(result),

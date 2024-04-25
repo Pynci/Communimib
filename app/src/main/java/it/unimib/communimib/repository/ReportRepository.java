@@ -1,5 +1,7 @@
 package it.unimib.communimib.repository;
 
+import java.util.List;
+
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.datasource.report.IReportRemoteDataSource;
 import it.unimib.communimib.model.Report;
@@ -22,7 +24,7 @@ public class ReportRepository implements IReportRepository {
     }
 
     @Override
-    public void readReportsByBuildings(String[] buildings,
+    public void readReportsByBuildings(List<String> buildings,
                                        Callback addedCallback,
                                        Callback changedCallback,
                                        Callback removedCallback,

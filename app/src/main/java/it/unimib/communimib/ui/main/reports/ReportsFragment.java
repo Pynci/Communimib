@@ -190,15 +190,9 @@ public class ReportsFragment extends Fragment {
         favoriteBuildingViewModel.getUserInterestsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
                 favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
-                if (isFilteredByFavorites) {
-                    if (!favoriteBuildings.isEmpty()) {
-                        String[] building = new String[favoriteBuildings.size()];
-                        for (int i = 0; i < favoriteBuildings.size(); i++) {
-                            building[i] = favoriteBuildings.get(i);
-                        }
-                        reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                        reportsViewModel.readReportsByBuildings(building);
-                    }
+                if (isFilteredByFavorites && (!favoriteBuildings.isEmpty())) {
+                    reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                    reportsViewModel.readReportsByBuildings(favoriteBuildings);
                 }
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
@@ -221,12 +215,8 @@ public class ReportsFragment extends Fragment {
             if(strings.get(0).equals("filter-by-favorite")) {
                 isFilteredByFavorites = true;
                 if(!favoriteBuildings.isEmpty()){
-                    String[] building = new String[favoriteBuildings.size()];
-                    for (int i = 0; i<favoriteBuildings.size(); i++){
-                        building[i] = favoriteBuildings.get(i);
-                    }
                     reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                    reportsViewModel.readReportsByBuildings(building);
+                    reportsViewModel.readReportsByBuildings(favoriteBuildings);
                 } else {
                     Snackbar.make(requireView(), R.string.no_favorites_building, BaseTransientBottomBar.LENGTH_SHORT).show();
                 }
@@ -236,12 +226,8 @@ public class ReportsFragment extends Fragment {
                 reportsViewModel.readAllReports();
             } else {
                 isFilteredByFavorites = false;
-                String[] building = new String[strings.size()];
-                for (int i = 0; i<strings.size(); i++){
-                    building[i] = strings.get(i);
-                }
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readReportsByBuildings(building);
+                reportsViewModel.readReportsByBuildings(favoriteBuildings);
             }
         });
     }
