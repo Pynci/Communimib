@@ -244,6 +244,7 @@ public class ReportsFragment extends Fragment {
         });
     }
 
+    // ??? cosa cambia tra filter-by-favorite e niente??
     private void filter(String filter) {
         if(filter.equals("filter-by-favorite")) {
             isFilteredByFavorites = true;
