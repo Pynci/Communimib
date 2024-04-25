@@ -10,11 +10,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.SearchView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -83,6 +85,33 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        fragmentReportsBinding.fragmentReportSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                reportsViewModel.readReportsByTitleAndDescription(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        fragmentReportsBinding.fragmentReportSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                if(filtersViewModel.getChosenFilter().getValue() != null){
+                    filter(filtersViewModel.getChosenFilter().getValue().get(0));
+                }
+                else{
+                    filter("");
+                }
+                Log.d("dentifricio", "arriva");
+                return false;
+            }
+        });
 
 
         //Gestione pulsanti del menu
@@ -187,7 +216,7 @@ public class ReportsFragment extends Fragment {
 
         favoriteBuildings = new ArrayList<>();
         favoriteBuildingViewModel.getUserFavoriteBuildings();
-        favoriteBuildingViewModel.getUserInterestsResult().observe(getViewLifecycleOwner(), result -> {
+        favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
                 favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
                 if (isFilteredByFavorites && (!favoriteBuildings.isEmpty())) {
@@ -200,7 +229,7 @@ public class ReportsFragment extends Fragment {
             }
         });
 
-        favoriteBuildingViewModel.getSetUserInterestsResult().observe(getViewLifecycleOwner(), result -> {
+        favoriteBuildingViewModel.getSetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 favoriteBuildingViewModel.getUserFavoriteBuildings();
             } else {
@@ -211,25 +240,28 @@ public class ReportsFragment extends Fragment {
 
         //Gestione osservazione filtri
         filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), strings -> {
+            filter(strings.get(0));
+        });
+    }
 
-            if(strings.get(0).equals("filter-by-favorite")) {
-                isFilteredByFavorites = true;
-                if(!favoriteBuildings.isEmpty()){
-                    reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                    reportsViewModel.readReportsByBuildings(favoriteBuildings);
-                } else {
-                    Snackbar.make(requireView(), R.string.no_favorites_building, BaseTransientBottomBar.LENGTH_SHORT).show();
-                }
-            } else if (strings.get(0).equals("filter-by-all")) {
-                isFilteredByFavorites = false;
-                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readAllReports();
-            } else {
-                isFilteredByFavorites = false;
+    private void filter(String filter) {
+        if(filter.equals("filter-by-favorite")) {
+            isFilteredByFavorites = true;
+            if(!favoriteBuildings.isEmpty()){
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                 reportsViewModel.readReportsByBuildings(favoriteBuildings);
+            } else {
+                Snackbar.make(requireView(), R.string.no_favorites_building, BaseTransientBottomBar.LENGTH_SHORT).show();
             }
-        });
+        } else if (filter.equals("filter-by-all")) {
+            isFilteredByFavorites = false;
+            reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+            reportsViewModel.readAllReports();
+        } else {
+            isFilteredByFavorites = false;
+            reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+            reportsViewModel.readReportsByBuildings(favoriteBuildings);
+        }
     }
 
     @Override
