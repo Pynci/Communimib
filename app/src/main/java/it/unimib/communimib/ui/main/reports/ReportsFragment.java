@@ -48,6 +48,7 @@ public class ReportsFragment extends Fragment {
     private ReportMainRecyclerViewAdapter reportMainRecyclerViewAdapter;
     private List<CategoryReport> categoryReportList;
     private List<String> favoriteBuildings;
+    private boolean isFilteredByFavorites = false;
     private boolean menuVisibile;
 
     public ReportsFragment() {
@@ -82,6 +83,7 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         //Gestione pulsanti del menu
         fragmentReportsBinding.floatingActionButtonMenu.setOnClickListener(v ->
@@ -186,8 +188,27 @@ public class ReportsFragment extends Fragment {
         favoriteBuildings = new ArrayList<>();
         favoriteBuildingViewModel.getUserFavoriteBuildings();
         favoriteBuildingViewModel.getUserInterestsResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()){
+            if(result.isSuccessful()) {
                 favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
+                if (isFilteredByFavorites) {
+                    if (!favoriteBuildings.isEmpty()) {
+                        String[] building = new String[favoriteBuildings.size()];
+                        for (int i = 0; i < favoriteBuildings.size(); i++) {
+                            building[i] = favoriteBuildings.get(i);
+                        }
+                        reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                        reportsViewModel.readReportsByBuildings(building);
+                    }
+                }
+            } else {
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        favoriteBuildingViewModel.getSetUserInterestsResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                favoriteBuildingViewModel.getUserFavoriteBuildings();
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
@@ -196,17 +217,9 @@ public class ReportsFragment extends Fragment {
 
         //Gestione osservazione filtri
         filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), strings -> {
-            /*
-            * TODO: implementare collegamento con viewmodel
-            *
-            * NOTA BENE: strings è SEMPRE UNA LISTA a prescindere dal filtro applicato. Se si filtra per preferiti o per tutti
-            * gli edifici si ha una LISTA di un solo elemento!!!!!!!!!
-            *
-            * Se vuoi filtrare per i preferiti il codice è filter-by-favorite, se vuoi filtrare per tutti gli edifici
-            * è filter-by-all, altrimenti la lista contiene gli edifici selezionati
-             */
 
             if(strings.get(0).equals("filter-by-favorite")) {
+                isFilteredByFavorites = true;
                 if(!favoriteBuildings.isEmpty()){
                     String[] building = new String[favoriteBuildings.size()];
                     for (int i = 0; i<favoriteBuildings.size(); i++){
@@ -218,10 +231,11 @@ public class ReportsFragment extends Fragment {
                     Snackbar.make(requireView(), R.string.no_favorites_building, BaseTransientBottomBar.LENGTH_SHORT).show();
                 }
             } else if (strings.get(0).equals("filter-by-all")) {
+                isFilteredByFavorites = false;
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                 reportsViewModel.readAllReports();
             } else {
-
+                isFilteredByFavorites = false;
                 String[] building = new String[strings.size()];
                 for (int i = 0; i<strings.size(); i++){
                     building[i] = strings.get(i);
