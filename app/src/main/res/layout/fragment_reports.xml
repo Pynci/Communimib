@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.reports.ReportsFragment">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom|start"
-        android:alpha="0.4"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/ic_banner2_foreground" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
