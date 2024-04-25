@@ -16,4 +16,6 @@ public class Constants {
     public static final String CONFIRM_PASSWORD_ERROR = "confirm_password_error";
     public static final String NAME_ERROR = "name_error";
     public static final String SURNAME_ERROR = "surname_error";
+
+    public static final String CHANNEL_ID = "report_channel";
 }
