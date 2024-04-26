@@ -113,7 +113,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edit_text_background"
                 android:ems="10"
-                android:maxLength="70"
+                android:maxLength="200"
                 android:gravity="center|top"
                 android:hint="@string/inserisci_una_breve_descrizione"
                 android:importantForAutofill="no"
