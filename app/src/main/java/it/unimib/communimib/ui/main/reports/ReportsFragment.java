@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +37,7 @@ import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.ReportsCreati
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersFragmentDialog;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersViewModel;
+import it.unimib.communimib.util.NavigationHelper;
 
 public class ReportsFragment extends Fragment {
 
@@ -170,7 +172,19 @@ public class ReportsFragment extends Fragment {
         for (int i = 0; i<categories.length - 1; i++) {
             ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter =
                     new ReportsHorizontalRecyclerViewAdapter(reportsViewModel.getCurrentUser().isUnimibEmployee(),
-                            report -> reportsViewModel.deleteReport(report),
+                            new ReportsHorizontalRecyclerViewAdapter.OnItemClickListener() {
+                                @Override
+                                public void onCloseReportClick(Report report) {
+                                    reportsViewModel.deleteReport(report);
+                                }
+
+                                @Override
+                                public void onCardClick(Report report) {
+                                    ReportsFragmentDirections.ActionReportsFragmentToDetailedReportFragment action =
+                                            ReportsFragmentDirections.actionReportsFragmentToDetailedReportFragment(report);
+                                    Navigation.findNavController(view).navigate(action);
+                                }
+                            },
                             requireContext(),
                             R.layout.report_horizontal_item);
             reportsHorizontalRecyclerViewAdapter.setCategory(categories[i]);

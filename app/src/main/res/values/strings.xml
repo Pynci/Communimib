@@ -80,4 +80,7 @@
     <string name="local_read_user_favorite_buildings_error">Errore nella lettura locale degli edifici preferiti dell\'utente</string>
     <string name="remote_read_user_favorite_buildings_error">Errore nella lettura locale degli edifici preferiti dell\'utente</string>
     <string name="no_favorites_building"> Nessun edificio è selezionato come preferito</string>
+    <string name="descrizione_del_problema">Descrizione della segnalazione</string>
+    <string name="categoria_della_segnalazione">Categoria della segnalazione</string>
+    <string name="pubblicato_da">Pubblicato da</string>
 </resources>
