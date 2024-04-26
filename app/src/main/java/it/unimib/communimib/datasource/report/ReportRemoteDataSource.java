@@ -38,7 +38,8 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
                                Callback cancelledCallback){
         removeAllQueryListeners();
         Query query = databaseReference
-                .child(Constants.REPORTS_PATH);
+                .child(Constants.REPORTS_PATH)
+                .limitToFirst(30);
         currentReferences.add(query.getRef());
         currentListeners.add(new ChildEventListener() {
             @Override
@@ -78,7 +79,7 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
     }
 
     @Override
-    public void readReportsByBuildings(String[] buildings,
+    public void readReportsByBuildings(List<String> buildings,
                                        Callback addedCallback,
                                        Callback changedCallback,
                                        Callback removedCallback,
@@ -88,6 +89,65 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
             addQueryListener("building", building, addedCallback, changedCallback, removedCallback, cancelledCallback);
         }
 
+    }
+
+    @Override
+    public void readReportsByTitleAndDescription(String keyword,
+                             Callback addedCallback,
+                             Callback changedCallback,
+                             Callback removedCallback,
+                             Callback cancelledCallback){
+        removeAllQueryListeners();
+        Query query = databaseReference
+                .child(Constants.REPORTS_PATH);
+        currentReferences.add(query.getRef());
+        ChildEventListener listener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Report report = snapshot.getValue(Report.class);
+                report.setRid(snapshot.getKey());
+                String title = report.getTitle().toLowerCase();
+                String description = report.getDescription().toLowerCase();
+                if(title.contains(keyword.toLowerCase()) || description.contains(keyword.toLowerCase())){
+                    addedCallback.onComplete(new Result.ReportSuccess(report));
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Report report = snapshot.getValue(Report.class);
+                report.setRid(snapshot.getKey());
+                String title = report.getTitle().toLowerCase();
+                String description = report.getDescription().toLowerCase();
+                if(title.contains(keyword.toLowerCase()) || description.contains(keyword.toLowerCase())){
+                    changedCallback.onComplete(new Result.ReportSuccess(report));
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Report report = snapshot.getValue(Report.class);
+                report.setRid(snapshot.getKey());
+                String title = report.getTitle().toLowerCase();
+                String description = report.getDescription().toLowerCase();
+                if(title.contains(keyword.toLowerCase()) || description.contains(keyword.toLowerCase())){
+                    removedCallback.onComplete(new Result.ReportSuccess(report));
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                // per ora niente, nel caso aggiungere una callback
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR)); //TODO: capire se qui bisogna mettere un errore specifico
+            }
+        };
+
+        currentListeners.add(listener);
+        query.addChildEventListener(listener);
     }
 
     @Override
@@ -181,7 +241,6 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Report report = snapshot.getValue(Report.class);
                 report.setRid(snapshot.getKey());
-
                 addedCallback.onComplete(new Result.ReportSuccess(report));
             }
 

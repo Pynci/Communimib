@@ -64,7 +64,7 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
         //Leggo gli interessi dell'utente
         favoriteBuildingViewModel.getUserFavoriteBuildings();
 
-        favoriteBuildingViewModel.getUserInterestsResult().observe(this, result -> {
+        favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(this, result -> {
             List<String> favoriteBuildings;
             if(result.isSuccessful()) {
                 favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
