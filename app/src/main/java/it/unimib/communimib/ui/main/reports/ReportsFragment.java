@@ -212,12 +212,15 @@ public class ReportsFragment extends Fragment {
         favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
 
+                // alla prima chiamata riempie i preferiti
                 if(favoriteBuildings.isEmpty()){
                     favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
                 }
 
+                // successivamente effettua la rilettura solo se i preferiti sono cambiati rispetto a prima
                 if(isFilteredByFavorites){
                     if(!favoriteBuildings.equals(((Result.UserFavoriteBuildings) result).getFavoriteBuildings())) {
+                        favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
                         reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                         reportsViewModel.readReportsByBuildings(favoriteBuildings);
                     }
