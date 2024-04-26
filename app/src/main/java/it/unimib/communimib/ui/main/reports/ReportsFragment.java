@@ -48,7 +48,6 @@ public class ReportsFragment extends Fragment {
 
     private FavoriteBuildingViewModel favoriteBuildingViewModel;
     private ReportMainRecyclerViewAdapter reportMainRecyclerViewAdapter;
-    private List<CategoryReport> categoryReportList;
     private List<String> favoriteBuildings;
     private boolean isFilteredByFavorites = false;
     private boolean menuVisibile;
@@ -187,7 +186,7 @@ public class ReportsFragment extends Fragment {
         });
 
 
-        categoryReportList = new ArrayList<>();
+        List<CategoryReport> categoryReportList = new ArrayList<>();
         String[] categories = getResources().getStringArray(R.array.reports_categories);
         for (int i = 0; i<categories.length - 1; i++) {
             ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter =
@@ -218,13 +217,12 @@ public class ReportsFragment extends Fragment {
                 }
 
                 // successivamente effettua la rilettura solo se i preferiti sono cambiati rispetto a prima
-                if(isFilteredByFavorites){
-                    if(!favoriteBuildings.equals(((Result.UserFavoriteBuildings) result).getFavoriteBuildings())) {
+                if(isFilteredByFavorites && !favoriteBuildings.equals(((Result.UserFavoriteBuildings) result).getFavoriteBuildings())) {
                         favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
                         reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                         reportsViewModel.readReportsByBuildings(favoriteBuildings);
                     }
-                }
+
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
@@ -241,12 +239,9 @@ public class ReportsFragment extends Fragment {
         });
 
         //Gestione osservazione filtri
-        filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), strings -> {
-            filter(strings);
-        });
+        filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), this::filter);
     }
 
-    // ??? cosa cambia tra filter-by-favorite e niente??
     private void filter(List<String> filter) {
         if(filter != null && !filter.isEmpty()){
             if(filter.get(0).equals("filter-by-favorite")) {
