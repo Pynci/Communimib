@@ -1,6 +1,7 @@
 package it.unimib.communimib.ui.main.reports;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,10 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import it.unimib.communimib.databinding.FragmentDetailedReportBinding;
 import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
+import it.unimib.communimib.util.GestBuildingsImages;
 import it.unimib.communimib.util.GestTopbar;
 
 public class DetailedReportFragment extends Fragment {
@@ -55,6 +59,15 @@ public class DetailedReportFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.textViewTitolo.setText(report.getTitle());
+        binding.textViewDescription.setText(report.getDescription());
+        binding.textViewCategory.setText(report.getCategory());
+        GestBuildingsImages.setBuildingImage(binding.reportListItemImageBuilding, report.getBuilding());
+        binding.textViewBuilding.setText(report.getBuilding());
+        binding.textViewAuthor.setText(report.getAuthor().getName() + " " + report.getAuthor().getSurname());
+        Glide
+                .with(requireContext())
+                .load(Uri.parse(report.getAuthor().getPropic()))
+                .into(binding.reportListItemImageProfile);
     }
 
     @Override
