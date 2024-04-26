@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.communimib.databinding.FragmentDetailedReportBinding;
@@ -97,7 +98,7 @@ public class DetailedReportFragment extends Fragment {
                 Snackbar.make(
                         view,
                         ErrorMapper.getInstance().getErrorMessage(error.getMessage()),
-                        Snackbar.LENGTH_SHORT).show();
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
         detailedReportViewModel.getCurrentUser();
