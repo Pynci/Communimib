@@ -3,9 +3,9 @@ package it.unimib.communimib.ui.main.reports;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
+import it.unimib.communimib.util.GestTopbar;
 
 public class DetailedReportFragment extends Fragment {
 
     private BottomNavigationBarListener mListener;
-
     private Report report;
 
     @Override
@@ -44,6 +44,7 @@ public class DetailedReportFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hideBottomNavigationBar();
+        GestTopbar.gestisciTopbar((AppCompatActivity) getActivity());
 
         try {
             DetailedReportFragmentArgs args = DetailedReportFragmentArgs.fromBundle(getArguments());
