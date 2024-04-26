@@ -38,7 +38,8 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
                                Callback cancelledCallback){
         removeAllQueryListeners();
         Query query = databaseReference
-                .child(Constants.REPORTS_PATH);
+                .child(Constants.REPORTS_PATH)
+                .limitToFirst(30);
         currentReferences.add(query.getRef());
         currentListeners.add(new ChildEventListener() {
             @Override
@@ -101,12 +102,12 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
                 .child(Constants.REPORTS_PATH)
                 .orderByChild("title")
                 .startAt(keyword)
-                .endAt(keyword + "~");
+                .endAt(keyword + "\uf8ff");
         Query descriptionQuery = databaseReference
                 .child(Constants.REPORTS_PATH)
                 .orderByChild("description")
                 .startAt(keyword)
-                .endAt(keyword + "~");
+                .endAt(keyword + "\uf8ff");
         currentReferences.add(titleQuery.getRef());
         currentReferences.add(descriptionQuery.getRef());
         ChildEventListener listener = new ChildEventListener() {

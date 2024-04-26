@@ -99,18 +99,11 @@ public class ReportsFragment extends Fragment {
                 return false;
             }
         });
-        fragmentReportsBinding.fragmentReportSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                if(filtersViewModel.getChosenFilter().getValue() != null){
-                    filter(filtersViewModel.getChosenFilter().getValue().get(0));
-                }
-                else{
-                    filter("");
-                }
-                Log.d("dentifricio", "arriva");
-                return false;
-            }
+
+        fragmentReportsBinding.fragmentReportSearchView.setOnCloseListener(() -> {
+            filter(filtersViewModel.getChosenFilter().getValue());
+            Log.d("dentifricio", "arriva");
+            return false;
         });
 
 
@@ -218,10 +211,16 @@ public class ReportsFragment extends Fragment {
         favoriteBuildingViewModel.getUserFavoriteBuildings();
         favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
-                favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
-                if (isFilteredByFavorites && (!favoriteBuildings.isEmpty())) {
-                    reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                    reportsViewModel.readReportsByBuildings(favoriteBuildings);
+
+                if(favoriteBuildings.isEmpty()){
+                    favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
+                }
+
+                if(isFilteredByFavorites){
+                    if(!favoriteBuildings.equals(((Result.UserFavoriteBuildings) result).getFavoriteBuildings())) {
+                        reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                        reportsViewModel.readReportsByBuildings(favoriteBuildings);
+                    }
                 }
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
@@ -240,29 +239,36 @@ public class ReportsFragment extends Fragment {
 
         //Gestione osservazione filtri
         filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), strings -> {
-            filter(strings.get(0));
+            filter(strings);
         });
     }
 
     // ??? cosa cambia tra filter-by-favorite e niente??
-    private void filter(String filter) {
-        if(filter.equals("filter-by-favorite")) {
-            isFilteredByFavorites = true;
-            if(!favoriteBuildings.isEmpty()){
+    private void filter(List<String> filter) {
+        if(filter != null && !filter.isEmpty()){
+            if(filter.get(0).equals("filter-by-favorite")) {
+                isFilteredByFavorites = true;
+                if(!favoriteBuildings.isEmpty()){
+                    reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                    reportsViewModel.readReportsByBuildings(favoriteBuildings);
+                } else {
+                    Snackbar.make(requireView(), R.string.no_favorites_building, BaseTransientBottomBar.LENGTH_SHORT).show();
+                }
+            } else if (filter.get(0).equals("filter-by-all")) {
+                isFilteredByFavorites = false;
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readReportsByBuildings(favoriteBuildings);
+                reportsViewModel.readAllReports();
             } else {
-                Snackbar.make(requireView(), R.string.no_favorites_building, BaseTransientBottomBar.LENGTH_SHORT).show();
+                isFilteredByFavorites = false;
+                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                reportsViewModel.readReportsByBuildings(filter);
             }
-        } else if (filter.equals("filter-by-all")) {
-            isFilteredByFavorites = false;
+        }
+        else{
             reportMainRecyclerViewAdapter.clearHorizontalAdapters();
             reportsViewModel.readAllReports();
-        } else {
-            isFilteredByFavorites = false;
-            reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-            reportsViewModel.readReportsByBuildings(favoriteBuildings);
         }
+
     }
 
     @Override
