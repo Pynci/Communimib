@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailedReportFragment"
-        android:name="it.unimib.communimib.ui.main.reports.DetailedReportFragment"
+        android:name="it.unimib.communimib.ui.main.reports.detailedreport.DetailedReportFragment"
         android:label=""
         tools:layout="@layout/fragment_detailed_report">
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.reports.DetailedReportFragment">
+    tools:context=".ui.main.reports.detailedreport.DetailedReportFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView4"
@@ -125,7 +125,9 @@
                 android:layout_height="75dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
                 app:cardCornerRadius="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardViewBuilding">
 
@@ -180,6 +182,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
                 android:text="@string/close"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

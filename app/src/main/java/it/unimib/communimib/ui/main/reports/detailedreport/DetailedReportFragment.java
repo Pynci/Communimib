@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.reports;
+package it.unimib.communimib.ui.main.reports.detailedreport;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,17 +8,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.communimib.databinding.FragmentDetailedReportBinding;
 import it.unimib.communimib.BottomNavigationBarListener;
-import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
+import it.unimib.communimib.model.Result;
+import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.GestBuildingsImages;
 import it.unimib.communimib.util.GestTopbar;
 
@@ -26,6 +30,8 @@ public class DetailedReportFragment extends Fragment {
 
     private FragmentDetailedReportBinding binding;
     private BottomNavigationBarListener mListener;
+
+    private DetailedReportViewModel detailedReportViewModel;
     private Report report;
 
     public DetailedReportFragment() {
@@ -37,6 +43,10 @@ public class DetailedReportFragment extends Fragment {
         super.onCreate(savedInstanceState);
         hideBottomNavigationBar();
         GestTopbar.gestisciTopbar((AppCompatActivity) getActivity());
+
+        detailedReportViewModel = new ViewModelProvider(
+                this,
+                new DetailedReportViewModelFactory(requireContext())).get(DetailedReportViewModel.class);
 
         try {
             DetailedReportFragmentArgs args = DetailedReportFragmentArgs.fromBundle(getArguments());
@@ -68,6 +78,29 @@ public class DetailedReportFragment extends Fragment {
                 .with(requireContext())
                 .load(Uri.parse(report.getAuthor().getPropic()))
                 .into(binding.reportListItemImageProfile);
+
+        detailedReportViewModel.getCurrentUserResult().observe(getViewLifecycleOwner(), user -> {
+            if(user != null && user.isUnimibEmployee())
+                binding.buttonCloseReport.setVisibility(View.VISIBLE);
+        });
+
+        binding.buttonCloseReport.setOnClickListener(v -> detailedReportViewModel.closeReport(report));
+
+        detailedReportViewModel.getCloseReportResult().observe(getViewLifecycleOwner(), result -> {
+
+            if(result.isSuccessful()) {
+                Navigation.findNavController(view).popBackStack();
+                showBottomNavigationBar();
+            }
+            else {
+                Result.Error error = (Result.Error) result;
+                Snackbar.make(
+                        view,
+                        ErrorMapper.getInstance().getErrorMessage(error.getMessage()),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        });
+        detailedReportViewModel.getCurrentUser();
     }
 
     @Override
