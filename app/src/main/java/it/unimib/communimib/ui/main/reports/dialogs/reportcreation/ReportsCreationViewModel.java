@@ -8,6 +8,7 @@ import it.unimib.communimib.DialogCallback;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IReportRepository;
 import it.unimib.communimib.repository.IUserRepository;
+import it.unimib.communimib.service.NotificationService;
 import it.unimib.communimib.util.Validation;
 
 public class ReportsCreationViewModel extends ViewModel {
