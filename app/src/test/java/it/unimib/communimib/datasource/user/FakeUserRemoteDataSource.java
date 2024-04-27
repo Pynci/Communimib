@@ -14,6 +14,7 @@ import it.unimib.communimib.util.ErrorMapper;
 public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
 
     public Map<String, User> users;
+    public Map<String, List<String>> usersFavoriteBuildings;
 
     public FakeUserRemoteDataSource(){
         users = new HashMap<>();
@@ -53,25 +54,43 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
             user.setName(name);
             user.setSurname(surname);
             users.replace(uid, user);
+            callback.onComplete(new Result.Success());
         }
         else{
             callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
         }
-        callback.onComplete(new Result.Success());
     }
 
     @Override
     public void uploadPropic(String uid, Uri uri, Callback callback) {
-        //TODO: implementare questo metodo
+        if(users.containsKey(uid)){
+            User user = users.get(uid);
+            user.setPropic(uri.toString());
+            users.replace(uid, user);
+            callback.onComplete(new Result.Success());
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+        }
     }
 
     @Override
-    public void storeUserFavoriteBuildings(List<String> userInterests, String userId, Callback callback) {
-        //TODO: implementare questo metodo
+    public void storeUserFavoriteBuildings(List<String> buildings, String userId, Callback callback) {
+        if(usersFavoriteBuildings.containsKey(userId)){
+            usersFavoriteBuildings.replace(userId, buildings);
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR));
+        }
     }
 
     @Override
     public void getUserFavoriteBuildings(String userId, Callback callback) {
-        //TODO: implementare questo metodo
+        if(usersFavoriteBuildings.containsKey(userId)){
+            callback.onComplete(new Result.UserFavoriteBuildings(usersFavoriteBuildings.get(userId)));
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR));
+        }
     }
 }
