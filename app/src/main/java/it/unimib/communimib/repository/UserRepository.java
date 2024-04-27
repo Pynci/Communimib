@@ -201,12 +201,12 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
-    public void uploadPropic(Uri uri, Callback callback){
+    public void uploadPropic(Uri localUri, Callback callback){
         if(currentUser != null){
-            userRemoteDataSource.uploadPropic(currentUser.getUid(), uri, remoteResult -> {
+            userRemoteDataSource.uploadPropic(currentUser.getUid(), localUri, remoteResult -> {
                 if(remoteResult.isSuccessful()){
-                    String downloadUri = ((Result.UriSuccess) remoteResult).getUri();
-                    currentUser.setPropic(downloadUri);
+                    String remoteDownloadUri = ((Result.UriSuccess) remoteResult).getUri();
+                    currentUser.setPropic(remoteDownloadUri);
                     userLocalDataSource.updateUser(currentUser, callback);
                 }
                 else{

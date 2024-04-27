@@ -1,13 +1,11 @@
 package it.unimib.communimib.repository;
 
 import static com.google.common.base.Verify.verify;
-import static org.hamcrest.CoreMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,7 +15,6 @@ import org.mockito.Mockito;
 import java.lang.reflect.Field;
 import java.util.concurrent.CountDownLatch;
 
-import it.unimib.communimib.Callback;
 import it.unimib.communimib.database.FakeUserDAO;
 import it.unimib.communimib.datasource.user.FakeAuthDataSource;
 import it.unimib.communimib.datasource.user.FakeUserRemoteDataSource;
@@ -90,7 +87,7 @@ public class UserRepositoryTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
 
-        remoteDataSource.users.put("12345", marco);
+        remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
 
         userRepository.signIn(marco.getEmail(), "password", result -> {
@@ -107,7 +104,7 @@ public class UserRepositoryTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
 
-        remoteDataSource.users.put("12345", marco);
+        remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
 
         userRepository.signIn(marco.getEmail(), "wrongPassword", result -> {
@@ -124,7 +121,7 @@ public class UserRepositoryTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
 
-        remoteDataSource.users.put("12345", marco);
+        remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
 
         userRepository.signIn("luca@unimib.it", "password", result -> {
@@ -158,7 +155,7 @@ public class UserRepositoryTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
         userDAO.insertUser(marco);
-        remoteDataSource.users.put("12345", marco);
+        remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
         authDataSource.currentUser = marco;
 
@@ -176,7 +173,7 @@ public class UserRepositoryTest {
     public void signOutFailure() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
-        remoteDataSource.users.put("12345", marco);
+        remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
 
         userRepository.signOut(result -> {
@@ -193,7 +190,7 @@ public class UserRepositoryTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
         userDAO.insertUser(marco);
-        remoteDataSource.users.put("12345", marco);
+        remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
         authDataSource.currentUser = marco;
 
@@ -211,7 +208,7 @@ public class UserRepositoryTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
         userDAO.insertUser(marco);
-        remoteDataSource.users.put("12345", marco);
+        remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
 
         userRepository.isSessionStillActive(result -> {
@@ -227,11 +224,8 @@ public class UserRepositoryTest {
     public void updateUserNameAndSurnameSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         clearAll();
-        remoteDataSource.users.put("12345", marco);
-        authDataSource.signedupUsers.add(marco);
-        Field currentUser = UserRepository.class.getDeclaredField("currentUser");
-        currentUser.setAccessible(true);
-        currentUser.set(userRepository, marco);
+        remoteDataSource.users.put(marco.getUid(), marco);
+        initializeCurrentUser(marco);
 
         userRepository.updateUserNameAndSurname("Luca", "Pinciroli", result -> {
             this.result = result;
@@ -249,7 +243,58 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void uploadPropic() {
+    public void updateUserNameAndSurnameFailure() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        clearAll();
+        remoteDataSource.users.put(marco.getUid(), marco);
+        // missing current user initialization (on purpose)
+
+        userRepository.updateUserNameAndSurname("Luca", "Pinciroli", result -> {
+            this.result = result;
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await();
+        Assert.assertTrue(result instanceof Result.Error);
+        Assert.assertEquals(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR, ((Result.Error) result).getMessage());
+    }
+
+    @Test
+    public void uploadPropicSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        clearAll();
+        remoteDataSource.users.put(marco.getUid(), marco);
+        initializeCurrentUser(marco);
+        Uri uri = Mockito.mock(Uri.class);
+
+        userRepository.uploadPropic(uri, result -> {
+           this.result = result;
+           countDownLatch.countDown();
+        });
+
+        countDownLatch.await();
+        Assert.assertTrue(result instanceof Result.Success);
+        Assert.assertEquals(uri.toString(), remoteDataSource.users.get("12345").getPropic());
+        Assert.assertEquals(uri.toString(), userRepository.getCurrentUser().getPropic());
+        Assert.assertEquals(uri.toString(), userDAO.getUser().getPropic());
+    }
+
+    @Test
+    public void uploadPropicFailure() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        clearAll();
+        remoteDataSource.users.put(marco.getUid(), marco);
+        Uri uri = Mockito.mock(Uri.class);
+        // missing current user initialization (on purpose)
+
+        userRepository.uploadPropic(uri, result -> {
+            this.result = result;
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await();
+        Assert.assertTrue(result instanceof Result.Error);
+        Assert.assertEquals(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR, ((Result.Error) result).getMessage());
     }
 
     private void clearAll() throws NoSuchFieldException, IllegalAccessException {
@@ -261,5 +306,10 @@ public class UserRepositoryTest {
         instance.set(null, null);
     }
 
+    private void initializeCurrentUser(User currentUser) throws NoSuchFieldException, IllegalAccessException {
+        Field currentUserField = UserRepository.class.getDeclaredField("currentUser");
+        currentUserField.setAccessible(true);
+        currentUserField.set(userRepository, currentUser);
+    }
 
 }

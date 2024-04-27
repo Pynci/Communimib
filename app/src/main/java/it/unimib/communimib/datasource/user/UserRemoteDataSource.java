@@ -112,7 +112,42 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                         updatePropicUri(uid, userStorageReference, callback);
                     }
                     else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                    }
+                });
+    }
 
+    private void updatePropicUri(String uid, StorageReference reference, Callback callback){
+        Map<String, Object> updateMap = new HashMap<>();
+        reference
+                .getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        String uri = task.getResult().toString();
+                        databaseReference
+                                .child(Constants.USERSREPORTS_PATH)
+                                .child(uid)
+                                .get()
+                                .addOnCompleteListener(getTask -> {
+                                    if(getTask.isSuccessful()){
+                                        DataSnapshot snapshot = getTask.getResult();
+                                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                            String rid = dataSnapshot.getKey();
+                                            updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/propic", uri);
+                                        }
+                                        updateMap.put(Constants.USERS_PATH + "/" + uid + "/propic", uri);
+                                        databaseReference
+                                                .updateChildren(updateMap)
+                                                .addOnCompleteListener(updateTask -> {
+                                                    if(updateTask.isSuccessful()){
+                                                        callback.onComplete(new Result.UriSuccess(uri));
+                                                    }
+                                                    else{
+                                                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                                                    }
+                                                });
+                                    }
+                                });
                     }
                 });
     }
@@ -151,41 +186,5 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                     }
                 });
 
-    }
-
-    private void updatePropicUri(String uid, StorageReference reference, Callback callback){
-        Map<String, Object> updateMap = new HashMap<>();
-        reference
-                .getDownloadUrl()
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        String uri = task.getResult().toString();
-                        databaseReference
-                                .child(Constants.USERSREPORTS_PATH)
-                                .child(uid)
-                                .get()
-                                .addOnCompleteListener(getTask -> {
-                                    if(getTask.isSuccessful()){
-                                        DataSnapshot snapshot = getTask.getResult();
-                                        final Iterator<DataSnapshot> iterator = snapshot.getChildren().iterator();
-                                        while(iterator.hasNext()){
-                                            String rid = iterator.next().getKey();
-                                            updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/propic", uri);
-                                        }
-                                        updateMap.put(Constants.USERS_PATH + "/" + uid + "/propic", uri);
-                                        databaseReference
-                                                .updateChildren(updateMap)
-                                                .addOnCompleteListener(updateTask -> {
-                                                    if(updateTask.isSuccessful()){
-                                                        callback.onComplete(new Result.UriSuccess(uri));
-                                                    }
-                                                    else{
-                                                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
-                                                    }
-                                                });
-                                    }
-                                });
-                    }
-                });
     }
 }

@@ -62,7 +62,7 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
     public void uploadPropic(String uid, Uri uri, Callback callback) {
         if(users.containsKey(uid)){
             users.get(uid).setPropic(uri.toString());
-            callback.onComplete(new Result.Success());
+            callback.onComplete(new Result.UriSuccess(uri.toString()));
         }
         else{
             callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
