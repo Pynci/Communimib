@@ -50,10 +50,7 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
     @Override
     public void updateNameAndSurname(String uid, String name, String surname, Callback callback) {
         if(users.containsKey(uid)){
-            User user = users.get(uid);
-            user.setName(name);
-            user.setSurname(surname);
-            users.replace(uid, user);
+            users.get(uid).setName(name);
             callback.onComplete(new Result.Success());
         }
         else{
@@ -64,9 +61,7 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
     @Override
     public void uploadPropic(String uid, Uri uri, Callback callback) {
         if(users.containsKey(uid)){
-            User user = users.get(uid);
-            user.setPropic(uri.toString());
-            users.replace(uid, user);
+            users.get(uid).setPropic(uri.toString());
             callback.onComplete(new Result.Success());
         }
         else{

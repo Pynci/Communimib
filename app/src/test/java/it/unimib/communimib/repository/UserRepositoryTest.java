@@ -46,7 +46,7 @@ public class UserRepositoryTest {
         remoteDataSource = new FakeUserRemoteDataSource();
         localDataSource = new UserLocalDataSource(userDAO, sharedPreferences);
         authDataSource = new FakeAuthDataSource();
-        marco = new User("123456", "marco@unimib.it", "Marco", "Ferioli", true);
+        marco = new User("12345", "marco@unimib.it", "Marco", "Ferioli", true);
 
         userRepository = UserRepository.getInstance(
                 authDataSource,
@@ -224,8 +224,28 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void updateUserNameAndSurname() {
+    public void updateUserNameAndSurnameSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        clearAll();
+        remoteDataSource.users.put("12345", marco);
+        authDataSource.signedupUsers.add(marco);
+        Field currentUser = UserRepository.class.getDeclaredField("currentUser");
+        currentUser.setAccessible(true);
+        currentUser.set(userRepository, marco);
 
+        userRepository.updateUserNameAndSurname("Luca", "Pinciroli", result -> {
+            this.result = result;
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await();
+        Assert.assertTrue(result instanceof Result.Success);
+        Assert.assertEquals("Luca", remoteDataSource.users.get("12345").getName());
+        Assert.assertEquals("Pinciroli", remoteDataSource.users.get("12345").getSurname());
+        Assert.assertEquals("Luca", userRepository.getCurrentUser().getName());
+        Assert.assertEquals("Pinciroli", userRepository.getCurrentUser().getSurname());
+        Assert.assertEquals("Luca", userDAO.getUser().getName());
+        Assert.assertEquals("Pinciroli", userDAO.getUser().getSurname());
     }
 
     @Test

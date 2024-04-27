@@ -195,6 +195,9 @@ public class UserRepository implements IUserRepository{
                 }
             });
         }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
+        }
     }
 
     @Override
@@ -210,6 +213,9 @@ public class UserRepository implements IUserRepository{
                     callback.onComplete(remoteResult);
                 }
             });
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
         }
     }
 
