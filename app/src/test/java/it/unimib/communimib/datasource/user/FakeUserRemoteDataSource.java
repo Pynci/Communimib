@@ -75,8 +75,9 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
             usersFavoriteBuildings.replace(userId, buildings);
         }
         else{
-            callback.onComplete(new Result.Error(ErrorMapper.REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR));
+            usersFavoriteBuildings.put(userId, buildings);
         }
+        callback.onComplete(new Result.Success());
     }
 
     @Override

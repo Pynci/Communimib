@@ -297,6 +297,11 @@ public class UserRepositoryTest {
         Assert.assertEquals(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR, ((Result.Error) result).getMessage());
     }
 
+    @Test
+    public void storeUserFavoriteBuildingsSuccess() throws NoSuchFieldException, IllegalAccessException {
+
+    }
+
     private void clearAll() throws NoSuchFieldException, IllegalAccessException {
         remoteDataSource.users.clear();
         userDAO.clearUser();
