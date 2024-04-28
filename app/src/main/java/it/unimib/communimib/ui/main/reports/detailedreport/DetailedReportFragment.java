@@ -23,6 +23,7 @@ import it.unimib.communimib.databinding.FragmentDetailedReportBinding;
 import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.BuildingsImagesHelper;
 import it.unimib.communimib.util.TopbarHelper;
@@ -80,10 +81,9 @@ public class DetailedReportFragment extends Fragment {
                 .load(Uri.parse(report.getAuthor().getPropic()))
                 .into(binding.reportListItemImageProfile);
 
-        detailedReportViewModel.getCurrentUserResult().observe(getViewLifecycleOwner(), user -> {
-            if(user != null && user.isUnimibEmployee())
-                binding.buttonCloseReport.setVisibility(View.VISIBLE);
-        });
+        User currentUser = detailedReportViewModel.getCurrentUser();
+        if(currentUser != null && currentUser.isUnimibEmployee())
+            binding.buttonCloseReport.setVisibility(View.VISIBLE);
 
         binding.buttonCloseReport.setOnClickListener(v -> detailedReportViewModel.closeReport(report));
 
@@ -101,7 +101,6 @@ public class DetailedReportFragment extends Fragment {
                         BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
-        detailedReportViewModel.getCurrentUser();
     }
 
     @Override

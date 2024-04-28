@@ -12,30 +12,23 @@ import it.unimib.communimib.repository.IUserRepository;
 
 public class DetailedReportViewModel extends ViewModel {
 
-    private final MutableLiveData<User> currentUserResult;
     private final MutableLiveData<Result> closeReportResult;
     private final IUserRepository iUserRepository;
     private final IReportRepository iReportRepository;
 
     public DetailedReportViewModel (IUserRepository iUserRepository, IReportRepository iReportRepository) {
-
-        currentUserResult = new MutableLiveData<>();
         closeReportResult = new MutableLiveData<>();
 
         this.iReportRepository = iReportRepository;
         this.iUserRepository = iUserRepository;
     }
 
-    protected void getCurrentUser() {
-        currentUserResult.setValue(iUserRepository.getCurrentUser());
+    protected User getCurrentUser() {
+        return iUserRepository.getCurrentUser();
     }
 
     protected void closeReport(Report report) {
         iReportRepository.deleteReport(report, closeReportResult::postValue);
-    }
-
-    protected LiveData<User> getCurrentUserResult() {
-        return currentUserResult;
     }
 
     protected LiveData<Result> getCloseReportResult() {
