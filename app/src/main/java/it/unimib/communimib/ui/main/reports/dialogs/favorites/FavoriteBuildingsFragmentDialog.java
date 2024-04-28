@@ -67,7 +67,7 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
         favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(this, result -> {
             List<String> favoriteBuildings;
             if(result.isSuccessful()) {
-                favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
+                favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
                 filterReportListViewAdapter.setCheckedItems(favoriteBuildings);
             }
         });
