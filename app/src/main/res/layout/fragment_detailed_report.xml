@@ -6,24 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.reports.detailedreport.DetailedReportFragment">
 
+    <ImageView
+        android:id="@+id/reportListItem_imageBuilding"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:backgroundTint="@color/md_theme_dark_tertiary"
+        android:backgroundTintMode="multiply"
+        android:background="@mipmap/edificiou14_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/reportListItem_building"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/md_theme_light_secondaryContainer"
+        android:paddingStart="5dp"
+        android:textColor="@color/seed"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022"
+        tools:text="U14" />
+
     <TextView
         android:id="@+id/textView_titolo"
-        android:layout_width="wrap_content"
+        android:layout_width="366dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="TextView"
-        android:textSize="20sp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="180dp"
+        android:textColor="@color/md_theme_light_secondaryContainer"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.171"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/titolo_della_segnalazione" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="32dp"
         android:text="@string/descrizione_del_problema"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -86,24 +117,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView_category" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewBuilding"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        app:cardCornerRadius="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/separatore">
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/reportListItem_imageBuilding"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewProfileImage"
@@ -113,7 +126,7 @@
         android:layout_marginTop="30dp"
         app:cardCornerRadius="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewBuilding">
+        app:layout_constraintTop_toBottomOf="@+id/separatore">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/reportListItem_imageProfile"
