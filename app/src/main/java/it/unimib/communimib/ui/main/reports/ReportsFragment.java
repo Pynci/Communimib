@@ -216,8 +216,6 @@ public class ReportsFragment extends Fragment {
         mainRecyclerView.setAdapter(reportMainRecyclerViewAdapter);
         mainRecyclerView.setLayoutManager(layoutManager);
 
-        reportsViewModel.readAllReports();
-
         favoriteBuildings = new ArrayList<>();
         favoriteBuildingViewModel.getUserFavoriteBuildings();
         favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
@@ -226,6 +224,7 @@ public class ReportsFragment extends Fragment {
                 // alla prima chiamata riempie i preferiti
                 if(favoriteBuildings.isEmpty()){
                     favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
+                    reportsViewModel.readReportsByBuildings(favoriteBuildings);
                 }
 
                 // successivamente effettua la rilettura solo se i preferiti sono cambiati rispetto a prima
@@ -233,7 +232,7 @@ public class ReportsFragment extends Fragment {
                         favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
                         reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                         reportsViewModel.readReportsByBuildings(favoriteBuildings);
-                    }
+                }
 
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
@@ -278,7 +277,6 @@ public class ReportsFragment extends Fragment {
             reportMainRecyclerViewAdapter.clearHorizontalAdapters();
             reportsViewModel.readAllReports();
         }
-
     }
 
     @Override
