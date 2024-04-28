@@ -20,7 +20,7 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
-import it.unimib.communimib.util.GestBuildingsImages;
+import it.unimib.communimib.util.BuildingsImagesHelper;
 
 public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<ReportsHorizontalRecyclerViewAdapter.ViewHolder> {
 
@@ -142,7 +142,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             buiding.setText(report.getBuilding());
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
-            GestBuildingsImages.setBuildingImage(buildingImage, report.getBuilding());
+            BuildingsImagesHelper.setBuildingImage(buildingImage, report.getBuilding());
             Glide
                     .with(context)
                     .load(Uri.parse(report.getAuthor().getPropic()))

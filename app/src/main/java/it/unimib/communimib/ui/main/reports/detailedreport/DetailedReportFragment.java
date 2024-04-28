@@ -24,8 +24,8 @@ import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.util.ErrorMapper;
-import it.unimib.communimib.util.GestBuildingsImages;
-import it.unimib.communimib.util.GestTopbar;
+import it.unimib.communimib.util.BuildingsImagesHelper;
+import it.unimib.communimib.util.TopbarHelper;
 
 public class DetailedReportFragment extends Fragment {
 
@@ -43,7 +43,7 @@ public class DetailedReportFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hideBottomNavigationBar();
-        GestTopbar.gestisciTopbar((AppCompatActivity) getActivity());
+        TopbarHelper.handleTopbar((AppCompatActivity) getActivity());
 
         detailedReportViewModel = new ViewModelProvider(
                 this,
@@ -72,7 +72,7 @@ public class DetailedReportFragment extends Fragment {
         binding.textViewTitolo.setText(report.getTitle());
         binding.textViewDescription.setText(report.getDescription());
         binding.textViewCategory.setText(report.getCategory());
-        GestBuildingsImages.setBuildingImage(binding.reportListItemImageBuilding, report.getBuilding());
+        BuildingsImagesHelper.setBuildingImage(binding.reportListItemImageBuilding, report.getBuilding());
         binding.textViewBuilding.setText(report.getBuilding());
         binding.textViewAuthor.setText(report.getAuthor().getName() + " " + report.getAuthor().getSurname());
         Glide
