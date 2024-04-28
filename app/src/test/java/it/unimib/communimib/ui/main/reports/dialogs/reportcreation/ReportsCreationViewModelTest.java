@@ -1,0 +1,47 @@
+package it.unimib.communimib.ui.main.reports.dialogs.reportcreation;
+
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import it.unimib.communimib.Callback;
+import it.unimib.communimib.LiveDataTestUtil;
+import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
+import it.unimib.communimib.repository.ReportRepository;
+import it.unimib.communimib.repository.UserRepository;
+
+public class ReportsCreationViewModelTest {
+
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+
+    @Test
+    public void createReport() throws InterruptedException {
+        ReportRepository reportRepository = mock(ReportRepository.class);
+        UserRepository userRepository = mock(UserRepository.class);
+        ReportsCreationViewModel reportsCreationViewModel = new ReportsCreationViewModel(reportRepository, userRepository);
+        User marco = new User("12345", "m.ferioli@campus.unimib.it", "Marco", "Ferioli", false);
+        String title = "titolo";
+        String description = "descrizione";
+        String building = "U14";
+        String category = "guasto";
+
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(5);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(reportRepository).createReport(eq(title), eq(description), eq(building), eq(category), any(), any());
+        reportsCreationViewModel.createReport(title, description, building, category, () -> {});
+        Result result = LiveDataTestUtil.getOrAwaitValue(reportsCreationViewModel.getCreateReportResult());
+        assertTrue(result instanceof Result.Success);
+    }
+}
