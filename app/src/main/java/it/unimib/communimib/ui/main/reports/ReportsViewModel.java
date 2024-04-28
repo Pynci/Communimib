@@ -14,7 +14,7 @@ import it.unimib.communimib.repository.IUserRepository;
 
 public class ReportsViewModel extends ViewModel {
 
-    private MutableLiveData<Result> deleteReportResult;
+    private MutableLiveData<Result> closeReportResult;
     private MutableLiveData<Result> reportAddedReadResult;
     private MutableLiveData<Result> reportChangedReadResult;
     private MutableLiveData<Result> reportRemovedReadResult;
@@ -23,7 +23,7 @@ public class ReportsViewModel extends ViewModel {
     private final IUserRepository userRepository;
 
     public ReportsViewModel(IReportRepository reportRepository, IUserRepository userRepository) {
-        deleteReportResult = new MutableLiveData<>();
+        closeReportResult = new MutableLiveData<>();
         this.reportRepository = reportRepository;
         this.userRepository = userRepository;
 
@@ -62,8 +62,8 @@ public class ReportsViewModel extends ViewModel {
                 result -> readCancelledResult.setValue(result));
     }
 
-    public void deleteReport(Report report){
-        reportRepository.deleteReport(report, deleteReportResult::postValue);
+    public void closeReport(Report report){
+        reportRepository.deleteReport(report, closeReportResult::postValue);
     }
 
     public LiveData<Result> getReportAddedReadResult() {
@@ -82,10 +82,10 @@ public class ReportsViewModel extends ViewModel {
         return readCancelledResult;
     }
 
-    public LiveData<Result> getDeleteReportResult() {return this.deleteReportResult;}
+    public LiveData<Result> getCloseReportResult() {return this.closeReportResult;}
 
     public void cleanViewModel(){
-        deleteReportResult = new MutableLiveData<>();
+        closeReportResult = new MutableLiveData<>();
         reportAddedReadResult = new MutableLiveData<>();
         reportChangedReadResult = new MutableLiveData<>();
         reportRemovedReadResult = new MutableLiveData<>();

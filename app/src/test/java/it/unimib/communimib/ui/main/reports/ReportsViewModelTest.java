@@ -135,7 +135,7 @@ public class ReportsViewModelTest {
     }
 
     @Test
-    public void deleteReport() throws InterruptedException {
+    public void closeReport() throws InterruptedException {
         User marco = new User("12345", "m.ferioli@campus.unimib.it", "Marco", "Ferioli", false);
         Report report = new Report("titolo", "descrizione", "U14", "guasto", marco);
         report.setRid("54321");
@@ -146,8 +146,8 @@ public class ReportsViewModelTest {
             return null;
         }).when(reportRepository).deleteReport(eq(report), any());
 
-        reportsViewModel.deleteReport(report);
-        Result result = LiveDataTestUtil.getOrAwaitValue(reportsViewModel.getDeleteReportResult());
+        reportsViewModel.closeReport(report);
+        Result result = LiveDataTestUtil.getOrAwaitValue(reportsViewModel.getCloseReportResult());
         assertTrue(result instanceof Result.Success);
 
     }
