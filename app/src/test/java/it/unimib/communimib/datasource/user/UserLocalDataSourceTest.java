@@ -74,7 +74,16 @@ public class UserLocalDataSourceTest {
 
     @Test
     public void updateUser() throws InterruptedException {
-        //TODO: implementare il test
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        fakeUserDAO.insertUser(marco);
+        User newMarco = marco;
+        newMarco.setSurname("Feriolonazzi");
+        userLocalDataSource.updateUser(newMarco, result -> {
+            this.result = result;
+            countDownLatch.countDown();
+        });
+        countDownLatch.await();
+        Assert.assertTrue(result instanceof Result.Success);
     }
 
     @Test
