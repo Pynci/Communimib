@@ -32,15 +32,11 @@ public class UserRepositoryTest {
     FakeUserLocalDataSource localDataSource;
     FakeAuthDataSource authDataSource;
     FakeUserDAO userDAO;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     User marco;
     volatile Result result;
 
     @Before
     public void setUp() {
-        sharedPreferences = mock(SharedPreferences.class);
-        editor = mock(SharedPreferences.Editor.class);
         userDAO = new FakeUserDAO();
         remoteDataSource = new FakeUserRemoteDataSource();
         localDataSource = new FakeUserLocalDataSource(userDAO);
