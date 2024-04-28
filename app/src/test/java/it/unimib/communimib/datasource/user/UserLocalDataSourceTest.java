@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -75,7 +74,16 @@ public class UserLocalDataSourceTest {
 
     @Test
     public void updateUser() throws InterruptedException {
-        //TODO: implementare il test
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        fakeUserDAO.insertUser(marco);
+        User newMarco = marco;
+        newMarco.setSurname("Feriolonazzi");
+        userLocalDataSource.updateUser(newMarco, result -> {
+            this.result = result;
+            countDownLatch.countDown();
+        });
+        countDownLatch.await();
+        Assert.assertTrue(result instanceof Result.Success);
     }
 
     @Test
@@ -116,7 +124,7 @@ public class UserLocalDataSourceTest {
         userLocalDataSource.getUserFavoriteBuildings(callback);
 
         verify(callback).onComplete(
-                argThat(result -> result instanceof Result.UserFavoriteBuildings && ((Result.UserFavoriteBuildings) result)
+                argThat(result -> result instanceof Result.UserFavoriteBuildingsSuccess && ((Result.UserFavoriteBuildingsSuccess) result)
                                 .getFavoriteBuildings()
                                 .equals(favoriteBuildings)));
     }

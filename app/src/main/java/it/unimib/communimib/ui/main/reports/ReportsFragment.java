@@ -39,7 +39,6 @@ import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.ReportsCreati
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersFragmentDialog;
 import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersViewModel;
-import it.unimib.communimib.util.NavigationHelper;
 
 public class ReportsFragment extends Fragment {
 
@@ -226,12 +225,12 @@ public class ReportsFragment extends Fragment {
 
                 // alla prima chiamata riempie i preferiti
                 if(favoriteBuildings.isEmpty()){
-                    favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
+                    favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
                 }
 
                 // successivamente effettua la rilettura solo se i preferiti sono cambiati rispetto a prima
-                if(isFilteredByFavorites && !favoriteBuildings.equals(((Result.UserFavoriteBuildings) result).getFavoriteBuildings())) {
-                        favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
+                if(isFilteredByFavorites && !favoriteBuildings.equals(((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings())) {
+                        favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
                         reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                         reportsViewModel.readReportsByBuildings(favoriteBuildings);
                     }
