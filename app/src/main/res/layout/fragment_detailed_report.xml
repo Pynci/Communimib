@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/reportListItem_building"
+        android:id="@+id/textView_building"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_corners"
@@ -53,10 +53,10 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
         android:text="@string/descrizione_del_problema"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_titolo" />
@@ -67,7 +67,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
-        android:text="TextView"
+        android:textSize="16sp"
+        tools:text = "@string/descrizione_del_problema"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
@@ -75,10 +76,10 @@
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:text="@string/categoria_della_segnalazione"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_description" />
@@ -89,29 +90,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
-        android:text="TextView"
+        android:textSize="16sp"
+        tools:text = "@string/categoria"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:text="@string/edificio"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/cardViewBuilding"
-        app:layout_constraintStart_toEndOf="@+id/cardViewBuilding"
-        app:layout_constraintTop_toTopOf="@+id/cardViewBuilding" />
 
     <View
         android:id="@+id/separatore"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="20dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,7 +144,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginBottom="25dp"
         android:text="@string/pubblicato_da"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/cardViewProfileImage"
         app:layout_constraintStart_toEndOf="@+id/cardViewProfileImage"
@@ -166,7 +156,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:textSize="16sp"
+        tools:text = "textView"
         app:layout_constraintStart_toEndOf="@+id/cardViewProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
