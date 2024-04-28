@@ -179,7 +179,7 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                             String interest = snapshot.getValue(String.class);
                             userInterests.add(interest);
                         }
-                        callback.onComplete(new Result.UserFavoriteBuildings(userInterests));
+                        callback.onComplete(new Result.UserFavoriteBuildingsSuccess(userInterests));
                     }
                     else{
                         callback.onComplete(new Result.Error(ErrorMapper.REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR));

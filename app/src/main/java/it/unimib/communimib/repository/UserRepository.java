@@ -253,7 +253,7 @@ public class UserRepository implements IUserRepository{
         if(currentTime - lastFavoriteBuildingsUpdate > Constants.FAVORITE_BUILDINGS_TIMEOUT){
             userRemoteDataSource.getUserFavoriteBuildings(currentUser.getUid(), remoteResult -> {
                 if(remoteResult.isSuccessful()){
-                    userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildings) remoteResult).getFavoriteBuildings(), localResult -> {
+                    userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildingsSuccess) remoteResult).getFavoriteBuildings(), localResult -> {
                         if(localResult.isSuccessful()){
                             lastFavoriteBuildingsUpdate = currentTime;
                             callback.onComplete(remoteResult);
@@ -276,7 +276,14 @@ public class UserRepository implements IUserRepository{
                 else{
                     userRemoteDataSource.getUserFavoriteBuildings(currentUser.getUid(), remoteResult -> {
                         if(remoteResult.isSuccessful()){
-                            userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildings) remoteResult).getFavoriteBuildings(), callback);
+                            userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildingsSuccess) remoteResult).getFavoriteBuildings(), localSaveResult -> {
+                                if(localSaveResult.isSuccessful()){
+                                    callback.onComplete(remoteResult);
+                                }
+                                else{
+                                    callback.onComplete(localSaveResult);
+                                }
+                            });
                         }
                         else{
                             callback.onComplete(remoteResult);

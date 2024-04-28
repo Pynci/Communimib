@@ -19,8 +19,8 @@ import java.util.concurrent.CountDownLatch;
 
 import it.unimib.communimib.database.FakeUserDAO;
 import it.unimib.communimib.datasource.user.FakeAuthDataSource;
+import it.unimib.communimib.datasource.user.FakeUserLocalDataSource;
 import it.unimib.communimib.datasource.user.FakeUserRemoteDataSource;
-import it.unimib.communimib.datasource.user.UserLocalDataSource;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.util.ErrorMapper;
@@ -29,7 +29,7 @@ public class UserRepositoryTest {
 
     IUserRepository userRepository;
     FakeUserRemoteDataSource remoteDataSource;
-    UserLocalDataSource localDataSource;
+    FakeUserLocalDataSource localDataSource;
     FakeAuthDataSource authDataSource;
     FakeUserDAO userDAO;
     SharedPreferences sharedPreferences;
@@ -43,7 +43,7 @@ public class UserRepositoryTest {
         editor = mock(SharedPreferences.Editor.class);
         userDAO = new FakeUserDAO();
         remoteDataSource = new FakeUserRemoteDataSource();
-        localDataSource = new UserLocalDataSource(userDAO, sharedPreferences);
+        localDataSource = new FakeUserLocalDataSource(userDAO);
         authDataSource = new FakeAuthDataSource();
         marco = new User("12345", "marco@unimib.it", "Marco", "Ferioli", true);
 
@@ -318,6 +318,50 @@ public class UserRepositoryTest {
         Assert.assertTrue(result instanceof Result.Success);
     }
 
+    @Test
+    public void readUserFavoriteBuildingsUpdateSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        clearAll();
+        List<String> favoriteBuildings = new ArrayList<>();
+        favoriteBuildings.add("U1");
+        favoriteBuildings.add("U2");
+        remoteDataSource.users.put(marco.getUid(), marco);
+        remoteDataSource.usersFavoriteBuildings.put(marco.getUid(), favoriteBuildings);
+        initializeCurrentUser(marco);
+        initializeLastFavoriteBuildingsUpdate(0);
+
+        userRepository.readUserFavoriteBuildings(result -> {
+            this.result = result;
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await();
+        Assert.assertTrue(result instanceof Result.UserFavoriteBuildingsSuccess);
+        Assert.assertEquals(favoriteBuildings, ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings());
+    }
+
+    @Test
+    public void readUserFavoriteBuildingsFetchSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        clearAll();
+        List<String> favoriteBuildings = new ArrayList<>();
+        favoriteBuildings.add("U1");
+        favoriteBuildings.add("U2");
+        remoteDataSource.users.put(marco.getUid(), marco);
+        remoteDataSource.usersFavoriteBuildings.put(marco.getUid(), favoriteBuildings);
+        initializeCurrentUser(marco);
+        initializeLastFavoriteBuildingsUpdate(System.currentTimeMillis());
+
+        userRepository.readUserFavoriteBuildings(result -> {
+            this.result = result;
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await();
+        Assert.assertTrue(result instanceof Result.UserFavoriteBuildingsSuccess);
+        Assert.assertEquals(favoriteBuildings, ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings());
+    }
+
     private void clearAll() throws NoSuchFieldException, IllegalAccessException {
         remoteDataSource.users.clear();
         userDAO.clearUser();
@@ -331,6 +375,12 @@ public class UserRepositoryTest {
         Field currentUserField = UserRepository.class.getDeclaredField("currentUser");
         currentUserField.setAccessible(true);
         currentUserField.set(userRepository, currentUser);
+    }
+
+    private void initializeLastFavoriteBuildingsUpdate(long milliseconds) throws NoSuchFieldException, IllegalAccessException {
+        Field lastFavoriteBuildingsUpdateField = UserRepository.class.getDeclaredField("lastFavoriteBuildingsUpdate");
+        lastFavoriteBuildingsUpdateField.setAccessible(true);
+        lastFavoriteBuildingsUpdateField.set(userRepository, milliseconds);
     }
 
 }

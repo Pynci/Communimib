@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -116,7 +115,7 @@ public class UserLocalDataSourceTest {
         userLocalDataSource.getUserFavoriteBuildings(callback);
 
         verify(callback).onComplete(
-                argThat(result -> result instanceof Result.UserFavoriteBuildings && ((Result.UserFavoriteBuildings) result)
+                argThat(result -> result instanceof Result.UserFavoriteBuildingsSuccess && ((Result.UserFavoriteBuildingsSuccess) result)
                                 .getFavoriteBuildings()
                                 .equals(favoriteBuildings)));
     }

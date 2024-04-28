@@ -1,9 +1,7 @@
 package it.unimib.communimib.datasource.user;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.database.LocalDatabase;
@@ -77,7 +75,7 @@ public class FakeUserLocalDataSource implements IUserLocalDataSource {
     @Override
     public void getUserFavoriteBuildings(Callback callback) {
         if(!usersFavoriteBuildings.isEmpty()){
-            callback.onComplete(new Result.UserFavoriteBuildings(usersFavoriteBuildings));
+            callback.onComplete(new Result.UserFavoriteBuildingsSuccess(usersFavoriteBuildings));
         }
         else{
             callback.onComplete(new Result.Error(ErrorMapper.LOCAL_READ_USER_FAVORITE_BUILDINGS_ERROR));

@@ -1,6 +1,5 @@
 package it.unimib.communimib.datasource.user;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.common.reflect.TypeToken;
@@ -100,7 +99,7 @@ public class UserLocalDataSource implements IUserLocalDataSource{
                 Gson gson = new Gson();
                 Type type = new TypeToken<ArrayList<String>>() {}.getType();
                 ArrayList<String> favoriteBuildings = gson.fromJson(json, type);
-                callback.onComplete(new Result.UserFavoriteBuildings(favoriteBuildings));
+                callback.onComplete(new Result.UserFavoriteBuildingsSuccess(favoriteBuildings));
             }
             else{
                 callback.onComplete(new Result.Error(ErrorMapper.LOCAL_READ_USER_FAVORITE_BUILDINGS_ERROR));

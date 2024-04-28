@@ -84,7 +84,7 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
     @Override
     public void getUserFavoriteBuildings(String userId, Callback callback) {
         if(usersFavoriteBuildings.containsKey(userId)){
-            callback.onComplete(new Result.UserFavoriteBuildings(usersFavoriteBuildings.get(userId)));
+            callback.onComplete(new Result.UserFavoriteBuildingsSuccess(usersFavoriteBuildings.get(userId)));
         }
         else{
             callback.onComplete(new Result.Error(ErrorMapper.REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR));
