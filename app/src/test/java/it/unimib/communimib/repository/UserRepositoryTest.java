@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import it.unimib.communimib.database.FakeUserDAO;
@@ -298,8 +300,22 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void storeUserFavoriteBuildingsSuccess() throws NoSuchFieldException, IllegalAccessException {
+    public void storeUserFavoriteBuildingsSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        clearAll();
+        remoteDataSource.users.put(marco.getUid(), marco);
+        initializeCurrentUser(marco);
+        List<String> favoriteBuildings = new ArrayList<>();
+        favoriteBuildings.add("U1");
+        favoriteBuildings.add("U2");
 
+        userRepository.storeUserFavoriteBuildings(favoriteBuildings, result -> {
+            this.result = result;
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await();
+        Assert.assertTrue(result instanceof Result.Success);
     }
 
     private void clearAll() throws NoSuchFieldException, IllegalAccessException {

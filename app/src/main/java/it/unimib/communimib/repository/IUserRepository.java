@@ -32,7 +32,7 @@ public interface IUserRepository {
     // void updatePropic(Callback callback) e poi cosa?
     void resetPassword(String email, Callback callback);
 
-    void storeUserFavoriteBuildings(List<String> userInterests, Callback callback);
+    void storeUserFavoriteBuildings(List<String> favoriteBuildings, Callback callback);
 
     void readUserFavoriteBuildings(Callback callback);
 }

@@ -1,14 +1,9 @@
 package it.unimib.communimib.datasource.user;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.database.LocalDatabase;
@@ -17,17 +12,16 @@ import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.util.ErrorMapper;
 
-public class UserLocalDataSource implements IUserLocalDataSource{
+public class FakeUserLocalDataSource implements IUserLocalDataSource {
 
     private final UserDAO userDAO;
-    private final SharedPreferences sharedPreferences;
+    public List<String> usersFavoriteBuildings;
 
-    public UserLocalDataSource(UserDAO userDAO, SharedPreferences sharedPreferences) {
+    public FakeUserLocalDataSource(UserDAO userDAO){
         this.userDAO = userDAO;
-        this.sharedPreferences = sharedPreferences;
+        usersFavoriteBuildings = new ArrayList<>();
     }
 
-    @Override
     public void getUser(Callback callback) {
         LocalDatabase.databaseWriteExecutor.execute(() -> {
             User user = userDAO.getUser();
@@ -76,37 +70,16 @@ public class UserLocalDataSource implements IUserLocalDataSource{
 
     @Override
     public void saveUserFavoriteBuildings(List<String> favoriteBuildings, Callback callback) {
-        try{
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            Gson gson = new Gson();
-            String json = gson.toJson(favoriteBuildings);
-
-            editor.putString("string_array_list", json);
-            editor.apply();
-
-            callback.onComplete(new Result.Success());
-        }
-        catch (Exception e) {
-            callback.onComplete(new Result.Error(ErrorMapper.LOCAL_SAVE_USER_FAVORITE_BUILDINGS_ERROR));
-        }
+        usersFavoriteBuildings = favoriteBuildings;
+        callback.onComplete(new Result.Success());
     }
 
     @Override
     public void getUserFavoriteBuildings(Callback callback) {
-
-        try {
-            String json = sharedPreferences.getString("string_array_list", null);
-            if (json != null) {
-                Gson gson = new Gson();
-                Type type = new TypeToken<ArrayList<String>>() {}.getType();
-                ArrayList<String> favoriteBuildings = gson.fromJson(json, type);
-                callback.onComplete(new Result.UserFavoriteBuildings(favoriteBuildings));
-            }
-            else{
-                callback.onComplete(new Result.Error(ErrorMapper.LOCAL_READ_USER_FAVORITE_BUILDINGS_ERROR));
-            }
+        if(!usersFavoriteBuildings.isEmpty()){
+            callback.onComplete(new Result.UserFavoriteBuildings(usersFavoriteBuildings));
         }
-        catch (Exception e) {
+        else{
             callback.onComplete(new Result.Error(ErrorMapper.LOCAL_READ_USER_FAVORITE_BUILDINGS_ERROR));
         }
     }

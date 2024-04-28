@@ -230,16 +230,19 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
-    public void storeUserFavoriteBuildings(List<String> userInterests, Callback callback) {
+    public void storeUserFavoriteBuildings(List<String> favoriteBuildings, Callback callback) {
         if(currentUser != null){
-            userRemoteDataSource.storeUserFavoriteBuildings(userInterests, getCurrentUser().getUid(), resultRemote -> {
+            userRemoteDataSource.storeUserFavoriteBuildings(favoriteBuildings, getCurrentUser().getUid(), resultRemote -> {
                 if(resultRemote.isSuccessful()){
-                    userLocalDataSource.saveUserFavoriteBuildings(userInterests, callback);
+                    userLocalDataSource.saveUserFavoriteBuildings(favoriteBuildings, callback);
                 }
                 else{
                     callback.onComplete(resultRemote);
                 }
             });
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
         }
     }
 

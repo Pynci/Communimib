@@ -18,6 +18,7 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
 
     public FakeUserRemoteDataSource(){
         users = new HashMap<>();
+        usersFavoriteBuildings = new HashMap<>();
     }
 
     @Override
