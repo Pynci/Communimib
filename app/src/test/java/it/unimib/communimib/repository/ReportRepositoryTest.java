@@ -23,10 +23,10 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class ReportRepositoryTest {
 
-    volatile Result result;
-    IReportRepository reportRepository;
-    FakeReportRemoteDataSource reportRemoteDataSource;
-    User marco;
+    private volatile Result result;
+    private IReportRepository reportRepository;
+    private FakeReportRemoteDataSource reportRemoteDataSource;
+    private User marco;
 
     @Before
     public void setUp() throws Exception {

@@ -4,7 +4,6 @@ import static com.google.common.base.Verify.verify;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 
-import android.content.SharedPreferences;
 import android.net.Uri;
 
 import org.junit.Assert;
@@ -27,22 +26,21 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class UserRepositoryTest {
 
-    IUserRepository userRepository;
-    FakeUserRemoteDataSource remoteDataSource;
-    FakeUserLocalDataSource localDataSource;
-    FakeAuthDataSource authDataSource;
-    FakeUserDAO userDAO;
-    User marco;
-    volatile Result result;
+    private IUserRepository userRepository;
+    private FakeUserRemoteDataSource remoteDataSource;
+    private FakeAuthDataSource authDataSource;
+    private FakeUserDAO userDAO;
+    private User marco;
+    private volatile Result result;
 
     @Before
-    public void setUp() {
+    public void setUp() throws NoSuchFieldException, IllegalAccessException {
         userDAO = new FakeUserDAO();
         remoteDataSource = new FakeUserRemoteDataSource();
-        localDataSource = new FakeUserLocalDataSource(userDAO);
+        FakeUserLocalDataSource localDataSource = new FakeUserLocalDataSource(userDAO);
         authDataSource = new FakeAuthDataSource();
         marco = new User("12345", "marco@unimib.it", "Marco", "Ferioli", true);
-
+        clearAll();
         userRepository = UserRepository.getInstance(
                 authDataSource,
                 remoteDataSource,
@@ -53,7 +51,7 @@ public class UserRepositoryTest {
     @Test
     public void signUpSuccess() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
+
 
         userRepository.signUp(marco.getEmail(), "password", marco.getName(), marco.getSurname(), result -> {
             this.result = result;
@@ -67,7 +65,6 @@ public class UserRepositoryTest {
     @Test
     public void signUpFailure() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
 
         authDataSource.signedupUsers.add(marco);
 
@@ -83,7 +80,6 @@ public class UserRepositoryTest {
     @Test
     public void signInSuccess() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
 
         remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
@@ -100,7 +96,6 @@ public class UserRepositoryTest {
     @Test
     public void signInFailureWrongPassword() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
 
         remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
@@ -117,7 +112,6 @@ public class UserRepositoryTest {
     @Test
     public void signInFailureWrongEmail() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
 
         remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
@@ -134,7 +128,6 @@ public class UserRepositoryTest {
     @Test
     public void signInFailureDataInconsistency() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
 
         // data are missing in remote data source (intentionally)
         authDataSource.signedupUsers.add(marco);
@@ -151,7 +144,6 @@ public class UserRepositoryTest {
     @Test
     public void signOutSuccess() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         userDAO.insertUser(marco);
         remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
@@ -170,7 +162,6 @@ public class UserRepositoryTest {
     @Test
     public void signOutFailure() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
 
@@ -186,7 +177,6 @@ public class UserRepositoryTest {
     @Test
     public void isSessionStillActiveTrue() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         userDAO.insertUser(marco);
         remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
@@ -204,7 +194,6 @@ public class UserRepositoryTest {
     @Test
     public void isSessionStillActiveFalse() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         userDAO.insertUser(marco);
         remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
@@ -221,7 +210,6 @@ public class UserRepositoryTest {
     @Test
     public void updateUserNameAndSurnameSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         remoteDataSource.users.put(marco.getUid(), marco);
         initializeCurrentUser(marco);
 
@@ -243,7 +231,6 @@ public class UserRepositoryTest {
     @Test
     public void updateUserNameAndSurnameFailure() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         remoteDataSource.users.put(marco.getUid(), marco);
         // missing current user initialization (on purpose)
 
@@ -260,7 +247,6 @@ public class UserRepositoryTest {
     @Test
     public void uploadPropicSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         remoteDataSource.users.put(marco.getUid(), marco);
         initializeCurrentUser(marco);
         Uri uri = Mockito.mock(Uri.class);
@@ -280,7 +266,6 @@ public class UserRepositoryTest {
     @Test
     public void uploadPropicFailure() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         remoteDataSource.users.put(marco.getUid(), marco);
         Uri uri = Mockito.mock(Uri.class);
         // missing current user initialization (on purpose)
@@ -298,7 +283,6 @@ public class UserRepositoryTest {
     @Test
     public void storeUserFavoriteBuildingsSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         remoteDataSource.users.put(marco.getUid(), marco);
         initializeCurrentUser(marco);
         List<String> favoriteBuildings = new ArrayList<>();
@@ -317,7 +301,6 @@ public class UserRepositoryTest {
     @Test
     public void readUserFavoriteBuildingsUpdateSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         List<String> favoriteBuildings = new ArrayList<>();
         favoriteBuildings.add("U1");
         favoriteBuildings.add("U2");
@@ -339,7 +322,6 @@ public class UserRepositoryTest {
     @Test
     public void readUserFavoriteBuildingsFetchSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        clearAll();
         List<String> favoriteBuildings = new ArrayList<>();
         favoriteBuildings.add("U1");
         favoriteBuildings.add("U2");
