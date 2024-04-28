@@ -4,9 +4,9 @@ import android.widget.ImageView;
 
 import it.unimib.communimib.R;
 
-public class GestBuildingsImages {
+public class BuildingsImagesHelper {
 
-    private GestBuildingsImages () {
+    private BuildingsImagesHelper() {
         //Costruttore privato vuoto
     }
 

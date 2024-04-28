@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import it.unimib.communimib.R;
 
-public class GestTopbar {
-    private GestTopbar(){}
-    public static void gestisciTopbar(AppCompatActivity activity) {
+public class TopbarHelper {
+    private TopbarHelper(){}
+    public static void handleTopbar(AppCompatActivity activity) {
         ActionBar actionBar = activity.getSupportActionBar();
 
         if (actionBar != null) {

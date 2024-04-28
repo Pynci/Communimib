@@ -177,7 +177,7 @@ public class ReportsFragment extends Fragment {
                     .show()
         );
 
-        reportsViewModel.getDeleteReportResult().observe(getViewLifecycleOwner(), result ->{
+        reportsViewModel.getCloseReportResult().observe(getViewLifecycleOwner(), result ->{
             if(result.isSuccessful()){
                 Snackbar.make(view, R.string.report_closed_correctly, BaseTransientBottomBar.LENGTH_SHORT).show();
             } else {
@@ -194,7 +194,7 @@ public class ReportsFragment extends Fragment {
                             new ReportsHorizontalRecyclerViewAdapter.OnItemClickListener() {
                                 @Override
                                 public void onCloseReportClick(Report report) {
-                                    reportsViewModel.deleteReport(report);
+                                    reportsViewModel.closeReport(report);
                                 }
 
                                 @Override
