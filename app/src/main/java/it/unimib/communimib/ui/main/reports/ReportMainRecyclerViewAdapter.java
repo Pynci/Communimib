@@ -84,11 +84,15 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView categoryName;
+        private View marginTop;
+        private View marginBottom;
         private RecyclerView horizontalRecyclerView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            marginTop = itemView.findViewById(R.id.horizontalRecyclerViewItem_marginTop);
+            marginBottom = itemView.findViewById(R.id.horizontalRecyclerViewItem_marginBottom);
             categoryName = itemView.findViewById(R.id.reportHorizontalRecyclerViewItem_categoryName);
             horizontalRecyclerView = itemView.findViewById(R.id.reportHorizontalRecyclerViewItem_recyclerView);
 
@@ -98,8 +102,12 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
             categoryName.setText(categoryReport.getCategoryName());
             if(categoryReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
                 categoryName.setVisibility(View.GONE);
+                marginTop.setVisibility(View.GONE);
+                marginBottom.setVisibility(View.GONE);
             } else {
                 categoryName.setVisibility(View.VISIBLE);
+                marginTop.setVisibility(View.VISIBLE);
+                marginBottom.setVisibility(View.VISIBLE);
             }
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
             horizontalRecyclerView.setLayoutManager(layoutManager);
