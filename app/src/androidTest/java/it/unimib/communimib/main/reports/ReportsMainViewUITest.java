@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -43,11 +44,12 @@ public class ReportsMainViewUITest {
 
             try {
                 latch.await();
-                scenario = ActivityScenario.launch(MainActivity.class);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
+        scenario = ActivityScenario.launch(MainActivity.class);
     }
 
     @Test
@@ -68,4 +70,45 @@ public class ReportsMainViewUITest {
         Espresso.onView(withId(R.id.floatingActionButton_favorite)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
+    @Test
+    public void testFavoriteDialogAppear() {
+
+        //Clico sul bottone del menu
+        Espresso.onView(withId(R.id.floatingActionButton_menu)).perform(click());
+
+        //Clico sul bottone dei preferiti
+        Espresso.onView(withId(R.id.floatingActionButton_favorite)).perform(click());
+
+        //Controllo che il dialog sia visibile
+        Espresso.onView(withText(R.string.favorite_explain_1))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    }
+
+    @Test
+    public void testCreationDialogAppear() {
+
+        //Clico sul bottone del menu
+        Espresso.onView(withId(R.id.floatingActionButton_menu)).perform(click());
+
+        //Clico sul bottone di creazione
+        Espresso.onView(withId(R.id.floatingActionButton_add_new_report)).perform(click());
+
+        //Controllo che il dialog sia visibile
+        Espresso.onView(withText(R.string.crea_una_nuova_segnalazione))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    }
+
+    @Test
+    public void testBuildingFilterDialogAppear() {
+
+        //Clico sul bottone del menu
+        Espresso.onView(withId(R.id.floatingActionButton_menu)).perform(click());
+
+        //Clico sul bottone dei filtri
+        Espresso.onView(withId(R.id.floatingActionButton_filter_buildings)).perform(click());
+
+        //Controllo che il dialog sia visibile
+        Espresso.onView(withText(R.string.filtra_per_gli_edfici_preferiti))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    }
 }
