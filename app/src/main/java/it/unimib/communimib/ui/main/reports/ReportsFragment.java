@@ -101,7 +101,6 @@ public class ReportsFragment extends Fragment {
 
         fragmentReportsBinding.fragmentReportSearchView.setOnCloseListener(() -> {
             filter(filtersViewModel.getChosenFilter().getValue());
-            Log.d("dentifricio", "arriva");
             return false;
         });
 
@@ -132,6 +131,7 @@ public class ReportsFragment extends Fragment {
         //Gestione osservazione creazione
         reportsCreationViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
+                // TODO: togliere questo testo hardcodato
                 Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
