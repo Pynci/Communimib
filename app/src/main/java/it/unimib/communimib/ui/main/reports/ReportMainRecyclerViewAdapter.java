@@ -97,7 +97,7 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
         public void bind(CategoryReport categoryReport){
             categoryName.setText(categoryReport.getCategoryName());
             if(categoryReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
-                categoryName.setVisibility(View.INVISIBLE);
+                categoryName.setVisibility(View.GONE);
             } else {
                 categoryName.setVisibility(View.VISIBLE);
             }
@@ -108,7 +108,7 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
         @Override
         public void onClick(View v) {
-
+            // qui non ci va niente, lasciare vuoto
         }
     }
 }
