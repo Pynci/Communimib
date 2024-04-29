@@ -225,11 +225,15 @@ public class ReportsFragment extends Fragment {
                 if(favoriteBuildings.isEmpty()){
                     favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
                     reportsViewModel.readReportsByBuildings(favoriteBuildings);
+                    isFilteredByFavorites = true;
+                }
+                //successivamente effettua la rilettura solo se i preferiti sono cambiati rispetto a prima
+                if(!favoriteBuildings.equals(((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings())){
+                    favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
                 }
 
-                // successivamente effettua la rilettura solo se i preferiti sono cambiati rispetto a prima
+                // aggiorna recycler view solo se è stata selezionata la visualizzazione per preferiti
                 if(isFilteredByFavorites && !favoriteBuildings.equals(((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings())) {
-                        favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
                         reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                         reportsViewModel.readReportsByBuildings(favoriteBuildings);
                 }
