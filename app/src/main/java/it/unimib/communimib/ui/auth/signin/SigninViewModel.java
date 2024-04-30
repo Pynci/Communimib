@@ -23,11 +23,7 @@ public class SigninViewModel extends ViewModel {
     }
 
     public void signIn (String email, String password){
-        if(Validation.checkEmail(email).equals("ok") && !password.isEmpty()){
-            userRepository.signIn(email, password, signInResult::postValue);
-        } else {
-            signInResult.setValue(new Result.Error(ErrorMapper.NOT_ACCEPTED_PARAMETERS));
-        }
+        userRepository.signIn(email, password, signInResult::postValue);
     }
     public LiveData<Result> getSignInResult(){
         return signInResult;
