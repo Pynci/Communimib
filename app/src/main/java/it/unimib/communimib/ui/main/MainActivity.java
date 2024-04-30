@@ -60,6 +60,4 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         bottomNav.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onBackPressed() {}
 }
