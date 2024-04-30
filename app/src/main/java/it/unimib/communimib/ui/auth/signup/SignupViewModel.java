@@ -19,19 +19,8 @@ public class SignupViewModel extends ViewModel {
         this.iUserRepository = iUserRepository;
     }
 
-    public void signUp(String email, String password, String confirmPassword, String name, String surname) {
-
-        if(Validation.checkEmail(email).equals("ok")
-                && Validation.checkPassword(password).equals("ok")
-                && Validation.checkConfirmPassword(confirmPassword, password).equals("ok")
-                && Validation.checkField(name).equals("ok")
-                && Validation.checkField(surname).equals("ok")) {
-
-            iUserRepository.signUp(email, password, name, surname, signUpResult::postValue);
-        }
-        else{
-            signUpResult.setValue(new Result.Error(ErrorMapper.NOT_ACCEPTED_PARAMETERS));
-        }
+    public void signUp(String email, String password, String name, String surname) {
+        iUserRepository.signUp(email, password, name, surname, signUpResult::postValue);
     }
 
     public LiveData<Result> getSignUpResult() {

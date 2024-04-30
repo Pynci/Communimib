@@ -86,10 +86,7 @@ public class SignupFragment extends Fragment {
             if(!hasFocus){
                 String email = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextEmailAddress.getText());
                 String result = Validation.checkEmail(email);
-                if (!result.equals("ok")){
-                    emailError = getString(ErrorMapper.getInstance().getErrorMessage(result));
-                    fragmentSignupBinding.fragmentSignupTextViewEmailError.setText(emailError);
-                }
+                isEmailCorrect(result);
             }
         });
 
@@ -98,10 +95,7 @@ public class SignupFragment extends Fragment {
             if(!hasFocus){
                 String name = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextName.getText());
                 String result = Validation.checkField(name);
-                if (!result.equals("ok")){
-                    nameError = getString(ErrorMapper.getInstance().getErrorMessage(result));
-                    fragmentSignupBinding.fragmentSignupTextViewNameError.setText(nameError);
-                }
+                isNameCorrect(result);
             }
         });
 
@@ -110,10 +104,7 @@ public class SignupFragment extends Fragment {
             if(!hasFocus){
                 String surname = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextSurname.getText());
                 String result = Validation.checkField(surname);
-                if (!result.equals("ok")){
-                    surnameError = getString(ErrorMapper.getInstance().getErrorMessage(result));
-                    fragmentSignupBinding.fragmentSignupTextViewSurnameError.setText(surnameError);
-                }
+                isSurnameCorrect(result);
             }
         });
 
@@ -122,10 +113,7 @@ public class SignupFragment extends Fragment {
             if(!hasFocus){
                 String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
                 String result = Validation.checkPassword(password);
-                if (!result.equals("ok")){
-                    passwordError = getString(ErrorMapper.getInstance().getErrorMessage(result));
-                    fragmentSignupBinding.fragmentSignupTextViewPasswordError.setText(passwordError);
-                }
+                isPasswordCorrect(result);
             }
         });
 
@@ -135,10 +123,7 @@ public class SignupFragment extends Fragment {
                 String password = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextPassword.getText());
                 String confirmPassword = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextConfirmPassword.getText());
                 String result = Validation.checkConfirmPassword(confirmPassword, password);
-                if (!result.equals("ok")){
-                    confirmPasswordError = getString(ErrorMapper.getInstance().getErrorMessage(result));
-                    fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setText(confirmPasswordError);
-                }
+                isConfirmPasswordCorrect(result);
             }
         });
 
@@ -151,7 +136,15 @@ public class SignupFragment extends Fragment {
             String name = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextName.getText());
             String surname = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextSurname.getText());
 
-            signupViewModel.signUp(email, password, confirmPassword, name, surname);
+            if(isEmailCorrect(Validation.checkEmail(email)) &
+                isNameCorrect(Validation.checkField(name)) &
+                isSurnameCorrect(Validation.checkField(surname)) &
+                isPasswordCorrect(Validation.checkPassword(password)) &
+                isConfirmPasswordCorrect(Validation.checkConfirmPassword(confirmPassword, password))){
+
+                signupViewModel.signUp(email, password, name, surname);
+            }
+
         });
 
         //Gestione del risultato della registrazione
@@ -172,6 +165,62 @@ public class SignupFragment extends Fragment {
         });
 
         onSaveInstanceState(savedInstanceState);
+    }
+
+    public boolean isEmailCorrect(String result){
+        if (!result.equals("ok")){
+            emailError = getString(ErrorMapper.getInstance().getErrorMessage(result));
+            fragmentSignupBinding.fragmentSignupTextViewEmailError.setText(emailError);
+            return false;
+        } else {
+            fragmentSignupBinding.fragmentSignupTextViewEmailError.setText("");
+            return true;
+        }
+    }
+
+    public boolean isNameCorrect(String result){
+        if (!result.equals("ok")){
+            nameError = getString(ErrorMapper.getInstance().getErrorMessage(result));
+            fragmentSignupBinding.fragmentSignupTextViewNameError.setText(nameError);
+            return false;
+        } else {
+            fragmentSignupBinding.fragmentSignupTextViewNameError.setText("");
+            return true;
+        }
+    }
+
+    public boolean isSurnameCorrect(String result){
+        if (!result.equals("ok")){
+            surnameError = getString(ErrorMapper.getInstance().getErrorMessage(result));
+            fragmentSignupBinding.fragmentSignupTextViewSurnameError.setText(surnameError);
+            return false;
+        } else {
+            fragmentSignupBinding.fragmentSignupTextViewSurnameError.setText("");
+            return true;
+        }
+    }
+
+    public boolean isPasswordCorrect(String result){
+        if (!result.equals("ok")){
+            passwordError = getString(ErrorMapper.getInstance().getErrorMessage(result));
+            fragmentSignupBinding.fragmentSignupTextViewPasswordError.setText(passwordError);
+            return false;
+        } else {
+            fragmentSignupBinding.fragmentSignupTextViewPasswordError.setText("");
+            return true;
+        }
+    }
+
+    public boolean isConfirmPasswordCorrect(String result){
+        if (!result.equals("ok")){
+            confirmPasswordError = getString(ErrorMapper.getInstance().getErrorMessage(result));
+            fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setText(confirmPasswordError);
+            return false;
+        } else {
+            fragmentSignupBinding.fragmentSignupTextViewConfirmPasswordError.setText("");
+            return true;
+        }
+
     }
 
     @Override
