@@ -136,6 +136,7 @@ public class SignupFragment extends Fragment {
             String name = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextName.getText());
             String surname = String.valueOf(fragmentSignupBinding.fragmentSignupEditTextSurname.getText());
 
+            //singolo & per verificare tutte le condizioni
             if(isEmailCorrect(Validation.checkEmail(email)) &
                 isNameCorrect(Validation.checkField(name)) &
                 isSurnameCorrect(Validation.checkField(surname)) &
