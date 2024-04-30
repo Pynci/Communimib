@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.reports.detailedreport.DetailedReportFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/reportListItem_imageBuilding"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:background="@mipmap/edificiou14_foreground"
+            android:backgroundTint="@color/md_theme_dark_tertiary"
+            android:backgroundTintMode="multiply"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_titolo"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:textColor="@color/md_theme_light_secondaryContainer"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.194"
+            tools:text="@string/titolo_della_segnalazione" />
+
+        <TextView
+            android:id="@+id/textView_building"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/md_theme_light_secondaryContainer"
+            android:paddingStart="5dp"
+            android:textColor="@color/seed"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.161"
+            tools:text="U14" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/descrizione_del_problema"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout1" />
+
+    <TextView
+        android:id="@+id/textView_description"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        tools:text = "@string/descrizione_del_problema"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/categoria_della_segnalazione"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_description" />
+
+    <TextView
+        android:id="@+id/textView_category"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        tools:text = "@string/categoria"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <View
+        android:id="@+id/separatore"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_category" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewProfileImage"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        app:cardCornerRadius="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separatore">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/reportListItem_imageProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="25dp"
+        android:text="@string/pubblicato_da"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/cardViewProfileImage"
+        app:layout_constraintStart_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toTopOf="@+id/cardViewProfileImage" />
+
+    <TextView
+        android:id="@+id/textView_Author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        tools:text = "textView"
+        app:layout_constraintStart_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <Button
+        android:id="@+id/button_close_report"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/close"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewProfileImage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

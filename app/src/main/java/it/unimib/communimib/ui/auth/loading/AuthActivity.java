@@ -101,6 +101,7 @@ public class AuthActivity extends AppCompatActivity {
                         if(resultSession && resultEmail) {
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                         else{
                             splashScreenView.remove();

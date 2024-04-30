@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     id("com.google.gms.google-services")
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -64,6 +65,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-storage")
 
     //Dipendenze per room
     val room_version = "2.6.1"
@@ -72,4 +74,13 @@ dependencies {
 
     //Dipendenze per splash screen
     implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
+
+    //Dipendenze per material design bottom bar
+    implementation("com.google.android.material:material:1.11.0")
+
+    //Dipendenze per immagini
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    //Dipendenza per GSON
+    implementation("com.google.code.gson:gson:2.8.8")
 }

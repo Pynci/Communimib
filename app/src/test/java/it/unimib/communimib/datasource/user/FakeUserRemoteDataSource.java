@@ -1,5 +1,7 @@
 package it.unimib.communimib.datasource.user;
 
+import android.net.Uri;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,18 +14,20 @@ import it.unimib.communimib.util.ErrorMapper;
 public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
 
     public Map<String, User> users;
+    public Map<String, List<String>> usersFavoriteBuildings;
 
     public FakeUserRemoteDataSource(){
         users = new HashMap<>();
+        usersFavoriteBuildings = new HashMap<>();
     }
 
     @Override
-    public void storeUserParameters(String uid, String email, String name, String surname, Callback callback) {
+    public void storeUserParameters(String uid, String email, String name, String surname, boolean isUnimibEmployee, Callback callback) {
         if(users.containsKey(uid)){
-            users.replace(uid, new User(email, name, surname));
+            users.replace(uid, new User(uid, email, name, surname, isUnimibEmployee));
         }
         else{
-            users.put(uid, new User(email, name, surname));
+            users.put(uid, new User(uid, email, name, surname, isUnimibEmployee));
         }
         callback.onComplete(new Result.Success());
     }
@@ -44,9 +48,46 @@ public class FakeUserRemoteDataSource implements IUserRemoteDataSource {
         }
     }
 
+    @Override
+    public void updateNameAndSurname(String uid, String name, String surname, Callback callback) {
+        if(users.containsKey(uid)){
+            users.get(uid).setName(name);
+            callback.onComplete(new Result.Success());
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+        }
+    }
 
     @Override
-    public void updateNameAndSurname(String name, String surname) {
-        //TODO: implementare questo metodo
+    public void uploadPropic(String uid, Uri uri, Callback callback) {
+        if(users.containsKey(uid)){
+            users.get(uid).setPropic(uri.toString());
+            callback.onComplete(new Result.UriSuccess(uri.toString()));
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+        }
+    }
+
+    @Override
+    public void storeUserFavoriteBuildings(List<String> buildings, String userId, Callback callback) {
+        if(usersFavoriteBuildings.containsKey(userId)){
+            usersFavoriteBuildings.replace(userId, buildings);
+        }
+        else{
+            usersFavoriteBuildings.put(userId, buildings);
+        }
+        callback.onComplete(new Result.Success());
+    }
+
+    @Override
+    public void getUserFavoriteBuildings(String userId, Callback callback) {
+        if(usersFavoriteBuildings.containsKey(userId)){
+            callback.onComplete(new Result.UserFavoriteBuildingsSuccess(usersFavoriteBuildings.get(userId)));
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR));
+        }
     }
 }

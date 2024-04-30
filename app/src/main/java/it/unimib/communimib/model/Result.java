@@ -1,5 +1,7 @@
 package it.unimib.communimib.model;
 
+import java.util.List;
+
 public abstract class Result {
 
     private Result(){
@@ -9,11 +11,11 @@ public abstract class Result {
         return !(this instanceof Error);
     }
 
-    public static final class Success extends Result{
+    public static final class Success extends Result {
         //class representing a generic success
     }
 
-    public static final class SignupSuccess extends Result{
+    public static final class SignupSuccess extends Result {
         private final String uid;
 
         public SignupSuccess(String uid){
@@ -25,19 +27,7 @@ public abstract class Result {
         }
     }
 
-    public static final class SigninSuccess extends Result{
-        private final boolean emailVerified;
-
-        public SigninSuccess(boolean emailVerified){
-            this.emailVerified = emailVerified;
-        }
-
-        public boolean isEmailVerified(){
-            return emailVerified;
-        }
-    }
-
-    public static final class UserSuccess extends Result{
+    public static final class UserSuccess extends Result {
 
         private final User user;
 
@@ -50,7 +40,19 @@ public abstract class Result {
         }
     }
 
-    public static final class BooleanSuccess extends Result{
+    public static final class UriSuccess extends Result {
+        private final String uri;
+
+        public UriSuccess(String uri){
+            this.uri = uri;
+        }
+
+        public String getUri(){
+            return uri;
+        }
+    }
+
+    public static final class BooleanSuccess extends Result {
 
         private final boolean aBoolean;
 
@@ -64,7 +66,32 @@ public abstract class Result {
 
     }
 
-    public static final class Error extends Result{
+    public static final class ReportSuccess extends Result {
+        private final Report report;
+
+        public ReportSuccess(Report report){
+            this.report = report;
+        }
+
+        public Report getReport(){
+            return report;
+        }
+    }
+
+    public static final class UserFavoriteBuildingsSuccess extends Result {
+
+        private final List<String> favoriteBuildings;
+
+        public UserFavoriteBuildingsSuccess(List<String> favoriteBuildings) {
+            this.favoriteBuildings = favoriteBuildings;
+        }
+
+        public List<String> getFavoriteBuildings() {
+            return favoriteBuildings;
+        }
+    }
+
+    public static final class Error extends Result {
         private final String message;
 
         public Error(String message){
@@ -75,5 +102,4 @@ public abstract class Result {
             return message;
         }
     }
-
 }

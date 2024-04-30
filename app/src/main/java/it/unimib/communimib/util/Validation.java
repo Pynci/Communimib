@@ -24,6 +24,9 @@ public class Validation {
         boolean capitalCase = false;
         boolean specialChar = false;
 
+        if(password.isEmpty())
+            return ErrorMapper.EMPTY_FIELD;
+
         if(password.length() < 8)
             return ErrorMapper.TOO_SHORT_FIELD;
 
@@ -77,5 +80,44 @@ public class Validation {
             return ErrorMapper.SPECIAL_CHAR_NOT_ALLOWED;
 
         return "ok";
+    }
+
+    public static String validateNewReport(String title, String description, String building, String category) {
+
+        String error = ErrorMapper.NOT_ACCEPTED_PARAMETERS;
+
+        if(!checkEmptyField(title).equals("ok") || !checkEmptyField(description).equals("ok")
+                || !checkBuildingsSpinner(building).equals("ok") || !checkCategoriesSpinner(category).equals("ok")) {
+            return error;
+        }
+        else{
+            return "ok";
+        }
+    }
+
+    public static String checkBuildingsSpinner (String building) {
+
+        if(building.equals("Edificio"))
+            return ErrorMapper.EMPTY_FIELD;
+        else
+            return "ok";
+    }
+
+    public static String checkCategoriesSpinner (String category) {
+
+        if(category.equals("Categoria"))
+            return ErrorMapper.EMPTY_FIELD;
+        else
+            return "ok";
+    }
+
+    public static String checkEmptyField (String field) {
+
+        if(field.isEmpty()) {
+            return ErrorMapper.EMPTY_FIELD;
+        }
+        else{
+            return "ok";
+        }
     }
 }

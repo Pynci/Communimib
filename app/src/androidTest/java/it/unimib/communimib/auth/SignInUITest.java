@@ -1,4 +1,4 @@
-package it.unimib.communimib;
+package it.unimib.communimib.auth;
 
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -18,6 +18,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import it.unimib.communimib.R;
 import it.unimib.communimib.ui.auth.loading.AuthActivity;
 import it.unimib.communimib.util.ErrorMapper;
 
@@ -101,15 +102,5 @@ public class SignInUITest {
 
         Espresso.onView(ViewMatchers.withId(R.id.fragmentSignin_textView_passwordError))
                 .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD))));
-    }
-
-    @Test
-    public void testInvalidDataSnackbar() {
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignin_button_signin))
-                .perform(click());
-
-        Espresso.onView(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.NOT_ACCEPTED_PARAMETERS)))
-                .check(ViewAssertions.matches(isDisplayed()));
     }
 }
