@@ -124,7 +124,7 @@
                     android:id="@+id/fragmentSignin_EditText_password"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    android:drawableEnd="@drawable/key_filled"
+                    app:passwordToggleEnabled="true"
                     android:inputType="text|textPassword" />
 
                 <RelativeLayout
