@@ -1,4 +1,4 @@
-package it.unimib.communimib;
+package it.unimib.communimib.auth;
 
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -21,6 +21,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import it.unimib.communimib.R;
 import it.unimib.communimib.ui.auth.loading.AuthActivity;
 import it.unimib.communimib.util.ErrorMapper;
 
