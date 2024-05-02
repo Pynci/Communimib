@@ -180,7 +180,7 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
                                         callback.onComplete(new Result.Success());
                                     }
                                     else{
-                                        //TODO: inserire un errore più specifico qui
+                                        //TODO inserire un errore più specifico qui
                                         callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
                                     }
                                 });

@@ -28,7 +28,9 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
     @Override
     public void readAllPosts(Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback) {
 
-        databaseReference.child(Constants.POST_PATH).limitToFirst(30)
+        databaseReference
+                .child(Constants.POST_PATH)
+                .limitToFirst(10)
                 .addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -67,8 +69,74 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
     }
 
     @Override
-    public void createPost(Post post, Callback callback) {
+    public void readPostsByCategory(String queryParameter, Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback) {
 
+        databaseReference
+                .child(Constants.POST_PATH)
+                .orderByChild("category")
+                .equalTo(queryParameter)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Post post = snapshot.getValue(Post.class);
+                        post.setPid(snapshot.getKey());
+
+                        addedCallback.onComplete(new Result.PostSuccess(post));
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Post post = snapshot.getValue(Post.class);
+                        post.setPid(snapshot.getKey());
+
+                        changedCallback.onComplete(new Result.PostSuccess(post));
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        Post post = snapshot.getValue(Post.class);
+                        post.setPid(snapshot.getKey());
+
+                        removedCallback.onComplete(new Result.PostSuccess(post));
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+                    }
+                });
+    }
+
+    @Override
+    public void createPost(Post post, Callback callback) {
+        String key = databaseReference.child(Constants.POST_PATH).push().getKey();
+
+        databaseReference
+                .child(Constants.POST_PATH)
+                .child(key).setValue(post)
+                .addOnCompleteListener(postTask -> {
+                if(postTask.isSuccessful()){
+                    databaseReference
+                            .child(Constants.USERSPOSTS_PATH)
+                            .child(post.getAuthor().getUid())
+                            .child(key)
+                            .setValue(true)
+                            .addOnCompleteListener(userPostTask -> {
+                                if(userPostTask.isSuccessful()){
+                                    callback.onComplete(new Result.Success());
+                                } else {
+                                    callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
+                                }
+                            });
+                } else {
+                    callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
+                }
+        });
     }
 
     @Override
