@@ -3,18 +3,18 @@ package it.unimib.communimib.model;
 public class Post {
 
     String pid;
-    String titolo;
-
-    String descrizione;
-
+    String title;
+    String description;
+    String category;
     User author;
 
     //todo inserire contatto
 
 
-    public Post(String titolo, String descrizione, User author) {
-        this.titolo = titolo;
-        this.descrizione = descrizione;
+    public Post(String title, String description, String category, User author) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
         this.author = author;
     }
 
@@ -26,20 +26,28 @@ public class Post {
         this.pid = pid;
     }
 
-    public String getTitolo() {
-        return titolo;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitolo(String titolo) {
-        this.titolo = titolo;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDescrizione() {
-        return descrizione;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public User getAuthor() {
