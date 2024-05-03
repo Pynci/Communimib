@@ -49,22 +49,21 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
     }
 
     public void removeItem(Report removedReport) {
-        int position = -1;
-        for (int i = 0; i < reportList.size(); i++) {
-            if(reportList.get(i).getRid().equals(removedReport.getRid())){
-                position = i;
-                break;
-            }
-        }
+        //todo sostituire il for con indexOf
+//        int position = -1;
+//        for (int i = 0; i < reportList.size(); i++) {
+//            if(reportList.get(i).getRid().equals(removedReport.getRid())){
+//                position = i;
+//                break;
+//            }
+//        }
+        int position = reportList.indexOf(removedReport);
         if (position != -1) {
             reportList.remove(position);
             notifyItemRemoved(position);
         }
     }
 
-    public void setCategory(String category){
-        this.category = category;
-    }
 
     public boolean isReportListEmpty(){
         return reportList.isEmpty();
