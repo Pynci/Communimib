@@ -149,6 +149,7 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
                     if(postTask.isSuccessful()){
                         databaseReference
                                 .child(Constants.USERSPOSTS_PATH)
+                                .child(post.getAuthor().getUid())
                                 .child(post.getPid())
                                 .removeValue()
                                 .addOnCompleteListener(userPostTask -> {

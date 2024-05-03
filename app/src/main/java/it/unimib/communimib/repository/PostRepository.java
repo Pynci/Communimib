@@ -37,6 +37,6 @@ public class PostRepository implements IPostRepository{
 
     @Override
     public void deletePost(Post post, Callback callback) {
-
+        postRemoteDataSource.deletePost(post, callback);
     }
 }
