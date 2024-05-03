@@ -206,7 +206,6 @@ public class ReportsFragment extends Fragment {
                             },
                             requireContext(),
                             R.layout.report_horizontal_item);
-            reportsHorizontalRecyclerViewAdapter.setCategory(categories[i]);
             categoryReportList.add(new CategoryReport(categories[i],reportsHorizontalRecyclerViewAdapter));
         }
 

@@ -64,9 +64,6 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         }
     }
 
-    public void setCategory(String category){
-        this.category = category;
-    }
 
     public boolean isReportListEmpty(){
         return reportList.isEmpty();
