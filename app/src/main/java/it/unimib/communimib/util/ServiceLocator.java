@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import it.unimib.communimib.database.LocalDatabase;
+import it.unimib.communimib.datasource.post.PostRemoteDataSource;
 import it.unimib.communimib.datasource.report.ReportRemoteDataSource;
 import it.unimib.communimib.datasource.user.AuthDataSource;
 import it.unimib.communimib.datasource.user.UserLocalDataSource;
 import it.unimib.communimib.datasource.user.UserRemoteDataSource;
+import it.unimib.communimib.repository.IPostRepository;
 import it.unimib.communimib.repository.IReportRepository;
 import it.unimib.communimib.repository.IUserRepository;
+import it.unimib.communimib.repository.PostRepository;
 import it.unimib.communimib.repository.ReportRepository;
 import it.unimib.communimib.repository.UserRepository;
 
@@ -39,6 +42,10 @@ public class ServiceLocator {
 
     public IReportRepository getReportRepository() {
         return new ReportRepository(new ReportRemoteDataSource());
+    }
+
+    public IPostRepository getPostRepository(){
+        return new PostRepository(new PostRemoteDataSource());
     }
 
     public LocalDatabase getLocalDatabase(Context context) {
