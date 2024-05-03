@@ -141,6 +141,26 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
 
     @Override
     public void deletePost(Post post, Callback callback) {
-
+        databaseReference
+                .child(Constants.POST_PATH)
+                .child(post.getPid())
+                .removeValue()
+                .addOnCompleteListener(postTask -> {
+                    if(postTask.isSuccessful()){
+                        databaseReference
+                                .child(Constants.USERSPOSTS_PATH)
+                                .child(post.getPid())
+                                .removeValue()
+                                .addOnCompleteListener(userPostTask -> {
+                                    if(userPostTask.isSuccessful()){
+                                        callback.onComplete(new Result.Success());
+                                    } else {
+                                        callback.onComplete(new Result.Error(ErrorMapper.REPORT_DELETING_ERROR));
+                                    }
+                                });
+                    } else {
+                        callback.onComplete(new Result.Error(ErrorMapper.REPORT_DELETING_ERROR));
+                    }
+                });
     }
 }
