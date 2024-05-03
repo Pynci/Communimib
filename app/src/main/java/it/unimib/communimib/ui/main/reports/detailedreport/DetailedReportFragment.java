@@ -76,10 +76,12 @@ public class DetailedReportFragment extends Fragment {
         BuildingsImagesHelper.setBuildingImage(binding.reportListItemImageBuilding, report.getBuilding());
         binding.textViewBuilding.setText(report.getBuilding());
         binding.textViewAuthor.setText(report.getAuthor().getName() + " " + report.getAuthor().getSurname());
-        Glide
-                .with(requireContext())
-                .load(Uri.parse(report.getAuthor().getPropic()))
-                .into(binding.reportListItemImageProfile);
+        if(report.getAuthor().getPropic() != null){
+            Glide
+                    .with(requireContext())
+                    .load(Uri.parse(report.getAuthor().getPropic()))
+                    .into(binding.reportListItemImageProfile);
+        }
 
         User currentUser = detailedReportViewModel.getCurrentUser();
         if(currentUser != null && currentUser.isUnimibEmployee())

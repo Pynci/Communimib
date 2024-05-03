@@ -101,7 +101,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
-                    <com.google.android.material.imageview.ShapeableImageView
+                    <ImageView
+                        android:scaleType="centerCrop"
                         android:id="@+id/reportListItem_imageView"
                         android:layout_width="48dp"
                         android:layout_height="48dp"

@@ -143,11 +143,12 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
             BuildingsImagesHelper.setBuildingImage(buildingImage, report.getBuilding());
-            Glide
-                    .with(context)
-                    .load(Uri.parse(report.getAuthor().getPropic()))
-                    .into(propic);
-
+            if(report.getAuthor().getPropic() != null){
+                Glide
+                        .with(context)
+                        .load(Uri.parse(report.getAuthor().getPropic()))
+                        .into(propic);
+            }
         }
 
         @Override
