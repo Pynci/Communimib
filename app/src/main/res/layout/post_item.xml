@@ -19,7 +19,7 @@
 
         <ImageView
             android:id="@+id/postItem_propic"
-            android:layout_width="match_parent"
+            android:layout_width="54dp"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -57,7 +57,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        android:text="Un titolo lunghino ma non così lungo"
+        tools:text="Un titolo lunghino ma non così lungo"
         android:textColor="@color/md_theme_dark_onPrimary"
         android:textSize="20sp"
         android:textStyle="bold"
