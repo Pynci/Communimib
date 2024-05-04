@@ -1,11 +1,18 @@
 package it.unimib.communimib.ui.main.dashboard;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,17 +80,47 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        private final ConstraintLayout constraintLayout;
+        private final ImageView propic;
+        private final TextView name;
+        private final TextView surname;
+        private final TextView title;
+        private final TextView description;
+        private final TextView dateTime;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            constraintLayout = itemView.findViewById(R.id.postItem_constraintLayout);
+            propic = itemView.findViewById(R.id.postItem_propic);
+            name = itemView.findViewById(R.id.postItem_name);
+            surname = itemView.findViewById(R.id.postItem_surname);
+            title = itemView.findViewById(R.id.postItem_title);
+            description = itemView.findViewById(R.id.postItem_description);
+            dateTime = itemView.findViewById(R.id.postItem_datetime);
+
+            constraintLayout.setOnClickListener(this);
         }
 
         public void bind(Post post){
-
+            name.setText(post.getAuthor().getName());
+            surname.setText(post.getAuthor().getSurname());
+            title.setText(post.getTitle());
+            description.setText(post.getDescription());
+            //todo aggiungere dateTime
+            if(post.getAuthor().getPropic() != null){
+                Glide
+                        .with(context)
+                        .load(Uri.parse(post.getAuthor().getPropic()))
+                        .into(propic);
+            }
         }
 
         @Override
         public void onClick(View v) {
-
+            if(v.getId() == R.id.postItem_constraintLayout){
+                onItemClickListener.onItemClick(postList.get(getAdapterPosition()));
+            }
         }
     }
 }
