@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+        android:id="@+id/postItem_propicCardview"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -34,12 +34,12 @@
         android:text="@string/name"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/cardView2"
-        app:layout_constraintTop_toTopOf="@+id/cardView2" />
+        app:layout_constraintStart_toEndOf="@+id/postItem_propicCardview"
+        app:layout_constraintTop_toTopOf="@+id/postItem_propicCardview" />
 
     <TextView
         android:id="@+id/postItem_surname"
-        android:layout_width="264dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:text="@string/surname"
@@ -53,12 +53,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginEnd="16dp"
         android:textColor="@color/md_theme_dark_onPrimary"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_datetime"
+        app:layout_constraintStart_toEndOf="@+id/postItem_propicCardview"
         app:layout_constraintTop_toBottomOf="@+id/postItem_name"
         tools:text="@string/post_title" />
 
@@ -67,9 +66,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_title"
         app:layout_constraintStart_toStartOf="@+id/postItem_title"
         app:layout_constraintTop_toBottomOf="@+id/postItem_title"
         tools:text="@string/lorem_ipsum" />
@@ -84,5 +82,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/postItem_surname"
         tools:text="18h" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/postItem_imageSliderCardView"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintWidth_max="400dp"
+        android:minWidth="300dp"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_description"
+        app:layout_constraintStart_toStartOf="@+id/postItem_description"
+        app:layout_constraintTop_toBottomOf="@+id/postItem_description">
+
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/postItem_imageSlider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
