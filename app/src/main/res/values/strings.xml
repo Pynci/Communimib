@@ -86,5 +86,6 @@
     <string name="descrizione_del_problema">Descrizione della segnalazione</string>
     <string name="categoria_della_segnalazione">Categoria della segnalazione</string>
     <string name="pubblicato_da">Pubblicato da</string>
+    <string name="new_post_button">Bottone per creare una nuovo post nella bacheca</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur hendrerit congue massa, vitae efficitur augue venenatis in. Pellentesque aliquam tellus ultricies mi congue venenatis. Aenean id venenatis velit, in varius. </string>
 </resources>

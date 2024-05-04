@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDashboardBinding;
 import it.unimib.communimib.ui.main.reports.detailedreport.DashboardViewModelFactory;
 
@@ -48,7 +47,8 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        fragmentDashboardBinding.buttonNewPost.setOnClickListener(v -> {
 
-
+        });
     }
 }
