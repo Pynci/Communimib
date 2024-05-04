@@ -1,5 +1,6 @@
 package it.unimib.communimib.ui.main.dashboard;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,8 @@ import android.view.ViewGroup;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.ErrorManager;
 
 import it.unimib.communimib.R;
@@ -30,6 +33,7 @@ public class DashboardFragment extends Fragment {
     private DashboardViewModel dashboardViewModel;
     FragmentDashboardBinding fragmentDashboardBinding;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
+    private CategoriesRecyclerViewAdapter categoriesRecyclerViewAdapter;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -58,6 +62,20 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        String[] categories = getResources().getStringArray(R.array.posts_categories);
+        List<String> categoryList = Arrays.asList(categories);
+
+        RecyclerView.LayoutManager categoryLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, getContext(), new CategoriesRecyclerViewAdapter.OnCategoryClickListener() {
+            @Override
+            public void onItemClick(String category) {
+
+            }
+        });
+
+        fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setLayoutManager(categoryLayoutManager);
+        fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(
