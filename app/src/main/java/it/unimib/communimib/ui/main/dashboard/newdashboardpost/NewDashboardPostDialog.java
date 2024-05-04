@@ -24,9 +24,7 @@ public class NewDashboardPostDialog extends DialogFragment {
         binding = FragmentNewDashboardPostDialogBinding.inflate(getLayoutInflater());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(binding.getRoot());
-
         AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
 

@@ -90,4 +90,6 @@
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur hendrerit congue massa, vitae efficitur augue venenatis in. Pellentesque aliquam tellus ultricies mi congue venenatis. Aenean id venenatis velit, in varius. </string>
     <string name="titolo_del_post">Titolo del post</string>
     <string name="crea_un_nuovo_post">Crea una nuovo post</string>
+    <string name="indietro">Indietro</string>
+    <string name="pubblica">Pubblica</string>
 </resources>
