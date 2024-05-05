@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,8 +15,6 @@ import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.logging.ErrorManager;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDashboardBinding;
@@ -56,6 +53,14 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        fragmentDashboardBinding.buttonNewPost.setOnClickListener(v -> {
+            NavigationHelper.navigateTo(
+                    getActivity(),
+                    v,
+                    R.id.action_dashboardFragment_to_newDashboardPostDialog,
+                    false);
+        });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(
@@ -109,12 +114,5 @@ public class DashboardFragment extends Fragment {
         );
 
         dashboardViewModel.readAllPosts();
-        fragmentDashboardBinding.buttonNewPost.setOnClickListener(v -> {
-            NavigationHelper.navigateTo(
-                    getActivity(),
-                    v,
-                    R.id.action_dashboardFragment_to_newDashboardPostDialog,
-                    false);
-        });
     }
 }
