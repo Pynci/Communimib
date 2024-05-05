@@ -19,6 +19,7 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.util.DateFormatter;
 
 public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<DashboardRecyclerViewAdapter.ViewHolder> {
 
@@ -87,6 +88,10 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         private final TextView title;
         private final TextView description;
         private final TextView dateTime;
+        private final TextView email;
+        private final ImageView emailIcon;
+        private final TextView link;
+        private final ImageView linkIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -97,6 +102,10 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             surname = itemView.findViewById(R.id.postItem_surname);
             title = itemView.findViewById(R.id.postItem_title);
             description = itemView.findViewById(R.id.postItem_description);
+            email = itemView.findViewById(R.id.postItem_email);
+            emailIcon = itemView.findViewById(R.id.postItem_emailIcon);
+            link = itemView.findViewById(R.id.postItem_link);
+            linkIcon = itemView.findViewById(R.id.postItem_linkIcon);
             dateTime = itemView.findViewById(R.id.postItem_datetime);
 
             constraintLayout.setOnClickListener(this);
@@ -107,13 +116,28 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             surname.setText(post.getAuthor().getSurname());
             title.setText(post.getTitle());
             description.setText(post.getDescription());
-            //todo aggiungere dateTime
+            if(post.getEmail() != null && !post.getEmail().equals("")){
+                email.setText(post.getEmail());
+            }
+            else{
+                email.setVisibility(View.GONE);
+                emailIcon.setVisibility(View.GONE);
+            }
+            if(post.getLink() != null && !post.getLink().equals("")){
+                link.setText(post.getLink());
+            }
+            else{
+                link.setVisibility(View.GONE);
+                linkIcon.setVisibility(View.GONE);
+            }
+            dateTime.setText(DateFormatter.format(post.getTimestamp(), context));
             if(post.getAuthor().getPropic() != null){
                 Glide
                         .with(context)
                         .load(Uri.parse(post.getAuthor().getPropic()))
                         .into(propic);
             }
+
         }
 
         @Override

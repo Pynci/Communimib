@@ -11,6 +11,10 @@ public class Post {
     String link;
     long timestamp;
 
+    public Post(){
+
+    }
+
     public Post(String title, String description, String category, User author, String email, String link, long timestamp) {
         this.title = title;
         this.description = description;
