@@ -58,7 +58,7 @@
         android:textColor="@color/md_theme_dark_onPrimary"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/postItem_datetime"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_datetime"
         app:layout_constraintStart_toEndOf="@+id/postItem_propicCardview"
         app:layout_constraintTop_toBottomOf="@+id/postItem_name"
         tools:text="@string/post_title" />
@@ -128,6 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:textColor="@color/md_theme_light_onSecondaryContainer"
+        android:autoLink="email"
         app:layout_constraintBottom_toBottomOf="@+id/postItem_emailIcon"
         app:layout_constraintStart_toEndOf="@+id/postItem_emailIcon"
         app:layout_constraintTop_toTopOf="@+id/postItem_emailIcon"
@@ -139,9 +140,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:textColor="@color/md_theme_light_onSecondaryContainer"
+        android:autoLink="web"
         app:layout_constraintBottom_toBottomOf="@+id/postItem_linkIcon"
         app:layout_constraintStart_toEndOf="@+id/postItem_linkIcon"
         app:layout_constraintTop_toTopOf="@+id/postItem_linkIcon"
         tools:text="https://www.unimib.it/" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/postItem_surname"
+        app:layout_constraintStart_toEndOf="@+id/postItem_surname"
+        app:layout_constraintTop_toTopOf="@+id/postItem_surname"
+        app:srcCompat="@drawable/unimib_employee" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
