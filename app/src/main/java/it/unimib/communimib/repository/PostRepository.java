@@ -31,8 +31,8 @@ public class PostRepository implements IPostRepository{
     }
 
     @Override
-    public void createPost(String title, String description, String category, User author, Callback callback) {
-        postRemoteDataSource.createPost(new Post(title, description, category, author), callback);
+    public void createPost(String title, String description, String category, User author, String email, String link, long timestamp, Callback callback) {
+        postRemoteDataSource.createPost(new Post(title, description, category, author, email, link, timestamp), callback);
     }
 
     @Override
