@@ -11,9 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDashboardBinding;
-import it.unimib.communimib.ui.main.dashboard.newdashboardpost.NewDashboardPostDialog;
 import it.unimib.communimib.ui.main.reports.detailedreport.DashboardViewModelFactory;
+import it.unimib.communimib.util.NavigationHelper;
 
 public class DashboardFragment extends Fragment {
 
@@ -23,10 +24,6 @@ public class DashboardFragment extends Fragment {
 
     public DashboardFragment() {
         // Required empty public constructor
-    }
-
-    public static DashboardFragment newInstance() {
-        return new DashboardFragment();
     }
 
     @Override
@@ -50,8 +47,11 @@ public class DashboardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         fragmentDashboardBinding.buttonNewPost.setOnClickListener(v -> {
-            NewDashboardPostDialog dialog = new NewDashboardPostDialog();
-            dialog.show(getParentFragmentManager(), "New Dashboard post dialog");
+            NavigationHelper.navigateTo(
+                    getActivity(),
+                    v,
+                    R.id.action_dashboardFragment_to_newDashboardPostDialog,
+                    false);
         });
     }
 }
