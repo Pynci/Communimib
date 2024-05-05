@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/postItem_constraintLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/postItem_constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/postItem_propicCardview"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -127,8 +126,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:textColor="@color/md_theme_light_onSecondaryContainer"
         android:autoLink="email"
+        android:textColor="@color/md_theme_light_onSecondaryContainer"
         app:layout_constraintBottom_toBottomOf="@+id/postItem_emailIcon"
         app:layout_constraintStart_toEndOf="@+id/postItem_emailIcon"
         app:layout_constraintTop_toTopOf="@+id/postItem_emailIcon"
@@ -139,15 +138,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:textColor="@color/md_theme_light_onSecondaryContainer"
         android:autoLink="web"
+        android:textColor="@color/md_theme_light_onSecondaryContainer"
         app:layout_constraintBottom_toBottomOf="@+id/postItem_linkIcon"
         app:layout_constraintStart_toEndOf="@+id/postItem_linkIcon"
         app:layout_constraintTop_toTopOf="@+id/postItem_linkIcon"
         tools:text="https://www.unimib.it/" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/postItem_unimibEmployeeBadge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -155,5 +154,15 @@
         app:layout_constraintStart_toEndOf="@+id/postItem_surname"
         app:layout_constraintTop_toTopOf="@+id/postItem_surname"
         app:srcCompat="@drawable/unimib_employee" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postItem_link" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
