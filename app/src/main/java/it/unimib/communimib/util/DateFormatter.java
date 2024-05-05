@@ -28,15 +28,15 @@ public class DateFormatter {
         }
 
         if(minutes >= 1 && minutes < 60){
-            return minutes + " " + minutesUnit;
+            return minutes + minutesUnit;
         }
 
         if(hours >= 1 && hours < 24){
-            return hours + " " + hoursUnit;
+            return hours + hoursUnit;
         }
 
         if(days >= 1 && days < 7){
-            return days + " " + daysUnit;
+            return days + daysUnit;
         }
 
         java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
