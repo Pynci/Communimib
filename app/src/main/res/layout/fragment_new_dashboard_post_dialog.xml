@@ -81,7 +81,7 @@
     <EditText
         android:id="@+id/edit_text_report_title"
         style="@style/Widget.Material3.TextInputEditText.FilledBox.Dense"
-        android:layout_width="375dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:background="@drawable/edit_text_background"
@@ -102,7 +102,7 @@
     <EditText
         android:id="@+id/edit_text_report_description"
         style="@style/Widget.Material3.TextInputEditText.FilledBox"
-        android:layout_width="375dp"
+        android:layout_width="350dp"
         android:layout_height="150dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/edit_text_background"
