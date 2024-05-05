@@ -93,4 +93,6 @@
     <string name="pubblica">Pubblica</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate. </string>
     <string name="post_title">Questo è il titolo di un post</string>
+    <string name="bottone_per_aggiungere_immagine">Bottone per aggiungere immagine</string>
+    <string name="aggiungi_una_o_pi_immagini_al_post">Aggiungi una o più immagini al post</string>
 </resources>

@@ -42,41 +42,42 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/imageView_propic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/profilo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/user_filled"
-                android:contentDescription="@string/profilo" />
+                app:srcCompat="@drawable/user_filled" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/textView_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="Nome"
+        android:text="@string/name"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/materialCardView4"
         app:layout_constraintStart_toEndOf="@+id/materialCardView4"
         app:layout_constraintTop_toTopOf="@+id/materialCardView4" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/textView_surname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="Cognome"
+        android:text="@string/surname"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textView16"
-        app:layout_constraintStart_toEndOf="@+id/textView16"
-        app:layout_constraintTop_toTopOf="@+id/textView16" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView_name"
+        app:layout_constraintStart_toEndOf="@+id/textView_name"
+        app:layout_constraintTop_toTopOf="@+id/textView_name" />
 
     <EditText
         android:id="@+id/edit_text_report_title"
@@ -116,5 +117,29 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_report_title" />
+
+    <ImageButton
+        android:id="@+id/iamgeButton_add_images"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:contentDescription="@string/bottone_per_aggiungere_immagine"
+        android:src="@drawable/image_logo"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_report_description" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/aggiungi_una_o_pi_immagini_al_post"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/iamgeButton_add_images"
+        app:layout_constraintStart_toEndOf="@+id/iamgeButton_add_images"
+        app:layout_constraintTop_toTopOf="@+id/iamgeButton_add_images" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
