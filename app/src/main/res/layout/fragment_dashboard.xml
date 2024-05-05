@@ -6,10 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.dashboard.DashboardFragment">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
+    <SearchView
+        android:id="@+id/fragmentDashboard_searchView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/searchview_border"
+        android:backgroundTint="@color/md_theme_light_secondaryContainer"
+        android:searchIcon="@drawable/search"
+        android:searchHintIcon="@drawable/search"
+        android:closeIcon="@drawable/clear"
+        android:goIcon="@drawable/search"
+        android:queryBackground="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragmentDashboard_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentDashboard_searchView" />
         android:text="Dashboard"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
