@@ -10,9 +10,9 @@ import it.unimib.communimib.repository.IUserRepository;
 public class DashboardViewModel extends ViewModel {
 
     private MutableLiveData<Result> postAddedReadResult;
-    private MutableLiveData<Result> postEditedReadResult;
+    private MutableLiveData<Result> postChangedReadResult;
     private MutableLiveData<Result> postRemovedReadResult;
-    private MutableLiveData<Result> postCancelledReadResult;
+    private MutableLiveData<Result> readCancelledResult;
     private IPostRepository postRepository;
     private IUserRepository userRepository;
 
@@ -21,48 +21,48 @@ public class DashboardViewModel extends ViewModel {
         this.userRepository = userRepository;
 
         this.postAddedReadResult = new MutableLiveData<>();
-        this.postEditedReadResult = new MutableLiveData<>();
+        this.postChangedReadResult = new MutableLiveData<>();
         this.postRemovedReadResult = new MutableLiveData<>();
-        this.postCancelledReadResult = new MutableLiveData<>();
+        this.readCancelledResult = new MutableLiveData<>();
     }
 
     public void readAllPosts(){
         postRepository.readAllPosts(
                 postAdded -> postAddedReadResult.setValue(postAdded),
-                postEdited -> postEditedReadResult.setValue(postEdited),
+                postChanged -> postChangedReadResult.setValue(postChanged),
                 postRemoved -> postRemovedReadResult.setValue(postRemoved),
-                postCancelled -> postCancelledReadResult.setValue(postCancelled)
+                readCancelled -> readCancelledResult.setValue(readCancelled)
         );
     }
 
     public void readPostsByCategory(String category){
         postRepository.readPostsByCategory(category,
                 postAdded -> postAddedReadResult.setValue(postAdded),
-                postEdited -> postEditedReadResult.setValue(postEdited),
+                postEdited -> postChangedReadResult.setValue(postEdited),
                 postRemoved -> postRemovedReadResult.setValue(postRemoved),
-                postCancelled -> postCancelledReadResult.setValue(postCancelled)
+                readCancelled -> readCancelledResult.setValue(readCancelled)
         );
     }
     public MutableLiveData<Result> getPostAddedReadResult() {
         return postAddedReadResult;
     }
 
-    public MutableLiveData<Result> getPostEditedReadResult() {
-        return postEditedReadResult;
+    public MutableLiveData<Result> getPostChangedReadResult() {
+        return postChangedReadResult;
     }
 
     public MutableLiveData<Result> getPostRemovedReadResult() {
         return postRemovedReadResult;
     }
 
-    public MutableLiveData<Result> getPostCancelledReadResult() {
-        return postCancelledReadResult;
+    public MutableLiveData<Result> getReadCancelledResult() {
+        return readCancelledResult;
     }
 
     public void cleanViewModel(){
         this.postAddedReadResult = new MutableLiveData<>();
-        this.postEditedReadResult = new MutableLiveData<>();
+        this.postChangedReadResult = new MutableLiveData<>();
         this.postRemovedReadResult = new MutableLiveData<>();
-        this.postCancelledReadResult = new MutableLiveData<>();
+        this.readCancelledResult = new MutableLiveData<>();
     }
 }

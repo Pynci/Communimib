@@ -16,9 +16,6 @@ import android.view.ViewGroup;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.logging.ErrorManager;
-
-import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDashboardBinding;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
@@ -60,13 +57,9 @@ public class DashboardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(
-                new DashboardRecyclerViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(Post post) {
-
-                    }
-            }, getContext());
+        dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(post -> {
+            // logica in risposta al click sul post
+        }, getContext());
 
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setLayoutManager(layoutManager);
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
@@ -82,7 +75,7 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        dashboardViewModel.getPostEditedReadResult().observe(getViewLifecycleOwner(), result -> {
+        dashboardViewModel.getPostChangedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Post post = ((Result.PostSuccess) result).getPost();
                 dashboardRecyclerViewAdapter.editItem(post);
@@ -104,12 +97,18 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        dashboardViewModel.getPostCancelledReadResult().observe(getViewLifecycleOwner(), result ->
+        dashboardViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result ->
             Snackbar.make(requireView(),
                     ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                     BaseTransientBottomBar.LENGTH_SHORT).show()
         );
 
         dashboardViewModel.readAllPosts();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        dashboardViewModel.cleanViewModel();
     }
 }
