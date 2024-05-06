@@ -141,5 +141,34 @@
         app:layout_constraintStart_toEndOf="@+id/iamgeButton_add_images"
         app:layout_constraintTop_toTopOf="@+id/iamgeButton_add_images" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_imageSlider"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:elevation="20dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iamgeButton_add_images">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/addImageImageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:iss_corner_radius="20"
+                app:iss_title_background="@drawable/default_gradient"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

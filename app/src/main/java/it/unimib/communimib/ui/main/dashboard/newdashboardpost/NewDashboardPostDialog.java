@@ -1,21 +1,29 @@
 package it.unimib.communimib.ui.main.dashboard.newdashboardpost;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
+
+import java.util.ArrayList;
+
 import it.unimib.communimib.BottomNavigationBarListener;
-import it.unimib.communimib.R;
 import it.unimib.communimib.TopNavigationBarListener;
 import it.unimib.communimib.databinding.FragmentNewDashboardPostDialogBinding;
-import it.unimib.communimib.util.NavigationHelper;
 
 public class NewDashboardPostDialog extends Fragment {
 
@@ -44,10 +52,34 @@ public class NewDashboardPostDialog extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.cardViewImageSlider.setVisibility(View.GONE);
+
+        //Gestore del caricamento delle imamgigni
+        ActivityResultLauncher<PickVisualMediaRequest> pickMultipleMedia =
+                registerForActivityResult(new ActivityResultContracts.PickMultipleVisualMedia(5), uris -> {
+                    if (!uris.isEmpty()) {
+                        binding.cardViewImageSlider.setVisibility(View.VISIBLE);
+
+                        ArrayList<SlideModel> slideModels = new ArrayList<>();
+
+                        for (Uri uri : uris) {
+                            slideModels.add(new SlideModel(uri.toString(), ScaleTypes.FIT));
+                        }
+
+                        binding.addImageImageSlider.setImageList(slideModels);
+                    }
+                });
+
         binding.buttonBack.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager.popBackStack();
             showNavigationBars();
+        });
+
+        binding.iamgeButtonAddImages.setOnClickListener(v -> {
+            pickMultipleMedia.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
+                    .build());
         });
     }
 
