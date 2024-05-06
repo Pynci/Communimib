@@ -89,4 +89,9 @@
     <string name="pubblicato_da">Pubblicato da</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate. </string>
     <string name="post_title">Questo è il titolo di un post</string>
+
+    <string name="just_now">Adesso</string>
+    <string name="minutes_unit">m</string>
+    <string name="hours_unit">o</string>
+    <string name="days_unit">g</string>
 </resources>

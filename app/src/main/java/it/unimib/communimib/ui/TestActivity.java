@@ -38,6 +38,7 @@ import it.unimib.communimib.datasource.user.UserRemoteDataSource;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IUserRepository;
+import it.unimib.communimib.repository.PostRepository;
 import it.unimib.communimib.repository.UserRepository;
 import it.unimib.communimib.util.Constants;
 import it.unimib.communimib.util.ServiceLocator;
@@ -48,15 +49,11 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.post_item);
+        setContentView(R.layout.activity_test);
 
-        ImageSlider imageSlider = findViewById(R.id.postItem_imageSlider);
-        ArrayList<SlideModel> slideModels = new ArrayList<>();
-
-        slideModels.add(new SlideModel(R.mipmap.edificiou1_foreground, ScaleTypes.FIT));
-        slideModels.add(new SlideModel(R.mipmap.edificiou2_foreground, ScaleTypes.FIT));
-        slideModels.add(new SlideModel(R.mipmap.edificiou3_foreground, ScaleTypes.FIT));
-
-        imageSlider.setImageList(slideModels, ScaleTypes.FIT);
+        ServiceLocator.getInstance().getPostRepository().createPost("Un altisonante titolo", "Descrizione molto poco lunga ed assolutamente" +
+                "non consona a quello che normalmente andrebbe scritto", "Eventi",
+                new User("12345", "luca@unimib.it", "Luca", "Pinciroli", true), "luca@unimib.it",
+                "https://www.unimib.it/", System.currentTimeMillis(), result -> {});
     }
 }

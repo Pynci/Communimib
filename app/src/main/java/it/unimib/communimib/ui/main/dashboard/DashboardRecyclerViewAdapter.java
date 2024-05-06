@@ -9,16 +9,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.util.DateFormatter;
 
 public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<DashboardRecyclerViewAdapter.ViewHolder> {
 
@@ -87,6 +92,12 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         private final TextView title;
         private final TextView description;
         private final TextView dateTime;
+        private final TextView email;
+        private final ImageView emailIcon;
+        private final TextView link;
+        private final ImageView linkIcon;
+        private final ImageSlider imageSlider;
+        private final CardView imageSliderCardview;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -97,7 +108,14 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             surname = itemView.findViewById(R.id.postItem_surname);
             title = itemView.findViewById(R.id.postItem_title);
             description = itemView.findViewById(R.id.postItem_description);
+            email = itemView.findViewById(R.id.postItem_email);
+            emailIcon = itemView.findViewById(R.id.postItem_emailIcon);
+            link = itemView.findViewById(R.id.postItem_link);
+            linkIcon = itemView.findViewById(R.id.postItem_linkIcon);
             dateTime = itemView.findViewById(R.id.postItem_datetime);
+            imageSlider = itemView.findViewById(R.id.postItem_imageSlider);
+            imageSliderCardview = itemView.findViewById(R.id.postItem_imageSliderCardView);
+
 
             constraintLayout.setOnClickListener(this);
         }
@@ -107,12 +125,40 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             surname.setText(post.getAuthor().getSurname());
             title.setText(post.getTitle());
             description.setText(post.getDescription());
-            //todo aggiungere dateTime
+            if(post.getEmail() != null && !post.getEmail().equals("")){
+                email.setText(post.getEmail());
+            }
+            else{
+                email.setVisibility(View.GONE);
+                emailIcon.setVisibility(View.GONE);
+            }
+            if(post.getLink() != null && !post.getLink().equals("")){
+                link.setText(post.getLink());
+            }
+            else{
+                link.setVisibility(View.GONE);
+                linkIcon.setVisibility(View.GONE);
+            }
+            dateTime.setText(DateFormatter.format(post.getTimestamp(), context));
             if(post.getAuthor().getPropic() != null){
                 Glide
                         .with(context)
                         .load(Uri.parse(post.getAuthor().getPropic()))
                         .into(propic);
+            }
+
+            List<SlideModel> slideModels = new ArrayList<>();
+            if(!post.getPictures().isEmpty()){
+                for (String picture : post.getPictures()) {
+                    slideModels.add(new SlideModel(picture, ScaleTypes.FIT));
+                }
+                imageSlider.setImageList(slideModels, ScaleTypes.FIT);
+                imageSlider.setVisibility(View.VISIBLE);
+                imageSliderCardview.setVisibility(View.VISIBLE);
+            }
+            else{
+                imageSlider.setVisibility(View.GONE);
+                imageSliderCardview.setVisibility(View.GONE);
             }
         }
 
