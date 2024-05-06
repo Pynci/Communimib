@@ -56,7 +56,8 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         }
     }
 
-    public void clearPostList(){
+    public void
+    clearPostList(){
         this.postList = new ArrayList<>();
         notifyDataSetChanged();
     }

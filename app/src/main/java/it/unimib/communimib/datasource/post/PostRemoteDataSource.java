@@ -112,6 +112,63 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
                 });
     }
 
+    public void readPostsByTitleOrDescriptionAndCategory(String keyword,
+                                                         String category,
+                                                         Callback addedCallback,
+                                                         Callback changedCallback,
+                                                         Callback removedCallback,
+                                                         Callback cancelledCallback){
+
+        databaseReference
+                .child(Constants.POST_PATH)
+                .orderByChild("category")
+                .equalTo(category)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Post post = snapshot.getValue(Post.class);
+                        post.setPid(snapshot.getKey());
+                        String title = post.getTitle().toLowerCase();
+                        String description = post.getDescription().toLowerCase();
+                        if(title.contains(keyword) || description.contains(keyword)){
+                            addedCallback.onComplete(new Result.PostSuccess(post));
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Post post = snapshot.getValue(Post.class);
+                        post.setPid(snapshot.getKey());
+                        String title = post.getTitle().toLowerCase();
+                        String description = post.getDescription().toLowerCase();
+                        if(title.contains(keyword) || description.contains(keyword)){
+                            changedCallback.onComplete(new Result.PostSuccess(post));
+                        }
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        Post post = snapshot.getValue(Post.class);
+                        post.setPid(snapshot.getKey());
+                        String title = post.getTitle().toLowerCase();
+                        String description = post.getDescription().toLowerCase();
+                        if(title.contains(keyword) || description.contains(keyword)){
+                            removedCallback.onComplete(new Result.PostSuccess(post));
+                        }
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+                    }
+                });
+    }
+
     @Override
     public void createPost(Post post, Callback callback) {
         String key = databaseReference.child(Constants.POST_PATH).push().getKey();
