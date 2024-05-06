@@ -9,10 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +96,8 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         private final ImageView emailIcon;
         private final TextView link;
         private final ImageView linkIcon;
+        private final ImageSlider imageSlider;
+        private final CardView imageSliderCardview;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,6 +113,9 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             link = itemView.findViewById(R.id.postItem_link);
             linkIcon = itemView.findViewById(R.id.postItem_linkIcon);
             dateTime = itemView.findViewById(R.id.postItem_datetime);
+            imageSlider = itemView.findViewById(R.id.postItem_imageSlider);
+            imageSliderCardview = itemView.findViewById(R.id.postItem_imageSliderCardView);
+
 
             constraintLayout.setOnClickListener(this);
         }
@@ -138,6 +147,19 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                         .into(propic);
             }
 
+            List<SlideModel> slideModels = new ArrayList<>();
+            if(!post.getPictures().isEmpty()){
+                for (String picture : post.getPictures()) {
+                    slideModels.add(new SlideModel(picture, ScaleTypes.FIT));
+                }
+                imageSlider.setImageList(slideModels, ScaleTypes.FIT);
+                imageSlider.setVisibility(View.VISIBLE);
+                imageSliderCardview.setVisibility(View.VISIBLE);
+            }
+            else{
+                imageSlider.setVisibility(View.GONE);
+                imageSliderCardview.setVisibility(View.GONE);
+            }
         }
 
         @Override
