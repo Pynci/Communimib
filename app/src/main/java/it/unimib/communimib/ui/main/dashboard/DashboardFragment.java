@@ -69,10 +69,7 @@ public class DashboardFragment extends Fragment {
         categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, new CategoriesRecyclerViewAdapter.OnCategoryClickListener() {
             @Override
             public void onItemClick(String category) {
-                categoriesRecyclerViewAdapter.setCurrentCategory(category);
-                dashboardRecyclerViewAdapter.clearPostList();
-                dashboardViewModel.setVisualizedCategory(category);
-                dashboardViewModel.readPostsByCategory(category);
+                readPosts(category);
             }
         });
 
@@ -88,13 +85,7 @@ public class DashboardFragment extends Fragment {
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
 
         String visualizedCategory = dashboardViewModel.getVisualizedCategory();
-
-        if(visualizedCategory.equals("Tutti")){
-            dashboardViewModel.readAllPosts();
-        } else {
-            dashboardViewModel.readPostsByCategory(visualizedCategory);
-            categoriesRecyclerViewAdapter.setCurrentCategory(visualizedCategory);
-        }
+        readPosts(visualizedCategory);
 
         dashboardViewModel.getPostAddedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
@@ -136,6 +127,20 @@ public class DashboardFragment extends Fragment {
         );
 
 
+    }
+
+    public void readPosts(String category){
+        if(category.equals("Tutti")){
+            categoriesRecyclerViewAdapter.setCurrentCategory(category);
+            dashboardRecyclerViewAdapter.clearPostList();
+            dashboardViewModel.setVisualizedCategory(category);
+            dashboardViewModel.readAllPosts();
+        } else {
+            categoriesRecyclerViewAdapter.setCurrentCategory(category);
+            dashboardRecyclerViewAdapter.clearPostList();
+            dashboardViewModel.setVisualizedCategory(category);
+            dashboardViewModel.readPostsByCategory(category);
+        }
     }
 
     @Override
