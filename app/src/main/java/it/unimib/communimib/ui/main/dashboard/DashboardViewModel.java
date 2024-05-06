@@ -13,8 +13,8 @@ public class DashboardViewModel extends ViewModel {
     private MutableLiveData<Result> postChangedReadResult;
     private MutableLiveData<Result> postRemovedReadResult;
     private MutableLiveData<Result> readCancelledResult;
-    private IPostRepository postRepository;
-    private IUserRepository userRepository;
+    private final IPostRepository postRepository;
+    private final IUserRepository userRepository;
     private String visualizedCategory;
 
     public DashboardViewModel(IPostRepository postRepository, IUserRepository userRepository) {

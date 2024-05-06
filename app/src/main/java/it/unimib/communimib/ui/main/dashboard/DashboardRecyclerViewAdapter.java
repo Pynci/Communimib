@@ -33,7 +33,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
     private List<Post> postList;
     private final OnItemClickListener onItemClickListener;
-    private Context context;
+    private final Context context;
 
     public void addItem(Post newPost){
         postList.add(newPost);
@@ -65,10 +65,6 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         this.postList = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
         this.context = context;
-    }
-
-    public void cleanPostList(){
-        this.postList = new ArrayList<>();
     }
 
     @NonNull
@@ -130,14 +126,14 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             surname.setText(post.getAuthor().getSurname());
             title.setText(post.getTitle());
             description.setText(post.getDescription());
-            if(post.getEmail() != null && !post.getEmail().equals("")){
+            if(post.getEmail() != null && !post.getEmail().isEmpty()){
                 email.setText(post.getEmail());
             }
             else{
                 email.setVisibility(View.GONE);
                 emailIcon.setVisibility(View.GONE);
             }
-            if(post.getLink() != null && !post.getLink().equals("")){
+            if(post.getLink() != null && !post.getLink().isEmpty()){
                 link.setText(post.getLink());
             }
             else{

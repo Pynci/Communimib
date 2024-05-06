@@ -1,6 +1,5 @@
 package it.unimib.communimib.ui.main.dashboard;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -52,7 +51,7 @@ public class DashboardFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentDashboardBinding = FragmentDashboardBinding.inflate(inflater, container, false);
         return fragmentDashboardBinding.getRoot();
