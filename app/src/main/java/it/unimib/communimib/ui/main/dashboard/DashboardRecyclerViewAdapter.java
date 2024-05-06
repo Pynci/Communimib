@@ -56,6 +56,11 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         }
     }
 
+    public void clearPostList(){
+        this.postList = new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
     public DashboardRecyclerViewAdapter(OnItemClickListener onItemClickListener, Context context) {
         this.postList = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
