@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -63,6 +64,20 @@ public class DashboardFragment extends Fragment {
 
         String[] categories = getResources().getStringArray(R.array.posts_categories);
         List<String> categoryList = Arrays.asList(categories);
+
+        fragmentDashboardBinding.fragmentDashboardSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                dashboardRecyclerViewAdapter.clearPostList();
+                dashboardViewModel.readPostsByTitleOrDescription(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         RecyclerView.LayoutManager categoryLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, new CategoriesRecyclerViewAdapter.OnCategoryClickListener() {
