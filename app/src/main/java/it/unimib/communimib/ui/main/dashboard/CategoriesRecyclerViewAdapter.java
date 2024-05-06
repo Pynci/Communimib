@@ -61,6 +61,9 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
 
         public void bind(String category){
             categoryName.setText(category);
+            if(category.equals("Tutti")){
+                view.setVisibility(View.VISIBLE);
+            }
             if(clicked){
                 view.setVisibility(View.VISIBLE);
             } else {
