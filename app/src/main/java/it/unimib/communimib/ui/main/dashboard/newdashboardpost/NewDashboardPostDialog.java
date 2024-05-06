@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -20,8 +23,10 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import it.unimib.communimib.BottomNavigationBarListener;
+import it.unimib.communimib.R;
 import it.unimib.communimib.TopNavigationBarListener;
 import it.unimib.communimib.databinding.FragmentNewDashboardPostDialogBinding;
 
@@ -70,17 +75,26 @@ public class NewDashboardPostDialog extends Fragment {
                     }
                 });
 
+        //Gestione del pulsante indietro
         binding.buttonBack.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager.popBackStack();
             showNavigationBars();
         });
 
+        //Gestione del pulsante per caricare le foto
         binding.iamgeButtonAddImages.setOnClickListener(v -> {
             pickMultipleMedia.launch(new PickVisualMediaRequest.Builder()
                     .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
                     .build());
         });
+
+        //Gestione spinner categorie
+        binding.categorySpinner.setPrompt("Categoria");
+        ArrayAdapter<String> adapterCategorie = getCategoriesAdapter();
+        binding.categorySpinner.setAdapter(adapterCategorie);
+        binding.categorySpinner.setSelection(adapterCategorie.getCount());
+
     }
 
     @Override
@@ -125,6 +139,34 @@ public class NewDashboardPostDialog extends Fragment {
         if(topListener != null) {
             topListener.showTopNavigationBar();
         }
+    }
+
+    @NonNull
+    private ArrayAdapter<String> getCategoriesAdapter() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+                if (position == getCount()) {
+                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                }
+
+                return v;
+            }
+
+            @Override
+            public int getCount() {
+                return super.getCount() - 1; // you dont display last item. It is used as hint.
+            }
+
+        };
+
+        String[] categoriesArray = getResources().getStringArray(R.array.posts_categories);
+        adapter.addAll(Arrays.asList(categoriesArray));
+        return adapter;
     }
 
 }

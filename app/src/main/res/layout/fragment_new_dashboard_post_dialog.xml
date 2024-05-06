@@ -1,174 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.dashboard.newdashboardpost.NewDashboardPostDialog">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button_back"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/indietro"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:context=".ui.main.dashboard.newdashboardpost.NewDashboardPostDialog">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:enabled="false"
-        android:text="@string/pubblica"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/button_back"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/indietro"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/materialCardView4"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_back">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:enabled="false"
+            android:text="@string/pubblica"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/edit_text_report_title"
+            style="@style/Widget.Material3.TextInputEditText.FilledBox.Dense"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:gravity="center|top"
+            android:hint="@string/titolo_del_post"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLength="25"
+            android:minHeight="48dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_back" />
 
-            <ImageView
-                android:id="@+id/imageView_propic"
+        <EditText
+            android:id="@+id/edit_text_report_description"
+            style="@style/Widget.Material3.TextInputEditText.FilledBox"
+            android:layout_width="350dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:gravity="center|top"
+            android:hint="@string/inserisci_una_breve_descrizione"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:maxLength="200"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_report_title" />
+
+        <ImageButton
+            android:id="@+id/iamgeButton_add_images"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/bottone_per_aggiungere_immagine"
+            android:src="@drawable/image_logo"
+            app:layout_constraintStart_toStartOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/aggiungi_una_o_pi_immagini_al_post"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iamgeButton_add_images"
+            app:layout_constraintStart_toEndOf="@+id/iamgeButton_add_images"
+            app:layout_constraintTop_toTopOf="@+id/iamgeButton_add_images" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView_imageSlider"
+            android:layout_width="350dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            android:elevation="20dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iamgeButton_add_images">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/profilo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/user_filled" />
+                android:layout_height="match_parent">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+                <com.denzcoskun.imageslider.ImageSlider
+                    android:id="@+id/addImageImageSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:iss_corner_radius="20"
+                    app:iss_title_background="@drawable/default_gradient"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="@string/name"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/materialCardView4"
-        app:layout_constraintStart_toEndOf="@+id/materialCardView4"
-        app:layout_constraintTop_toTopOf="@+id/materialCardView4" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/textView_surname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="@string/surname"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_name"
-        app:layout_constraintStart_toEndOf="@+id/textView_name"
-        app:layout_constraintTop_toTopOf="@+id/textView_name" />
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/seleziona_una_categoria"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_report_description"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_report_description" />
 
-    <EditText
-        android:id="@+id/edit_text_report_title"
-        style="@style/Widget.Material3.TextInputEditText.FilledBox.Dense"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/edit_text_background"
-        android:ems="10"
-        android:gravity="center|top"
-        android:hint="@string/titolo_del_post"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:maxLength="25"
-        android:minHeight="48dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView4" />
+        <Spinner
+            android:id="@+id/category_spinner"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:minHeight="48dp"
+            android:spinnerMode="dialog"
+            app:layout_constraintBottom_toBottomOf="@+id/textView13"
+            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintTop_toTopOf="@+id/textView13" />
 
-    <EditText
-        android:id="@+id/edit_text_report_description"
-        style="@style/Widget.Material3.TextInputEditText.FilledBox"
-        android:layout_width="350dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edit_text_background"
-        android:ems="10"
-        android:gravity="center|top"
-        android:hint="@string/inserisci_una_breve_descrizione"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine"
-        android:maxLength="200"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_report_title" />
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/inserisci_un_link_per_un_sito_web_opzionale"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
 
-    <ImageButton
-        android:id="@+id/iamgeButton_add_images"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:contentDescription="@string/bottone_per_aggiungere_immagine"
-        android:src="@drawable/image_logo"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_report_description" />
+        <EditText
+            android:id="@+id/editTextTextEmailAddress"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/inserisci_un_contatto_e_mail_opzionale"
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView_imageSlider" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="@string/aggiungi_una_o_pi_immagini_al_post"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/iamgeButton_add_images"
-        app:layout_constraintStart_toEndOf="@+id/iamgeButton_add_images"
-        app:layout_constraintTop_toTopOf="@+id/iamgeButton_add_images" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_imageSlider"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="20dp"
-        android:elevation="20dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iamgeButton_add_images">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.denzcoskun.imageslider.ImageSlider
-                android:id="@+id/addImageImageSlider"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:iss_corner_radius="20"
-                app:iss_title_background="@drawable/default_gradient"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
