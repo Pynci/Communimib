@@ -15,10 +15,12 @@ public class DashboardViewModel extends ViewModel {
     private MutableLiveData<Result> readCancelledResult;
     private IPostRepository postRepository;
     private IUserRepository userRepository;
+    private String visualizedCategory;
 
     public DashboardViewModel(IPostRepository postRepository, IUserRepository userRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.visualizedCategory = "Tutti";
 
         this.postAddedReadResult = new MutableLiveData<>();
         this.postChangedReadResult = new MutableLiveData<>();
@@ -34,7 +36,6 @@ public class DashboardViewModel extends ViewModel {
                 readCancelled -> readCancelledResult.setValue(readCancelled)
         );
     }
-
     public void readPostsByCategory(String category){
         postRepository.readPostsByCategory(category,
                 postAdded -> postAddedReadResult.setValue(postAdded),
@@ -43,6 +44,7 @@ public class DashboardViewModel extends ViewModel {
                 readCancelled -> readCancelledResult.setValue(readCancelled)
         );
     }
+
     public MutableLiveData<Result> getPostAddedReadResult() {
         return postAddedReadResult;
     }
@@ -57,6 +59,14 @@ public class DashboardViewModel extends ViewModel {
 
     public MutableLiveData<Result> getReadCancelledResult() {
         return readCancelledResult;
+    }
+
+    public String getVisualizedCategory() {
+        return visualizedCategory;
+    }
+
+    public void setVisualizedCategory(String visualizedCategory) {
+        this.visualizedCategory = visualizedCategory;
     }
 
     public void cleanViewModel(){

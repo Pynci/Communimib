@@ -71,6 +71,7 @@ public class DashboardFragment extends Fragment {
             public void onItemClick(String category) {
                 categoriesRecyclerViewAdapter.setCurrentCategory(category);
                 dashboardRecyclerViewAdapter.clearPostList();
+                dashboardViewModel.setVisualizedCategory(category);
                 dashboardViewModel.readPostsByCategory(category);
             }
         });
@@ -85,6 +86,15 @@ public class DashboardFragment extends Fragment {
 
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setLayoutManager(layoutManager);
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
+
+        String visualizedCategory = dashboardViewModel.getVisualizedCategory();
+
+        if(visualizedCategory.equals("Tutti")){
+            dashboardViewModel.readAllPosts();
+        } else {
+            dashboardViewModel.readPostsByCategory(visualizedCategory);
+            categoriesRecyclerViewAdapter.setCurrentCategory(visualizedCategory);
+        }
 
         dashboardViewModel.getPostAddedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
@@ -125,7 +135,7 @@ public class DashboardFragment extends Fragment {
                     BaseTransientBottomBar.LENGTH_SHORT).show()
         );
 
-        dashboardViewModel.readAllPosts();
+
     }
 
     @Override
