@@ -70,6 +70,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onItemClick(String category) {
                 categoriesRecyclerViewAdapter.setCurrentCategory(category);
+                dashboardViewModel.readPostsByCategory(category);
             }
         });
 
