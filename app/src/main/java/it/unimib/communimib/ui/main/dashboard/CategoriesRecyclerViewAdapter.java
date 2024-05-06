@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -16,17 +17,23 @@ import it.unimib.communimib.R;
 public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<CategoriesRecyclerViewAdapter.ViewHolder> {
 
     private final List<String> categoriesList;
-    private final Context context;
     private final OnCategoryClickListener onCategoryClickListener;
+
+    private String currentCategory;
 
     public interface OnCategoryClickListener {
         void onItemClick(String category);
     }
 
-    public CategoriesRecyclerViewAdapter(List<String> categories, Context context, OnCategoryClickListener onCategoryClickListener) {
+    public void setCurrentCategory(String category){
+        currentCategory = category;
+        notifyDataSetChanged();
+    }
+
+    public CategoriesRecyclerViewAdapter(List<String> categories, OnCategoryClickListener onCategoryClickListener) {
         this.categoriesList = categories;
-        this.context = context;
         this.onCategoryClickListener = onCategoryClickListener;
+        this.currentCategory = "Tutti";
     }
 
     @NonNull
@@ -38,7 +45,11 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
 
     @Override
     public void onBindViewHolder(@NonNull CategoriesRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.bind(categoriesList.get(position));
+        if(categoriesList.get(position).equals(currentCategory)){
+            holder.bindClicked(categoriesList.get(position));
+        } else {
+            holder.bind(categoriesList.get(position));
+        }
     }
 
     @Override
@@ -48,33 +59,30 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        boolean clicked;
         TextView categoryName;
         View view;
+        ConstraintLayout constraintLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            clicked = false;
             categoryName = itemView.findViewById(R.id.categoryItem_categoryName);
             view = itemView.findViewById(R.id.categoryItem_view);
+            constraintLayout = itemView.findViewById(R.id.categoryItem_constraintLayout);
+
+            constraintLayout.setOnClickListener(this);
         }
 
+        public void bindClicked(String category){
+            categoryName.setText(category);
+            view.setVisibility(View.VISIBLE);
+        }
         public void bind(String category){
             categoryName.setText(category);
-            if(category.equals("Tutti")){
-                view.setVisibility(View.VISIBLE);
-            }
-            if(clicked){
-                view.setVisibility(View.VISIBLE);
-            } else {
-                view.setVisibility(View.INVISIBLE);
-            }
-
+            view.setVisibility(View.INVISIBLE);
         }
 
         @Override
         public void onClick(View v) {
-            clicked = true;
             onCategoryClickListener.onItemClick(categoriesList.get(getAdapterPosition()));
         }
     }

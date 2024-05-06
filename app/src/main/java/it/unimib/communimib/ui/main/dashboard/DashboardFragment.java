@@ -66,10 +66,10 @@ public class DashboardFragment extends Fragment {
         List<String> categoryList = Arrays.asList(categories);
 
         RecyclerView.LayoutManager categoryLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, getContext(), new CategoriesRecyclerViewAdapter.OnCategoryClickListener() {
+        categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, new CategoriesRecyclerViewAdapter.OnCategoryClickListener() {
             @Override
             public void onItemClick(String category) {
-
+                categoriesRecyclerViewAdapter.setCurrentCategory(category);
             }
         });
 
