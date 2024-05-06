@@ -69,7 +69,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 dashboardRecyclerViewAdapter.clearPostList();
-                dashboardViewModel.readPostsByTitleOrDescriptionAndCategory(query);
+                dashboardViewModel.readPostsByTitleOrDescription(query);
                 return false;
             }
 

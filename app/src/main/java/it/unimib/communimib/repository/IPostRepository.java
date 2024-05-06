@@ -17,6 +17,12 @@ public interface IPostRepository {
                                     Callback removedCallback,
                                     Callback cancelledCallback);
 
+    public void readPostsByTitleOrDescription(String keyword,
+                                              Callback addedCallback,
+                                              Callback changedCallback,
+                                              Callback removedCallback,
+                                              Callback cancelledCallback);
+
     public void readPostsByTitleOrDescriptionAndCategory(String keyword,
                                               String category,
                                               Callback addedCallback,

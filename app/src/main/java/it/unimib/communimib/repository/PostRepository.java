@@ -30,6 +30,15 @@ public class PostRepository implements IPostRepository{
         postRemoteDataSource.readPostsByCategory(category, addedCallback, changedCallback, removedCallback, cancelledCallback);
     }
 
+    @Override
+    public void readPostsByTitleOrDescription(String keyword,
+                                              Callback addedCallback,
+                                              Callback changedCallback,
+                                              Callback removedCallback,
+                                              Callback cancelledCallback) {
+        postRemoteDataSource.readPostsByTitleOrDescription(keyword, addedCallback, changedCallback, removedCallback, cancelledCallback);
+    }
+
     public void readPostsByTitleOrDescriptionAndCategory(String keyword,
                                                          String category,
                                                          Callback addedCallback,

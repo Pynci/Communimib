@@ -45,14 +45,23 @@ public class DashboardViewModel extends ViewModel {
         );
     }
 
-    public void readPostsByTitleOrDescriptionAndCategory(String keyword){
-        postRepository.readPostsByTitleOrDescriptionAndCategory(keyword,
-                getVisualizedCategory(),
-                postAdded -> postAddedReadResult.setValue(postAdded),
-                postEdited -> postChangedReadResult.setValue(postEdited),
-                postRemoved -> postRemovedReadResult.setValue(postRemoved),
-                readCancelled -> readCancelledResult.setValue(readCancelled));
+    public void readPostsByTitleOrDescription(String keyword){
+        if(getVisualizedCategory().equals("Tutti")){
+            postRepository.readPostsByTitleOrDescription(keyword,
+                    postAdded -> postAddedReadResult.setValue(postAdded),
+                    postEdited -> postChangedReadResult.setValue(postEdited),
+                    postRemoved -> postRemovedReadResult.setValue(postRemoved),
+                    readCancelled -> readCancelledResult.setValue(readCancelled));
+        } else {
+            postRepository.readPostsByTitleOrDescriptionAndCategory(keyword,
+                    getVisualizedCategory(),
+                    postAdded -> postAddedReadResult.setValue(postAdded),
+                    postEdited -> postChangedReadResult.setValue(postEdited),
+                    postRemoved -> postRemovedReadResult.setValue(postRemoved),
+                    readCancelled -> readCancelledResult.setValue(readCancelled));
+        }
     }
+
 
     public MutableLiveData<Result> getPostAddedReadResult() {
         return postAddedReadResult;
