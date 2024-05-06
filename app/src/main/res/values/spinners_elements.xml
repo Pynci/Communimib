@@ -31,6 +31,7 @@
     </array>
 
     <array name="posts_categories">
+        <item>Tutti</item>
         <item>Comunicazioni ufficiali</item>
         <item>Eventi</item>
         <item>Ripetizioni</item>

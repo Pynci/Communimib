@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/postItem_constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/postItem_propicCardview"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/postItem_propic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/user_filled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/postItem_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/name"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/postItem_propicCardview"
+        app:layout_constraintTop_toTopOf="@+id/postItem_propicCardview" />
+
+    <TextView
+        android:id="@+id/postItem_surname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="@string/surname"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/postItem_name"
+        app:layout_constraintTop_toTopOf="@+id/postItem_name" />
+
+    <TextView
+        android:id="@+id/postItem_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textColor="@color/md_theme_dark_onPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_datetime"
+        app:layout_constraintStart_toEndOf="@+id/postItem_propicCardview"
+        app:layout_constraintTop_toBottomOf="@+id/postItem_name"
+        tools:text="@string/post_title" />
+
+    <TextView
+        android:id="@+id/postItem_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_datetime"
+        app:layout_constraintStart_toStartOf="@+id/postItem_title"
+        app:layout_constraintTop_toBottomOf="@+id/postItem_title"
+        tools:text="@string/lorem_ipsum" />
+
+    <TextView
+        android:id="@+id/postItem_datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/md_theme_dark_secondaryContainer"
+        app:layout_constraintBottom_toBottomOf="@+id/postItem_surname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/postItem_surname"
+        tools:text="18h" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/postItem_imageSliderCardView"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="12dp"
+        android:minWidth="300dp"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_description"
+        app:layout_constraintStart_toStartOf="@+id/postItem_description"
+        app:layout_constraintTop_toBottomOf="@+id/postItem_description"
+        app:layout_constraintWidth_max="400dp">
+
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/postItem_imageSlider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/postItem_emailIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@+id/postItem_description"
+        app:layout_constraintTop_toBottomOf="@+id/postItem_imageSliderCardView"
+        app:srcCompat="@drawable/post_email" />
+
+    <ImageView
+        android:id="@+id/postItem_linkIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@+id/postItem_description"
+        app:layout_constraintTop_toBottomOf="@+id/postItem_emailIcon"
+        app:srcCompat="@drawable/post_link" />
+
+    <TextView
+        android:id="@+id/postItem_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:autoLink="email"
+        android:textColor="@color/md_theme_light_onSecondaryContainer"
+        app:layout_constraintBottom_toBottomOf="@+id/postItem_emailIcon"
+        app:layout_constraintStart_toEndOf="@+id/postItem_emailIcon"
+        app:layout_constraintTop_toTopOf="@+id/postItem_emailIcon"
+        tools:text="email@campus.unimib.it" />
+
+    <TextView
+        android:id="@+id/postItem_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:autoLink="web"
+        android:textColor="@color/md_theme_light_onSecondaryContainer"
+        app:layout_constraintBottom_toBottomOf="@+id/postItem_linkIcon"
+        app:layout_constraintStart_toEndOf="@+id/postItem_linkIcon"
+        app:layout_constraintTop_toTopOf="@+id/postItem_linkIcon"
+        tools:text="https://www.unimib.it/" />
+
+    <ImageView
+        android:id="@+id/postItem_unimibEmployeeBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/postItem_surname"
+        app:layout_constraintStart_toEndOf="@+id/postItem_surname"
+        app:layout_constraintTop_toTopOf="@+id/postItem_surname"
+        app:srcCompat="@drawable/unimib_employee" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postItem_link" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

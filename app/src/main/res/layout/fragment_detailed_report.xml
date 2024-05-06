@@ -127,7 +127,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separatore">
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <ImageView
+            android:scaleType="centerCrop"
             android:id="@+id/reportListItem_imageProfile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
