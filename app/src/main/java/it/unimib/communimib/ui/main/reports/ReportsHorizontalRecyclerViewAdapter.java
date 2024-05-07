@@ -29,7 +29,6 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         void onCardClick(Report report);
     }
     private final boolean isUnimibUser;
-    private String category;
     private List<Report> reportList;
     private final OnItemClickListener onItemClickListener;
     private final int layout;

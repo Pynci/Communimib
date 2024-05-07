@@ -1,18 +1,23 @@
 package it.unimib.communimib.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Post {
 
-    String pid;
-    String title;
-    String description;
-    String category;
-    User author;
-    String email;
-    String link;
-    long timestamp;
+    private String pid;
+    private String title;
+    private String description;
+    private String category;
+    private User author;
+    private String email;
+    private String link;
+    private long timestamp;
+    private List<String> pictures;
+
 
     public Post(){
-
+        pictures = new ArrayList<>();
     }
 
     public Post(String title, String description, String category, User author, String email, String link, long timestamp) {
@@ -23,6 +28,7 @@ public class Post {
         this.email = email;
         this.link = link;
         this.timestamp = timestamp;
+        pictures = new ArrayList<>();
     }
 
     public String getPid() {
@@ -87,5 +93,13 @@ public class Post {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 }
