@@ -32,7 +32,7 @@ public class NewDashboardPostViewModel extends ViewModel {
     }
 
     public void createPost(String title, String description, String category, User author,
-                           String email, String link, long timestamp, List<Uri> pictures){
+                           String email, String link, long timestamp, List<String> pictures){
         postRepository.createPost(title, description, category, author, email, link, timestamp, pictures, result -> postCreationResult.setValue(result));
     }
 

@@ -42,7 +42,7 @@ public class NewDashboardPostDialog extends Fragment {
     private boolean isTitleOk;
     private boolean isDescriptionOk;
     private boolean isSpinnerOk;
-    private List<Uri> selectedUris;
+    private List<String> selectedUris;
     private FragmentNewDashboardPostDialogBinding binding;
 
     private BottomNavigationBarListener bottomListener;
@@ -85,7 +85,9 @@ public class NewDashboardPostDialog extends Fragment {
         ActivityResultLauncher<PickVisualMediaRequest> pickMultipleMedia =
                 registerForActivityResult(new ActivityResultContracts.PickMultipleVisualMedia(5), uris -> {
                     if (!uris.isEmpty()) {
-                        selectedUris = uris;
+                        for (Uri uri : uris) {
+                            selectedUris.add(uri.toString());
+                        }
                         binding.cardViewImageSlider.setVisibility(View.VISIBLE);
 
                         ArrayList<SlideModel> slideModels = new ArrayList<>();

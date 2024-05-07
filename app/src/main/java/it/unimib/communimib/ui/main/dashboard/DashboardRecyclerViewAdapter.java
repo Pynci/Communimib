@@ -151,8 +151,8 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
             List<SlideModel> slideModels = new ArrayList<>();
             if(!post.getPictures().isEmpty()){
-                for (Uri picture : post.getPictures()) {
-                    slideModels.add(new SlideModel(picture.toString(), ScaleTypes.FIT));
+                for (String picture : post.getPictures()) {
+                    slideModels.add(new SlideModel(picture, ScaleTypes.FIT));
                 }
                 imageSlider.setImageList(slideModels, ScaleTypes.FIT);
                 imageSlider.setVisibility(View.VISIBLE);

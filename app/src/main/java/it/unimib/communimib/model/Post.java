@@ -15,14 +15,14 @@ public class Post {
     private String email;
     private String link;
     private long timestamp;
-    private List<Uri> pictures;
+    private List<String> pictures;
 
 
     public Post(){
         pictures = new ArrayList<>();
     }
 
-    public Post(String title, String description, String category, User author, String email, String link, long timestamp, List<Uri> pictures) {
+    public Post(String title, String description, String category, User author, String email, String link, long timestamp, List<String> pictures) {
         this.title = title;
         this.description = description;
         this.category = category;
@@ -97,11 +97,11 @@ public class Post {
         this.timestamp = timestamp;
     }
 
-    public List<Uri> getPictures() {
+    public List<String> getPictures() {
         return pictures;
     }
 
-    public void setPictures(List<Uri> pictures) {
+    public void setPictures(List<String> pictures) {
         this.pictures = pictures;
     }
 }

@@ -252,7 +252,7 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
         });
     }
 
-    private void uploadPictures(String pid, List<Uri> pictures, Callback callback){
+    private void uploadPictures(String pid, List<String> pictures, Callback callback){
         StorageReference postStorageReference = FirebaseStorage.getInstance().getReference()
                 .child(Constants.STORAGE_POSTPICS).child(pid);
         CountDownLatch countDownLatch = new CountDownLatch(pictures.size());
@@ -261,7 +261,7 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
         try{
             for (int i = 0; i < pictures.size(); i++) {
                 postStorageReference
-                        .putFile(pictures.get(i))
+                        .putFile(Uri.parse(pictures.get(i)))
                         .addOnCompleteListener(task -> {
                             if(task.isSuccessful()){
                                 countDownLatch.countDown();
