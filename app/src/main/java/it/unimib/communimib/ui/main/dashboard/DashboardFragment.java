@@ -22,8 +22,10 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDashboardBinding;
+import it.unimib.communimib.databinding.FragmentDashboardImageDialogBinding;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
 import it.unimib.communimib.ui.main.reports.detailedreport.DashboardViewModelFactory;
 import it.unimib.communimib.util.ErrorMapper;
 
@@ -109,7 +111,8 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onImageSliderClick(Post post) {
-
+                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(post);
+                imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
         }, getContext());
 

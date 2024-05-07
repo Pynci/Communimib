@@ -35,7 +35,7 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         // Utilizza il binding per inflare il layout
-        binding = FragmentFavoriteDialogBinding.inflate(LayoutInflater.from(getContext()));
+        binding = FragmentFavoriteDialogBinding.inflate(getLayoutInflater());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(binding.getRoot());
