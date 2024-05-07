@@ -77,12 +77,7 @@ public class DashboardFragment extends Fragment {
         });
 
         RecyclerView.LayoutManager categoryLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, new CategoriesRecyclerViewAdapter.OnCategoryClickListener() {
-            @Override
-            public void onItemClick(String category) {
-                readPosts(category);
-            }
-        });
+        categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, this::readPosts);
 
         fragmentDashboardBinding.buttonNewPost.setOnClickListener(v -> {
             NavigationHelper.navigateTo(
@@ -91,12 +86,6 @@ public class DashboardFragment extends Fragment {
                     R.id.action_dashboardFragment_to_newDashboardPostDialog,
                     false);
         });
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(
-                new DashboardRecyclerViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(Post post) {
 
         fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setLayoutManager(categoryLayoutManager);
         fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
