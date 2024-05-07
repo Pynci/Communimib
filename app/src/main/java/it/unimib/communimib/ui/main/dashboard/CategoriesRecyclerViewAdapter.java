@@ -60,15 +60,13 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
 
         TextView categoryName;
         View view;
-        ConstraintLayout constraintLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryName = itemView.findViewById(R.id.categoryItem_categoryName);
             view = itemView.findViewById(R.id.categoryItem_view);
-            constraintLayout = itemView.findViewById(R.id.categoryItem_constraintLayout);
 
-            constraintLayout.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         public void bindClicked(String category){
