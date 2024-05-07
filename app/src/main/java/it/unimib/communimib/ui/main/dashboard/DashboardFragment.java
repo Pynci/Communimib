@@ -63,8 +63,8 @@ public class DashboardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         String[] categories = getResources().getStringArray(R.array.posts_categories);
+        categories = Arrays.copyOf(categories, categories.length-1);
         List<String> categoryList = Arrays.asList(categories);
-        categoryList.remove(categoryList.size()-1);
 
         fragmentDashboardBinding.fragmentDashboardSearchView.setOnClickListener(new View.OnClickListener()
         {
