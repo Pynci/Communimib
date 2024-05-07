@@ -1,5 +1,7 @@
 package it.unimib.communimib.datasource.post;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -8,7 +10,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.model.Post;
@@ -18,7 +24,7 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class PostRemoteDataSource implements IPostRemoteDataSource{
 
-    private DatabaseReference databaseReference;
+    private final DatabaseReference databaseReference;
 
     public PostRemoteDataSource() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -58,7 +64,7 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                //per ora niente
             }
 
             @Override
@@ -102,7 +108,7 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
 
                     @Override
                     public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                        //per ora niente
                     }
 
                     @Override
@@ -209,7 +215,7 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
 
                     @Override
                     public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                        //per ora niente
                     }
 
                     @Override
@@ -235,7 +241,7 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
                             .setValue(true)
                             .addOnCompleteListener(userPostTask -> {
                                 if(userPostTask.isSuccessful()){
-                                    callback.onComplete(new Result.Success());
+                                    uploadPictures(post.getPid(), post.getPictures(), callback);
                                 } else {
                                     callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
                                 }
@@ -244,6 +250,35 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
                     callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
                 }
         });
+    }
+
+    private void uploadPictures(String pid, List<Uri> pictures, Callback callback){
+        StorageReference postStorageReference = FirebaseStorage.getInstance().getReference()
+                .child(Constants.STORAGE_POSTPICS).child(pid);
+        CountDownLatch countDownLatch = new CountDownLatch(pictures.size());
+
+        //TODO: se si verificano comportamenti strani è palese per questa follia
+        try{
+            for (int i = 0; i < pictures.size(); i++) {
+                postStorageReference
+                        .putFile(pictures.get(i))
+                        .addOnCompleteListener(task -> {
+                            if(task.isSuccessful()){
+                                countDownLatch.countDown();
+                            }
+                        });
+            }
+            countDownLatch.await();
+            callback.onComplete(new Result.Success());
+        }
+        catch (InterruptedException interruptedException){
+            Thread.currentThread().interrupt();
+        }
+        finally {
+            callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+        }
+
+
     }
 
     @Override

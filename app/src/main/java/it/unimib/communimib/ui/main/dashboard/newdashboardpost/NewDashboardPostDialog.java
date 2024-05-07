@@ -64,7 +64,7 @@ public class NewDashboardPostDialog extends Fragment {
 
         binding.cardViewImageSlider.setVisibility(View.GONE);
 
-        //Gestore del caricamento delle imamgigni
+        //Gestore del caricamento delle immagini
         ActivityResultLauncher<PickVisualMediaRequest> pickMultipleMedia =
                 registerForActivityResult(new ActivityResultContracts.PickMultipleVisualMedia(5), uris -> {
                     if (!uris.isEmpty()) {

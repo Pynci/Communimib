@@ -10,6 +10,7 @@ public class Constants {
     public static final String POST_PATH = "posts";
     public static final String USERSPOSTS_PATH = "usersposts";
     public static final String STORAGE_USERSPROPICS = "user_propics";
+    public static final String STORAGE_POSTPICS = "post_pics";
 
     public static final int FAVORITE_BUILDINGS_TIMEOUT = 1000 * 60 * 15; // 15 minuti espressi in millisecondi
 
