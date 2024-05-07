@@ -92,6 +92,6 @@
 
     <string name="just_now">Adesso</string>
     <string name="minutes_unit">m</string>
-    <string name="hours_unit">o</string>
+    <string name="hours_unit">h</string>
     <string name="days_unit">g</string>
 </resources>

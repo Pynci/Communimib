@@ -152,7 +152,7 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                // per ora niente, nel caso aggiungere una callback
             }
 
             @Override
