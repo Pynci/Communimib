@@ -65,6 +65,15 @@ public class DashboardFragment extends Fragment {
         String[] categories = getResources().getStringArray(R.array.posts_categories);
         List<String> categoryList = Arrays.asList(categories);
 
+        fragmentDashboardBinding.fragmentDashboardSearchView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                fragmentDashboardBinding.fragmentDashboardSearchView.setIconified(false);
+            }
+        });
+
         fragmentDashboardBinding.fragmentDashboardSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
