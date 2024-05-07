@@ -52,7 +52,7 @@ public class NewDashboardPostDialog extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNewDashboardPostDialogBinding.inflate(getLayoutInflater());
         return binding.getRoot();
@@ -88,11 +88,9 @@ public class NewDashboardPostDialog extends Fragment {
         });
 
         //Gestione del pulsante per caricare le foto
-        binding.iamgeButtonAddImages.setOnClickListener(v -> {
-            pickMultipleMedia.launch(new PickVisualMediaRequest.Builder()
-                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
-                    .build());
-        });
+        binding.iamgeButtonAddImages.setOnClickListener(v -> pickMultipleMedia.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
+                .build()));
 
         //Gestione spinner categorie
         binding.categorySpinner.setPrompt("Categoria");
@@ -147,13 +145,13 @@ public class NewDashboardPostDialog extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof BottomNavigationBarListener && context instanceof TopNavigationBarListener) {
             bottomListener = (BottomNavigationBarListener) context;
             topListener = (TopNavigationBarListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement BottomNavigationBarListener");
+            throw new RuntimeException(context + " must implement BottomNavigationBarListener");
         }
     }
 
@@ -188,8 +186,9 @@ public class NewDashboardPostDialog extends Fragment {
     private ArrayAdapter<String> getCategoriesAdapter() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
 
+            @NonNull
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
                 View v = super.getView(position, convertView, parent);
                 if (position == getCount()) {
