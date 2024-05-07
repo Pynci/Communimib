@@ -88,7 +88,6 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private final ConstraintLayout constraintLayout;
         private final ImageView propic;
         private final TextView name;
         private final TextView surname;
@@ -105,7 +104,6 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            constraintLayout = itemView.findViewById(R.id.postItem_constraintLayout);
             propic = itemView.findViewById(R.id.postItem_propic);
             name = itemView.findViewById(R.id.postItem_name);
             surname = itemView.findViewById(R.id.postItem_surname);
@@ -119,8 +117,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             imageSlider = itemView.findViewById(R.id.postItem_imageSlider);
             imageSliderCardview = itemView.findViewById(R.id.postItem_imageSliderCardView);
 
-
-            constraintLayout.setOnClickListener(this);
+            itemView.setOnClickListener(this);
             imageSliderCardview.setOnClickListener(this);
         }
 
@@ -154,6 +151,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             List<SlideModel> slideModels = new ArrayList<>();
             List<String> pictures = new ArrayList<>();
             pictures.add("https://firebasestorage.googleapis.com/v0/b/communimib.appspot.com/o/user_propics%2Fy4CuFjmcZnSCwisNWvUhseynvCq2.jpeg?alt=media&token=b94d25bd-dc7d-42ac-948e-7992ec205c47");
+            pictures.add("https://firebasestorage.googleapis.com/v0/b/communimib.appspot.com/o/user_propics%2Fy4CuFjmcZnSCwisNWvUhseynvCq2.jpeg?alt=media&token=b94d25bd-dc7d-42ac-948e-7992ec205c47");
             post.setPictures(pictures);
             if(!post.getPictures().isEmpty()){
                 for (String picture : post.getPictures()) {
@@ -171,12 +169,12 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
         @Override
         public void onClick(View v) {
-            if(v.getId() == R.id.postItem_constraintLayout){
-                //onItemClickListener.onItemClick(postList.get(getAdapterPosition()));
-                onItemClickListener.onImageSliderClick(postList.get(getAdapterPosition()));
-            }
+
+            onItemClickListener.onImageSliderClick(postList.get(getAdapterPosition()));
             if(v.getId() == R.id.postItem_imageSliderCardView){
                 onItemClickListener.onImageSliderClick(postList.get(getAdapterPosition()));
+            } else {
+                onItemClickListener.onItemClick(postList.get(getAdapterPosition()));
             }
         }
     }

@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.dashboard.dialogs.DashboardImageFragmentDialog">
 
-    <CalendarView
+    <androidx.cardview.widget.CardView
         android:id="@+id/imageDialog_cardView"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:layout_gravity="center"
-        app:cardCornerRadius="30dp"
+        app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </CalendarView>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
