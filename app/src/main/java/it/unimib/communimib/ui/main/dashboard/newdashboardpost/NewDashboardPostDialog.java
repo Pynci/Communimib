@@ -17,29 +17,38 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.R;
 import it.unimib.communimib.TopNavigationBarListener;
 import it.unimib.communimib.databinding.FragmentNewDashboardPostDialogBinding;
+import it.unimib.communimib.ui.main.reports.ReportsViewModel;
+import it.unimib.communimib.ui.main.reports.ReportsViewModelFactory;
 
 public class NewDashboardPostDialog extends Fragment {
 
     private boolean isTitleOk;
     private boolean isDescriptionOk;
     private boolean isSpinnerOk;
+    private List<Uri> selectedUris;
     private FragmentNewDashboardPostDialogBinding binding;
 
     private BottomNavigationBarListener bottomListener;
     private TopNavigationBarListener topListener;
+
+    private NewDashboardPostViewModel newDashboardPostViewModel;
+
+
     public NewDashboardPostDialog() {
-        // Required empty public constructor
+        selectedUris = new ArrayList<>();
     }
 
     @Override
@@ -49,6 +58,10 @@ public class NewDashboardPostDialog extends Fragment {
         isDescriptionOk = false;
         isSpinnerOk = false;
         hideNavigationBars();
+
+        newDashboardPostViewModel =
+                new ViewModelProvider(this, new NewDashboardPostViewModelFactory(this.getContext()))
+                        .get(NewDashboardPostViewModel.class);
     }
 
     @Override
@@ -68,6 +81,7 @@ public class NewDashboardPostDialog extends Fragment {
         ActivityResultLauncher<PickVisualMediaRequest> pickMultipleMedia =
                 registerForActivityResult(new ActivityResultContracts.PickMultipleVisualMedia(5), uris -> {
                     if (!uris.isEmpty()) {
+                        selectedUris = uris;
                         binding.cardViewImageSlider.setVisibility(View.VISIBLE);
 
                         ArrayList<SlideModel> slideModels = new ArrayList<>();
@@ -109,6 +123,7 @@ public class NewDashboardPostDialog extends Fragment {
             }
         });
 
+        //Gestione descrizione
         binding.editTextPostDescription.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus) {
                 String text = binding.editTextPostDescription.getText().toString();
@@ -119,6 +134,7 @@ public class NewDashboardPostDialog extends Fragment {
             }
         });
 
+        //Gestione spinner per attivazione bottone di conferma e creazione post
         binding.categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -130,6 +146,21 @@ public class NewDashboardPostDialog extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
                 isSpinnerOk = false;
                 tryEnableButton();
+            }
+        });
+
+        binding.buttonConfirm.setOnClickListener(v -> {
+            if(binding.buttonConfirm.isEnabled()){
+                newDashboardPostViewModel.createPost(
+                        binding.editTextPostTitle.getText().toString(),
+                        binding.editTextPostDescription.getText().toString(),
+                        binding.categorySpinner.getSelectedItem().toString(),
+                        newDashboardPostViewModel.getCurrentUser(),
+                        binding.editTextEmailAddress.getText().toString(),
+                        binding.editTextWebsite.getText().toString(),
+                        System.currentTimeMillis(),
+                        selectedUris
+                );
             }
         });
     }
