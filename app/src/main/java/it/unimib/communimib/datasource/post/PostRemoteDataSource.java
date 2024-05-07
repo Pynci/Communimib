@@ -241,7 +241,7 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
                             .setValue(true)
                             .addOnCompleteListener(userPostTask -> {
                                 if(userPostTask.isSuccessful()){
-                                    uploadPictures(post.getPid(), post.getPictures(), callback);
+                                    uploadPictures(key, post.getPictures(), callback);
                                 } else {
                                     callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
                                 }

@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,8 +32,10 @@ import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.R;
 import it.unimib.communimib.TopNavigationBarListener;
 import it.unimib.communimib.databinding.FragmentNewDashboardPostDialogBinding;
+import it.unimib.communimib.model.Result;
 import it.unimib.communimib.ui.main.reports.ReportsViewModel;
 import it.unimib.communimib.ui.main.reports.ReportsViewModelFactory;
+import it.unimib.communimib.util.ErrorMapper;
 
 public class NewDashboardPostDialog extends Fragment {
 
@@ -149,6 +153,7 @@ public class NewDashboardPostDialog extends Fragment {
             }
         });
 
+        //Gestione del pulsante di conferma
         binding.buttonConfirm.setOnClickListener(v -> {
             if(binding.buttonConfirm.isEnabled()){
                 newDashboardPostViewModel.createPost(
@@ -161,6 +166,18 @@ public class NewDashboardPostDialog extends Fragment {
                         System.currentTimeMillis(),
                         selectedUris
                 );
+            }
+        });
+
+        //Osservazione del risultato di creazione
+        newDashboardPostViewModel.getPostCreationResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+                showNavigationBars();
+            }
+            else{
+                Snackbar.make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
     }

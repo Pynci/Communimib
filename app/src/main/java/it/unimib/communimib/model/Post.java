@@ -19,7 +19,7 @@ public class Post {
 
 
     public Post(){
-
+        pictures = new ArrayList<>();
     }
 
     public Post(String title, String description, String category, User author, String email, String link, long timestamp, List<Uri> pictures) {

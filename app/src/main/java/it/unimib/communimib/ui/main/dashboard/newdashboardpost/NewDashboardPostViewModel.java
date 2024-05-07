@@ -24,6 +24,7 @@ public class NewDashboardPostViewModel extends ViewModel {
     public NewDashboardPostViewModel(IPostRepository postRepository, IUserRepository userRepository){
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        postCreationResult = new MutableLiveData<>();
     }
 
     public User getCurrentUser(){
