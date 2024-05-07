@@ -3,7 +3,6 @@ package it.unimib.communimib.ui.main.dashboard.newdashboardpost;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,9 @@ import it.unimib.communimib.databinding.FragmentNewDashboardPostDialogBinding;
 
 public class NewDashboardPostDialog extends Fragment {
 
+    private boolean isTitleOk;
+    private boolean isDescriptionOk;
+    private boolean isSpinnerOk;
     private FragmentNewDashboardPostDialogBinding binding;
 
     private BottomNavigationBarListener bottomListener;
@@ -43,6 +45,9 @@ public class NewDashboardPostDialog extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isTitleOk = false;
+        isDescriptionOk = false;
+        isSpinnerOk = false;
         hideNavigationBars();
     }
 
@@ -71,7 +76,7 @@ public class NewDashboardPostDialog extends Fragment {
                             slideModels.add(new SlideModel(uri.toString(), ScaleTypes.FIT));
                         }
 
-                        binding.addImageImageSlider.setImageList(slideModels);
+                        binding.imageSliderLoadedImages.setImageList(slideModels);
                     }
                 });
 
@@ -95,6 +100,44 @@ public class NewDashboardPostDialog extends Fragment {
         binding.categorySpinner.setAdapter(adapterCategorie);
         binding.categorySpinner.setSelection(adapterCategorie.getCount());
 
+        //Gestione titolo
+        binding.editTextPostTitle.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus) {
+                String text = binding.editTextPostTitle.getText().toString();
+                if(!text.isEmpty())
+                    isTitleOk = true;
+
+                tryEnableButton();
+            }
+        });
+
+        binding.editTextPostDescription.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus) {
+                String text = binding.editTextPostDescription.getText().toString();
+                if(!text.isEmpty())
+                    isDescriptionOk = true;
+
+                tryEnableButton();
+            }
+        });
+
+        binding.categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                isSpinnerOk = true;
+                tryEnableButton();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                isSpinnerOk = false;
+                tryEnableButton();
+            }
+        });
+    }
+
+    private void tryEnableButton() {
+        binding.buttonConfirm.setEnabled(isTitleOk && isDescriptionOk && isSpinnerOk);
     }
 
     @Override

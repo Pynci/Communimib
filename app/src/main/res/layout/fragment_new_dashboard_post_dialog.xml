@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:id="@+id/button_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -32,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/edit_text_report_title"
+            android:id="@+id/editText_post_title"
             style="@style/Widget.Material3.TextInputEditText.FilledBox.Dense"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
@@ -53,7 +54,7 @@
             app:layout_constraintTop_toBottomOf="@+id/button_back" />
 
         <EditText
-            android:id="@+id/edit_text_report_description"
+            android:id="@+id/editText_post_description"
             style="@style/Widget.Material3.TextInputEditText.FilledBox"
             android:layout_width="350dp"
             android:layout_height="150dp"
@@ -68,7 +69,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_report_title" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_post_title" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/seleziona_una_categoria"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/editText_post_description"
+            app:layout_constraintTop_toBottomOf="@+id/editText_post_description" />
+
+        <Spinner
+            android:id="@+id/category_spinner"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:minHeight="48dp"
+            android:spinnerMode="dialog"
+            app:layout_constraintBottom_toBottomOf="@+id/textView13"
+            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintTop_toTopOf="@+id/textView13" />
 
         <ImageButton
             android:id="@+id/iamgeButton_add_images"
@@ -108,7 +130,7 @@
                 android:layout_height="match_parent">
 
                 <com.denzcoskun.imageslider.ImageSlider
-                    android:id="@+id/addImageImageSlider"
+                    android:id="@+id/imageSlider_loaded_images"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:iss_corner_radius="20"
@@ -121,29 +143,24 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/editText_email_address"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="@string/seleziona_una_categoria"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/edit_text_report_description"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_report_description" />
-
-        <Spinner
-            android:id="@+id/category_spinner"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/inserisci_un_contatto_e_mail_opzionale"
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress"
             android:minHeight="48dp"
-            android:spinnerMode="dialog"
-            app:layout_constraintBottom_toBottomOf="@+id/textView13"
-            app:layout_constraintStart_toEndOf="@+id/textView13"
-            app:layout_constraintTop_toTopOf="@+id/textView13" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView_imageSlider" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/editText_website"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -158,23 +175,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
-
-        <EditText
-            android:id="@+id/editTextTextEmailAddress"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/edit_text_background"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="@string/inserisci_un_contatto_e_mail_opzionale"
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView_imageSlider" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_email_address" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
