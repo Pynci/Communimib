@@ -29,6 +29,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
     public interface OnItemClickListener{
         void onItemClick(Post post);
+        void onImageSliderClick(Post post);
     }
 
     private List<Post> postList;
@@ -168,6 +169,9 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         public void onClick(View v) {
             if(v.getId() == R.id.postItem_constraintLayout){
                 onItemClickListener.onItemClick(postList.get(getAdapterPosition()));
+            }
+            if(v.getId() == R.id.postItem_imageSliderCardView){
+                onItemClickListener.onImageSliderClick(postList.get(getAdapterPosition()));
             }
         }
     }

@@ -101,8 +101,16 @@ public class DashboardFragment extends Fragment {
         fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(post -> {
-            // logica in risposta al click sul post
+        dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new DashboardRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Post post) {
+
+            }
+
+            @Override
+            public void onImageSliderClick(Post post) {
+
+            }
         }, getContext());
 
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setLayoutManager(layoutManager);
