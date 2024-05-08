@@ -80,6 +80,7 @@ public class DashboardFragment extends Fragment {
         categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, this::readPosts);
 
         fragmentDashboardBinding.buttonNewPost.setOnClickListener(v -> {
+            dashboardViewModel.cleanViewModel();
             NavigationHelper.navigateTo(
                     getActivity(),
                     v,
