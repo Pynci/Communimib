@@ -12,7 +12,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -25,6 +27,8 @@ import it.unimib.communimib.util.ErrorMapper;
 public class PostRemoteDataSource implements IPostRemoteDataSource{
 
     private final DatabaseReference databaseReference;
+    private int picturesCounter;
+    private int numberOfPictures;
 
     public PostRemoteDataSource() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -228,57 +232,82 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
     @Override
     public void createPost(Post post, Callback callback) {
         String key = databaseReference.child(Constants.POST_PATH).push().getKey();
+        post.setPid(key);
 
-        databaseReference
-                .child(Constants.POST_PATH)
-                .child(key).setValue(post)
-                .addOnCompleteListener(postTask -> {
-                if(postTask.isSuccessful()){
-                    databaseReference
-                            .child(Constants.USERSPOSTS_PATH)
-                            .child(post.getAuthor().getUid())
-                            .child(key)
-                            .setValue(true)
-                            .addOnCompleteListener(userPostTask -> {
-                                if(userPostTask.isSuccessful()){
-                                    uploadPictures(key, post.getPictures(), callback);
-                                } else {
-                                    callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
-                                }
-                            });
-                } else {
-                    callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
-                }
-        });
+        if(!post.getPictures().isEmpty()){
+            picturesCounter = 0;
+            numberOfPictures = post.getPictures().size();
+            List<String> downloadUris = new ArrayList<>();
+            for (int i = 0; i < numberOfPictures; i++) {
+                createPostWithPictures(post, i, downloadUris, callback);
+            }
+        }
+        else{
+            createSimplePost(post, callback);
+        }
     }
 
-    private void uploadPictures(String pid, List<String> pictures, Callback callback){
+    //richiamare questo metodo tante volte quante sono le immagini nel post
+    private void createPostWithPictures(Post post, int i, List<String> downloadUris, Callback callback) {
         StorageReference postStorageReference = FirebaseStorage.getInstance().getReference()
-                .child(Constants.STORAGE_POSTPICS).child(pid);
-        CountDownLatch countDownLatch = new CountDownLatch(pictures.size());
-
-        //TODO: se si verificano comportamenti strani è palese per questa follia
-        try{
-            for (int i = 0; i < pictures.size(); i++) {
-                postStorageReference
-                        .putFile(Uri.parse(pictures.get(i)))
-                        .addOnCompleteListener(task -> {
-                            if(task.isSuccessful()){
-                                countDownLatch.countDown();
-                            }
-                        });
-            }
-            countDownLatch.await();
-            callback.onComplete(new Result.Success());
-        }
-        catch (InterruptedException interruptedException){
-            Thread.currentThread().interrupt();
-        }
-        finally {
-            callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
-        }
+                .child(Constants.STORAGE_POSTPICS).child(post.getPid()).child(String.valueOf(i));
 
 
+        //carico l'immagine corrente sul Firebase Storage
+        postStorageReference
+                .putFile(Uri.parse(post.getPictures().get(i)))
+                .addOnCompleteListener(imageUploadTask -> {
+                    if(imageUploadTask.isSuccessful()){
+                        //recupero l'uri per il successivo download dell'immagine
+                        postStorageReference
+                                .getDownloadUrl()
+                                .addOnCompleteListener(imageUriDownloadTask -> {
+                                    if(imageUriDownloadTask.isSuccessful()){
+                                        downloadUris.add(imageUriDownloadTask.getResult().toString());
+
+                                        //se è l'ultima immagine creo il post
+                                        picturesCounter++;
+                                        if(picturesCounter == numberOfPictures){
+                                            post.setPictures(downloadUris);
+                                            createSimplePost(post, callback);
+                                        }
+                                    }
+                                    else{
+                                        callback.onComplete(new Result.Error(ErrorMapper.POST_CREATION_ERROR));
+                                    }
+                                });
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.POST_CREATION_ERROR));
+                    }
+                });
+    }
+
+    private void createSimplePost(Post post, Callback callback){
+        databaseReference
+                .child(Constants.POST_PATH)
+                .child(post.getPid())
+                .setValue(post)
+                .addOnCompleteListener(postTask -> {
+                    if(postTask.isSuccessful()){
+                        databaseReference
+                                .child(Constants.USERSPOSTS_PATH)
+                                .child(post.getAuthor().getUid())
+                                .child(post.getPid())
+                                .setValue(true)
+                                .addOnCompleteListener(userPostTask -> {
+                                    if(userPostTask.isSuccessful()){
+                                        callback.onComplete(new Result.Success());
+                                    }
+                                    else{
+                                        callback.onComplete(new Result.Error(ErrorMapper.POST_CREATION_ERROR));
+                                    }
+                                });
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.POST_CREATION_ERROR));
+                    }
+                });
     }
 
     @Override
@@ -298,11 +327,11 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
                                     if(userPostTask.isSuccessful()){
                                         callback.onComplete(new Result.Success());
                                     } else {
-                                        callback.onComplete(new Result.Error(ErrorMapper.REPORT_DELETING_ERROR));
+                                        callback.onComplete(new Result.Error(ErrorMapper.POST_DELETING_ERROR));
                                     }
                                 });
                     } else {
-                        callback.onComplete(new Result.Error(ErrorMapper.REPORT_DELETING_ERROR));
+                        callback.onComplete(new Result.Error(ErrorMapper.POST_DELETING_ERROR));
                     }
                 });
     }
