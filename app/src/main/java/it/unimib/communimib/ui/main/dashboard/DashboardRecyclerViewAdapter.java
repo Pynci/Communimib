@@ -36,7 +36,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
     private final Context context;
 
     public void addItem(Post newPost){
-        postList.add(newPost);
+        postList.add(0, newPost);
         notifyItemInserted(0);
     }
 
