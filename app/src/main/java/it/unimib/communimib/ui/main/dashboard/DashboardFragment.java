@@ -99,8 +99,8 @@ public class DashboardFragment extends Fragment {
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setLayoutManager(layoutManager);
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
 
-        String visualizedCategory = dashboardViewModel.getVisualizedCategory();
-        readPosts(visualizedCategory);
+        dashboardViewModel.cleanViewModel();
+        readPosts(dashboardViewModel.getVisualizedCategory());
 
         dashboardViewModel.getPostAddedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
