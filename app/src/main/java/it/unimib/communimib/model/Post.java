@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Post {
 
@@ -103,5 +104,18 @@ public class Post {
 
     public void setPictures(List<String> pictures) {
         this.pictures = pictures;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(getPid(), post.getPid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPid());
     }
 }
