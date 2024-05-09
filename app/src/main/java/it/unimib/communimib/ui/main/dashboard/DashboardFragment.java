@@ -25,6 +25,7 @@ import it.unimib.communimib.databinding.FragmentDashboardBinding;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.ui.main.reports.detailedreport.DashboardViewModelFactory;
+import it.unimib.communimib.util.NavigationHelper;
 import it.unimib.communimib.util.ErrorMapper;
 
 public class DashboardFragment extends Fragment {
@@ -36,10 +37,6 @@ public class DashboardFragment extends Fragment {
 
     public DashboardFragment() {
         // Required empty public constructor
-    }
-
-    public static DashboardFragment newInstance() {
-        return new DashboardFragment();
     }
 
     @Override
@@ -90,11 +87,15 @@ public class DashboardFragment extends Fragment {
         });
 
         RecyclerView.LayoutManager categoryLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, new CategoriesRecyclerViewAdapter.OnCategoryClickListener() {
-            @Override
-            public void onItemClick(String category) {
-                readPosts(category);
-            }
+        categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, this::readPosts);
+
+        fragmentDashboardBinding.buttonNewPost.setOnClickListener(v -> {
+            dashboardViewModel.cleanViewModel();
+            NavigationHelper.navigateTo(
+                    getActivity(),
+                    v,
+                    R.id.action_dashboardFragment_to_newDashboardPostDialog,
+                    false);
         });
 
         fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setLayoutManager(categoryLayoutManager);
@@ -108,8 +109,8 @@ public class DashboardFragment extends Fragment {
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setLayoutManager(layoutManager);
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
 
-        String visualizedCategory = dashboardViewModel.getVisualizedCategory();
-        readPosts(visualizedCategory);
+        dashboardViewModel.cleanViewModel();
+        readPosts(dashboardViewModel.getVisualizedCategory());
 
         dashboardViewModel.getPostAddedReadResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){

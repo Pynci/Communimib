@@ -1,7 +1,10 @@
 package it.unimib.communimib.model;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Post {
 
@@ -20,7 +23,7 @@ public class Post {
         pictures = new ArrayList<>();
     }
 
-    public Post(String title, String description, String category, User author, String email, String link, long timestamp) {
+    public Post(String title, String description, String category, User author, String email, String link, long timestamp, List<String> pictures) {
         this.title = title;
         this.description = description;
         this.category = category;
@@ -28,7 +31,7 @@ public class Post {
         this.email = email;
         this.link = link;
         this.timestamp = timestamp;
-        pictures = new ArrayList<>();
+        this.pictures = pictures;
     }
 
     public String getPid() {
@@ -101,5 +104,18 @@ public class Post {
 
     public void setPictures(List<String> pictures) {
         this.pictures = pictures;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(getPid(), post.getPid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPid());
     }
 }

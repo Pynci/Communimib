@@ -87,11 +87,21 @@
     <string name="descrizione_del_problema">Descrizione della segnalazione</string>
     <string name="categoria_della_segnalazione">Categoria della segnalazione</string>
     <string name="pubblicato_da">Pubblicato da</string>
+    <string name="new_post_button">Bottone per creare una nuovo post nella bacheca</string>
+    <string name="titolo_del_post">Titolo del post</string>
+    <string name="crea_un_nuovo_post">Crea una nuovo post</string>
+    <string name="indietro">Indietro</string>
+    <string name="pubblica">Pubblica</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate. </string>
     <string name="post_title">Questo è il titolo di un post</string>
+    <string name="bottone_per_aggiungere_immagine">Bottone per aggiungere immagine</string>
+    <string name="aggiungi_una_o_pi_immagini_al_post">Aggiungi una o più immagini al post (opzionale)</string>
 
     <string name="just_now">Adesso</string>
     <string name="minutes_unit">m</string>
     <string name="hours_unit">h</string>
     <string name="days_unit">g</string>
+    <string name="seleziona_una_categoria">Seleziona una categoria:</string>
+    <string name="inserisci_un_contatto_e_mail_opzionale">Inserisci un contatto e-mail (opzionale)</string>
+    <string name="inserisci_un_link_per_un_sito_web_opzionale">Inserisci un link di un sito web (opzionale)</string>
 </resources>
