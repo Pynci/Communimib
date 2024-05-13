@@ -102,13 +102,12 @@ public class NewDashboardPostDialog extends Fragment {
 
         //Gestione del pulsante indietro
         binding.buttonBack.setOnClickListener(v -> {
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.popBackStack();
+            getParentFragmentManager().popBackStack();
             showNavigationBars();
         });
 
         //Gestione del pulsante per caricare le foto
-        binding.iamgeButtonAddImages.setOnClickListener(v -> pickMultipleMedia.launch(new PickVisualMediaRequest.Builder()
+        binding.imageButtonAddImages.setOnClickListener(v -> pickMultipleMedia.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
                 .build()));
 
@@ -257,6 +256,7 @@ public class NewDashboardPostDialog extends Fragment {
         };
 
         String[] categoriesArray = getResources().getStringArray(R.array.posts_categories);
+        categoriesArray = Arrays.copyOfRange(categoriesArray, 1, categoriesArray.length);
         adapter.addAll(Arrays.asList(categoriesArray));
         return adapter;
     }
