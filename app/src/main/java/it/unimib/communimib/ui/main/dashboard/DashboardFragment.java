@@ -22,8 +22,10 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDashboardBinding;
+import it.unimib.communimib.databinding.FragmentDashboardImageDialogBinding;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
 import it.unimib.communimib.ui.main.reports.detailedreport.DashboardViewModelFactory;
 import it.unimib.communimib.util.NavigationHelper;
 import it.unimib.communimib.util.ErrorMapper;
@@ -102,8 +104,17 @@ public class DashboardFragment extends Fragment {
         fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(post -> {
-            // logica in risposta al click sul post
+        dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new DashboardRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Post post) {
+
+            }
+
+            @Override
+            public void onImageSliderClick(Post post) {
+                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(post);
+                imageDialog.show(getParentFragmentManager(), "Image Dialog");
+            }
         }, getContext());
 
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setLayoutManager(layoutManager);

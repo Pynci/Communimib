@@ -1,6 +1,7 @@
 package it.unimib.communimib.ui.main.dashboard;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
     public interface OnItemClickListener{
         void onItemClick(Post post);
+        void onImageSliderClick(Post post);
     }
 
     private List<Post> postList;
@@ -89,7 +91,6 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private final ConstraintLayout constraintLayout;
         private final ImageView propic;
         private final TextView name;
         private final TextView surname;
@@ -102,11 +103,11 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         private final ImageView linkIcon;
         private final ImageSlider imageSlider;
         private final CardView imageSliderCardview;
+        private final CardView imageInsideCard;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            constraintLayout = itemView.findViewById(R.id.postItem_constraintLayout);
             propic = itemView.findViewById(R.id.postItem_propic);
             name = itemView.findViewById(R.id.postItem_name);
             surname = itemView.findViewById(R.id.postItem_surname);
@@ -119,9 +120,12 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             dateTime = itemView.findViewById(R.id.postItem_datetime);
             imageSlider = itemView.findViewById(R.id.postItem_imageSlider);
             imageSliderCardview = itemView.findViewById(R.id.postItem_imageSliderCardView);
+            imageInsideCard = itemView.findViewById(R.id.postItem_ImageInsideCard);
 
-
-            constraintLayout.setOnClickListener(this);
+            itemView.setOnClickListener(this);
+            imageInsideCard.setOnClickListener(this);
+            imageInsideCard.setCardBackgroundColor(Color.TRANSPARENT);
+            imageInsideCard.setCardElevation(0);
         }
 
         public void bind(Post post){
@@ -159,16 +163,21 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                 imageSlider.setImageList(slideModels, ScaleTypes.FIT);
                 imageSlider.setVisibility(View.VISIBLE);
                 imageSliderCardview.setVisibility(View.VISIBLE);
+                imageInsideCard.setVisibility(View.VISIBLE);
             }
             else{
                 imageSlider.setVisibility(View.GONE);
                 imageSliderCardview.setVisibility(View.GONE);
+                imageInsideCard.setVisibility(View.GONE);
             }
         }
 
         @Override
         public void onClick(View v) {
-            if(v.getId() == R.id.postItem_constraintLayout){
+
+            if (v.getId() == R.id.postItem_ImageInsideCard) {
+                onItemClickListener.onImageSliderClick(postList.get(getAdapterPosition()));
+            } else {
                 onItemClickListener.onItemClick(postList.get(getAdapterPosition()));
             }
         }
