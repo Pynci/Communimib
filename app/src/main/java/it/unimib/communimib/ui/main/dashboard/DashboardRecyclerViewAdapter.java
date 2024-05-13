@@ -1,6 +1,7 @@
 package it.unimib.communimib.ui.main.dashboard;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,6 +101,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         private final ImageView linkIcon;
         private final ImageSlider imageSlider;
         private final CardView imageSliderCardview;
+        private final CardView imageInsideCard;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -116,9 +118,12 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             dateTime = itemView.findViewById(R.id.postItem_datetime);
             imageSlider = itemView.findViewById(R.id.postItem_imageSlider);
             imageSliderCardview = itemView.findViewById(R.id.postItem_imageSliderCardView);
+            imageInsideCard = itemView.findViewById(R.id.postItem_ImageInsideCard);
 
             itemView.setOnClickListener(this);
-            imageSliderCardview.setOnClickListener(this);
+            imageInsideCard.setOnClickListener(this);
+            imageInsideCard.setCardBackgroundColor(Color.TRANSPARENT);
+            imageInsideCard.setCardElevation(0);
         }
 
         public void bind(Post post){
@@ -149,10 +154,6 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             }
 
             List<SlideModel> slideModels = new ArrayList<>();
-            List<String> pictures = new ArrayList<>();
-            pictures.add("https://firebasestorage.googleapis.com/v0/b/communimib.appspot.com/o/user_propics%2Fy4CuFjmcZnSCwisNWvUhseynvCq2.jpeg?alt=media&token=b94d25bd-dc7d-42ac-948e-7992ec205c47");
-            pictures.add("https://firebasestorage.googleapis.com/v0/b/communimib.appspot.com/o/user_propics%2Fy4CuFjmcZnSCwisNWvUhseynvCq2.jpeg?alt=media&token=b94d25bd-dc7d-42ac-948e-7992ec205c47");
-            post.setPictures(pictures);
             if(!post.getPictures().isEmpty()){
                 for (String picture : post.getPictures()) {
                     slideModels.add(new SlideModel(picture, ScaleTypes.FIT));
@@ -160,18 +161,19 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
                 imageSlider.setImageList(slideModels, ScaleTypes.FIT);
                 imageSlider.setVisibility(View.VISIBLE);
                 imageSliderCardview.setVisibility(View.VISIBLE);
+                imageInsideCard.setVisibility(View.VISIBLE);
             }
             else{
                 imageSlider.setVisibility(View.GONE);
                 imageSliderCardview.setVisibility(View.GONE);
+                imageInsideCard.setVisibility(View.GONE);
             }
         }
 
         @Override
         public void onClick(View v) {
 
-            onItemClickListener.onImageSliderClick(postList.get(getAdapterPosition()));
-            if(v.getId() == R.id.postItem_imageSliderCardView){
+            if (v.getId() == R.id.postItem_ImageInsideCard) {
                 onItemClickListener.onImageSliderClick(postList.get(getAdapterPosition()));
             } else {
                 onItemClickListener.onItemClick(postList.get(getAdapterPosition()));
