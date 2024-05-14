@@ -10,14 +10,14 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class FakeDashboardRemoteDataSource implements IPostRemoteDataSource {
 
-    public Callback addedCallback;
-    public Callback changedCallback;
-    public Callback removedCallback;
-    public Callback cancelledCallback;
+    private Callback addedCallback;
+    private Callback changedCallback;
+    private Callback removedCallback;
+    private Callback cancelledCallback;
 
-    public String category;
-    public String keyword;
-    public Map<String, Post> posts;
+    private String category;
+    private String keyword;
+    private Map<String, Post> posts;
 
     @Override
     public void readAllPosts(Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback) {
