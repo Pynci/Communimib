@@ -174,68 +174,27 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </RelativeLayout>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/detailedPostItem_propicCommentCardview"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider">
-
-        <ImageView
-            android:id="@+id/detailedPostItem_propicComment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/user_filled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/detailedPostItem_nameComment"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="@string/name"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/detailedPostItem_propicCommentCardview"
-        app:layout_constraintStart_toEndOf="@+id/detailedPostItem_propicCommentCardview"
-        app:layout_constraintTop_toTopOf="@+id/detailedPostItem_propicCommentCardview" />
-
-    <TextView
-        android:id="@+id/detailedPostItem_commentSurname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:text="@string/surname"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/detailedPostItem_nameComment"
-        app:layout_constraintStart_toEndOf="@+id/detailedPostItem_nameComment"
-        app:layout_constraintTop_toTopOf="@+id/detailedPostItem_nameComment" />
-
-    <EditText
-        android:id="@+id/detailedPostItem_comment"
-        android:layout_width="375dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/edit_text_background"
-        android:ems="10"
-        android:hint="@string/pubblica_il_tuo_commento"
-        android:inputType="text"
-        android:maxLength="200"
-        android:minHeight="48dp"
-        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailedPostItem_propicCommentCardview" />
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/detailedPostItem_comment"
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:hint="@string/pubblica_il_tuo_commento"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLength="200"
+            android:minHeight="48dp"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

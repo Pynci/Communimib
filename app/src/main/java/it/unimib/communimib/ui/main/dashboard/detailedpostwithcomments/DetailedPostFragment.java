@@ -10,18 +10,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDetailedPostBinding;
+import it.unimib.communimib.model.Post;
 
 public class DetailedPostFragment extends Fragment {
 
     private FragmentDetailedPostBinding binding;
+
+    private Post post;
     public DetailedPostFragment() {
         //Costruttore vuoto
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+            DetailedPostFragmentArgs args = DetailedPostFragmentArgs.fromBundle(getArguments());
+            this.post = args.getPost();
+        }
+        catch (Exception e) {
+            post = null;
+        }
     }
 
     @Override

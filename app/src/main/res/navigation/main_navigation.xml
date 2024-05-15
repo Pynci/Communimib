@@ -15,6 +15,9 @@
             app:destination="@id/newDashboardPostDialog"
             app:enterAnim="@anim/fragment_slide_up"
             app:popExitAnim="@anim/fragment_slide_down" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_detailedPostFragment"
+            app:destination="@id/detailedPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -49,5 +52,14 @@
             android:id="@+id/action_newDashboardPostDialog_to_dashboardFragment"
             app:destination="@id/dashboardFragment"
             app:popEnterAnim="@anim/fragment_slide_down" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedPostFragment"
+        android:name="it.unimib.communimib.ui.main.dashboard.detailedpostwithcomments.DetailedPostFragment"
+        android:label="DetailedPostFragment">
+
+        <argument
+            android:name="post"
+            app:argType="it.unimib.communimib.model.Post" />
     </fragment>
 </navigation>

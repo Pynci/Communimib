@@ -1,12 +1,12 @@
 package it.unimib.communimib.model;
 
-import android.net.Uri;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Post {
+public class Post implements Serializable {
 
     private String pid;
     private String title;
