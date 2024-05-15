@@ -33,11 +33,9 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.TopNavigationBarListener;
 import it.unimib.communimib.databinding.FragmentNewDashboardPostDialogBinding;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.ui.main.reports.ReportsViewModel;
-import it.unimib.communimib.ui.main.reports.ReportsViewModelFactory;
 import it.unimib.communimib.util.ErrorMapper;
 
-public class NewDashboardPostDialog extends Fragment {
+public class NewDashboardPostFragment extends Fragment {
 
     private boolean isTitleOk;
     private boolean isDescriptionOk;
@@ -51,7 +49,7 @@ public class NewDashboardPostDialog extends Fragment {
     private NewDashboardPostViewModel newDashboardPostViewModel;
 
 
-    public NewDashboardPostDialog() {
+    public NewDashboardPostFragment() {
         selectedUris = new ArrayList<>();
     }
 

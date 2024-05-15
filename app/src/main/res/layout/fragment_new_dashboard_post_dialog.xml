@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.main.dashboard.newdashboardpost.NewDashboardPostDialog">
+        tools:context=".ui.main.dashboard.newdashboardpost.NewDashboardPostFragment">
 
         <Button
             android:id="@+id/button_back"
