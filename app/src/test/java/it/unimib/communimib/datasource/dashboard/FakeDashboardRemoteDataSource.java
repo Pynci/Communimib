@@ -1,5 +1,6 @@
 package it.unimib.communimib.datasource.dashboard;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import it.unimib.communimib.Callback;
@@ -18,6 +19,10 @@ public class FakeDashboardRemoteDataSource implements IPostRemoteDataSource {
     public String category;
     public String keyword;
     public Map<String, Post> posts;
+
+    public FakeDashboardRemoteDataSource() {
+        posts = new HashMap<>();
+    }
 
     @Override
     public void readAllPosts(Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback) {
@@ -61,6 +66,8 @@ public class FakeDashboardRemoteDataSource implements IPostRemoteDataSource {
         posts.put(post.getPid(), post);
         callback.onComplete(new Result.Success());
     }
+
+
 
     @Override
     public void deletePost(Post post, Callback callback) {
