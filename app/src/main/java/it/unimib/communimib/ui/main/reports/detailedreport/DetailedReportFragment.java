@@ -138,6 +138,4 @@ public class DetailedReportFragment extends Fragment {
             mListener.showBottomNavigationBar();
         }
     }
-
-
 }

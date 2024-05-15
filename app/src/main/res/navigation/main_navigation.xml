@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/detailedPostFragment"
         android:name="it.unimib.communimib.ui.main.dashboard.detailedpostwithcomments.DetailedPostFragment"
-        android:label="DetailedPostFragment">
+        android:label="">
 
         <argument
             android:name="post"
