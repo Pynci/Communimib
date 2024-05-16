@@ -7,21 +7,15 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import it.unimib.communimib.Callback;
-import it.unimib.communimib.R;
-import it.unimib.communimib.datasource.report.FakeReportRemoteDataSource;
 import it.unimib.communimib.datasource.report.IReportRemoteDataSource;
 import it.unimib.communimib.datasource.report.ReportRemoteDataSource;
-import it.unimib.communimib.datasource.user.FakeUserRemoteDataSource;
-import it.unimib.communimib.datasource.user.IUserRemoteDataSource;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
@@ -29,7 +23,6 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class ReportRepositoryTest {
 
-    private volatile Result result;
     private IReportRepository reportRepository;
     private IReportRemoteDataSource reportRemoteDataSource;
     private User marco;
@@ -168,7 +161,7 @@ public class ReportRepositoryTest {
     }
 
     @Test
-    public void deleteReportSuccess() throws InterruptedException {
+    public void deleteReportSuccess(){
         Report report = new Report("titolo", "descrizione", "U14", "guasto", marco);
         report.setRid("54321");
         doAnswer(invocation -> {

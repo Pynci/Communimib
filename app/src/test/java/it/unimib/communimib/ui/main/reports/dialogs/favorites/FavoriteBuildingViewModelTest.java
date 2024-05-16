@@ -16,10 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.communimib.Callback;
-import it.unimib.communimib.DialogCallback;
 import it.unimib.communimib.LiveDataTestUtil;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.repository.ReportRepository;
 import it.unimib.communimib.repository.UserRepository;
 
 public class FavoriteBuildingViewModelTest {
