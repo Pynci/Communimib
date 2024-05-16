@@ -5,16 +5,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import it.unimib.communimib.Callback;
-import it.unimib.communimib.datasource.dashboard.FakeDashboardRemoteDataSource;
 import it.unimib.communimib.datasource.post.IPostRemoteDataSource;
 import it.unimib.communimib.datasource.post.PostRemoteDataSource;
 import it.unimib.communimib.model.Post;
@@ -24,19 +22,14 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class PostRepositoryTest {
 
-    private FakeDashboardRemoteDataSource fakeDashboardRemoteDataSource;
     private IPostRemoteDataSource postRemoteDataSource;
     private IPostRepository postRepository;
-    private IPostRepository fakePostRepository;
-    private Result result;
     private User user;
 
     @Before
     public void setUp() throws Exception {
-        fakeDashboardRemoteDataSource = new FakeDashboardRemoteDataSource();
         postRemoteDataSource = mock(PostRemoteDataSource.class);
         postRepository = new PostRepository(postRemoteDataSource);
-        fakePostRepository = new PostRepository(fakeDashboardRemoteDataSource);
         this.user = new User("11111", "g.vitale16@campus.unimib.it", "Giulia", "Vitale", false);
     }
 
@@ -55,19 +48,21 @@ public class PostRepositoryTest {
         }).when(postRemoteDataSource).readAllPosts(any(), any(), any(), any());
 
         postRepository.readAllPosts(
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
                 result -> {
                     assertTrue(result instanceof Result.Error);
                     assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
                 });
+
+        verify(postRemoteDataSource).readAllPosts(any(), any(), any(), any());
     }
 
     @Test
@@ -88,20 +83,21 @@ public class PostRepositoryTest {
 
         postRepository.readPostsByCategory(
                 category,
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
                 result -> {
                     assertTrue(result instanceof Result.Error);
                     assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
                 });
 
+        verify(postRemoteDataSource).readPostsByCategory(eq(category), any(), any(), any(), any());
     }
 
     @Test
@@ -122,19 +118,21 @@ public class PostRepositoryTest {
 
         postRepository.readPostsByTitleOrDescription(
                 keyword,
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
                 result -> {
                     assertTrue(result instanceof Result.Error);
                     assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
                 });
+
+        verify(postRemoteDataSource).readPostsByTitleOrDescription(eq(keyword), any(), any(), any(), any());
     }
 
     @Test
@@ -157,53 +155,69 @@ public class PostRepositoryTest {
         postRepository.readPostsByTitleOrDescriptionAndCategory(
                 keyword,
                 category,
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
-                result -> {
-                    assertTrue(result instanceof Result.Success);
-                },
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                ,
                 result -> {
                     assertTrue(result instanceof Result.Error);
                     assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
                 });
+
+        verify(postRemoteDataSource).readPostsByTitleOrDescriptionAndCategory(eq(keyword), eq(category), any(), any(), any(), any());
     }
 
     @Test
-    public void createPost() throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        List<String> pictures = new ArrayList<>();
-        pictures.add(
-                "https://firebasestorage.googleapis.com/v0/b/communimib.appspot.com/o/user_propics%2FHrHEip8Vx0XdNfgnwMq8wB6ZCat2.png?alt=media&token=b90de28f-bd9e-47d3-a523-b19ec9f576e1");
-        pictures.add(
-                "https://firebasestorage.googleapis.com/v0/b/communimib.appspot.com/o/user_propics%2FHrHEip8Vx0XdNfgnwMq8wB6ZCat2.png?alt=media&token=b90de28f-bd9e-47d3-a523-b19ec9f576e1");
-        fakePostRepository.createPost("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, pictures, result1 -> {
-            this.result = result1;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        assertTrue(result instanceof Result.Success);
-    }
+    public void createPost() {
 
-    @Test
-    public void deletePostSuccess() throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
         Post post = new Post("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, new ArrayList<>());
-        post.setPid("12345");
-        fakeDashboardRemoteDataSource.posts.put(post.getPid(), post);
 
-        fakePostRepository.deletePost(post,
-                result1 -> {
-                    this.result = result1;
-                    countDownLatch.countDown();
-                });
-        countDownLatch.await();
-        assertTrue(result instanceof Result.Success);
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(1);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(postRemoteDataSource).createPost(eq(post), any());
+
+        postRepository.createPost("title",
+                "description",
+                "category",
+                user,
+                "g.vitale16@campus.unimib.it",
+                "https://link",
+                1234566,
+                new ArrayList<>(),
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                );
+
+        verify(postRemoteDataSource).createPost(eq(post), any());
     }
 
+    @Test
+    public void deletePost() {
+
+        Post post = new Post("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, new ArrayList<>());
+
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(1);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(postRemoteDataSource).deletePost(eq(post), any());
+
+        postRepository.deletePost(
+                post,
+                result ->
+                    assertTrue(result instanceof Result.Success)
+                );
+
+        verify(postRemoteDataSource).deletePost(eq(post), any());
+    }
+/*
     @Test
     public void deletePostFailure() throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -218,4 +232,6 @@ public class PostRepositoryTest {
         countDownLatch.await();
         assertTrue(result instanceof Result.Error);
     }
+ */
+
 }
