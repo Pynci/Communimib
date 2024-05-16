@@ -108,14 +108,7 @@
         <com.denzcoskun.imageslider.ImageSlider
             android:id="@+id/postItem_imageSlider"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/postItem_ImageInsideCard"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </com.denzcoskun.imageslider.ImageSlider>
+            android:layout_height="match_parent" />
 
     </androidx.cardview.widget.CardView>
 
