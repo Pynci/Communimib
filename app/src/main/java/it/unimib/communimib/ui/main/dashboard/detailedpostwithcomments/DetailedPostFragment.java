@@ -34,7 +34,7 @@ import it.unimib.communimib.util.TopbarHelper;
 
 public class DetailedPostFragment extends Fragment {
 
-    private static final int HIDE_THRESHOLD = 500;  // Soglia per nascondere il post
+    private static final int HIDE_THRESHOLD = 1000;  // Soglia per nascondere il post
     private int scrolledDistanceDown = 0;
     private boolean controlsVisible = true;
 
