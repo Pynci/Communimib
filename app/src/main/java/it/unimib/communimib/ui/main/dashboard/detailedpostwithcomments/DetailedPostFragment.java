@@ -34,7 +34,7 @@ public class DetailedPostFragment extends Fragment {
         void onClick();
     }
 
-    private OnSliderClickListener onSliderClickListener;
+    private final OnSliderClickListener onSliderClickListener;
     private BottomNavigationBarListener mListener;
     private FragmentDetailedPostBinding binding;
     private Post post;
@@ -61,7 +61,7 @@ public class DetailedPostFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         binding = FragmentDetailedPostBinding.inflate(getLayoutInflater());
@@ -129,12 +129,18 @@ public class DetailedPostFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onDestroy() {
+        super.onDestroy();
+        showBottomNavigationBar();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof BottomNavigationBarListener) {
             mListener = (BottomNavigationBarListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement BottomNavigationBarListener");
+            throw new RuntimeException(context + " must implement BottomNavigationBarListener");
         }
     }
 
