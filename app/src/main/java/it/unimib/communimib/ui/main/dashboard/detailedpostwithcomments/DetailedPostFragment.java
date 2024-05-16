@@ -34,6 +34,11 @@ import it.unimib.communimib.util.TopbarHelper;
 
 public class DetailedPostFragment extends Fragment {
 
+    private static final int HIDE_THRESHOLD = 500;  // Soglia per nascondere il post
+    private int scrolledDistanceDown = 0;
+    private boolean controlsVisible = true;
+
+
     private interface OnSliderClickListener {
         void onClick();
     }
@@ -135,6 +140,39 @@ public class DetailedPostFragment extends Fragment {
         CommentsAdapter commentsAdapter = new CommentsAdapter(getContext());
         binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);
         binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
+
+        // Definisci una soglia di scroll (in pixel)
+
+        binding.detailedPostItemCommentsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0) {
+                    // L'utente sta scorrendo verso il basso
+                    if (scrolledDistanceDown > HIDE_THRESHOLD && controlsVisible) {
+                        binding.postsection.setVisibility(View.GONE);
+                        controlsVisible = false;
+                        scrolledDistanceDown = 0;  // Resetta la distanza scrollata verso il basso
+                    } else {
+                        scrolledDistanceDown += dy;
+                    }
+                } else if (dy < 0) {
+                    // L'utente sta scorrendo verso l'alto
+                    scrolledDistanceDown = 0;  // Resetta la distanza scrollata verso il basso
+                }
+
+                if (!recyclerView.canScrollVertically(-1)) {
+                    // L'utente ha raggiunto la cima
+                    if (!controlsVisible) {
+                        binding.postsection.setVisibility(View.VISIBLE);
+                        controlsVisible = true;
+                    }
+                    scrolledDistanceDown = 0;
+                }
+            }
+        });
+
 
         for(int i = 0; i < 10; i++)
             commentsAdapter.addItem(new Comment(
