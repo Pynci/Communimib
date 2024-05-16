@@ -11,13 +11,6 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class FakeDashboardRemoteDataSource implements IPostRemoteDataSource {
 
-    public Callback addedCallback;
-    public Callback changedCallback;
-    public Callback removedCallback;
-    public Callback cancelledCallback;
-
-    public String category;
-    public String keyword;
     public Map<String, Post> posts;
 
     public FakeDashboardRemoteDataSource() {
@@ -26,38 +19,22 @@ public class FakeDashboardRemoteDataSource implements IPostRemoteDataSource {
 
     @Override
     public void readAllPosts(Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback) {
-        this.addedCallback = addedCallback;
-        this.changedCallback = changedCallback;
-        this.removedCallback = removedCallback;
-        this.cancelledCallback = cancelledCallback;
+
     }
 
     @Override
     public void readPostsByCategory(String category, Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback) {
-        this.category = category;
-        this.addedCallback = addedCallback;
-        this.changedCallback = changedCallback;
-        this.removedCallback = removedCallback;
-        this.cancelledCallback = cancelledCallback;
+
     }
 
     @Override
     public void readPostsByTitleOrDescription(String keyword, Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback) {
-        this.keyword = keyword;
-        this.addedCallback = addedCallback;
-        this.changedCallback = changedCallback;
-        this.removedCallback = removedCallback;
-        this.cancelledCallback = cancelledCallback;
+
     }
 
     @Override
     public void readPostsByTitleOrDescriptionAndCategory(String keyword, String category, Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback) {
-        this.keyword = keyword;
-        this.category = category;
-        this.addedCallback = addedCallback;
-        this.changedCallback = changedCallback;
-        this.removedCallback = removedCallback;
-        this.cancelledCallback = cancelledCallback;
+
     }
 
     @Override

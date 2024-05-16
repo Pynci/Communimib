@@ -24,16 +24,19 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class PostRepositoryTest {
 
-    //private FakeDashboardRemoteDataSource dashboardRemoteDataSource;
+    private FakeDashboardRemoteDataSource fakeDashboardRemoteDataSource;
     private IPostRemoteDataSource postRemoteDataSource;
     private IPostRepository postRepository;
+    private IPostRepository fakePostRepository;
     private Result result;
     private User user;
 
     @Before
     public void setUp() throws Exception {
+        fakeDashboardRemoteDataSource = new FakeDashboardRemoteDataSource();
         postRemoteDataSource = mock(PostRemoteDataSource.class);
         postRepository = new PostRepository(postRemoteDataSource);
+        fakePostRepository = new PostRepository(fakeDashboardRemoteDataSource);
         this.user = new User("11111", "g.vitale16@campus.unimib.it", "Giulia", "Vitale", false);
     }
 
@@ -177,7 +180,7 @@ public class PostRepositoryTest {
                 "https://firebasestorage.googleapis.com/v0/b/communimib.appspot.com/o/user_propics%2FHrHEip8Vx0XdNfgnwMq8wB6ZCat2.png?alt=media&token=b90de28f-bd9e-47d3-a523-b19ec9f576e1");
         pictures.add(
                 "https://firebasestorage.googleapis.com/v0/b/communimib.appspot.com/o/user_propics%2FHrHEip8Vx0XdNfgnwMq8wB6ZCat2.png?alt=media&token=b90de28f-bd9e-47d3-a523-b19ec9f576e1");
-        postRepository.createPost("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, pictures, result1 -> {
+        fakePostRepository.createPost("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, pictures, result1 -> {
             this.result = result1;
             countDownLatch.countDown();
         });
@@ -190,8 +193,9 @@ public class PostRepositoryTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         Post post = new Post("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, new ArrayList<>());
         post.setPid("12345");
-        //dashboardRemoteDataSource.posts.put(post.getPid(), post);
-        postRepository.deletePost(post,
+        fakeDashboardRemoteDataSource.posts.put(post.getPid(), post);
+
+        fakePostRepository.deletePost(post,
                 result1 -> {
                     this.result = result1;
                     countDownLatch.countDown();
@@ -203,10 +207,10 @@ public class PostRepositoryTest {
     @Test
     public void deletePostFailure() throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        //dashboardRemoteDataSource.posts.clear();
+        fakeDashboardRemoteDataSource.posts.clear();
         Post post = new Post("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, new ArrayList<>());
         post.setPid("12345");
-        postRepository.deletePost(post,
+        fakePostRepository.deletePost(post,
                 result1 -> {
                     this.result = result1;
                     countDownLatch.countDown();
@@ -214,6 +218,4 @@ public class PostRepositoryTest {
         countDownLatch.await();
         assertTrue(result instanceof Result.Error);
     }
-
-
 }
