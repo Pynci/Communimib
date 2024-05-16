@@ -17,9 +17,7 @@ import it.unimib.communimib.Callback;
 import it.unimib.communimib.LiveDataTestUtil;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IPostRepository;
-import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.repository.PostRepository;
-import it.unimib.communimib.repository.UserRepository;
 import it.unimib.communimib.util.ErrorMapper;
 
 public class DashboardViewModelTest {

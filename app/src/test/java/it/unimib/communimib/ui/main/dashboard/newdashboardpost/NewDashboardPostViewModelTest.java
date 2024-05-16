@@ -18,7 +18,6 @@ import java.util.List;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.LiveDataTestUtil;
-import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IPostRepository;

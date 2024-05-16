@@ -217,21 +217,5 @@ public class PostRepositoryTest {
 
         verify(postRemoteDataSource).deletePost(eq(post), any());
     }
-/*
-    @Test
-    public void deletePostFailure() throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        fakeDashboardRemoteDataSource.posts.clear();
-        Post post = new Post("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, new ArrayList<>());
-        post.setPid("12345");
-        fakePostRepository.deletePost(post,
-                result1 -> {
-                    this.result = result1;
-                    countDownLatch.countDown();
-                });
-        countDownLatch.await();
-        assertTrue(result instanceof Result.Error);
-    }
- */
 
 }
