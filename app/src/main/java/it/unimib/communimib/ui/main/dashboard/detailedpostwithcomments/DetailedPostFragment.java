@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +25,9 @@ import java.util.List;
 
 import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.databinding.FragmentDetailedPostBinding;
+import it.unimib.communimib.model.Comment;
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
 import it.unimib.communimib.util.DateFormatter;
 import it.unimib.communimib.util.TopbarHelper;
@@ -125,6 +129,21 @@ public class DetailedPostFragment extends Fragment {
                 //per ora non serve
             }
         });
+
+        //gestione dei commenti
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        CommentsAdapter commentsAdapter = new CommentsAdapter(getContext());
+        binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);
+        binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
+
+        for(int i = 0; i < 10; i++)
+            commentsAdapter.addItem(new Comment(
+                    new User("taaaah", "taaah", "Signor", "Provolazzi", false),
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                            "In egestas semper bibendum. Etiam fermentum est sit amet lacinia pulvinar. " +
+                            "Phasellus at ipsum ante. Phasellus fringilla ipsum sem, eu vestibulum nisl blandit eu. " +
+                            "Cras ornare lobortis est sed gravida. " +
+                            "Aenean vitae justo laoreet, viverra mauris eget, faucibus enim. Fusce purus nunc. "));
 
     }
 
