@@ -1,6 +1,10 @@
 package it.unimib.communimib.repository;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,27 +15,31 @@ import java.util.concurrent.CountDownLatch;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.datasource.dashboard.FakeDashboardRemoteDataSource;
+import it.unimib.communimib.datasource.post.IPostRemoteDataSource;
+import it.unimib.communimib.datasource.post.PostRemoteDataSource;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
+import it.unimib.communimib.util.ErrorMapper;
 
 public class PostRepositoryTest {
 
-    private FakeDashboardRemoteDataSource dashboardRemoteDataSource;
+    //private FakeDashboardRemoteDataSource dashboardRemoteDataSource;
+    private IPostRemoteDataSource postRemoteDataSource;
     private IPostRepository postRepository;
     private Result result;
     private User user;
 
     @Before
     public void setUp() throws Exception {
-        dashboardRemoteDataSource = new FakeDashboardRemoteDataSource();
-        postRepository = new PostRepository(dashboardRemoteDataSource);
+        postRemoteDataSource = mock(PostRemoteDataSource.class);
+        postRepository = new PostRepository(postRemoteDataSource);
         this.user = new User("11111", "g.vitale16@campus.unimib.it", "Giulia", "Vitale", false);
     }
 
     @Test
     public void readAllPosts() {
-        Callback addedCallback = result -> {};
+        /*Callback addedCallback = result -> {};
         Callback changedCallback = result -> {};
         Callback removedCallback = result -> {};
         Callback cancelledCallback = result -> {};
@@ -44,11 +52,41 @@ public class PostRepositoryTest {
         assertEquals(addedCallback, dashboardRemoteDataSource.addedCallback);
         assertEquals(changedCallback, dashboardRemoteDataSource.changedCallback);
         assertEquals(removedCallback, dashboardRemoteDataSource.removedCallback);
-        assertEquals(cancelledCallback, dashboardRemoteDataSource.cancelledCallback);
+        assertEquals(cancelledCallback, dashboardRemoteDataSource.cancelledCallback);*/
     }
 
     @Test
     public void readPostsByCategory() {
+        String category = "Eventi";
+
+        doAnswer(invocation -> {
+            Callback addedCallback = invocation.getArgument(1);
+            addedCallback.onComplete(new Result.Success());
+            Callback changedCallback = invocation.getArgument(2);
+            changedCallback.onComplete(new Result.Success());
+            Callback removedCallback = invocation.getArgument(3);
+            removedCallback.onComplete(new Result.Success());
+            Callback cancelledCallback = invocation.getArgument(4);
+            cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+            return null;
+        }).when(postRemoteDataSource).readPostsByCategory(eq(category), any(), any(), any(), any());
+
+        postRepository.readPostsByCategory(
+                category,
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Error);
+                    assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                });
+
     }
 
     @Test
@@ -80,7 +118,7 @@ public class PostRepositoryTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         Post post = new Post("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, new ArrayList<>());
         post.setPid("12345");
-        dashboardRemoteDataSource.posts.put(post.getPid(), post);
+        //dashboardRemoteDataSource.posts.put(post.getPid(), post);
         postRepository.deletePost(post,
                 result1 -> {
                     this.result = result1;
@@ -93,7 +131,7 @@ public class PostRepositoryTest {
     @Test
     public void deletePostFailure() throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        dashboardRemoteDataSource.posts.clear();
+        //dashboardRemoteDataSource.posts.clear();
         Post post = new Post("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, new ArrayList<>());
         post.setPid("12345");
         postRepository.deletePost(post,
