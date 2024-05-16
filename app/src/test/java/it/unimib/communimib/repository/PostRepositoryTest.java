@@ -39,20 +39,32 @@ public class PostRepositoryTest {
 
     @Test
     public void readAllPosts() {
-        /*Callback addedCallback = result -> {};
-        Callback changedCallback = result -> {};
-        Callback removedCallback = result -> {};
-        Callback cancelledCallback = result -> {};
-        postRepository.readAllPosts(
-                addedCallback,
-                changedCallback,
-                removedCallback,
-                cancelledCallback);
+        doAnswer(invocation -> {
+            Callback addedCallback = invocation.getArgument(0);
+            addedCallback.onComplete(new Result.Success());
+            Callback changedCallback = invocation.getArgument(1);
+            changedCallback.onComplete(new Result.Success());
+            Callback removedCallback = invocation.getArgument(2);
+            removedCallback.onComplete(new Result.Success());
+            Callback cancelledCallback = invocation.getArgument(3);
+            cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+            return null;
+        }).when(postRemoteDataSource).readAllPosts(any(), any(), any(), any());
 
-        assertEquals(addedCallback, dashboardRemoteDataSource.addedCallback);
-        assertEquals(changedCallback, dashboardRemoteDataSource.changedCallback);
-        assertEquals(removedCallback, dashboardRemoteDataSource.removedCallback);
-        assertEquals(cancelledCallback, dashboardRemoteDataSource.cancelledCallback);*/
+        postRepository.readAllPosts(
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Error);
+                    assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                });
     }
 
     @Test
@@ -91,10 +103,70 @@ public class PostRepositoryTest {
 
     @Test
     public void readPostsByTitleOrDescription() {
+        String keyword = "keyword";
+
+        doAnswer(invocation -> {
+            Callback addedCallback = invocation.getArgument(1);
+            addedCallback.onComplete(new Result.Success());
+            Callback changedCallback = invocation.getArgument(2);
+            changedCallback.onComplete(new Result.Success());
+            Callback removedCallback = invocation.getArgument(3);
+            removedCallback.onComplete(new Result.Success());
+            Callback cancelledCallback = invocation.getArgument(4);
+            cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+            return null;
+        }).when(postRemoteDataSource).readPostsByTitleOrDescription(eq(keyword), any(), any(), any(), any());
+
+        postRepository.readPostsByTitleOrDescription(
+                keyword,
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Error);
+                    assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                });
     }
 
     @Test
     public void readPostsByTitleOrDescriptionAndCategory() {
+        String category = "Eventi";
+        String keyword = "keyword";
+
+        doAnswer(invocation -> {
+            Callback addedCallback = invocation.getArgument(2);
+            addedCallback.onComplete(new Result.Success());
+            Callback changedCallback = invocation.getArgument(3);
+            changedCallback.onComplete(new Result.Success());
+            Callback removedCallback = invocation.getArgument(4);
+            removedCallback.onComplete(new Result.Success());
+            Callback cancelledCallback = invocation.getArgument(5);
+            cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+            return null;
+        }).when(postRemoteDataSource).readPostsByTitleOrDescriptionAndCategory(eq(keyword), eq(category), any(), any(), any(), any());
+
+        postRepository.readPostsByTitleOrDescriptionAndCategory(
+                keyword,
+                category,
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Success);
+                },
+                result -> {
+                    assertTrue(result instanceof Result.Error);
+                    assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                });
     }
 
     @Test
