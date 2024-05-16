@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 
 import java.util.ArrayList;
@@ -23,17 +24,26 @@ import java.util.List;
 import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.databinding.FragmentDetailedPostBinding;
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
 import it.unimib.communimib.util.DateFormatter;
 import it.unimib.communimib.util.TopbarHelper;
 
 public class DetailedPostFragment extends Fragment {
 
+    private interface OnSliderClickListener {
+        void onClick();
+    }
+
+    private OnSliderClickListener onSliderClickListener;
     private BottomNavigationBarListener mListener;
     private FragmentDetailedPostBinding binding;
     private Post post;
 
     public DetailedPostFragment() {
-        //Costruttore vuoto
+        onSliderClickListener = () -> {
+            DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(post);
+            imageDialog.show(getParentFragmentManager(), "Image Dialog");
+        };
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,13 +108,23 @@ public class DetailedPostFragment extends Fragment {
             binding.detailedPostItemImageSlider.setImageList(slideModels, ScaleTypes.FIT);
             binding.detailedPostItemImageSlider.setVisibility(View.VISIBLE);
             binding.detailedPostItemImageSliderCardView.setVisibility(View.VISIBLE);
-            binding.detailedPostItemImageInsideCard.setVisibility(View.VISIBLE);
         }
         else{
             binding.detailedPostItemImageSlider.setVisibility(View.GONE);
             binding.detailedPostItemImageSliderCardView.setVisibility(View.GONE);
-            binding.detailedPostItemImageInsideCard.setVisibility(View.GONE);
         }
+
+        binding.detailedPostItemImageSlider.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemSelected(int i) {
+                onSliderClickListener.onClick();
+            }
+
+            @Override
+            public void doubleClick(int i) {
+                //per ora non serve
+            }
+        });
 
     }
 
