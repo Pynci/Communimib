@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -199,14 +200,20 @@ public class DetailedPostFragment extends Fragment {
             }
         });
 
-        for(int i = 0; i < 2; i++)
-            commentsAdapter.addItem(new Comment(
+        for(int i = 0; i < 10; i++){
+
+            Comment comment = new Comment(
                     new User("taaaah", "taaah", "Signor", "Provolazzi", false),
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
                             "In egestas semper bibendum. Etiam fermentum est sit amet lacinia pulvinar. " +
                             "Phasellus at ipsum ante. Phasellus fringilla ipsum sem, eu vestibulum nisl blandit eu. " +
                             "Cras ornare lobortis est sed gravida. " +
-                            "Aenean vitae justo laoreet, viverra mauris eget, faucibus enim. Fusce purus nunc. "));
+                            "Aenean vitae justo laoreet, viverra mauris eget, faucibus enim. Fusce purus nunc. ");
+
+            comment.setCid(String.valueOf(i));
+
+            commentsAdapter.addItem(comment);
+        }
 
     }
 
