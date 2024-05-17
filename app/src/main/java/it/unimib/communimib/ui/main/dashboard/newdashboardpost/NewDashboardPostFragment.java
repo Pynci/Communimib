@@ -162,7 +162,6 @@ public class NewDashboardPostFragment extends Fragment {
                         newDashboardPostViewModel.getCurrentUser(),
                         binding.editTextEmailAddress.getText().toString(),
                         binding.editTextWebsite.getText().toString(),
-                        System.currentTimeMillis(),
                         selectedUris
                 );
             }

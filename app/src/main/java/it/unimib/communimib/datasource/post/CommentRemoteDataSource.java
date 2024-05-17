@@ -75,6 +75,7 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
         String key = databaseReference.child(Constants.COMMENT_PATH).child(pid).push().getKey();
         comment.setCid(key);
 
+
         databaseReference
                 .child(Constants.COMMENT_PATH)
                 .child(pid)
@@ -88,7 +89,6 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
                        callback.onComplete(new Result.Error(ErrorMapper.COMMENT_CREATION_ERROR));
                    }
                 });
-
     }
 
 }

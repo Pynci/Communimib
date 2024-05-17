@@ -7,8 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -224,7 +222,7 @@ public class DetailedPostFragment extends Fragment {
                             "In egestas semper bibendum. Etiam fermentum est sit amet lacinia pulvinar. " +
                             "Phasellus at ipsum ante. Phasellus fringilla ipsum sem, eu vestibulum nisl blandit eu. " +
                             "Cras ornare lobortis est sed gravida. " +
-                            "Aenean vitae justo laoreet, viverra mauris eget, faucibus enim. Fusce purus nunc. "));
+                            "Aenean vitae justo laoreet, viverra mauris eget, faucibus enim. Fusce purus nunc. ", System.currentTimeMillis() ));
 
     }
 

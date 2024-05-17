@@ -9,9 +9,10 @@ public class Comment {
     private String text;
     private long timestamp;
 
-    public Comment(User author, String text) {
+    public Comment(User author, String text, long timestamp) {
         this.author = author;
         this.text = text;
+        this.timestamp = timestamp;
     }
 
     public User getAuthor() {
