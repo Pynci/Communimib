@@ -137,22 +137,16 @@ public class NotificationService extends FirebaseMessagingService {
     private void handleNow() {
         //Log.d(TAG, "Short lived task is done.");
     }
-    public void getToken(){
+    public static void getTokenFromFirebaseMessaging(Callback callback){
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                            //Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                            return;
+                            callback.onComplete(new Result.TokenValueSuccess(task.getResult()));
                         }
+                        //todo aggiungere errore
 
-                        // Get new FCM registration token
-                        String token = task.getResult();
-
-                        // Log and toast
-
-                        //Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

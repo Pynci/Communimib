@@ -15,12 +15,14 @@ import org.junit.Test;
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.LiveDataTestUtil;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.repository.TokenRepository;
 import it.unimib.communimib.repository.UserRepository;
 
 public class SignupViewModelTest {
 
     private SignupViewModel signupViewModel;
     private UserRepository mockUserRepository;
+    private TokenRepository mockTokenRepository;
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -28,7 +30,8 @@ public class SignupViewModelTest {
     @Before
     public void setUp() throws Exception {
         mockUserRepository = mock(UserRepository.class);
-        signupViewModel = new SignupViewModel(mockUserRepository);
+        mockTokenRepository = mock(TokenRepository.class);
+        signupViewModel = new SignupViewModel(mockUserRepository, mockTokenRepository);
     }
 
 
@@ -51,5 +54,7 @@ public class SignupViewModelTest {
         Result result = LiveDataTestUtil.getOrAwaitValue(signupViewModel.getSignUpResult());
         Assert.assertTrue(result instanceof Result.Success);
     }
+
+    //todo aggiungere eventuali test per token
 
 }

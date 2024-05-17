@@ -154,6 +154,7 @@ public class SignupFragment extends Fragment {
             this.getView().clearFocus();
 
             if (result.isSuccessful()) {
+                signupViewModel.addToken();
                 NavigationHelper.navigateTo(requireActivity(), requireView(), R.id.action_signupFragment_to_emailVerificationFragment, false);
             }
             else{

@@ -114,6 +114,17 @@ public abstract class Result {
         }
     }
 
+    public static final class TokenValueSuccess extends Result{
+        private final String token;
+
+        public TokenValueSuccess(String token) {
+            this.token = token;
+        }
+        public String getTokenValue() {
+            return token;
+        }
+    }
+
     public static final class Error extends Result {
         private final String message;
 
