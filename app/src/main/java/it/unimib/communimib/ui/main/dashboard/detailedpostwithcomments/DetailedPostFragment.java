@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,8 @@ import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,21 +36,26 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDetailedPostBinding;
 import it.unimib.communimib.model.Comment;
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
 import it.unimib.communimib.util.DateFormatter;
+import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.TopbarHelper;
 
 public class DetailedPostFragment extends Fragment {
+
     private interface OnSliderClickListener {
         void onClick();
     }
 
+    private DetailedPostViewModel detailedPostViewModel;
     private boolean isPostHidden = false;
     private final OnSliderClickListener onSliderClickListener;
     private BottomNavigationBarListener mListener;
     private FragmentDetailedPostBinding binding;
     private Post post;
+
 
     public DetailedPostFragment() {
         onSliderClickListener = () -> {
@@ -68,6 +76,10 @@ public class DetailedPostFragment extends Fragment {
         catch (Exception e) {
             post = null;
         }
+
+        detailedPostViewModel = new ViewModelProvider(this,
+                new DetailedPostViewModelFactory(this.getContext()))
+                .get(DetailedPostViewModel.class);
     }
 
     @Override
@@ -200,6 +212,57 @@ public class DetailedPostFragment extends Fragment {
             }
         });
 
+        //Lettura dei commenti dal repository
+        detailedPostViewModel.cleanViewModel();
+        detailedPostViewModel.readCommentsByPid(post.getPid());
+
+        //Gestione dell'aggiunta di un commento
+        detailedPostViewModel.getCommentAddedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Comment comment = ((Result.CommentSuccess) result).getComment();
+                commentsAdapter.addItem(comment);
+            }
+            else{
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        //Gestione della modifica di un commento
+        detailedPostViewModel.getCommentChangedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Comment comment = ((Result.CommentSuccess) result).getComment();
+                commentsAdapter.editItem(comment);
+            }
+            else{
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        //Gestione della rimozione di un commento
+        detailedPostViewModel.getCommentRemovedReadResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Comment comment = ((Result.CommentSuccess) result).getComment();
+                commentsAdapter.removeItem(comment);
+            }
+            else{
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        //Gestione dell'interruzione durante la lettura
+        detailedPostViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result -> {
+            Snackbar.make(requireView(),
+                    ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                    BaseTransientBottomBar.LENGTH_SHORT).show();
+        });
+
+        // inserimento di commenti fittizi nell'adapter (al fine di eseguire test grafici)
         for(int i = 0; i < 10; i++){
 
             Comment comment = new Comment(
