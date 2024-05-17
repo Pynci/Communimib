@@ -18,6 +18,7 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Comment;
+import it.unimib.communimib.util.DateFormatter;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
@@ -60,7 +61,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     @NonNull
     @Override
     public CommentsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -80,6 +81,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         private final TextView userName;
         private final TextView userSurname;
         private final TextView commentDescription;
+        private final TextView dateTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,6 +90,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             userName = itemView.findViewById(R.id.commentItem_name);
             userSurname = itemView.findViewById(R.id.commentItem_surname);
             commentDescription = itemView.findViewById(R.id.commentItem_text);
+            dateTime = itemView.findViewById(R.id.commentItem_datetime);
         }
 
         public void bind(Comment comment) {
@@ -102,6 +105,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             userName.setText(comment.getAuthor().getName());
             userSurname.setText(comment.getAuthor().getSurname());
             commentDescription.setText(comment.getText());
+            dateTime.setText(DateFormatter.format(comment.getTimestamp(), context));
         }
     }
 }

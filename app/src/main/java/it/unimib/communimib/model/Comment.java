@@ -2,12 +2,18 @@ package it.unimib.communimib.model;
 
 import java.util.Objects;
 
+import it.unimib.communimib.ui.main.dashboard.detailedpostwithcomments.CommentsAdapter;
+
 public class Comment {
 
     private String cid;
     private User author;
     private String text;
     private long timestamp;
+
+    public Comment(){
+
+    }
 
     public Comment(User author, String text, long timestamp) {
         this.author = author;

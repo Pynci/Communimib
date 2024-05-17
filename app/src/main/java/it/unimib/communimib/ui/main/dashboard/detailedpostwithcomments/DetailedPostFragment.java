@@ -262,21 +262,22 @@ public class DetailedPostFragment extends Fragment {
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         });
 
-        // inserimento di commenti fittizi nell'adapter (al fine di eseguire test grafici)
-        for(int i = 0; i < 10; i++){
+        //Gestione della creazione di un nuovo commento
+        binding.detailedPostItemSend.setOnClickListener(v -> {
+            String text = binding.detailedPostItemComment.getText().toString();
+            if(!text.isEmpty()){
+                detailedPostViewModel.createComment(post.getPid(), text);
+                binding.detailedPostItemComment.setText("");
+            }
+        });
 
-            Comment comment = new Comment(
-                    new User("taaaah", "taaah", "Signor", "Provolazzi", false),
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                            "In egestas semper bibendum. Etiam fermentum est sit amet lacinia pulvinar. " +
-                            "Phasellus at ipsum ante. Phasellus fringilla ipsum sem, eu vestibulum nisl blandit eu. " +
-                            "Cras ornare lobortis est sed gravida. " +
-                            "Aenean vitae justo laoreet, viverra mauris eget, faucibus enim. Fusce purus nunc. ", System.currentTimeMillis());
-
-            comment.setCid(String.valueOf(i));
-
-            commentsAdapter.addItem(comment);
-        }
+        detailedPostViewModel.getCommentCreationResult().observe(getViewLifecycleOwner(), result -> {
+            if(!result.isSuccessful()){
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

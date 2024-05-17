@@ -21,6 +21,12 @@ public class DetailedPostViewModel extends ViewModel {
     public DetailedPostViewModel(IPostRepository postRepository, IUserRepository userRepository){
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+
+        commentCreationResult = new MutableLiveData<>();
+        commentAddedReadResult = new MutableLiveData<>();
+        commentChangedReadResult = new MutableLiveData<>();
+        commentRemovedReadResult = new MutableLiveData<>();
+        readCancelledResult = new MutableLiveData<>();
     }
 
     public void readCommentsByPid(String pid){
