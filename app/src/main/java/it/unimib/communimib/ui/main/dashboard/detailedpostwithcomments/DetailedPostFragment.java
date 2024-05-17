@@ -7,11 +7,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -36,16 +39,11 @@ import it.unimib.communimib.util.DateFormatter;
 import it.unimib.communimib.util.TopbarHelper;
 
 public class DetailedPostFragment extends Fragment {
-
-    private static final int HIDE_THRESHOLD = 2000;  // Soglia per nascondere il post
-    private int scrolledDistanceDown = 0;
-    private boolean controlsVisible = true;
-
-
     private interface OnSliderClickListener {
         void onClick();
     }
 
+    private boolean isPostHidden = false;
     private final OnSliderClickListener onSliderClickListener;
     private BottomNavigationBarListener mListener;
     private FragmentDetailedPostBinding binding;
@@ -189,40 +187,33 @@ public class DetailedPostFragment extends Fragment {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy > 0) {
-                    // L'utente sta scorrendo verso il basso
-                    if (scrolledDistanceDown > HIDE_THRESHOLD && controlsVisible) {
-                        binding.postsection.startAnimation(animationPostSlideUp);
-                        controlsVisible = false;
-                        scrolledDistanceDown = 0;  // Resetta la distanza scrollata verso il basso
-                    } else {
-                        scrolledDistanceDown += dy;
-                    }
-                } else if (dy < 0) {
-                    // L'utente sta scorrendo verso l'alto
-                    scrolledDistanceDown = 0;  // Resetta la distanza scrollata verso il basso
+                if(dy > 100 && !isPostHidden) {
+                    binding.postsection.startAnimation(animationPostSlideUp);
+                    isPostHidden = true;
                 }
 
-                if (!recyclerView.canScrollVertically(-1)) {
-                    // L'utente ha raggiunto la cima
-                    if (!controlsVisible) {
-                        binding.postsection.startAnimation(animationPostSlideDown);
-                        controlsVisible = true;
-                    }
-                    scrolledDistanceDown = 0;
+                if(!recyclerView.canScrollVertically(-1) && isPostHidden) {
+                    binding.postsection.startAnimation(animationPostSlideDown);
+                    isPostHidden = false;
                 }
+
             }
         });
 
+        for(int i = 0; i < 10; i++){
 
-        for(int i = 0; i < 10; i++)
-            commentsAdapter.addItem(new Comment(
+            Comment comment = new Comment(
                     new User("taaaah", "taaah", "Signor", "Provolazzi", false),
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
                             "In egestas semper bibendum. Etiam fermentum est sit amet lacinia pulvinar. " +
                             "Phasellus at ipsum ante. Phasellus fringilla ipsum sem, eu vestibulum nisl blandit eu. " +
                             "Cras ornare lobortis est sed gravida. " +
-                            "Aenean vitae justo laoreet, viverra mauris eget, faucibus enim. Fusce purus nunc. ", System.currentTimeMillis() ));
+                            "Aenean vitae justo laoreet, viverra mauris eget, faucibus enim. Fusce purus nunc. ");
+
+            comment.setCid(String.valueOf(i));
+
+            commentsAdapter.addItem(comment);
+        }
 
     }
 
