@@ -208,7 +208,7 @@ public class DetailedPostFragment extends Fragment {
                             "In egestas semper bibendum. Etiam fermentum est sit amet lacinia pulvinar. " +
                             "Phasellus at ipsum ante. Phasellus fringilla ipsum sem, eu vestibulum nisl blandit eu. " +
                             "Cras ornare lobortis est sed gravida. " +
-                            "Aenean vitae justo laoreet, viverra mauris eget, faucibus enim. Fusce purus nunc. ");
+                            "Aenean vitae justo laoreet, viverra mauris eget, faucibus enim. Fusce purus nunc. ", System.currentTimeMillis());
 
             comment.setCid(String.valueOf(i));
 
