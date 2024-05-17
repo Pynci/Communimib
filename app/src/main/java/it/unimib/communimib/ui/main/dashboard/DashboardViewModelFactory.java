@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.reports.detailedreport;
+package it.unimib.communimib.ui.main.dashboard;
 
 import android.content.Context;
 
