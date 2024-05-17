@@ -24,6 +24,9 @@ public class Validation {
         boolean capitalCase = false;
         boolean specialChar = false;
 
+        if(password.isEmpty())
+            return ErrorMapper.EMPTY_FIELD;
+
         if(password.length() < 8)
             return ErrorMapper.TOO_SHORT_FIELD;
 

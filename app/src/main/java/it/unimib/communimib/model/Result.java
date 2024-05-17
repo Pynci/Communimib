@@ -78,6 +78,30 @@ public abstract class Result {
         }
     }
 
+    public static final class UserFavoriteBuildingsSuccess extends Result {
+
+        private final List<String> favoriteBuildings;
+
+        public UserFavoriteBuildingsSuccess(List<String> favoriteBuildings) {
+            this.favoriteBuildings = favoriteBuildings;
+        }
+
+        public List<String> getFavoriteBuildings() {
+            return favoriteBuildings;
+        }
+    }
+
+    public static final class PostSuccess extends Result{
+        private final Post post;
+
+
+        public PostSuccess(Post post) {
+            this.post = post;
+        }
+
+        public Post getPost(){ return post; }
+    }
+
     public static final class Error extends Result {
         private final String message;
 
@@ -87,19 +111,6 @@ public abstract class Result {
 
         public String getMessage(){
             return message;
-        }
-    }
-
-    public static final class UserFavoriteBuildings extends Result {
-
-        private final List<String> favoriteBuildings;
-
-        public UserFavoriteBuildings(List<String> favoriteBuildings) {
-            this.favoriteBuildings = favoriteBuildings;
-        }
-
-        public List<String> getFavoriteBuildings() {
-            return favoriteBuildings;
         }
     }
 }

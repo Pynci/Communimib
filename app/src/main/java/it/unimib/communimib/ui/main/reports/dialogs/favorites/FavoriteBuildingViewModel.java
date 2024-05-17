@@ -12,30 +12,30 @@ import it.unimib.communimib.repository.IUserRepository;
 
 public class FavoriteBuildingViewModel extends ViewModel {
 
-    private final MutableLiveData<Result> getUserInterestsResult;
-    private final MutableLiveData<Result> setUserInterestsResult;
+    private final MutableLiveData<Result> getUserFavoriteBuildingsResult;
+    private final MutableLiveData<Result> setUserFavoriteBuildingsResult;
 
     private final IUserRepository iUserRepository;
     public FavoriteBuildingViewModel (IUserRepository iUserRepository) {
-        getUserInterestsResult = new MutableLiveData<>();
-        setUserInterestsResult = new MutableLiveData<>();
+        getUserFavoriteBuildingsResult = new MutableLiveData<>();
+        setUserFavoriteBuildingsResult = new MutableLiveData<>();
         this.iUserRepository = iUserRepository;
     }
 
     public void setUserFavoriteBuildings(List<String> userInterests, DialogCallback dialogCallback) {
-        iUserRepository.storeUserFavoriteBuildings(userInterests, setUserInterestsResult::postValue);
+        iUserRepository.storeUserFavoriteBuildings(userInterests, setUserFavoriteBuildingsResult::postValue);
         dialogCallback.onComplete();
     }
 
     public void getUserFavoriteBuildings() {
-        iUserRepository.readUserFavoriteBuildings(getUserInterestsResult::postValue);
+        iUserRepository.readUserFavoriteBuildings(getUserFavoriteBuildingsResult::postValue);
     }
 
-    public LiveData<Result> getUserInterestsResult () {
-        return getUserInterestsResult;
+    public LiveData<Result> getGetUserFavoriteBuildingsResult() {
+        return getUserFavoriteBuildingsResult;
     }
 
-    public LiveData<Result> getSetUserInterestsResult() {
-        return setUserInterestsResult;
+    public LiveData<Result> getSetUserFavoriteBuildingsResult() {
+        return setUserFavoriteBuildingsResult;
     }
 }

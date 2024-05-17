@@ -47,7 +47,7 @@ public class SignupViewModelTest {
             return null;
         }).when(mockUserRepository).signUp(eq(email), eq(password), eq(name), eq(surname), any());
 
-        signupViewModel.signUp(email, password, password, name, surname);
+        signupViewModel.signUp(email, password, name, surname);
         Result result = LiveDataTestUtil.getOrAwaitValue(signupViewModel.getSignUpResult());
         Assert.assertTrue(result instanceof Result.Success);
     }

@@ -24,10 +24,10 @@ public class ReportsCreationViewModel extends ViewModel {
         createReportResult = new MutableLiveData<>();
     }
 
-    public void createReport(String titolo, String descrizione, String edificio, String categoria, DialogCallback callback) {
-        String validationResult = Validation.validateNewReport(titolo, descrizione, edificio, categoria);
+    public void createReport(String title, String description, String building, String category, DialogCallback callback) {
+        String validationResult = Validation.validateNewReport(title, description, building, category);
         if(validationResult.equals("ok")) {
-            reportRepository.createReport(titolo, descrizione, edificio, categoria, userRepository.getCurrentUser(), result -> {
+            reportRepository.createReport(title, description, building, category, userRepository.getCurrentUser(), result -> {
                 createReportResult.postValue(result);
                 callback.onComplete();
             });

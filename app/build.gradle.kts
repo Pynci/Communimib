@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     id("com.google.gms.google-services")
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -84,4 +85,7 @@ dependencies {
 
     //Dipendenza per GSON
     implementation("com.google.code.gson:gson:2.8.8")
+
+    //Dipendenza per l'image slider
+    implementation("com.github.denzcoskun:ImageSlideshow:0.1.2")
 }

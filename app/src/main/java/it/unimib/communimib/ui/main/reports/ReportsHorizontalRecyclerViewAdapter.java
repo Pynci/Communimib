@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,14 +20,15 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Report;
+import it.unimib.communimib.util.BuildingsImagesHelper;
 
 public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<ReportsHorizontalRecyclerViewAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
         void onCloseReportClick(Report report);
+        void onCardClick(Report report);
     }
     private final boolean isUnimibUser;
-    private String category;
     private List<Report> reportList;
     private final OnItemClickListener onItemClickListener;
     private final int layout;
@@ -46,22 +48,21 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
     }
 
     public void removeItem(Report removedReport) {
-        int position = -1;
-        for (int i = 0; i < reportList.size(); i++) {
-            if(reportList.get(i).getRid().equals(removedReport.getRid())){
-                position = i;
-                break;
-            }
-        }
+        //todo sostituire il for con indexOf
+//        int position = -1;
+//        for (int i = 0; i < reportList.size(); i++) {
+//            if(reportList.get(i).getRid().equals(removedReport.getRid())){
+//                position = i;
+//                break;
+//            }
+//        }
+        int position = reportList.indexOf(removedReport);
         if (position != -1) {
             reportList.remove(position);
             notifyItemRemoved(position);
         }
     }
 
-    public void setCategory(String category){
-        this.category = category;
-    }
 
     public boolean isReportListEmpty(){
         return reportList.isEmpty();
@@ -100,6 +101,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        private final CardView card;
         private final TextView title;
         private final TextView description;
         private final TextView buiding;
@@ -123,10 +125,13 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             surname = itemView.findViewById(R.id.reportListItem_user_surname);
             closeButton = itemView.findViewById(R.id.reportListItem_closeButton);
             buildingImage = itemView.findViewById(R.id.reportListItem_buildingImage);
+            card = itemView.findViewById(R.id.cardview_report);
+
             if (isUnimibUser){
                 closeButton.setVisibility(View.VISIBLE);
             }
             closeButton.setOnClickListener(this);
+            card.setOnClickListener(this);
         }
 
         public void bind(Report report){
@@ -135,12 +140,13 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             buiding.setText(report.getBuilding());
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
-            setBuildingImage(report.getBuilding());
-            Glide
-                    .with(context)
-                    .load(Uri.parse(report.getAuthor().getPropic()))
-                    .into(propic);
-
+            BuildingsImagesHelper.setBuildingImage(buildingImage, report.getBuilding());
+            if(report.getAuthor().getPropic() != null){
+                Glide
+                        .with(context)
+                        .load(Uri.parse(report.getAuthor().getPropic()))
+                        .into(propic);
+            }
         }
 
         @Override
@@ -148,79 +154,11 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             if(v.getId() == R.id.reportListItem_closeButton){
                 onItemClickListener.onCloseReportClick(reportList.get(getAdapterPosition()));
             }
-        }
-
-        public void setBuildingImage(String building){
-            switch (building){
-                case "U1": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou1_foreground);
-                    break;
-                }
-                case "U2": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou2_foreground);
-                    break;
-                }
-                case "U3": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou3_foreground);
-                    break;
-                }
-                case "U4": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou4_foreground);
-                    break;
-                }
-                case "U5": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou5_foreground);
-                    break;
-                }
-                case "U6": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou6_foreground);
-                    break;
-                }
-                case "U7": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou7_foreground);
-                    break;
-                }
-                case "U9": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou9_foreground);
-                    break;
-                }
-                case "U10": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou10_foreground);
-                    break;
-                }
-                case "U11": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou11_foreground);
-                    break;
-                }
-                case "U14": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou14_foreground);
-                    break;
-                }
-                case "U16": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou16_foreground);
-                    break;
-                }
-                case "U17": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou17_foreground);
-                    break;
-                }
-                case "U19": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou19_foreground);
-                    break;
-                }
-                case "U22": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou22_foreground);
-                    break;
-                }
-                case "U24": {
-                    buildingImage.setBackgroundResource(R.mipmap.edificiou24_foreground);
-                    break;
-                }
-                default: {
-                    buildingImage.setBackgroundResource(R.mipmap.no_image_foreground);
-                }
+            if(v.getId() == R.id.cardview_report) {
+                onItemClickListener.onCardClick(reportList.get(getAdapterPosition()));
             }
         }
+
     }
 
 

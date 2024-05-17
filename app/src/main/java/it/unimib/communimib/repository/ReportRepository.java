@@ -1,6 +1,5 @@
 package it.unimib.communimib.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.communimib.Callback;
@@ -24,12 +23,22 @@ public class ReportRepository implements IReportRepository {
         reportRemoteDataSource.readAllReports(addedCallback, changedCallback, removedCallback, cancelledCallback);
     }
 
-    public void readReportsByBuildings(String[] buildings,
+    @Override
+    public void readReportsByBuildings(List<String> buildings,
                                        Callback addedCallback,
                                        Callback changedCallback,
                                        Callback removedCallback,
                                        Callback cancelledCallback){
         reportRemoteDataSource.readReportsByBuildings(buildings, addedCallback, changedCallback, removedCallback, cancelledCallback);
+    }
+
+    @Override
+    public void readReportsByTitleAndDescription(String keyword,
+                                                 Callback addedCallback,
+                                                 Callback changedCallback,
+                                                 Callback removedCallback,
+                                                 Callback cancelledCallback) {
+        reportRemoteDataSource.readReportsByTitleAndDescription(keyword, addedCallback, changedCallback, removedCallback, cancelledCallback);
     }
 
     @Override

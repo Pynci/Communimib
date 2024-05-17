@@ -12,7 +12,7 @@ public interface IUserLocalDataSource {
     void updateUser(User user, Callback callback);
     void deleteUser(Callback callback);
 
-    void saveUserFavoriteBuildings(List<String> userInterests, Callback callback);
+    void saveUserFavoriteBuildings(List<String> favoriteBuildings, Callback callback);
 
     void getUserFavoriteBuildings(Callback callback);
 }

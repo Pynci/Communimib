@@ -7,7 +7,7 @@ import android.app.NotificationManager;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -26,17 +26,20 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.R;
+import it.unimib.communimib.TopNavigationBarListener;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements BottomNavigationBarListener, TopNavigationBarListener {
+    BottomNavigationView bottomNav;
     private NavController navController;
+    MaterialToolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MaterialToolbar toolbar = findViewById(R.id.activityMainButtonMenu_topAppbar);
+        toolbar = findViewById(R.id.activityMainButtonMenu_topAppbar);
         toolbar.setTitleTextColor(getColor(R.color.md_theme_light_onSecondary));
         setSupportActionBar(toolbar);
 
@@ -113,4 +116,23 @@ public class MainActivity extends AppCompatActivity {
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
 
+    @Override
+    public void hideBottomNavigationBar() {
+        bottomNav.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showBottomNavigationBar() {
+        bottomNav.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideTopNavigationBar() {
+        toolbar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showTopNavigationBar() {
+        toolbar.setVisibility(View.VISIBLE);
+    }
 }

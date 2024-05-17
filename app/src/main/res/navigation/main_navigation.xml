@@ -9,7 +9,13 @@
         android:id="@+id/dashboardFragment"
         android:name="it.unimib.communimib.ui.main.dashboard.DashboardFragment"
         android:label=""
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_newDashboardPostDialog"
+            app:destination="@id/newDashboardPostDialog"
+            app:enterAnim="@anim/fragment_slide_up"
+            app:popExitAnim="@anim/fragment_slide_down" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="it.unimib.communimib.ui.main.profile.ProfileFragment"
@@ -19,5 +25,29 @@
         android:id="@+id/reportsFragment"
         android:name="it.unimib.communimib.ui.main.reports.ReportsFragment"
         android:label=""
-        tools:layout="@layout/fragment_reports" />
+        tools:layout="@layout/fragment_reports" >
+        <action
+            android:id="@+id/action_reportsFragment_to_detailedReportFragment"
+            app:destination="@id/detailedReportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedReportFragment"
+        android:name="it.unimib.communimib.ui.main.reports.detailedreport.DetailedReportFragment"
+        android:label=""
+        tools:layout="@layout/fragment_detailed_report">
+
+        <argument
+            android:name="report"
+            app:argType="it.unimib.communimib.model.Report" />
+    </fragment>
+    <fragment
+        android:id="@+id/newDashboardPostDialog"
+        android:name="it.unimib.communimib.ui.main.dashboard.newdashboardpost.NewDashboardPostDialog"
+        android:label=""
+        tools:layout="@layout/fragment_new_dashboard_post_dialog" >
+        <action
+            android:id="@+id/action_newDashboardPostDialog_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:popEnterAnim="@anim/fragment_slide_down" />
+    </fragment>
 </navigation>

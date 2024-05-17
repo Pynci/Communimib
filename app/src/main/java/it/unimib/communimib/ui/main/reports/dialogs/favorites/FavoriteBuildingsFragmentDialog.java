@@ -35,7 +35,7 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         // Utilizza il binding per inflare il layout
-        binding = FragmentFavoriteDialogBinding.inflate(LayoutInflater.from(getContext()));
+        binding = FragmentFavoriteDialogBinding.inflate(getLayoutInflater());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(binding.getRoot());
@@ -64,10 +64,10 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
         //Leggo gli interessi dell'utente
         favoriteBuildingViewModel.getUserFavoriteBuildings();
 
-        favoriteBuildingViewModel.getUserInterestsResult().observe(this, result -> {
+        favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(this, result -> {
             List<String> favoriteBuildings;
             if(result.isSuccessful()) {
-                favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
+                favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
                 filterReportListViewAdapter.setCheckedItems(favoriteBuildings);
             }
         });

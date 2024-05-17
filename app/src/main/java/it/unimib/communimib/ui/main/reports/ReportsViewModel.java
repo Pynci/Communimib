@@ -3,6 +3,9 @@ package it.unimib.communimib.ui.main.reports;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.util.List;
+
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
@@ -11,7 +14,7 @@ import it.unimib.communimib.repository.IUserRepository;
 
 public class ReportsViewModel extends ViewModel {
 
-    private MutableLiveData<Result> deleteReportResult;
+    private MutableLiveData<Result> closeReportResult;
     private MutableLiveData<Result> reportAddedReadResult;
     private MutableLiveData<Result> reportChangedReadResult;
     private MutableLiveData<Result> reportRemovedReadResult;
@@ -20,7 +23,7 @@ public class ReportsViewModel extends ViewModel {
     private final IUserRepository userRepository;
 
     public ReportsViewModel(IReportRepository reportRepository, IUserRepository userRepository) {
-        deleteReportResult = new MutableLiveData<>();
+        closeReportResult = new MutableLiveData<>();
         this.reportRepository = reportRepository;
         this.userRepository = userRepository;
 
@@ -43,7 +46,7 @@ public class ReportsViewModel extends ViewModel {
         );
     }
 
-    public void readReportsByBuildings(String[] buildings){
+    public void readReportsByBuildings(List<String> buildings){
         reportRepository.readReportsByBuildings(buildings,
                 result -> reportAddedReadResult.setValue(result),
                 result -> reportChangedReadResult.setValue(result),
@@ -51,8 +54,16 @@ public class ReportsViewModel extends ViewModel {
                 result -> readCancelledResult.setValue(result));
     }
 
-    public void deleteReport(Report report){
-        reportRepository.deleteReport(report, deleteReportResult::postValue);
+    public void readReportsByTitleAndDescription(String keyword){
+        reportRepository.readReportsByTitleAndDescription(keyword,
+                result -> reportAddedReadResult.setValue(result),
+                result -> reportChangedReadResult.setValue(result),
+                result -> reportRemovedReadResult.setValue(result),
+                result -> readCancelledResult.setValue(result));
+    }
+
+    public void closeReport(Report report){
+        reportRepository.deleteReport(report, closeReportResult::postValue);
     }
 
     public LiveData<Result> getReportAddedReadResult() {
@@ -71,10 +82,10 @@ public class ReportsViewModel extends ViewModel {
         return readCancelledResult;
     }
 
-    public LiveData<Result> getDeleteReportResult() {return this.deleteReportResult;}
+    public LiveData<Result> getCloseReportResult() {return this.closeReportResult;}
 
     public void cleanViewModel(){
-        deleteReportResult = new MutableLiveData<>();
+        closeReportResult = new MutableLiveData<>();
         reportAddedReadResult = new MutableLiveData<>();
         reportChangedReadResult = new MutableLiveData<>();
         reportRemovedReadResult = new MutableLiveData<>();

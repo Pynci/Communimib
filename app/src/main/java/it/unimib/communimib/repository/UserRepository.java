@@ -157,7 +157,7 @@ public class UserRepository implements IUserRepository{
             pollingExecutor = Executors.newSingleThreadScheduledExecutor();
         }
 
-        pollingExecutor.scheduleAtFixedRate(() -> {
+        pollingExecutor.scheduleWithFixedDelay(() -> {
             isEmailVerified(result -> {
                 Log.d(this.getClass().getSimpleName(), "MAIL: sto controllando...");
                 if(result.isSuccessful()){
@@ -195,21 +195,27 @@ public class UserRepository implements IUserRepository{
                 }
             });
         }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
+        }
     }
 
     @Override
-    public void uploadPropic(Uri uri, Callback callback){
+    public void uploadPropic(Uri localUri, Callback callback){
         if(currentUser != null){
-            userRemoteDataSource.uploadPropic(currentUser.getUid(), uri, remoteResult -> {
+            userRemoteDataSource.uploadPropic(currentUser.getUid(), localUri, remoteResult -> {
                 if(remoteResult.isSuccessful()){
-                    String downloadUri = ((Result.UriSuccess) remoteResult).getUri();
-                    currentUser.setPropic(downloadUri);
+                    String remoteDownloadUri = ((Result.UriSuccess) remoteResult).getUri();
+                    currentUser.setPropic(remoteDownloadUri);
                     userLocalDataSource.updateUser(currentUser, callback);
                 }
                 else{
                     callback.onComplete(remoteResult);
                 }
             });
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
         }
     }
 
@@ -224,16 +230,19 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
-    public void storeUserFavoriteBuildings(List<String> userInterests, Callback callback) {
+    public void storeUserFavoriteBuildings(List<String> favoriteBuildings, Callback callback) {
         if(currentUser != null){
-            userRemoteDataSource.storeUserFavoriteBuildings(userInterests, getCurrentUser().getUid(), resultRemote -> {
+            userRemoteDataSource.storeUserFavoriteBuildings(favoriteBuildings, getCurrentUser().getUid(), resultRemote -> {
                 if(resultRemote.isSuccessful()){
-                    userLocalDataSource.saveUserFavoriteBuildings(userInterests, callback);
+                    userLocalDataSource.saveUserFavoriteBuildings(favoriteBuildings, callback);
                 }
                 else{
                     callback.onComplete(resultRemote);
                 }
             });
+        }
+        else{
+            callback.onComplete(new Result.Error(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR));
         }
     }
 
@@ -244,7 +253,7 @@ public class UserRepository implements IUserRepository{
         if(currentTime - lastFavoriteBuildingsUpdate > Constants.FAVORITE_BUILDINGS_TIMEOUT){
             userRemoteDataSource.getUserFavoriteBuildings(currentUser.getUid(), remoteResult -> {
                 if(remoteResult.isSuccessful()){
-                    userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildings) remoteResult).getFavoriteBuildings(), localResult -> {
+                    userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildingsSuccess) remoteResult).getFavoriteBuildings(), localResult -> {
                         if(localResult.isSuccessful()){
                             lastFavoriteBuildingsUpdate = currentTime;
                             callback.onComplete(remoteResult);
@@ -267,7 +276,14 @@ public class UserRepository implements IUserRepository{
                 else{
                     userRemoteDataSource.getUserFavoriteBuildings(currentUser.getUid(), remoteResult -> {
                         if(remoteResult.isSuccessful()){
-                            userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildings) remoteResult).getFavoriteBuildings(), callback);
+                            userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildingsSuccess) remoteResult).getFavoriteBuildings(), localSaveResult -> {
+                                if(localSaveResult.isSuccessful()){
+                                    callback.onComplete(remoteResult);
+                                }
+                                else{
+                                    callback.onComplete(localSaveResult);
+                                }
+                            });
                         }
                         else{
                             callback.onComplete(remoteResult);

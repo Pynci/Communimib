@@ -29,4 +29,17 @@
         <item>Materiale mancante</item>
         <item>Categoria</item>
     </array>
+
+    <array name="posts_categories">
+        <item>Tutti</item>
+        <item>Comunicazioni ufficiali</item>
+        <item>Eventi</item>
+        <item>Ripetizioni</item>
+        <item>Affitti</item>
+        <item>Offerte lavorative</item>
+        <item>Incontri studio</item>
+        <item>Progetti</item>
+        <item>Altro</item>
+        <item>Categoria</item>
+    </array>
 </resources>

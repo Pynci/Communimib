@@ -7,14 +7,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.SearchView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -43,10 +46,8 @@ public class ReportsFragment extends Fragment {
     private ReportsViewModel reportsViewModel;
     private FiltersViewModel filtersViewModel;
     private ReportsCreationViewModel reportsCreationViewModel;
-
     private FavoriteBuildingViewModel favoriteBuildingViewModel;
     private ReportMainRecyclerViewAdapter reportMainRecyclerViewAdapter;
-    private List<CategoryReport> categoryReportList;
     private List<String> favoriteBuildings;
     private boolean isFilteredByFavorites = false;
     private boolean menuVisibile;
@@ -84,6 +85,34 @@ public class ReportsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        fragmentReportsBinding.fragmentReportSearchView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                fragmentReportsBinding.fragmentReportSearchView.setIconified(false);
+            }
+        });
+
+        fragmentReportsBinding.fragmentReportSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                reportsViewModel.readReportsByTitleAndDescription(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
+        fragmentReportsBinding.fragmentReportSearchView.setOnCloseListener(() -> {
+            filter(filtersViewModel.getChosenFilter().getValue());
+            return false;
+        });
+
 
         //Gestione pulsanti del menu
         fragmentReportsBinding.floatingActionButtonMenu.setOnClickListener(v ->
@@ -111,6 +140,7 @@ public class ReportsFragment extends Fragment {
         //Gestione osservazione creazione
         reportsCreationViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
+                // TODO: togliere questo testo hardcodato
                 Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
@@ -156,7 +186,7 @@ public class ReportsFragment extends Fragment {
                     .show()
         );
 
-        reportsViewModel.getDeleteReportResult().observe(getViewLifecycleOwner(), result ->{
+        reportsViewModel.getCloseReportResult().observe(getViewLifecycleOwner(), result ->{
             if(result.isSuccessful()){
                 Snackbar.make(view, R.string.report_closed_correctly, BaseTransientBottomBar.LENGTH_SHORT).show();
             } else {
@@ -165,15 +195,26 @@ public class ReportsFragment extends Fragment {
         });
 
 
-        categoryReportList = new ArrayList<>();
+        List<CategoryReport> categoryReportList = new ArrayList<>();
         String[] categories = getResources().getStringArray(R.array.reports_categories);
         for (int i = 0; i<categories.length - 1; i++) {
             ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter =
                     new ReportsHorizontalRecyclerViewAdapter(reportsViewModel.getCurrentUser().isUnimibEmployee(),
-                            report -> reportsViewModel.deleteReport(report),
+                            new ReportsHorizontalRecyclerViewAdapter.OnItemClickListener() {
+                                @Override
+                                public void onCloseReportClick(Report report) {
+                                    reportsViewModel.closeReport(report);
+                                }
+
+                                @Override
+                                public void onCardClick(Report report) {
+                                    ReportsFragmentDirections.ActionReportsFragmentToDetailedReportFragment action =
+                                            ReportsFragmentDirections.actionReportsFragmentToDetailedReportFragment(report);
+                                    Navigation.findNavController(view).navigate(action);
+                                }
+                            },
                             requireContext(),
                             R.layout.report_horizontal_item);
-            reportsHorizontalRecyclerViewAdapter.setCategory(categories[i]);
             categoryReportList.add(new CategoryReport(categories[i],reportsHorizontalRecyclerViewAdapter));
         }
 
@@ -183,30 +224,35 @@ public class ReportsFragment extends Fragment {
         mainRecyclerView.setAdapter(reportMainRecyclerViewAdapter);
         mainRecyclerView.setLayoutManager(layoutManager);
 
-        reportsViewModel.readAllReports();
-
         favoriteBuildings = new ArrayList<>();
         favoriteBuildingViewModel.getUserFavoriteBuildings();
-        favoriteBuildingViewModel.getUserInterestsResult().observe(getViewLifecycleOwner(), result -> {
+        favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
-                favoriteBuildings = ((Result.UserFavoriteBuildings) result).getFavoriteBuildings();
-                if (isFilteredByFavorites) {
-                    if (!favoriteBuildings.isEmpty()) {
-                        String[] building = new String[favoriteBuildings.size()];
-                        for (int i = 0; i < favoriteBuildings.size(); i++) {
-                            building[i] = favoriteBuildings.get(i);
-                        }
-                        reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                        reportsViewModel.readReportsByBuildings(building);
-                    }
+
+                // alla prima chiamata riempie i preferiti
+                if(favoriteBuildings.isEmpty()){
+                    favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
+                    reportsViewModel.readReportsByBuildings(favoriteBuildings);
+                    isFilteredByFavorites = true;
                 }
+                //successivamente effettua la rilettura solo se i preferiti sono cambiati rispetto a prima
+                if(!favoriteBuildings.equals(((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings())){
+                    favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
+                }
+
+                // aggiorna recycler view solo se è stata selezionata la visualizzazione per preferiti
+                if(isFilteredByFavorites && !favoriteBuildings.equals(((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings())) {
+                        reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                        reportsViewModel.readReportsByBuildings(favoriteBuildings);
+                }
+
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
 
-        favoriteBuildingViewModel.getSetUserInterestsResult().observe(getViewLifecycleOwner(), result -> {
+        favoriteBuildingViewModel.getSetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 favoriteBuildingViewModel.getUserFavoriteBuildings();
             } else {
@@ -216,34 +262,33 @@ public class ReportsFragment extends Fragment {
         });
 
         //Gestione osservazione filtri
-        filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), strings -> {
+        filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), this::filter);
+    }
 
-            if(strings.get(0).equals("filter-by-favorite")) {
+    private void filter(List<String> filter) {
+        if(filter != null && !filter.isEmpty()){
+            if(filter.get(0).equals("filter-by-favorite")) {
                 isFilteredByFavorites = true;
                 if(!favoriteBuildings.isEmpty()){
-                    String[] building = new String[favoriteBuildings.size()];
-                    for (int i = 0; i<favoriteBuildings.size(); i++){
-                        building[i] = favoriteBuildings.get(i);
-                    }
                     reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                    reportsViewModel.readReportsByBuildings(building);
+                    reportsViewModel.readReportsByBuildings(favoriteBuildings);
                 } else {
                     Snackbar.make(requireView(), R.string.no_favorites_building, BaseTransientBottomBar.LENGTH_SHORT).show();
                 }
-            } else if (strings.get(0).equals("filter-by-all")) {
+            } else if (filter.get(0).equals("filter-by-all")) {
                 isFilteredByFavorites = false;
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                 reportsViewModel.readAllReports();
             } else {
                 isFilteredByFavorites = false;
-                String[] building = new String[strings.size()];
-                for (int i = 0; i<strings.size(); i++){
-                    building[i] = strings.get(i);
-                }
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readReportsByBuildings(building);
+                reportsViewModel.readReportsByBuildings(filter);
             }
-        });
+        }
+        else{
+            reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+            reportsViewModel.readAllReports();
+        }
     }
 
     @Override

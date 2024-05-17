@@ -98,10 +98,7 @@ public class SigninFragment extends Fragment {
                 String email = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextEmailAddress.getText());
                 String result = Validation.checkEmail(email);
 
-                if(!result.equals("ok")){
-                        emailError = getString(ErrorMapper.getInstance().getErrorMessage(result));
-                        fragmentSigninBinding.fragmentSigninTextViewEmailError.setText(emailError);
-                }
+                isEmailCorrect(result);
             }
 
         });
@@ -111,10 +108,7 @@ public class SigninFragment extends Fragment {
             if(!hasFocus){
                 String password = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextPassword.getText());
 
-                if(password.isEmpty()){
-                        passwordError = getString(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD));
-                        fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText(passwordError);
-                }
+                isPasswordCorrect(password);
             }
 
         });
@@ -126,7 +120,11 @@ public class SigninFragment extends Fragment {
             String email = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextEmailAddress.getText());
             String password = String.valueOf(fragmentSigninBinding.fragmentSigninEditTextPassword.getText());
 
-            signinViewModel.signIn(email, password);
+            //singolo & per controllare entrambe le condizioni
+            if(isPasswordCorrect(password) & isEmailCorrect(Validation.checkEmail(email))){
+                signinViewModel.signIn(email, password);
+            }
+
 
         });
 
@@ -135,6 +133,28 @@ public class SigninFragment extends Fragment {
                 NavigationHelper.navigateTo(requireActivity(), requireView(), R.id.action_signinFragment_to_passwordResetFragment, false);
             }
         });
+    }
+
+    public boolean isPasswordCorrect(String password){
+        if(password.isEmpty()){
+            passwordError = getString(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD));
+            fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText(passwordError);
+            return false;
+        } else {
+            fragmentSigninBinding.fragmentSigninTextViewPasswordError.setText("");
+            return true;
+        }
+    }
+
+    public boolean isEmailCorrect(String result){
+        if(!result.equals("ok")){
+            emailError = getString(ErrorMapper.getInstance().getErrorMessage(result));
+            fragmentSigninBinding.fragmentSigninTextViewEmailError.setText(emailError);
+            return false;
+        } else {
+            fragmentSigninBinding.fragmentSigninTextViewEmailError.setText("");
+            return true;
+        }
     }
 
     @Override

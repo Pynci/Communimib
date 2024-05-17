@@ -2,7 +2,9 @@ package it.unimib.communimib.model;
 
 import com.google.firebase.database.Exclude;
 
-public class Report {
+import java.io.Serializable;
+
+public class Report implements Serializable {
 
     @Exclude
     private String rid;
