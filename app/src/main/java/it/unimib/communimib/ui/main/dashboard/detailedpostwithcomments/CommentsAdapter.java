@@ -92,15 +92,15 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
         public void bind(Comment comment) {
 
-            if(comment.getCommentCreator().getPropic() != null){
+            if(comment.getAuthor().getPropic() != null){
                 Glide
                         .with(context)
-                        .load(Uri.parse(comment.getCommentCreator().getPropic()))
+                        .load(Uri.parse(comment.getAuthor().getPropic()))
                         .into(userPropic);
             }
 
-            userName.setText(comment.getCommentCreator().getName());
-            userSurname.setText(comment.getCommentCreator().getSurname());
+            userName.setText(comment.getAuthor().getName());
+            userSurname.setText(comment.getAuthor().getSurname());
             commentDescription.setText(comment.getText());
         }
     }

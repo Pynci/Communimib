@@ -70,4 +70,25 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
                 });
     }
 
+    @Override
+    public void createComment(String pid, Comment comment, Callback callback){
+        String key = databaseReference.child(Constants.COMMENT_PATH).child(pid).push().getKey();
+        comment.setCid(key);
+
+        databaseReference
+                .child(Constants.COMMENT_PATH)
+                .child(pid)
+                .child(comment.getCid())
+                .setValue(comment)
+                .addOnCompleteListener(task -> {
+                   if(task.isSuccessful()){
+                       callback.onComplete(new Result.Success());
+                   }
+                   else{
+                       callback.onComplete(new Result.Error(ErrorMapper.COMMENT_CREATION_ERROR));
+                   }
+                });
+
+    }
+
 }

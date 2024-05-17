@@ -5,21 +5,21 @@ import java.util.Objects;
 public class Comment {
 
     private String cid;
-    private User commentCreator;
+    private User author;
     private String text;
     private long timestamp;
 
-    public Comment(User commentCreator, String text) {
-        this.commentCreator = commentCreator;
+    public Comment(User author, String text) {
+        this.author = author;
         this.text = text;
     }
 
-    public User getCommentCreator() {
-        return commentCreator;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setCommentCreator(User commentCreator) {
-        this.commentCreator = commentCreator;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getText() {
