@@ -4,6 +4,7 @@ public class Comment {
 
     private User commentCreator;
     private String text;
+    private long timestamp;
 
     public Comment(User commentCreator, String text) {
         this.commentCreator = commentCreator;
