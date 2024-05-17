@@ -65,7 +65,7 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+                        cancelledCallback.onComplete(new Result.Error(ErrorMapper.COMMENT_READ_ERROR));
                     }
                 });
     }

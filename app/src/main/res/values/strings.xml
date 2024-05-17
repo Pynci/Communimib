@@ -105,4 +105,7 @@
     <string name="inserisci_un_contatto_e_mail_opzionale">Inserisci un contatto e-mail (opzionale)</string>
     <string name="inserisci_un_link_per_un_sito_web_opzionale">Inserisci un link di un sito web (opzionale)</string>
     <string name="pubblica_il_tuo_commento">Pubblica il tuo commento</string>
+
+    <string name="comment_read_error">Si è verificato un errore nel caricamento dei commenti</string>
+    <string name="comment_creation_error">Si è verificato un errore durante la creazione del commento</string>
 </resources>
