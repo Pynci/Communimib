@@ -69,8 +69,16 @@ public class NotificationService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent)
                 .setSound(defaultSoundUri)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+/*
+        Map<String, String> payload = new HashMap<>();
+        payload.put("title", titolo);
+        payload.put("body", testo);
 
-
+        // Invia la notifica utilizzando Firebase Cloud Messaging
+        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(tokenDispositivo)
+                .putData(payload)
+                .build());
+*/
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
