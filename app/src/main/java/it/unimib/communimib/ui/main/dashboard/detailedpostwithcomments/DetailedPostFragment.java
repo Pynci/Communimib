@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +39,7 @@ import it.unimib.communimib.util.TopbarHelper;
 
 public class DetailedPostFragment extends Fragment {
 
-    private static final int HIDE_THRESHOLD = 300;  // Soglia per nascondere il post
+    private static final int HIDE_THRESHOLD = 2000;  // Soglia per nascondere il post
     private int scrolledDistanceDown = 0;
     private boolean controlsVisible = true;
 
@@ -181,6 +183,8 @@ public class DetailedPostFragment extends Fragment {
                 //Non deve fare niente
             }
         });
+
+        //Gestione dello scroll della recycler view
         binding.detailedPostItemCommentsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override

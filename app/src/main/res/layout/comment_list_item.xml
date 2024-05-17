@@ -36,7 +36,6 @@
         android:text="@string/name"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/commentItem_propicCardview"
         app:layout_constraintStart_toEndOf="@+id/commentItem_propicCardview"
         app:layout_constraintTop_toTopOf="@+id/commentItem_propicCardview" />
 
@@ -53,13 +52,13 @@
 
     <TextView
         android:id="@+id/commentItem_text"
-        android:layout_width="370dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="4dp"
         android:text="@string/lorem_ipsum"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commentItem_propicCardview"
+        app:layout_constraintStart_toEndOf="@+id/commentItem_propicCardview"
+        app:layout_constraintTop_toBottomOf="@+id/commentItem_name"
         tools:ignore="TextSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
