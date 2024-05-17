@@ -103,13 +103,13 @@ public abstract class Result {
     }
 
     public static final class TokenSuccess extends Result{
-        private final String token;
+        private final Token token;
 
-        public TokenSuccess(String token) {
+        public TokenSuccess(Token token) {
             this.token = token;
         }
 
-        public String getToken(){
+        public Token getToken(){
             return token;
         }
     }

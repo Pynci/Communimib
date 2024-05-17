@@ -17,23 +17,31 @@ import android.net.Uri;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.checkerframework.checker.units.qual.C;
+
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.Token;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.MainActivity;
+import it.unimib.communimib.util.Constants;
 import it.unimib.communimib.util.ErrorMapper;
 
 
@@ -169,16 +177,55 @@ public class NotificationService extends FirebaseMessagingService {
         //sendRegistrationToServer(token);
     }
 
-    private void sendRegistrationToServer(String token, User user, Callback callback) {
+    public void getAllToken(Callback addedCallback,
+                            Callback changedCallback,
+                            Callback removedCallback,
+                            Callback cancelledCallback){
+        databaseReference
+                .child(Constants.TOKEN_PATH)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Token token = snapshot.getValue(Token.class);
+                        addedCallback.onComplete(new Result.TokenSuccess(token));
+                    }
 
-        String key = databaseReference.child(TOKEN_PATH).push().getKey();
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Token token = snapshot.getValue(Token.class);
+                        changedCallback.onComplete(new Result.TokenSuccess(token));
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        Token token = snapshot.getValue(Token.class);
+                        removedCallback.onComplete(new Result.TokenSuccess(token));
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        cancelledCallback.onComplete(new Result.Error(ErrorMapper.TOKEN_RECOVERING_ERROR));
+                    }
+                });
+    }
+
+    public void checkTokenExistence(String token, User user, Callback callback){
+
+    }
+
+    private void sendRegistrationToServer(Token token, Callback callback) {
+
+        String key = databaseReference.child(Constants.TOKEN_PATH).push().getKey();
 
         databaseReference.
                 child(TOKEN_PATH).
-                child(user.getUid()).
                 child(key).
-                child(token).
-                setValue(true).
+                setValue(token).
                 addOnCompleteListener(result -> {
                     if(result.isSuccessful()){
                         callback.onComplete(new Result.TokenSuccess(token));
