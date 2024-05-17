@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.communimib.BottomNavigationBarListener;
+import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDetailedPostBinding;
 import it.unimib.communimib.model.Comment;
 import it.unimib.communimib.model.Post;
@@ -34,7 +37,7 @@ import it.unimib.communimib.util.TopbarHelper;
 
 public class DetailedPostFragment extends Fragment {
 
-    private static final int HIDE_THRESHOLD = 1000;  // Soglia per nascondere il post
+    private static final int HIDE_THRESHOLD = 300;  // Soglia per nascondere il post
     private int scrolledDistanceDown = 0;
     private boolean controlsVisible = true;
 
@@ -86,6 +89,7 @@ public class DetailedPostFragment extends Fragment {
         binding.detailedPostItemSurname.setText(post.getAuthor().getSurname());
         binding.detailedPostItemTitle.setText(post.getTitle());
         binding.detailedPostItemDescription.setText(post.getDescription());
+        binding.detailedPostItemDatetime.setText(String.valueOf(post.getTimestamp()));
 
         if(post.getEmail() != null && !post.getEmail().isEmpty()){
             binding.detailedPostItemEmail.setText(post.getEmail());
@@ -141,9 +145,44 @@ public class DetailedPostFragment extends Fragment {
         binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);
         binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
 
-        // Definisci una soglia di scroll (in pixel)
+        //Istanzio le animazioni
+        Animation animationPostSlideUp = AnimationUtils.loadAnimation(getContext(), R.anim.post_slide_up);
+        animationPostSlideUp.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //Non deve fare niente
+            }
 
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.postsection.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //Non deve fare niente
+            }
+        });
+
+        Animation animationPostSlideDown = AnimationUtils.loadAnimation(getContext(), R.anim.post_slide_down);
+        animationPostSlideDown.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                binding.postsection.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //Non deve fare niente
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //Non deve fare niente
+            }
+        });
         binding.detailedPostItemCommentsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -151,7 +190,7 @@ public class DetailedPostFragment extends Fragment {
                 if (dy > 0) {
                     // L'utente sta scorrendo verso il basso
                     if (scrolledDistanceDown > HIDE_THRESHOLD && controlsVisible) {
-                        binding.postsection.setVisibility(View.GONE);
+                        binding.postsection.startAnimation(animationPostSlideUp);
                         controlsVisible = false;
                         scrolledDistanceDown = 0;  // Resetta la distanza scrollata verso il basso
                     } else {
@@ -165,7 +204,7 @@ public class DetailedPostFragment extends Fragment {
                 if (!recyclerView.canScrollVertically(-1)) {
                     // L'utente ha raggiunto la cima
                     if (!controlsVisible) {
-                        binding.postsection.setVisibility(View.VISIBLE);
+                        binding.postsection.startAnimation(animationPostSlideDown);
                         controlsVisible = true;
                     }
                     scrolledDistanceDown = 0;
