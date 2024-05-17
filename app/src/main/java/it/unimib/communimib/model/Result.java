@@ -91,7 +91,7 @@ public abstract class Result {
         }
     }
 
-    public static final class PostSuccess extends Result{
+    public static final class PostSuccess extends Result {
         private final Post post;
 
 
@@ -100,6 +100,18 @@ public abstract class Result {
         }
 
         public Post getPost(){ return post; }
+    }
+
+    public static final class CommentSuccess extends Result {
+        private final Comment comment;
+
+        public CommentSuccess(Comment comment){
+            this.comment = comment;
+        }
+
+        public Comment getComment(){
+            return comment;
+        }
     }
 
     public static final class Error extends Result {
