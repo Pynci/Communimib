@@ -102,6 +102,18 @@ public abstract class Result {
         public Post getPost(){ return post; }
     }
 
+    public static final class TokenSuccess extends Result{
+        private final String token;
+
+        public TokenSuccess(String token) {
+            this.token = token;
+        }
+
+        public String getToken(){
+            return token;
+        }
+    }
+
     public static final class Error extends Result {
         private final String message;
 

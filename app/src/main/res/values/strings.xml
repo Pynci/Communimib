@@ -83,6 +83,8 @@
     <string name="local_read_user_favorite_buildings_error">Errore nella lettura locale degli edifici preferiti dell\'utente</string>
     <string name="remote_read_user_favorite_buildings_error">Errore nella lettura locale degli edifici preferiti dell\'utente</string>
     <string name="no_favorites_building"> Nessun edificio è selezionato come preferito</string>
+    <string name="token_insert_error">token_insert_error</string>
+    <string name="token_recovering_error">token_recovering_error</string>
     <string name="channel_name"> Report </string>
     <string name="channel_description"> Report notification</string>
     <string name="search">Cerca...</string>

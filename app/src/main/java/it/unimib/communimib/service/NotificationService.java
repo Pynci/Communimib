@@ -1,6 +1,8 @@
 package it.unimib.communimib.service;
 
 import static it.unimib.communimib.util.Constants.CHANNEL_ID;
+import static it.unimib.communimib.util.Constants.DATABASE;
+import static it.unimib.communimib.util.Constants.TOKEN_PATH;
 
 
 import android.Manifest;
@@ -21,15 +23,27 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import it.unimib.communimib.Callback;
 import it.unimib.communimib.R;
+import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.MainActivity;
+import it.unimib.communimib.util.ErrorMapper;
 
 
 public class NotificationService extends FirebaseMessagingService {
+
+    private DatabaseReference databaseReference;
+
+    public NotificationService() {
+        databaseReference = FirebaseDatabase.getInstance(DATABASE).getReference();
+    }
 
     private void sendNotification(String messageBody) {
 
@@ -152,11 +166,27 @@ public class NotificationService extends FirebaseMessagingService {
         // manage this apps subscriptions on the server side, send the
         // FCM registration token to your app server.
 
-        sendRegistrationToServer(token);
+        //sendRegistrationToServer(token);
     }
 
-    private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+    private void sendRegistrationToServer(String token, User user, Callback callback) {
+
+        String key = databaseReference.child(TOKEN_PATH).push().getKey();
+
+        databaseReference.
+                child(TOKEN_PATH).
+                child(user.getUid()).
+                child(key).
+                child(token).
+                setValue(true).
+                addOnCompleteListener(result -> {
+                    if(result.isSuccessful()){
+                        callback.onComplete(new Result.TokenSuccess(token));
+                    } else {
+                        callback.onComplete(new Result.Error(ErrorMapper.TOKEN_INSERT_ERROR));
+                    }
+                });
+
     }
 
     /*public static class MyWorker extends CoroutineScheduler.Worker {
