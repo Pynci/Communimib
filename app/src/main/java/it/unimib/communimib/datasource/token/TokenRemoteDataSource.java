@@ -58,10 +58,6 @@ public class TokenRemoteDataSource implements ITokenRemoteDataSource{
                 });
     }
 
-    public void checkTokenExistence(String token, User user, Callback callback){
-
-    }
-
     public void sendRegistrationToServer(Token token, Callback callback) {
 
         String key = databaseReference.child(Constants.TOKEN_PATH).push().getKey();
