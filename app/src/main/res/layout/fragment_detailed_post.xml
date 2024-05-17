@@ -168,7 +168,7 @@
 
     <View
         android:id="@+id/detailedost_divider"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
@@ -179,14 +179,14 @@
         android:id="@+id/detailedPostItem_commentsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintBottom_toTopOf="@+id/detailedPostItem_commentCreationContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailedost_divider"
         app:layout_constraintVertical_bias="0.0" />
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/detailedPostItem_commentCreationContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -195,19 +195,23 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <View
-            android:id="@+id/detailedost_divider2"
-            android:layout_width="409dp"
+            android:id="@+id/detailedPostItem_divider"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp"
-            android:background="?android:attr/listDivider" />
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/detailedPostItem_comment"
-            android:layout_width="375dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:hint="@string/pubblica_il_tuo_commento"
@@ -215,8 +219,22 @@
             android:inputType="text"
             android:maxLength="200"
             android:minHeight="48dp"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/detailedPostItem_send"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+        <ImageView
+            android:id="@+id/detailedPostItem_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detailedPostItem_comment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/detailedPostItem_comment"
+            app:srcCompat="@drawable/send" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
