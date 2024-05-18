@@ -22,8 +22,10 @@ public class ReportsCreationViewModel extends ViewModel {
     private final IUserRepository userRepository;
     private final ITokenRepository tokenRepository;
     private MutableLiveData<Result> createReportResult;
-    private MutableLiveData<Result> tokenResult;
-    private final List<Token> tokenList;
+    private final MutableLiveData<Result> addedTokenResult;
+    private final MutableLiveData<Result> changedTokenResult;
+    private final MutableLiveData<Result> removedTokenResult;
+    private final MutableLiveData<Result> cancelledTokenResult;
 
     public ReportsCreationViewModel(IReportRepository reportRepository, IUserRepository userRepository, ITokenRepository tokenRepository){
         this.reportRepository = reportRepository;
@@ -31,8 +33,10 @@ public class ReportsCreationViewModel extends ViewModel {
         this.tokenRepository = tokenRepository;
 
         createReportResult = new MutableLiveData<>();
-        tokenResult = new MutableLiveData<>();
-        tokenList = new ArrayList<>();
+        addedTokenResult = new MutableLiveData<>();
+        changedTokenResult = new MutableLiveData<>();
+        removedTokenResult = new MutableLiveData<>();
+        cancelledTokenResult= new MutableLiveData<>();
     }
 
     public void createReport(String title, String description, String building, String category, DialogCallback callback) {
@@ -47,35 +51,31 @@ public class ReportsCreationViewModel extends ViewModel {
 
     public void getAllToken(){
         tokenRepository.getAllToken(
-                addedToken -> {
-                    tokenList.add(((Result.TokenSuccess) addedToken).getToken());
-                },
-                changedToken -> {
-                    Token newToken = ((Result.TokenSuccess) changedToken).getToken();
-                    Token oldToken = findOldToken(newToken);
-                    int index = tokenList.indexOf(oldToken);
-                    tokenList.set(index, newToken);
-                },
-                removedToken -> {
-                    tokenList.remove(((Result.TokenSuccess) removedToken).getToken());
-                },
-                cancelledError -> {
-                    //todo implementare questo
-                }
+                addedToken -> addedTokenResult.setValue(addedToken),
+                changedToken -> changedTokenResult.setValue(changedToken),
+                removedToken -> removedTokenResult.setValue(removedToken),
+                cancelledError -> cancelledTokenResult.setValue(cancelledError)
                 );
-    }
-
-    public Token findOldToken(Token newToken){
-        for (Token token: tokenList) {
-            if(token.getTid().equals(newToken.getTid())){
-                return token;
-            }
-        }
-        return newToken;
     }
 
     public LiveData<Result> getCreateReportResult() {
         return this.createReportResult;
+    }
+
+    public LiveData<Result> getAddedTokenResult() {
+        return addedTokenResult;
+    }
+
+    public LiveData<Result> getChangedTokenResult() {
+        return changedTokenResult;
+    }
+
+    public LiveData<Result> getRemovedTokenResult() {
+        return removedTokenResult;
+    }
+
+    public LiveData<Result> getCancelledTokenResult() {
+        return cancelledTokenResult;
     }
 
     public void cleanViewModel(){
