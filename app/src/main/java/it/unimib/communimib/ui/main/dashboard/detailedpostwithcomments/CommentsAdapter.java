@@ -124,6 +124,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (comment.getAuthor().getPropic() != null) {
                 Glide.with(context).load(Uri.parse(comment.getAuthor().getPropic())).into(userPropic);
             }
+            else{
+                Glide.with(context).load(R.drawable.user_filled).into(userPropic);
+            }
             userName.setText(comment.getAuthor().getName());
             userSurname.setText(comment.getAuthor().getSurname());
             commentDescription.setText(comment.getText());
