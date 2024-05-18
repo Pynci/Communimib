@@ -6,6 +6,9 @@ public class Token {
     String userId;
     String tid;
 
+    public Token(){
+    }
+
     public Token(String token, String userId) {
         this.token = token;
         this.userId = userId;

@@ -22,10 +22,10 @@ public class ReportsCreationViewModel extends ViewModel {
     private final IUserRepository userRepository;
     private final ITokenRepository tokenRepository;
     private MutableLiveData<Result> createReportResult;
-    private final MutableLiveData<Result> addedTokenResult;
-    private final MutableLiveData<Result> changedTokenResult;
-    private final MutableLiveData<Result> removedTokenResult;
-    private final MutableLiveData<Result> cancelledTokenResult;
+    private MutableLiveData<Result> addedTokenResult;
+    private MutableLiveData<Result> changedTokenResult;
+    private MutableLiveData<Result> removedTokenResult;
+    private MutableLiveData<Result> cancelledTokenResult;
 
     public ReportsCreationViewModel(IReportRepository reportRepository, IUserRepository userRepository, ITokenRepository tokenRepository){
         this.reportRepository = reportRepository;
@@ -80,5 +80,9 @@ public class ReportsCreationViewModel extends ViewModel {
 
     public void cleanViewModel(){
         createReportResult = new MutableLiveData<>();
+        addedTokenResult = new MutableLiveData<>();
+        changedTokenResult = new MutableLiveData<>();
+        removedTokenResult = new MutableLiveData<>();
+        cancelledTokenResult = new MutableLiveData<>();
     }
 }

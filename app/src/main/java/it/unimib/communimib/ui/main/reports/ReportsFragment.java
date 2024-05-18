@@ -270,6 +270,7 @@ public class ReportsFragment extends Fragment {
         reportsCreationViewModel.getAddedTokenResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 tokenList.add(((Result.TokenSuccess) result).getToken());
+                Log.d("token", ((Result.TokenSuccess) result).getToken().getToken());
             }
         });
 
