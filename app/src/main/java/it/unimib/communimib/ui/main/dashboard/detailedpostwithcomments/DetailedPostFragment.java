@@ -166,6 +166,7 @@ public class DetailedPostFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animation animation) {
                 binding.postsection.setVisibility(View.GONE);
+                binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -183,7 +184,8 @@ public class DetailedPostFragment extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                //Non deve fare niente
+                binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
+                isPostHidden = false;
             }
 
             @Override
@@ -193,23 +195,24 @@ public class DetailedPostFragment extends Fragment {
         });
 
         //Gestione dello scroll della recycler view
+
+        binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE); // Inizialmente non deve essere visibile
         binding.detailedPostItemCommentsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if(dy > 100 && !isPostHidden) {
+                if(dy > 0 && !isPostHidden) {
                     binding.postsection.startAnimation(animationPostSlideUp);
                     isPostHidden = true;
                 }
-
-                if(!recyclerView.canScrollVertically(-1) && isPostHidden) {
-                    binding.postsection.startAnimation(animationPostSlideDown);
-                    isPostHidden = false;
-                }
-
             }
+        });
+
+        binding.detailedPostItemFloatingActionButtonGoUp.setOnClickListener(v -> {
+            binding.detailedPostItemCommentsRecyclerView.smoothScrollToPosition(0);
+            binding.postsection.startAnimation(animationPostSlideDown);
         });
 
         //Lettura dei commenti dal repository

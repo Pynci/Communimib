@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:selectableItemBackground">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/postsection"
@@ -29,6 +28,7 @@
                 android:id="@+id/detailedPostItem_propic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:importantForAccessibility="no"
                 android:scaleType="centerCrop"
                 android:src="@drawable/user_filled"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -117,18 +117,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:importantForAccessibility="no"
             app:layout_constraintStart_toStartOf="@+id/detailedPostItem_description"
             app:layout_constraintTop_toBottomOf="@+id/detailedPostItem_imageSliderCardView"
-            app:srcCompat="@drawable/post_email" />
+            app:srcCompat="@drawable/post_email"
+            tools:ignore="ImageContrastCheck" />
 
         <ImageView
             android:id="@+id/detailedPostItem_linkIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:importantForAccessibility="no"
             app:layout_constraintStart_toStartOf="@+id/detailedPostItem_description"
             app:layout_constraintTop_toBottomOf="@+id/detailedPostItem_emailIcon"
-            app:srcCompat="@drawable/post_link" />
+            app:srcCompat="@drawable/post_link"
+            tools:ignore="ImageContrastCheck" />
 
         <TextView
             android:id="@+id/detailedPostItem_email"
@@ -148,6 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
             android:autoLink="web"
+            android:importantForAccessibility="no"
             android:textColor="@color/md_theme_light_onSecondaryContainer"
             app:layout_constraintBottom_toBottomOf="@+id/detailedPostItem_linkIcon"
             app:layout_constraintStart_toEndOf="@+id/detailedPostItem_linkIcon"
@@ -174,6 +179,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/postsection" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/detailedPostItem_floatingActionButton_goUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="-15dp"
+        android:layout_marginBottom="30dp"
+        android:contentDescription="@string/bottone_per_far_ricomparire_il_post"
+        android:focusable="true"
+        android:src="@drawable/arrow_up"
+        app:layout_constraintBottom_toTopOf="@+id/detailedPostItem_commentCreationContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ImageContrastCheck" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/detailedPostItem_commentsRecyclerView"
@@ -230,6 +248,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="@+id/detailedPostItem_comment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/detailedPostItem_comment"
