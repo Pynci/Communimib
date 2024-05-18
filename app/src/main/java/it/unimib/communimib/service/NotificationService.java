@@ -199,10 +199,10 @@ public class NotificationService extends FirebaseMessagingService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // FCM registration token to your app server.
-/*
+
         Token tokenObj = new Token(token, user.getUid());
-        tokenRepository.sendRegistrationToServer(tokenObj);
-*/
+        tokenRepository.sendRegistrationToServer(tokenObj, result -> {});
+
         //sendRegistrationToServer(token);
     }
 
