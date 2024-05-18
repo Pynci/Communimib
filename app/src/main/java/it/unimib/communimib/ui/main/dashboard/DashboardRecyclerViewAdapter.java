@@ -3,6 +3,7 @@ package it.unimib.communimib.ui.main.dashboard;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 
 import java.util.ArrayList;
@@ -103,7 +105,6 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
         private final ImageView linkIcon;
         private final ImageSlider imageSlider;
         private final CardView imageSliderCardview;
-        private final CardView imageInsideCard;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -120,12 +121,8 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             dateTime = itemView.findViewById(R.id.postItem_datetime);
             imageSlider = itemView.findViewById(R.id.postItem_imageSlider);
             imageSliderCardview = itemView.findViewById(R.id.postItem_imageSliderCardView);
-            imageInsideCard = itemView.findViewById(R.id.postItem_ImageInsideCard);
 
             itemView.setOnClickListener(this);
-            imageInsideCard.setOnClickListener(this);
-            imageInsideCard.setCardBackgroundColor(Color.TRANSPARENT);
-            imageInsideCard.setCardElevation(0);
         }
 
         public void bind(Post post){
@@ -158,28 +155,33 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<Dashboard
             List<SlideModel> slideModels = new ArrayList<>();
             if(!post.getPictures().isEmpty()){
                 for (String picture : post.getPictures()) {
-                    slideModels.add(new SlideModel(picture, ScaleTypes.FIT));
+                    slideModels.add(new SlideModel(picture, ScaleTypes.CENTER_CROP));
                 }
-                imageSlider.setImageList(slideModels, ScaleTypes.FIT);
+                imageSlider.setImageList(slideModels, ScaleTypes.CENTER_CROP);
                 imageSlider.setVisibility(View.VISIBLE);
                 imageSliderCardview.setVisibility(View.VISIBLE);
-                imageInsideCard.setVisibility(View.VISIBLE);
             }
             else{
                 imageSlider.setVisibility(View.GONE);
                 imageSliderCardview.setVisibility(View.GONE);
-                imageInsideCard.setVisibility(View.GONE);
             }
+
+            imageSlider.setItemClickListener(new ItemClickListener() {
+                @Override
+                public void onItemSelected(int i) {
+                    onItemClickListener.onImageSliderClick(postList.get(getAdapterPosition()));
+                }
+
+                @Override
+                public void doubleClick(int i) {
+                    //per ora non serve
+                }
+            });
         }
 
         @Override
         public void onClick(View v) {
-
-            if (v.getId() == R.id.postItem_ImageInsideCard) {
-                onItemClickListener.onImageSliderClick(postList.get(getAdapterPosition()));
-            } else {
-                onItemClickListener.onItemClick(postList.get(getAdapterPosition()));
-            }
+            onItemClickListener.onItemClick(postList.get(getAdapterPosition()));
         }
     }
 }
