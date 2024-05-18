@@ -42,7 +42,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private final OnPostClickListener onPostClickListener;
     private final Context context;
 
-    public PostViewHolder(@NonNull View itemView, OnPostClickListener onPostClickListener, Context context) {
+    public PostViewHolder(@NonNull View itemView, Context context, OnPostClickListener onPostClickListener) {
         super(itemView);
 
         this.onPostClickListener = onPostClickListener;

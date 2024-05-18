@@ -19,6 +19,8 @@ import java.util.List;
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Comment;
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
+import it.unimib.communimib.ui.main.dashboard.PostViewHolder;
 import it.unimib.communimib.util.DateFormatter;
 
 public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -29,11 +31,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<Comment> commentList;
     private final Post post;
     private final Context context;
+    private final OnPostClickListener onPostClickListener;
 
-    public CommentsAdapter(Post post, Context context) {
+    public CommentsAdapter(Post post, Context context, OnPostClickListener onPostClickListener) {
         this.commentList = new ArrayList<>();
         this.context = context;
         this.post = post;
+        this.onPostClickListener = onPostClickListener;
     }
 
     public void addItem(Comment newComment) {
@@ -69,7 +73,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_POST) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
-            return new PostViewHolder(view);
+            return new PostViewHolder(view, context, onPostClickListener);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent, false);
             return new CommentViewHolder(view);
@@ -124,23 +128,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             userSurname.setText(comment.getAuthor().getSurname());
             commentDescription.setText(comment.getText());
             dateTime.setText(DateFormatter.format(comment.getTimestamp(), context));
-        }
-    }
-
-    public class PostViewHolder extends RecyclerView.ViewHolder {
-
-        private final TextView postTitle;
-        //private final TextView postContent;
-
-        public PostViewHolder(@NonNull View itemView) {
-            super(itemView);
-            postTitle = itemView.findViewById(R.id.postItem_title);
-            //postContent = itemView.findViewById(R.id.postItem_content);
-        }
-
-        public void bind(Post post) {
-            postTitle.setText(post.getTitle());
-            //postContent.setText(post.getContent());
         }
     }
 }
