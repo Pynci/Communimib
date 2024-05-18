@@ -40,17 +40,21 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.Token;
 import it.unimib.communimib.model.User;
+import it.unimib.communimib.repository.ITokenRepository;
+import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.ui.main.MainActivity;
 import it.unimib.communimib.util.Constants;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.ServiceLocator;
 
 
 public class NotificationService extends FirebaseMessagingService {
 
-    private DatabaseReference databaseReference;
+    private User user;
+    private final ITokenRepository tokenRepository;
 
     public NotificationService() {
-        databaseReference = FirebaseDatabase.getInstance(DATABASE).getReference();
+        this.tokenRepository = ServiceLocator.getInstance().getTokenRepository();
     }
 
     private void sendNotification(String messageBody) {
@@ -146,11 +150,12 @@ public class NotificationService extends FirebaseMessagingService {
         //Log.d(TAG, "Short lived task is done.");
     }
     public static void getTokenFromFirebaseMessaging(Callback callback){
+        //this.user = user;
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             callback.onComplete(new Result.TokenValueSuccess(task.getResult()));
                         }
                         //todo aggiungere errore
@@ -175,7 +180,10 @@ public class NotificationService extends FirebaseMessagingService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // FCM registration token to your app server.
-
+/*
+        Token tokenObj = new Token(token, user.getUid());
+        tokenRepository.sendRegistrationToServer(tokenObj);
+*/
         //sendRegistrationToServer(token);
     }
 

@@ -9,6 +9,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.model.Result;
@@ -19,7 +20,11 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class TokenRemoteDataSource implements ITokenRemoteDataSource{
 
-    private DatabaseReference databaseReference;
+    private final DatabaseReference databaseReference;
+
+    public TokenRemoteDataSource() {
+        this.databaseReference = FirebaseDatabase.getInstance(Constants.DATABASE).getReference();
+    }
 
     public void getAllToken(Callback addedCallback,
                             Callback changedCallback,
