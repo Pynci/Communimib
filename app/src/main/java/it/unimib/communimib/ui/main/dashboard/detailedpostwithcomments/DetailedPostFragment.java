@@ -7,15 +7,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -37,7 +34,6 @@ import it.unimib.communimib.databinding.FragmentDetailedPostBinding;
 import it.unimib.communimib.model.Comment;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
 import it.unimib.communimib.util.DateFormatter;
 import it.unimib.communimib.util.ErrorMapper;
@@ -151,7 +147,7 @@ public class DetailedPostFragment extends Fragment {
 
         //gestione dei commenti
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        CommentsAdapter commentsAdapter = new CommentsAdapter(getContext());
+        CommentsAdapter commentsAdapter = new CommentsAdapter(post, getContext());
         binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);
         binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
 

@@ -18,22 +18,28 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Comment;
+import it.unimib.communimib.model.Post;
 import it.unimib.communimib.util.DateFormatter;
 
-public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
+public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int VIEW_TYPE_POST = 0;
+    private static final int VIEW_TYPE_COMMENT = 1;
 
     private List<Comment> commentList;
+    private final Post post;
     private final Context context;
 
-    public CommentsAdapter(Context context) {
-        commentList = new ArrayList<>();
+    public CommentsAdapter(Post post, Context context) {
+        this.commentList = new ArrayList<>();
         this.context = context;
+        this.post = post;
     }
 
     public void addItem(Comment newComment) {
         if (!commentList.contains(newComment)) {
             commentList.add(0, newComment);
-            notifyItemInserted(0);
+            notifyItemInserted(1);
         }
     }
 
@@ -41,7 +47,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         int position = commentList.indexOf(editedComment);
         if (position != -1) {
             commentList.set(position, editedComment);
-            notifyItemChanged(position);
+            notifyItemChanged(position + 1);
         }
     }
 
@@ -49,7 +55,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         int position = commentList.indexOf(removedComment);
         if (position != -1) {
             commentList.remove(position);
-            notifyItemRemoved(position);
+            notifyItemRemoved(position + 1);
         }
     }
 
@@ -60,22 +66,40 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
     @NonNull
     @Override
-    public CommentsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent, false);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_POST) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
+            return new PostViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent, false);
+            return new CommentViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentsAdapter.ViewHolder holder, int position) {
-        holder.bind(commentList.get(position));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder.getItemViewType() == VIEW_TYPE_POST) {
+            ((PostViewHolder) holder).bind(post);
+        } else if (holder.getItemViewType() == VIEW_TYPE_COMMENT) {
+            ((CommentViewHolder) holder).bind(commentList.get(position - 1)); // Adjust for the post
+        }
     }
 
     @Override
     public int getItemCount() {
-        return commentList.size();
+        return commentList.size() + 1; // +1 for the post
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return VIEW_TYPE_POST;
+        } else {
+            return VIEW_TYPE_COMMENT;
+        }
+    }
+
+    public class CommentViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView userPropic;
         private final TextView userName;
@@ -83,9 +107,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         private final TextView commentDescription;
         private final TextView dateTime;
 
-        public ViewHolder(@NonNull View itemView) {
+        public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
-
             userPropic = itemView.findViewById(R.id.commentItem_propic);
             userName = itemView.findViewById(R.id.commentItem_name);
             userSurname = itemView.findViewById(R.id.commentItem_surname);
@@ -94,18 +117,30 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         }
 
         public void bind(Comment comment) {
-
-            if(comment.getAuthor().getPropic() != null){
-                Glide
-                        .with(context)
-                        .load(Uri.parse(comment.getAuthor().getPropic()))
-                        .into(userPropic);
+            if (comment.getAuthor().getPropic() != null) {
+                Glide.with(context).load(Uri.parse(comment.getAuthor().getPropic())).into(userPropic);
             }
-
             userName.setText(comment.getAuthor().getName());
             userSurname.setText(comment.getAuthor().getSurname());
             commentDescription.setText(comment.getText());
             dateTime.setText(DateFormatter.format(comment.getTimestamp(), context));
+        }
+    }
+
+    public class PostViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView postTitle;
+        //private final TextView postContent;
+
+        public PostViewHolder(@NonNull View itemView) {
+            super(itemView);
+            postTitle = itemView.findViewById(R.id.postItem_title);
+            //postContent = itemView.findViewById(R.id.postItem_content);
+        }
+
+        public void bind(Post post) {
+            postTitle.setText(post.getTitle());
+            //postContent.setText(post.getContent());
         }
     }
 }

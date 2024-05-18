@@ -103,7 +103,7 @@ public class DashboardFragment extends Fragment {
         fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new DashboardRecyclerViewAdapter.OnItemClickListener() {
+        dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new OnPostClickListener() {
             @Override
             public void onItemClick(Post post) {
 
