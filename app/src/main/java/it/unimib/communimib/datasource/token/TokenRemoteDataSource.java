@@ -36,18 +36,21 @@ public class TokenRemoteDataSource implements ITokenRemoteDataSource{
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Token token = snapshot.getValue(Token.class);
+                        token.setTid(snapshot.getKey());
                         addedCallback.onComplete(new Result.TokenSuccess(token));
                     }
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Token token = snapshot.getValue(Token.class);
+                        token.setTid(snapshot.getKey());
                         changedCallback.onComplete(new Result.TokenSuccess(token));
                     }
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                         Token token = snapshot.getValue(Token.class);
+                        token.setTid(snapshot.getKey());
                         removedCallback.onComplete(new Result.TokenSuccess(token));
                     }
 

@@ -4,6 +4,7 @@ public class Token {
 
     String token;
     String userId;
+    String tid;
 
     public Token(String token, String userId) {
         this.token = token;
@@ -24,5 +25,13 @@ public class Token {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
     }
 }
