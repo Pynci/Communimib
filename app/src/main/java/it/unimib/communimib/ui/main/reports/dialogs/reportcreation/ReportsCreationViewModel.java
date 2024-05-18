@@ -26,6 +26,7 @@ public class ReportsCreationViewModel extends ViewModel {
     private MutableLiveData<Result> changedTokenResult;
     private MutableLiveData<Result> removedTokenResult;
     private MutableLiveData<Result> cancelledTokenResult;
+    private List<Token> tokenList;
 
     public ReportsCreationViewModel(IReportRepository reportRepository, IUserRepository userRepository, ITokenRepository tokenRepository){
         this.reportRepository = reportRepository;
@@ -37,6 +38,7 @@ public class ReportsCreationViewModel extends ViewModel {
         changedTokenResult = new MutableLiveData<>();
         removedTokenResult = new MutableLiveData<>();
         cancelledTokenResult= new MutableLiveData<>();
+        tokenList = new ArrayList<>();
     }
 
     public void createReport(String title, String description, String building, String category, DialogCallback callback) {
@@ -44,6 +46,10 @@ public class ReportsCreationViewModel extends ViewModel {
         if(validationResult.equals("ok")) {
             reportRepository.createReport(title, description, building, category, userRepository.getCurrentUser(), result -> {
                 createReportResult.postValue(result);
+                if(result.isSuccessful()){
+                    String messageBody = title+"    "+building;
+                    NotificationService.sendNotification(messageBody, tokenList, userRepository.getCurrentUser());
+                }
                 callback.onComplete();
             });
         }
@@ -76,6 +82,14 @@ public class ReportsCreationViewModel extends ViewModel {
 
     public LiveData<Result> getCancelledTokenResult() {
         return cancelledTokenResult;
+    }
+
+    public List<Token> getTokenList() {
+        return tokenList;
+    }
+
+    public void setTokenList(List<Token> tokenList) {
+        this.tokenList = tokenList;
     }
 
     public void cleanViewModel(){

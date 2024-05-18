@@ -270,6 +270,7 @@ public class ReportsFragment extends Fragment {
         reportsCreationViewModel.getAddedTokenResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 tokenList.add(((Result.TokenSuccess) result).getToken());
+                reportsCreationViewModel.setTokenList(tokenList);
                 Log.d("token", ((Result.TokenSuccess) result).getToken().getToken());
             }
         });
@@ -280,12 +281,14 @@ public class ReportsFragment extends Fragment {
                 Token oldToken = findOldToken(newToken);
                 int index = tokenList.indexOf(oldToken);
                 tokenList.set(index, newToken);
+                reportsCreationViewModel.setTokenList(tokenList);
             }
         });
 
         reportsCreationViewModel.getRemovedTokenResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 tokenList.remove(((Result.TokenSuccess) result).getToken());
+                reportsCreationViewModel.setTokenList(tokenList);
             }
         });
 

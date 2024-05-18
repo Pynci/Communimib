@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Message;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,10 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.checkerframework.checker.units.qual.C;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.R;
@@ -57,14 +62,15 @@ public class NotificationService extends FirebaseMessagingService {
         this.tokenRepository = ServiceLocator.getInstance().getTokenRepository();
     }
 
-    private void sendNotification(String messageBody) {
-
+    public static void sendNotification(String messageBody, List<Token> tokenList, User user) {
+/*
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         // Gestisci la ricezione della notifica qui
         // Esempio: visualizza la notifica
+
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -73,23 +79,36 @@ public class NotificationService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent)
                 .setSound(defaultSoundUri)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-/*
-        Map<String, String> payload = new HashMap<>();
-        payload.put("title", titolo);
-        payload.put("body", testo);
-
-        // Invia la notifica utilizzando Firebase Cloud Messaging
-        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(tokenDispositivo)
-                .putData(payload)
-                .build());
 */
+
+        Map<String, String> payload = new HashMap<>();
+        payload.put("title", "Nuova segnalazione");
+        payload.put("body", messageBody);
+/*
+        Message message = Message.builder()
+                .putData("score", "850")
+                .putData("time", "2:45")
+                .setToken(token)
+                .build();
+*/
+        for (Token token: tokenList) {
+            if(!token.getUserId().equals(user.getUid())){
+                FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(token.getToken())
+                        .setData(payload)
+                        .build());
+            }
+        }
+        // Invia la notifica utilizzando Firebase Cloud Messaging
+
+/*
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Since android Oreo notification channel is needed.
         createNotificationChannel();
 
-        notificationManager.notify(0 /* ID of notification */, builder.build());
+        notificationManager.notify(0, builder.build());
+*/
     }
 
     private void createNotificationChannel() {
