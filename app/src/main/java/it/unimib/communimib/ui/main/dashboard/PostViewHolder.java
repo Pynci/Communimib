@@ -35,6 +35,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private final ImageView emailIcon;
     private final TextView link;
     private final ImageView linkIcon;
+    private final TextView comments;
+    private final ImageView commentIcon;
     private final ImageSlider imageSlider;
     private final CardView imageSliderCardview;
 
@@ -58,6 +60,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         link = itemView.findViewById(R.id.postItem_link);
         linkIcon = itemView.findViewById(R.id.postItem_linkIcon);
         dateTime = itemView.findViewById(R.id.postItem_datetime);
+        comments = itemView.findViewById(R.id.postItem_comments);
+        commentIcon = itemView.findViewById(R.id.postItem_commentIcon);
         imageSlider = itemView.findViewById(R.id.postItem_imageSlider);
         imageSliderCardview = itemView.findViewById(R.id.postItem_imageSliderCardView);
 
@@ -88,6 +92,16 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
             Glide.with(context)
                     .load(Uri.parse(post.getAuthor().getPropic()))
                     .into(propic);
+        }
+
+        if(post.getComments() > 0){
+            comments.setText(String.valueOf(post.getComments()));
+            comments.setVisibility(View.VISIBLE);
+            commentIcon.setVisibility(View.VISIBLE);
+        }
+        else{
+            comments.setVisibility(View.GONE);
+            commentIcon.setVisibility(View.GONE);
         }
 
         List<SlideModel> slideModels = new ArrayList<>();
