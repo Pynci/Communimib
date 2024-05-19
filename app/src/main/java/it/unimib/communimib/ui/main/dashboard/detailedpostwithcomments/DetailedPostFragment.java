@@ -1,45 +1,30 @@
 package it.unimib.communimib.ui.main.dashboard.detailedpostwithcomments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
-import com.bumptech.glide.Glide;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.interfaces.ItemClickListener;
-import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.unimib.communimib.BottomNavigationBarListener;
-import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDetailedPostBinding;
 import it.unimib.communimib.model.Comment;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.model.User;
+import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
 import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
-import it.unimib.communimib.util.DateFormatter;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.TopbarHelper;
 
@@ -94,126 +79,23 @@ public class DetailedPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Caricamento dei dati nei relativi componenti
-        binding.detailedPostItemName.setText(post.getAuthor().getName());
-        binding.detailedPostItemSurname.setText(post.getAuthor().getSurname());
-        binding.detailedPostItemTitle.setText(post.getTitle());
-        binding.detailedPostItemDescription.setText(post.getDescription());
-        binding.detailedPostItemDatetime.setText(String.valueOf(post.getTimestamp()));
-
-        if(post.getEmail() != null && !post.getEmail().isEmpty()){
-            binding.detailedPostItemEmail.setText(post.getEmail());
-        }
-        else{
-            binding.detailedPostItemEmail.setVisibility(View.GONE);
-            binding.detailedPostItemEmailIcon.setVisibility(View.GONE);
-        }
-        if(post.getLink() != null && !post.getLink().isEmpty()){
-            binding.detailedPostItemLink.setText(post.getLink());
-        }
-        else{
-            binding.detailedPostItemLink.setVisibility(View.GONE);
-            binding.detailedPostItemLinkIcon.setVisibility(View.GONE);
-        }
-        binding.detailedPostItemDatetime.setText(DateFormatter.format(post.getTimestamp(), getContext()));
-        if(post.getAuthor().getPropic() != null){
-            Glide
-                    .with(getContext())
-                    .load(Uri.parse(post.getAuthor().getPropic()))
-                    .into(binding.detailedPostItemPropic);
-        }
-
-        List<SlideModel> slideModels = new ArrayList<>();
-        if(!post.getPictures().isEmpty()){
-            for (String picture : post.getPictures()) {
-                slideModels.add(new SlideModel(picture, ScaleTypes.FIT));
-            }
-            binding.detailedPostItemImageSlider.setImageList(slideModels, ScaleTypes.FIT);
-            binding.detailedPostItemImageSlider.setVisibility(View.VISIBLE);
-            binding.detailedPostItemImageSliderCardView.setVisibility(View.VISIBLE);
-        }
-        else{
-            binding.detailedPostItemImageSlider.setVisibility(View.GONE);
-            binding.detailedPostItemImageSliderCardView.setVisibility(View.GONE);
-        }
-
-        binding.detailedPostItemImageSlider.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void onItemSelected(int i) {
-                onSliderClickListener.onClick();
-            }
-
-            @Override
-            public void doubleClick(int i) {
-                //per ora non serve
-            }
-        });
-
         //gestione dei commenti
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        CommentsAdapter commentsAdapter = new CommentsAdapter(getContext());
+        CommentsAdapter commentsAdapter = new CommentsAdapter(post, getContext(), new OnPostClickListener() {
+            @Override
+            public void onItemClick(Post post) {
+                // non deve fare niente
+            }
+
+            @Override
+            public void onImageSliderClick(Post post) {
+                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(post);
+                imageDialog.show(getParentFragmentManager(), "Image Dialog");
+            }
+        });
         binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);
         binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
 
-        //Istanzio le animazioni
-        Animation animationPostSlideUp = AnimationUtils.loadAnimation(getContext(), R.anim.post_slide_up);
-        animationPostSlideUp.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                //Non deve fare niente
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                binding.postsection.setVisibility(View.GONE);
-                binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                //Non deve fare niente
-            }
-        });
-
-        Animation animationPostSlideDown = AnimationUtils.loadAnimation(getContext(), R.anim.post_slide_down);
-        animationPostSlideDown.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                binding.postsection.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
-                isPostHidden = false;
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                //Non deve fare niente
-            }
-        });
-
-        //Gestione dello scroll della recycler view
-
-        binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE); // Inizialmente non deve essere visibile
-        binding.detailedPostItemCommentsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                if(dy > 0 && !isPostHidden) {
-                    binding.postsection.startAnimation(animationPostSlideUp);
-                    isPostHidden = true;
-                }
-            }
-        });
-
-        binding.detailedPostItemFloatingActionButtonGoUp.setOnClickListener(v -> {
-            binding.detailedPostItemCommentsRecyclerView.smoothScrollToPosition(0);
-            binding.postsection.startAnimation(animationPostSlideDown);
-        });
 
         //Lettura dei commenti dal repository
         detailedPostViewModel.cleanViewModel();
