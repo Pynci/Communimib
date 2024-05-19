@@ -35,7 +35,6 @@ public class DetailedPostFragment extends Fragment {
     }
 
     private DetailedPostViewModel detailedPostViewModel;
-    private boolean isPostHidden = false;
     private final OnSliderClickListener onSliderClickListener;
     private BottomNavigationBarListener mListener;
     private FragmentDetailedPostBinding binding;
@@ -80,7 +79,7 @@ public class DetailedPostFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //gestione dei commenti
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         CommentsAdapter commentsAdapter = new CommentsAdapter(post, getContext(), new OnPostClickListener() {
             @Override
             public void onItemClick(Post post) {
@@ -89,13 +88,34 @@ public class DetailedPostFragment extends Fragment {
 
             @Override
             public void onImageSliderClick(Post post) {
-                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(post);
-                imageDialog.show(getParentFragmentManager(), "Image Dialog");
+                onSliderClickListener.onClick();
             }
         });
         binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);
         binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
 
+        //Gestione del pulsante di scroll in alto
+        binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
+        binding.detailedPostItemFloatingActionButtonGoUp.setOnClickListener(v -> {
+            //Faccio tornare la scrollview al primo elemento
+            binding.detailedPostItemCommentsRecyclerView.smoothScrollToPosition(0);
+            binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
+        });
+
+        RecyclerView recyclerView = binding.detailedPostItemCommentsRecyclerView;
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                if (firstVisibleItemPosition > 0) {
+                    binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.VISIBLE);
+                } else {
+                    binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
+                }
+            }
+        });
 
         //Lettura dei commenti dal repository
         detailedPostViewModel.cleanViewModel();

@@ -67,4 +67,16 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/detailedPostItem_floatingActionButton_goUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="-16dp"
+        android:layout_marginBottom="30dp"
+        android:clickable="true"
+        android:contentDescription="@string/bottone_per_far_ricomparire_il_post"
+        app:layout_constraintBottom_toTopOf="@+id/detailedPostItem_commentCreationContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/arrow_up" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
