@@ -1,8 +1,12 @@
 package it.unimib.communimib.datasource.post;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -83,11 +87,42 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
                 .setValue(comment)
                 .addOnCompleteListener(task -> {
                    if(task.isSuccessful()){
-                       callback.onComplete(new Result.Success());
+                       increaseCommentsCounter(pid, callback);
                    }
                    else{
                        callback.onComplete(new Result.Error(ErrorMapper.COMMENT_CREATION_ERROR));
                    }
+                });
+    }
+
+    private void increaseCommentsCounter(String pid, Callback callback){
+        databaseReference
+                .child(Constants.POST_PATH)
+                .child(pid)
+                .child("comments")
+                .get()
+                .addOnCompleteListener(getTask -> {
+                    if(getTask.isSuccessful()){
+                        Integer commentsCounter = getTask.getResult().getValue(Integer.class);
+                        commentsCounter++;
+                        databaseReference
+                                .child(Constants.POST_PATH)
+                                .child(pid)
+                                .child("comments")
+                                .setValue(commentsCounter)
+                                .addOnCompleteListener(setTask -> {
+                                    if(setTask.isSuccessful()){
+                                        callback.onComplete(new Result.Success());
+                                        Log.d("pizza", "arriva");
+                                    }
+                                    else{
+                                        callback.onComplete(new Result.Error(ErrorMapper.COMMENT_CREATION_ERROR));
+                                    }
+                                });
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.COMMENT_CREATION_ERROR));
+                    }
                 });
     }
 

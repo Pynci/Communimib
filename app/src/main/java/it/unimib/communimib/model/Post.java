@@ -17,10 +17,12 @@ public class Post implements Serializable {
     private String link;
     private long timestamp;
     private List<String> pictures;
+    private int comments;
 
 
     public Post(){
         pictures = new ArrayList<>();
+        comments = 0;
     }
 
     public Post(String title, String description, String category, User author, String email, String link, long timestamp, List<String> pictures) {
@@ -32,6 +34,7 @@ public class Post implements Serializable {
         this.link = link;
         this.timestamp = timestamp;
         this.pictures = pictures;
+        comments = 0;
     }
 
     public String getPid() {
@@ -104,6 +107,14 @@ public class Post implements Serializable {
 
     public void setPictures(List<String> pictures) {
         this.pictures = pictures;
+    }
+
+    public int getComments() {
+        return comments;
+    }
+
+    public void setComments(int comments) {
+        this.comments = comments;
     }
 
     @Override

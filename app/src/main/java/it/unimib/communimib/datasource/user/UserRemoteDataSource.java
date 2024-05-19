@@ -83,6 +83,7 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                             String rid = iterator.next().getKey();
                             updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/name", name);
                             updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/surname", surname);
+                            //TODO: modificare il codice per includere l'aggiornamento di post e commenti
                         }
                         updateMap.put(Constants.USERS_PATH + "/" + uid + "/name", name);
                         updateMap.put(Constants.USERS_PATH + "/" + uid + "/surname", surname);
