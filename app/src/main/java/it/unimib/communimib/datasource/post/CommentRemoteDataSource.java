@@ -1,12 +1,7 @@
 package it.unimib.communimib.datasource.post;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,7 +46,7 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
                         Comment comment = snapshot.getValue(Comment.class);
                         comment.setCid(snapshot.getKey());
 
-                        addedCallback.onComplete(new Result.CommentSuccess(comment));
+                        changedCallback.onComplete(new Result.CommentSuccess(comment));
                     }
 
                     @Override
@@ -79,15 +74,27 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
         String key = databaseReference.child(Constants.COMMENT_PATH).child(pid).push().getKey();
         comment.setCid(key);
 
-
         databaseReference
                 .child(Constants.COMMENT_PATH)
                 .child(pid)
                 .child(comment.getCid())
                 .setValue(comment)
-                .addOnCompleteListener(task -> {
-                   if(task.isSuccessful()){
-                       increaseCommentsCounter(pid, callback);
+                .addOnCompleteListener(commentTask -> {
+                   if(commentTask.isSuccessful()){
+                       databaseReference
+                               .child(Constants.USERSCOMMENTS_PATH)
+                               .child(comment.getAuthor().getUid())
+                               .child(pid)
+                               .child(comment.getCid())
+                               .setValue(true)
+                               .addOnCompleteListener(userCommentTask -> {
+                                   if(userCommentTask.isSuccessful()){
+                                       increaseCommentsCounter(pid, callback);
+                                   }
+                                   else{
+                                       callback.onComplete(new Result.Error(ErrorMapper.COMMENT_CREATION_ERROR));
+                                   }
+                               });
                    }
                    else{
                        callback.onComplete(new Result.Error(ErrorMapper.COMMENT_CREATION_ERROR));
@@ -113,7 +120,6 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
                                 .addOnCompleteListener(setTask -> {
                                     if(setTask.isSuccessful()){
                                         callback.onComplete(new Result.Success());
-                                        Log.d("pizza", "arriva");
                                     }
                                     else{
                                         callback.onComplete(new Result.Error(ErrorMapper.COMMENT_CREATION_ERROR));
