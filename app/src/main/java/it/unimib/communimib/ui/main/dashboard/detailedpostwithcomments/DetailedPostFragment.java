@@ -14,11 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.communimib.BottomNavigationBarListener;
+import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDetailedPostBinding;
 import it.unimib.communimib.model.Comment;
 import it.unimib.communimib.model.Post;
@@ -34,6 +37,7 @@ public class DetailedPostFragment extends Fragment {
         void onClick();
     }
 
+    private boolean isScrollButtonVisible = false;
     private DetailedPostViewModel detailedPostViewModel;
     private final OnSliderClickListener onSliderClickListener;
     private BottomNavigationBarListener mListener;
@@ -95,11 +99,53 @@ public class DetailedPostFragment extends Fragment {
         binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
 
         //Gestione del pulsante di scroll in alto
+        // Gestione del pulsante di scroll in alto
+        Animation animationButtonSlideLeft = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_left);
+        animationButtonSlideLeft.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                isScrollButtonVisible = true;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // Non deve fare niente
+            }
+        });
+
+        Animation animationButtonSlideRight = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_right);
+        animationButtonSlideRight.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                // Non deve fare niente
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
+                isScrollButtonVisible = false;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // Non deve fare niente
+            }
+        });
+
         binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
         binding.detailedPostItemFloatingActionButtonGoUp.setOnClickListener(v -> {
-            //Faccio tornare la scrollview al primo elemento
+            // Faccio tornare la RecyclerView al primo elemento
             binding.detailedPostItemCommentsRecyclerView.smoothScrollToPosition(0);
-            binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
+
+            // Avvio l'animazione di uscita
+            if (isScrollButtonVisible) {
+                binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
+            }
         });
 
         RecyclerView recyclerView = binding.detailedPostItemCommentsRecyclerView;
@@ -108,14 +154,22 @@ public class DetailedPostFragment extends Fragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
                 if (firstVisibleItemPosition > 0) {
-                    binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.VISIBLE);
+                    if (!isScrollButtonVisible) {
+                        // Avvio l'animazione di entrata
+                        binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideLeft);
+                    }
                 } else {
-                    binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
+                    if (isScrollButtonVisible) {
+                        // Avvio l'animazione di uscita
+                        binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
+                    }
                 }
             }
         });
+
 
         //Lettura dei commenti dal repository
         detailedPostViewModel.cleanViewModel();
