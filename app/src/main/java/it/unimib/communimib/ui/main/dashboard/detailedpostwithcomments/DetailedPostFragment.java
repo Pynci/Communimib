@@ -38,6 +38,7 @@ public class DetailedPostFragment extends Fragment {
     }
 
     private boolean isScrollButtonVisible = false;
+    private boolean isAnimating = false;
     private DetailedPostViewModel detailedPostViewModel;
     private final OnSliderClickListener onSliderClickListener;
     private BottomNavigationBarListener mListener;
@@ -98,18 +99,19 @@ public class DetailedPostFragment extends Fragment {
         binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);
         binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
 
-        //Gestione del pulsante di scroll in alto
-        // Gestione del pulsante di scroll in alto
+        // Gestione del pulsante per scrollare velocmente verso l'alto
         Animation animationButtonSlideLeft = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_left);
         animationButtonSlideLeft.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
                 binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.VISIBLE);
+                isAnimating = true;
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 isScrollButtonVisible = true;
+                isAnimating = false;
             }
 
             @Override
@@ -122,13 +124,14 @@ public class DetailedPostFragment extends Fragment {
         animationButtonSlideRight.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                // Non deve fare niente
+                isAnimating = true;
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
                 isScrollButtonVisible = false;
+                isAnimating = false;
             }
 
             @Override
@@ -142,8 +145,8 @@ public class DetailedPostFragment extends Fragment {
             // Faccio tornare la RecyclerView al primo elemento
             binding.detailedPostItemCommentsRecyclerView.smoothScrollToPosition(0);
 
-            // Avvio l'animazione di uscita
-            if (isScrollButtonVisible) {
+            // Avvio l'animazione di uscita se il pulsante è visibile e non è in corso un'animazione
+            if (isScrollButtonVisible && !isAnimating) {
                 binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
             }
         });
@@ -156,19 +159,16 @@ public class DetailedPostFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-                if (firstVisibleItemPosition > 0) {
-                    if (!isScrollButtonVisible) {
-                        // Avvio l'animazione di entrata
-                        binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideLeft);
-                    }
-                } else {
-                    if (isScrollButtonVisible) {
-                        // Avvio l'animazione di uscita
-                        binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
-                    }
+                if (firstVisibleItemPosition > 0 && !isScrollButtonVisible && !isAnimating) {
+                    // Avvio l'animazione di entrata
+                    binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideLeft);
+                } else if (firstVisibleItemPosition == 0 && isScrollButtonVisible && !isAnimating) {
+                    // Avvio l'animazione di uscita
+                    binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
                 }
             }
         });
+
 
 
         //Lettura dei commenti dal repository
