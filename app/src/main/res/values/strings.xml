@@ -109,4 +109,5 @@
     <string name="comment_read_error">Si è verificato un errore nel caricamento dei commenti</string>
     <string name="comment_creation_error">Si è verificato un errore durante la creazione del commento</string>
     <string name="bottone_per_far_ricomparire_il_post">Bottone per far ricomparire il post</string>
+    <string name="visualizza_i_nuovi_post">Visualizza i nuovi post</string>
 </resources>

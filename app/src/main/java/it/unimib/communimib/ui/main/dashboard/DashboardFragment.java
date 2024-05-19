@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.SearchView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -31,8 +33,9 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class DashboardFragment extends Fragment {
 
+    private int numberNewPost = 0;
     private DashboardViewModel dashboardViewModel;
-    FragmentDashboardBinding fragmentDashboardBinding;
+    private FragmentDashboardBinding fragmentDashboardBinding;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
     private CategoriesRecyclerViewAdapter categoriesRecyclerViewAdapter;
 
@@ -130,6 +133,29 @@ public class DashboardFragment extends Fragment {
             if(result.isSuccessful()){
                 Post post = ((Result.PostSuccess) result).getPost();
                 dashboardRecyclerViewAdapter.addItem(post);
+
+                numberNewPost++;
+                if (numberNewPost > 1) {
+                    Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_down);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            fragmentDashboardBinding.floatingActionButtonScrollUp.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            //Non deve fare nulla
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                            //Non deve fare nulla
+                        }
+                    });
+                    fragmentDashboardBinding.floatingActionButtonScrollUp.startAnimation(animation);
+                }
+
             } else {
                 Snackbar.make(requireView(),
                         ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
@@ -165,6 +191,13 @@ public class DashboardFragment extends Fragment {
                     BaseTransientBottomBar.LENGTH_SHORT).show()
         );
 
+
+        //Gestione del bottone di scroll verso l'alto
+        fragmentDashboardBinding.floatingActionButtonScrollUp.setVisibility(View.GONE);
+        fragmentDashboardBinding.floatingActionButtonScrollUp.setOnClickListener(v -> {
+            fragmentDashboardBinding.fragmentDashboardRecyclerView.smoothScrollToPosition(0);
+            fragmentDashboardBinding.floatingActionButtonScrollUp.setVisibility(View.GONE);
+        });
 
     }
 
