@@ -21,6 +21,7 @@ public class ReportsCreationViewModelFactory implements ViewModelProvider.Factor
         return (T) new ReportsCreationViewModel(
                 ServiceLocator.getInstance().getReportRepository(),
                 ServiceLocator.getInstance().getUserRepository(context),
-                ServiceLocator.getInstance().getTokenRepository());
+                ServiceLocator.getInstance().getTokenRepository(),
+                context);
     }
 }

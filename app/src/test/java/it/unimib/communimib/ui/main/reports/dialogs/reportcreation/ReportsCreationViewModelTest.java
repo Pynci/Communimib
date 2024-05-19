@@ -6,6 +6,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
+import android.content.Context;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import org.junit.Rule;
@@ -28,7 +30,7 @@ public class ReportsCreationViewModelTest {
         ReportRepository reportRepository = mock(ReportRepository.class);
         UserRepository userRepository = mock(UserRepository.class);
         TokenRepository tokenRepository = mock(TokenRepository.class);
-        ReportsCreationViewModel reportsCreationViewModel = new ReportsCreationViewModel(reportRepository, userRepository, tokenRepository);
+        ReportsCreationViewModel reportsCreationViewModel = new ReportsCreationViewModel(reportRepository, userRepository, tokenRepository, mock(Context.class)); //non ho idea se mock context funzioni, è una prova
         String title = "titolo";
         String description = "descrizione";
         String building = "U14";

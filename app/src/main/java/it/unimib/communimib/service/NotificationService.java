@@ -23,6 +23,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
@@ -35,6 +39,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.checkerframework.checker.units.qual.C;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,12 +63,14 @@ public class NotificationService extends FirebaseMessagingService {
 
     private User user;
     private final ITokenRepository tokenRepository;
+    private final Context context;
 
-    public NotificationService() {
+    public NotificationService(Context context) {
+        this.context = context;
         this.tokenRepository = ServiceLocator.getInstance().getTokenRepository();
     }
 
-    public static void sendNotification(String messageBody, List<Token> tokenList, User user) {
+    public static void sendNotifications(String messageBody, List<Token> tokenList, User user) {
 /*
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -79,18 +87,20 @@ public class NotificationService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent)
                 .setSound(defaultSoundUri)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-*/
 
-        Map<String, String> payload = new HashMap<>();
-        payload.put("title", "Nuova segnalazione");
-        payload.put("body", messageBody);
-/*
+*/
+        /*
         Message message = Message.builder()
                 .putData("score", "850")
                 .putData("time", "2:45")
                 .setToken(token)
                 .build();
 */
+/*
+        Map<String, String> payload = new HashMap<>();
+        payload.put("title", "Nuova segnalazione");
+        payload.put("body", messageBody);
+
         for (Token token: tokenList) {
             if(!token.getUserId().equals(user.getUid())){
                 FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(token.getToken())
@@ -98,6 +108,8 @@ public class NotificationService extends FirebaseMessagingService {
                         .build());
             }
         }
+
+ */
         // Invia la notifica utilizzando Firebase Cloud Messaging
 
 /*
@@ -108,7 +120,50 @@ public class NotificationService extends FirebaseMessagingService {
         createNotificationChannel();
 
         notificationManager.notify(0, builder.build());
+
 */
+    }
+
+    public void sendNotification(String messageBody, List<Token> tokenList, User user) {
+        for (Token token : tokenList) {
+            if(!token.getUserId().equals(user.getUid())){
+                send(token.getToken(), messageBody);
+            }
+        }
+    }
+
+    private void send(String token, String body) {
+        JSONObject payload = new JSONObject();
+        JSONObject notification = new JSONObject();
+        try {
+            notification.put("title", "Nuova segnalazione");
+            notification.put("body", body);
+            payload.put("to", token);
+            payload.put("notification", notification);
+
+            JsonObjectRequest request = new JsonObjectRequest(
+                    "https://fcm.googleapis.com/fcm/send",
+                    payload,
+                    response -> {
+                        // Handle success
+                    },
+                    error -> {
+                        // Handle error
+                    }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    //headers.put("Authorization", "key=YOUR_SERVER_KEY");
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+
+            RequestQueue queue = Volley.newRequestQueue(context);
+            queue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createNotificationChannel() {

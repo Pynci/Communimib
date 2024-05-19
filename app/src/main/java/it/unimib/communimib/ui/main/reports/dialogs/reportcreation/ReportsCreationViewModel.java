@@ -1,5 +1,7 @@
 package it.unimib.communimib.ui.main.reports.dialogs.reportcreation;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -27,11 +29,13 @@ public class ReportsCreationViewModel extends ViewModel {
     private MutableLiveData<Result> removedTokenResult;
     private MutableLiveData<Result> cancelledTokenResult;
     private List<Token> tokenList;
+    private final Context context;
 
-    public ReportsCreationViewModel(IReportRepository reportRepository, IUserRepository userRepository, ITokenRepository tokenRepository){
+    public ReportsCreationViewModel(IReportRepository reportRepository, IUserRepository userRepository, ITokenRepository tokenRepository, Context context){
         this.reportRepository = reportRepository;
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;
+        this.context = context;
 
         createReportResult = new MutableLiveData<>();
         addedTokenResult = new MutableLiveData<>();
@@ -48,7 +52,8 @@ public class ReportsCreationViewModel extends ViewModel {
                 createReportResult.postValue(result);
                 if(result.isSuccessful()){
                     String messageBody = title+"    "+building;
-                    NotificationService.sendNotification(messageBody, tokenList, userRepository.getCurrentUser());
+                    NotificationService notificationService = new NotificationService(context);
+                    notificationService.sendNotification(messageBody, tokenList, userRepository.getCurrentUser());
                 }
                 callback.onComplete();
             });

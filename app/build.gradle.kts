@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.firebase.database)
+    implementation(libs.volley)
     testImplementation(libs.junit)
     testImplementation("org.mockito:mockito-core:3.+")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
