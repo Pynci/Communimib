@@ -21,8 +21,7 @@ public class DashboardViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         return (T) new DashboardViewModel(
-                ServiceLocator.getInstance().getPostRepository(),
-                ServiceLocator.getInstance().getUserRepository(context)
+                ServiceLocator.getInstance().getPostRepository()
         );
     }
 }

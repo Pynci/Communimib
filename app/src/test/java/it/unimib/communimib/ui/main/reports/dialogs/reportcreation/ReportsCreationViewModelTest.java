@@ -8,14 +8,12 @@ import static org.mockito.Mockito.mock;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.LiveDataTestUtil;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.ReportRepository;
 import it.unimib.communimib.repository.UserRepository;
 
@@ -29,7 +27,6 @@ public class ReportsCreationViewModelTest {
         ReportRepository reportRepository = mock(ReportRepository.class);
         UserRepository userRepository = mock(UserRepository.class);
         ReportsCreationViewModel reportsCreationViewModel = new ReportsCreationViewModel(reportRepository, userRepository);
-        User marco = new User("12345", "m.ferioli@campus.unimib.it", "Marco", "Ferioli", false);
         String title = "titolo";
         String description = "descrizione";
         String building = "U14";

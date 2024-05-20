@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IPostRepository;
-import it.unimib.communimib.repository.IUserRepository;
 
 public class DashboardViewModel extends ViewModel {
 
@@ -15,12 +14,10 @@ public class DashboardViewModel extends ViewModel {
     private MutableLiveData<Result> postRemovedReadResult;
     private MutableLiveData<Result> readCancelledResult;
     private final IPostRepository postRepository;
-    private final IUserRepository userRepository;
     private String visualizedCategory;
 
-    public DashboardViewModel(IPostRepository postRepository, IUserRepository userRepository) {
+    public DashboardViewModel(IPostRepository postRepository) {
         this.postRepository = postRepository;
-        this.userRepository = userRepository;
         this.visualizedCategory = "Tutti";
 
         this.postAddedReadResult = new MutableLiveData<>();

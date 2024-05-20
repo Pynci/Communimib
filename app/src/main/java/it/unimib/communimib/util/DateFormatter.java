@@ -2,7 +2,6 @@ package it.unimib.communimib.util;
 
 import android.content.Context;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
