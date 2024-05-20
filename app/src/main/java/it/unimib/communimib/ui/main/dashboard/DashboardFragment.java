@@ -10,11 +10,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -33,7 +35,7 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class DashboardFragment extends Fragment {
 
-    private int numberNewPost = 0;
+    private int numberNewPost = 0; //numero minimo di nuovi post per triggerare la comparsa del bottone
     private DashboardViewModel dashboardViewModel;
     private FragmentDashboardBinding fragmentDashboardBinding;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
@@ -50,6 +52,8 @@ public class DashboardFragment extends Fragment {
         dashboardViewModel = new ViewModelProvider(this,
                 new DashboardViewModelFactory(this.getContext()))
                 .get(DashboardViewModel.class);
+
+        Log.d("pizza", "siamo nell'onCreate");
     }
 
     @Override
@@ -63,18 +67,13 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d("pizza", "siamo nell'onViewCreated");
+
         String[] categories = getResources().getStringArray(R.array.posts_categories);
         categories = Arrays.copyOf(categories, categories.length-1);
         List<String> categoryList = Arrays.asList(categories);
 
-        fragmentDashboardBinding.fragmentDashboardSearchView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                fragmentDashboardBinding.fragmentDashboardSearchView.setIconified(false);
-            }
-        });
+        fragmentDashboardBinding.fragmentDashboardSearchView.setOnClickListener(v -> fragmentDashboardBinding.fragmentDashboardSearchView.setIconified(false));
 
         fragmentDashboardBinding.fragmentDashboardSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -133,9 +132,10 @@ public class DashboardFragment extends Fragment {
             if(result.isSuccessful()){
                 Post post = ((Result.PostSuccess) result).getPost();
                 dashboardRecyclerViewAdapter.addItem(post);
+                Log.d("pizza", "dopo addItem");
 
                 numberNewPost++;
-                if (numberNewPost > 1) {
+                if (numberNewPost > 1 && ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition() > 0) {
                     Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_down);
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
@@ -145,7 +145,7 @@ public class DashboardFragment extends Fragment {
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            //Non deve fare nulla
+                            numberNewPost = 0;
                         }
 
                         @Override
@@ -199,6 +199,12 @@ public class DashboardFragment extends Fragment {
             fragmentDashboardBinding.floatingActionButtonScrollUp.setVisibility(View.GONE);
         });
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("pizza", "siamo nell'onStart");
     }
 
     public void readPosts(String category){
