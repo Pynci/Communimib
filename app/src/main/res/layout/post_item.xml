@@ -131,24 +131,29 @@
 
     <TextView
         android:id="@+id/postItem_email"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
         android:autoLink="email"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/md_theme_light_onSecondaryContainer"
         app:layout_constraintBottom_toBottomOf="@+id/postItem_emailIcon"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_description"
         app:layout_constraintStart_toEndOf="@+id/postItem_emailIcon"
         app:layout_constraintTop_toTopOf="@+id/postItem_emailIcon"
         tools:text="email@campus.unimib.it" />
 
     <TextView
         android:id="@+id/postItem_link"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:autoLink="web"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/md_theme_light_onSecondaryContainer"
         app:layout_constraintBottom_toBottomOf="@+id/postItem_linkIcon"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_description"
         app:layout_constraintStart_toEndOf="@+id/postItem_linkIcon"
         app:layout_constraintTop_toTopOf="@+id/postItem_linkIcon"
         tools:text="https://www.unimib.it/" />
@@ -167,7 +172,7 @@
         android:id="@+id/divider"
         android:layout_width="409dp"
         android:layout_height="1dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
