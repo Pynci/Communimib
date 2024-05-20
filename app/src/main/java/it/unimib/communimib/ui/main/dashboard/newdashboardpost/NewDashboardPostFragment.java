@@ -4,8 +4,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -181,6 +183,23 @@ public class NewDashboardPostFragment extends Fragment {
                 Snackbar.make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
+
+        //Gestione del tocco fuori dai campi per rimuovere il focus
+        binding.scrollview.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                View currentFocus = getActivity().getCurrentFocus();
+                if (currentFocus != null) {
+                    currentFocus.clearFocus();
+                    hideKeyboard(v);
+                }
+            }
+            return true;
+        });
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void tryEnableButton() {
