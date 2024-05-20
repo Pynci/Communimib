@@ -43,8 +43,6 @@ public class ErrorMapper {
         errorMap.put(REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR, R.string.remote_read_user_favorite_buildings_error);
         errorMap.put(POST_CREATION_ERROR, R.string.post_creation_error);
         errorMap.put(POST_DELETING_ERROR, R.string.post_deleting_error);
-        errorMap.put(TOKEN_INSERT_ERROR, R.string.token_insert_error);
-        errorMap.put(TOKEN_RECOVERING_ERROR, R.string.token_recovering_error);
     }
 
     public static ErrorMapper getInstance() {
@@ -100,8 +98,4 @@ public class ErrorMapper {
     //Errori gestione posts
     public static final String POST_CREATION_ERROR = "post_creation_error";
     public static final String POST_DELETING_ERROR = "post_deleting_error";
-
-    //Errori gestione token
-    public static final String TOKEN_INSERT_ERROR = "token_insert_error";
-    public static final String TOKEN_RECOVERING_ERROR = "token_recovering_error";
 }
