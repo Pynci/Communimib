@@ -188,7 +188,7 @@ public class NewDashboardPostFragment extends Fragment {
         });
 
         //Gestione del tocco fuori dai campi per rimuovere il focus
-        binding.scrollview.setOnTouchListener((v, event) -> {
+        binding.mainLayout.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 View currentFocus = getActivity().getCurrentFocus();
                 if (currentFocus != null) {

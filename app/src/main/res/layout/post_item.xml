@@ -10,10 +10,10 @@
         android:id="@+id/postItem_commentIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        app:srcCompat="@drawable/comment_icon"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/postItem_description"
-        app:layout_constraintTop_toBottomOf="@+id/postItem_linkIcon" />
+        app:layout_constraintTop_toBottomOf="@+id/postItem_linkIcon"
+        app:srcCompat="@drawable/comment_icon" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/postItem_propicCardview"
@@ -75,7 +75,6 @@
         android:id="@+id/postItem_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/postItem_datetime"
         app:layout_constraintStart_toStartOf="@+id/postItem_title"
@@ -97,7 +96,7 @@
         android:id="@+id/postItem_imageSliderCardView"
         android:layout_width="0dp"
         android:layout_height="250dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:minWidth="300dp"
         app:cardCornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="@+id/postItem_description"
@@ -116,7 +115,7 @@
         android:id="@+id/postItem_emailIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/postItem_description"
         app:layout_constraintTop_toBottomOf="@+id/postItem_imageSliderCardView"
         app:srcCompat="@drawable/post_email" />
@@ -125,7 +124,7 @@
         android:id="@+id/postItem_linkIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/postItem_description"
         app:layout_constraintTop_toBottomOf="@+id/postItem_emailIcon"
         app:srcCompat="@drawable/post_link" />
@@ -180,6 +179,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:text="0"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/postItem_commentIcon"
         app:layout_constraintStart_toEndOf="@+id/postItem_commentIcon"
         app:layout_constraintTop_toTopOf="@+id/postItem_commentIcon" />
