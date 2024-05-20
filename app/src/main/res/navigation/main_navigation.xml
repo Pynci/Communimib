@@ -13,8 +13,7 @@
         <action
             android:id="@+id/action_dashboardFragment_to_newDashboardPostDialog"
             app:destination="@id/newDashboardPostDialog"
-            app:enterAnim="@anim/fragment_slide_up"
-            app:popExitAnim="@anim/fragment_slide_down" />
+            app:enterAnim="@anim/fragment_slide_up" />
         <action
             android:id="@+id/action_dashboardFragment_to_detailedPostFragment"
             app:destination="@id/detailedPostFragment" />
@@ -48,10 +47,6 @@
         android:name="it.unimib.communimib.ui.main.dashboard.newdashboardpost.NewDashboardPostFragment"
         android:label=""
         tools:layout="@layout/fragment_new_dashboard_post_dialog" >
-        <action
-            android:id="@+id/action_newDashboardPostDialog_to_dashboardFragment"
-            app:destination="@id/dashboardFragment"
-            app:popEnterAnim="@anim/fragment_slide_down" />
     </fragment>
     <fragment
         android:id="@+id/detailedPostFragment"

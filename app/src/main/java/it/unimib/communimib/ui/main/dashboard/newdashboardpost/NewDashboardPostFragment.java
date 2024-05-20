@@ -101,7 +101,6 @@ public class NewDashboardPostFragment extends Fragment {
         //Gestione del pulsante indietro
         binding.buttonBack.setOnClickListener(v -> {
             getParentFragmentManager().popBackStack();
-            showNavigationBars();
         });
 
         //Gestione del pulsante per caricare le foto
