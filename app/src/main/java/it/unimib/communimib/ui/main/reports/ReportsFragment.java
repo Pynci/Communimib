@@ -11,7 +11,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,6 @@ import it.unimib.communimib.databinding.FragmentReportsBinding;
 import it.unimib.communimib.model.CategoryReport;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.model.Token;
 import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingViewModel;
 import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingViewModelFactory;
 import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingsFragmentDialog;
