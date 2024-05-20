@@ -1,21 +1,13 @@
 package it.unimib.communimib.ui.main.reports.dialogs.reportcreation;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.unimib.communimib.DialogCallback;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.model.Token;
 import it.unimib.communimib.repository.IReportRepository;
-import it.unimib.communimib.repository.ITokenRepository;
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.service.NotificationService;
 import it.unimib.communimib.util.Validation;
 
 public class ReportsCreationViewModel extends ViewModel {

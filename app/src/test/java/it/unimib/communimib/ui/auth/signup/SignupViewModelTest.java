@@ -15,7 +15,6 @@ import org.junit.Test;
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.LiveDataTestUtil;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.repository.TokenRepository;
 import it.unimib.communimib.repository.UserRepository;
 
 public class SignupViewModelTest {

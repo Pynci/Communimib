@@ -12,12 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -25,7 +23,6 @@ import com.google.android.material.snackbar.Snackbar;
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentSignupBinding;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.model.User;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.NavigationHelper;
 import it.unimib.communimib.util.Validation;

@@ -6,8 +6,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
-import android.content.Context;
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import org.junit.Rule;
@@ -17,7 +15,6 @@ import it.unimib.communimib.Callback;
 import it.unimib.communimib.LiveDataTestUtil;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.ReportRepository;
-import it.unimib.communimib.repository.TokenRepository;
 import it.unimib.communimib.repository.UserRepository;
 
 public class ReportsCreationViewModelTest {
