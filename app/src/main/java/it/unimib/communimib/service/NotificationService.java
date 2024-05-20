@@ -143,7 +143,7 @@ public class NotificationService extends FirebaseMessagingService {
             payload.put("notification", notification);
 
             JsonObjectRequest request = new JsonObjectRequest(
-                    "https://fcm.googleapis.com/fcm/send",
+                    "https://fcm.googleapis.com/v1/Communimib/communimib/messages:send",
                     payload,
                     response -> {
                         Log.d("request", "successo");
