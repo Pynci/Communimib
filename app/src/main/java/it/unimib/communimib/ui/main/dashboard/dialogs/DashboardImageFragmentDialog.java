@@ -12,15 +12,17 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import java.util.List;
+
 import it.unimib.communimib.databinding.FragmentDashboardImageDialogBinding;
 import it.unimib.communimib.model.Post;
 
 public class DashboardImageFragmentDialog extends DialogFragment {
 
-    private final Post post;
+    private final List<String> pictures;
 
-    public DashboardImageFragmentDialog(Post post){
-        this.post = post;
+    public DashboardImageFragmentDialog(List<String> pictures){
+        this.pictures = pictures;
     }
     @NonNull
     @Override
@@ -32,7 +34,7 @@ public class DashboardImageFragmentDialog extends DialogFragment {
         builder.setView(fragmentDashboardImageDialogBinding.getRoot());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        DashboardImageRecyclerViewAdapter dashboardImageRecyclerViewAdapter = new DashboardImageRecyclerViewAdapter(post.getPictures(), getContext());
+        DashboardImageRecyclerViewAdapter dashboardImageRecyclerViewAdapter = new DashboardImageRecyclerViewAdapter(pictures, getContext());
         fragmentDashboardImageDialogBinding.dashboardImageDialogRecyclerView.setLayoutManager(layoutManager);
         fragmentDashboardImageDialogBinding.dashboardImageDialogRecyclerView.setAdapter(dashboardImageRecyclerViewAdapter);
 

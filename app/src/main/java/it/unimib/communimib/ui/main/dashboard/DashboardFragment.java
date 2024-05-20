@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -116,8 +115,8 @@ public class DashboardFragment extends Fragment {
             }
 
             @Override
-            public void onImageSliderClick(Post post) {
-                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(post);
+            public void onImageSliderClick(List<String> pictures) {
+                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(pictures);
                 imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
         }, getContext());

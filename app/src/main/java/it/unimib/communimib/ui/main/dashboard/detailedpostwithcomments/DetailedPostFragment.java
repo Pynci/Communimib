@@ -20,6 +20,8 @@ import android.view.animation.AnimationUtils;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
+
 import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDetailedPostBinding;
@@ -33,24 +35,17 @@ import it.unimib.communimib.util.TopbarHelper;
 
 public class DetailedPostFragment extends Fragment {
 
-    private interface OnSliderClickListener {
-        void onClick();
-    }
 
     private boolean isScrollButtonVisible = false;
     private boolean isAnimating = false;
     private DetailedPostViewModel detailedPostViewModel;
-    private final OnSliderClickListener onSliderClickListener;
     private BottomNavigationBarListener mListener;
     private FragmentDetailedPostBinding binding;
     private Post post;
 
 
     public DetailedPostFragment() {
-        onSliderClickListener = () -> {
-            DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(post);
-            imageDialog.show(getParentFragmentManager(), "Image Dialog");
-        };
+
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,8 +87,9 @@ public class DetailedPostFragment extends Fragment {
             }
 
             @Override
-            public void onImageSliderClick(Post post) {
-                onSliderClickListener.onClick();
+            public void onImageSliderClick(List<String> pictures) {
+                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(post.getPictures());
+                imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
         });
         binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);

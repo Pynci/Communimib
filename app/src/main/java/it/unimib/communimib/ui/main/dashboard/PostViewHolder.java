@@ -120,7 +120,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         imageSlider.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemSelected(int i) {
-                onPostClickListener.onImageSliderClick(post);
+                onPostClickListener.onImageSliderClick(post.getPictures());
             }
 
             @Override

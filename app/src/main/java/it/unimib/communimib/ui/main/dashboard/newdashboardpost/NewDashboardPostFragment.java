@@ -3,6 +3,7 @@ package it.unimib.communimib.ui.main.dashboard.newdashboardpost;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -35,6 +37,7 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.TopNavigationBarListener;
 import it.unimib.communimib.databinding.FragmentNewDashboardPostDialogBinding;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
 
 public class NewDashboardPostFragment extends Fragment {
@@ -93,10 +96,10 @@ public class NewDashboardPostFragment extends Fragment {
                         ArrayList<SlideModel> slideModels = new ArrayList<>();
 
                         for (Uri uri : uris) {
-                            slideModels.add(new SlideModel(uri.toString(), ScaleTypes.FIT));
+                            slideModels.add(new SlideModel(uri.toString(), ScaleTypes.CENTER_CROP));
                         }
 
-                        binding.imageSliderLoadedImages.setImageList(slideModels);
+                        binding.imageSliderLoadedImages.setImageList(slideModels, ScaleTypes.CENTER_CROP);
                     }
                 });
 
@@ -109,6 +112,21 @@ public class NewDashboardPostFragment extends Fragment {
         binding.imageButtonAddImages.setOnClickListener(v -> pickMultipleMedia.launch(new PickVisualMediaRequest.Builder()
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
                 .build()));
+
+        //Gestione dell'imageSlider
+        binding.imageSliderLoadedImages.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemSelected(int i) {
+                Log.d("pizza", "arriva");
+                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(selectedUris);
+                imageDialog.show(getParentFragmentManager(), "Image Dialog");
+            }
+
+            @Override
+            public void doubleClick(int i) {
+                //per ora non serve
+            }
+        });
 
         //Gestione spinner categorie
         binding.categorySpinner.setPrompt("Categoria");
