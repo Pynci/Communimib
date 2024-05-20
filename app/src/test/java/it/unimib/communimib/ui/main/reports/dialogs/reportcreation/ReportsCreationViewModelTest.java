@@ -29,8 +29,7 @@ public class ReportsCreationViewModelTest {
     public void createReport() throws InterruptedException {
         ReportRepository reportRepository = mock(ReportRepository.class);
         UserRepository userRepository = mock(UserRepository.class);
-        TokenRepository tokenRepository = mock(TokenRepository.class);
-        ReportsCreationViewModel reportsCreationViewModel = new ReportsCreationViewModel(reportRepository, userRepository, tokenRepository, mock(Context.class)); //non ho idea se mock context funzioni, è una prova
+        ReportsCreationViewModel reportsCreationViewModel = new ReportsCreationViewModel(reportRepository, userRepository);
         String title = "titolo";
         String description = "descrizione";
         String building = "U14";

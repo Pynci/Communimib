@@ -44,8 +44,6 @@ public class NewReportFragmentDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(binding.getRoot());
 
-        reportsCreationViewModel.getAllToken();
-
         //Gestione spinner edifici
         binding.buildingsSpinner.setPrompt("Edificio");
         ArrayAdapter<String> adapterEdificio = getBuildingsAdapter();

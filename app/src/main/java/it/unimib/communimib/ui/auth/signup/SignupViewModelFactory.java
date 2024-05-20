@@ -19,7 +19,6 @@ public class SignupViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass){
-        return (T) new SignupViewModel(ServiceLocator.getInstance().getUserRepository(context),
-                ServiceLocator.getInstance().getTokenRepository());
+        return (T) new SignupViewModel(ServiceLocator.getInstance().getUserRepository(context));
     }
 }

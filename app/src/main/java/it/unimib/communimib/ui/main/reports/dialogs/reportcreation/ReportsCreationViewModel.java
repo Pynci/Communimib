@@ -22,27 +22,13 @@ public class ReportsCreationViewModel extends ViewModel {
 
     private final IReportRepository reportRepository;
     private final IUserRepository userRepository;
-    private final ITokenRepository tokenRepository;
     private MutableLiveData<Result> createReportResult;
-    private MutableLiveData<Result> addedTokenResult;
-    private MutableLiveData<Result> changedTokenResult;
-    private MutableLiveData<Result> removedTokenResult;
-    private MutableLiveData<Result> cancelledTokenResult;
-    private List<Token> tokenList;
-    private final Context context;
 
-    public ReportsCreationViewModel(IReportRepository reportRepository, IUserRepository userRepository, ITokenRepository tokenRepository, Context context){
+    public ReportsCreationViewModel(IReportRepository reportRepository, IUserRepository userRepository){
         this.reportRepository = reportRepository;
         this.userRepository = userRepository;
-        this.tokenRepository = tokenRepository;
-        this.context = context;
 
         createReportResult = new MutableLiveData<>();
-        addedTokenResult = new MutableLiveData<>();
-        changedTokenResult = new MutableLiveData<>();
-        removedTokenResult = new MutableLiveData<>();
-        cancelledTokenResult= new MutableLiveData<>();
-        tokenList = new ArrayList<>();
     }
 
     public void createReport(String title, String description, String building, String category, DialogCallback callback) {
@@ -50,58 +36,17 @@ public class ReportsCreationViewModel extends ViewModel {
         if(validationResult.equals("ok")) {
             reportRepository.createReport(title, description, building, category, userRepository.getCurrentUser(), result -> {
                 createReportResult.postValue(result);
-                if(result.isSuccessful()){
-                    String messageBody = title+"    "+building;
-                    NotificationService notificationService = new NotificationService(context);
-                    notificationService.sendNotification(messageBody, tokenList, userRepository.getCurrentUser());
-                }
                 callback.onComplete();
             });
         }
-    }
-
-    public void getAllToken(){
-        tokenRepository.getAllToken(
-                addedToken -> addedTokenResult.setValue(addedToken),
-                changedToken -> changedTokenResult.setValue(changedToken),
-                removedToken -> removedTokenResult.setValue(removedToken),
-                cancelledError -> cancelledTokenResult.setValue(cancelledError)
-                );
     }
 
     public LiveData<Result> getCreateReportResult() {
         return this.createReportResult;
     }
 
-    public LiveData<Result> getAddedTokenResult() {
-        return addedTokenResult;
-    }
-
-    public LiveData<Result> getChangedTokenResult() {
-        return changedTokenResult;
-    }
-
-    public LiveData<Result> getRemovedTokenResult() {
-        return removedTokenResult;
-    }
-
-    public LiveData<Result> getCancelledTokenResult() {
-        return cancelledTokenResult;
-    }
-
-    public List<Token> getTokenList() {
-        return tokenList;
-    }
-
-    public void setTokenList(List<Token> tokenList) {
-        this.tokenList = tokenList;
-    }
 
     public void cleanViewModel(){
         createReportResult = new MutableLiveData<>();
-        addedTokenResult = new MutableLiveData<>();
-        changedTokenResult = new MutableLiveData<>();
-        removedTokenResult = new MutableLiveData<>();
-        cancelledTokenResult = new MutableLiveData<>();
     }
 }

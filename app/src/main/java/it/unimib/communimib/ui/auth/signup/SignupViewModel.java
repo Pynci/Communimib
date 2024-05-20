@@ -19,14 +19,10 @@ import it.unimib.communimib.util.Validation;
 public class SignupViewModel extends ViewModel {
 
     private MutableLiveData<Result> signUpResult;
-    private MutableLiveData<Result> tokenResult;
     private final IUserRepository iUserRepository;
-    private final ITokenRepository iTokenRepository;
 
-    public SignupViewModel(IUserRepository iUserRepository, ITokenRepository iTokenRepository){
+    public SignupViewModel(IUserRepository iUserRepository){
         signUpResult = new MutableLiveData<>();
-        tokenResult = new MutableLiveData<>();
-        this.iTokenRepository = iTokenRepository;
         this.iUserRepository = iUserRepository;
     }
 
@@ -38,23 +34,8 @@ public class SignupViewModel extends ViewModel {
         return iUserRepository.getCurrentUser();
     }
 
-    public void addToken(){
-        NotificationService.getTokenFromFirebaseMessaging(result -> {
-            if(result.isSuccessful()){
-                String tokenValue = ((Result.TokenValueSuccess) result).getTokenValue();
-                User user = getCurrentUser();
-                Token token = new Token(tokenValue, user.getUid());
-                iTokenRepository.sendRegistrationToServer(token, tokenResult::postValue);
-            }
-        });
-    }
-
     public LiveData<Result> getSignUpResult() {
         return signUpResult;
-    }
-
-    public LiveData<Result> getTokenResult() {
-        return tokenResult;
     }
 
     public void cleanViewModel(){

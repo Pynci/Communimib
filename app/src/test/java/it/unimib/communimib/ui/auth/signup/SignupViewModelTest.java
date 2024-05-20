@@ -22,7 +22,6 @@ public class SignupViewModelTest {
 
     private SignupViewModel signupViewModel;
     private UserRepository mockUserRepository;
-    private TokenRepository mockTokenRepository;
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -30,8 +29,7 @@ public class SignupViewModelTest {
     @Before
     public void setUp() throws Exception {
         mockUserRepository = mock(UserRepository.class);
-        mockTokenRepository = mock(TokenRepository.class);
-        signupViewModel = new SignupViewModel(mockUserRepository, mockTokenRepository);
+        signupViewModel = new SignupViewModel(mockUserRepository);
     }
 
 
@@ -55,6 +53,5 @@ public class SignupViewModelTest {
         Assert.assertTrue(result instanceof Result.Success);
     }
 
-    //todo aggiungere eventuali test per token
 
 }

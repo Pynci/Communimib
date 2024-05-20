@@ -20,8 +20,6 @@ public class ReportsCreationViewModelFactory implements ViewModelProvider.Factor
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass){
         return (T) new ReportsCreationViewModel(
                 ServiceLocator.getInstance().getReportRepository(),
-                ServiceLocator.getInstance().getUserRepository(context),
-                ServiceLocator.getInstance().getTokenRepository(),
-                context);
+                ServiceLocator.getInstance().getUserRepository(context));
     }
 }

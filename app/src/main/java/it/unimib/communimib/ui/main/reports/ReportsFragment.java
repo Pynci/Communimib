@@ -50,7 +50,6 @@ public class ReportsFragment extends Fragment {
     private FavoriteBuildingViewModel favoriteBuildingViewModel;
     private ReportMainRecyclerViewAdapter reportMainRecyclerViewAdapter;
     private List<String> favoriteBuildings;
-    private List<Token> tokenList;
     private boolean isFilteredByFavorites = false;
     private boolean menuVisibile;
 
@@ -266,37 +265,6 @@ public class ReportsFragment extends Fragment {
         //Gestione osservazione filtri
         filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), this::filter);
 
-        tokenList = new ArrayList<>();
-        reportsCreationViewModel.getAddedTokenResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()){
-                tokenList.add(((Result.TokenSuccess) result).getToken());
-                reportsCreationViewModel.setTokenList(tokenList);
-                Log.d("token", ((Result.TokenSuccess) result).getToken().getToken());
-            }
-        });
-
-        reportsCreationViewModel.getChangedTokenResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()){
-                Token newToken = ((Result.TokenSuccess) result).getToken();
-                Token oldToken = findOldToken(newToken);
-                int index = tokenList.indexOf(oldToken);
-                tokenList.set(index, newToken);
-                reportsCreationViewModel.setTokenList(tokenList);
-            }
-        });
-
-        reportsCreationViewModel.getRemovedTokenResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()){
-                tokenList.remove(((Result.TokenSuccess) result).getToken());
-                reportsCreationViewModel.setTokenList(tokenList);
-            }
-        });
-
-        reportsCreationViewModel.getCancelledTokenResult().observe(getViewLifecycleOwner(), result -> {
-            Snackbar
-                    .make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT)
-                    .show();
-        });
     }
 
     private void filter(List<String> filter) {
@@ -371,14 +339,4 @@ public class ReportsFragment extends Fragment {
         }
     }
 
-    private Token findOldToken(Token newToken){
-        if(!tokenList.isEmpty()){
-            for (Token token: tokenList) {
-                if(token.getTid().equals(newToken.getTid())){
-                    return token;
-                }
-            }
-        }
-        return newToken;
-    }
 }
