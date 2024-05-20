@@ -113,21 +113,6 @@ public class NewDashboardPostFragment extends Fragment {
                 .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
                 .build()));
 
-        //Gestione dell'imageSlider
-        binding.imageSliderLoadedImages.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void onItemSelected(int i) {
-                Log.d("pizza", "arriva");
-                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(selectedUris);
-                imageDialog.show(getParentFragmentManager(), "Image Dialog");
-            }
-
-            @Override
-            public void doubleClick(int i) {
-                //per ora non serve
-            }
-        });
-
         //Gestione spinner categorie
         binding.categorySpinner.setPrompt("Categoria");
         ArrayAdapter<String> adapterCategorie = getCategoriesAdapter();
