@@ -16,6 +16,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Message;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -145,10 +146,10 @@ public class NotificationService extends FirebaseMessagingService {
                     "https://fcm.googleapis.com/fcm/send",
                     payload,
                     response -> {
-                        // Handle success
+                        Log.d("request", "successo");
                     },
                     error -> {
-                        // Handle error
+                        Log.d("request", "errore");
                     }) {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
