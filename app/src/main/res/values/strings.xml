@@ -104,4 +104,13 @@
     <string name="seleziona_una_categoria">Seleziona una categoria:</string>
     <string name="inserisci_un_contatto_e_mail_opzionale">Inserisci un contatto e-mail (opzionale)</string>
     <string name="inserisci_un_link_per_un_sito_web_opzionale">Inserisci un link di un sito web (opzionale)</string>
+    <string name="pubblica_il_tuo_commento">Pubblica il tuo commento</string>
+
+    <string name="comment_read_error">Si è verificato un errore nel caricamento dei commenti</string>
+    <string name="comment_creation_error">Si è verificato un errore durante la creazione del commento</string>
+    <string name="bottone_per_far_ricomparire_il_post">Bottone per far ricomparire il post</string>
+    <string name="visualizza_i_nuovi_post">Visualizza i nuovi post</string>
+
+    <string name="invalid_email">Inserisci una mail valida</string>
+    <string name="invalid_link">Inserisci un link valido</string>
 </resources>
