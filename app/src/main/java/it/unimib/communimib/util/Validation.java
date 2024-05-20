@@ -1,5 +1,7 @@
 package it.unimib.communimib.util;
 
+import android.util.Patterns;
+
 import org.apache.commons.validator.routines.EmailValidator;
 
 public class Validation {
@@ -119,5 +121,13 @@ public class Validation {
         else{
             return "ok";
         }
+    }
+
+    public static boolean isValidEmail(String email){
+        return email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public static boolean isValidLink(String link) {
+        return link != null && Patterns.WEB_URL.matcher(link).matches();
     }
 }

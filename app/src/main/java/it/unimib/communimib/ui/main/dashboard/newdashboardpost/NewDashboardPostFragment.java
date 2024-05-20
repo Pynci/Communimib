@@ -39,12 +39,15 @@ import it.unimib.communimib.databinding.FragmentNewDashboardPostDialogBinding;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.Validation;
 
 public class NewDashboardPostFragment extends Fragment {
 
     private boolean isTitleOk;
     private boolean isDescriptionOk;
     private boolean isSpinnerOk;
+    private boolean isEmailOk;
+    private boolean isLinkOk;
     private List<String> selectedUris;
     private FragmentNewDashboardPostDialogBinding binding;
 
@@ -64,6 +67,8 @@ public class NewDashboardPostFragment extends Fragment {
         isTitleOk = false;
         isDescriptionOk = false;
         isSpinnerOk = false;
+        isEmailOk = true;
+        isLinkOk = true;
         hideNavigationBars();
 
         newDashboardPostViewModel =
@@ -198,6 +203,49 @@ public class NewDashboardPostFragment extends Fragment {
             }
             return true;
         });
+
+        //Validazione della mail
+        binding.textViewEmailError.setVisibility(View.INVISIBLE);
+        binding.editTextEmailAddress.setOnFocusChangeListener((v, hasFocus) -> {
+            String email = binding.editTextEmailAddress.getText().toString();
+            if(hasFocus){
+                binding.textViewEmailError.setVisibility(View.INVISIBLE);
+                isEmailOk = false;
+                tryEnableButton();
+            }
+            else{
+                if(email.isEmpty() || Validation.isValidEmail(email)){
+                    isEmailOk = true;
+                }
+                else{
+                    binding.textViewEmailError.setVisibility(View.VISIBLE);
+                    isEmailOk = false;
+                }
+                tryEnableButton();
+            }
+        });
+
+        //Validazione del link
+        binding.textViewLinkError.setVisibility(View.INVISIBLE);
+        binding.editTextWebsite.setOnFocusChangeListener((v, hasFocus) -> {
+            String link = binding.editTextWebsite.getText().toString();
+            if(hasFocus){
+                binding.textViewLinkError.setVisibility(View.INVISIBLE);
+                isLinkOk = false;
+                tryEnableButton();
+            }
+            else{
+                if(link.isEmpty() || Validation.isValidLink(link)){
+                    isLinkOk = true;
+                }
+                else{
+                    binding.textViewLinkError.setVisibility(View.VISIBLE);
+                    isLinkOk = false;
+                }
+                tryEnableButton();
+            }
+        });
+
     }
 
     private void hideKeyboard(View view) {
@@ -206,7 +254,7 @@ public class NewDashboardPostFragment extends Fragment {
     }
 
     private void tryEnableButton() {
-        binding.buttonConfirm.setEnabled(isTitleOk && isDescriptionOk && isSpinnerOk);
+        binding.buttonConfirm.setEnabled(isTitleOk && isDescriptionOk && isSpinnerOk && isEmailOk && isLinkOk);
     }
 
     @Override
