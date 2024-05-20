@@ -6,6 +6,15 @@
     android:layout_height="wrap_content"
     android:background="?android:selectableItemBackground">
 
+    <ImageView
+        android:id="@+id/postItem_commentIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/postItem_description"
+        app:layout_constraintTop_toBottomOf="@+id/postItem_linkIcon"
+        app:srcCompat="@drawable/comment_icon" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/postItem_propicCardview"
         android:layout_width="40dp"
@@ -66,7 +75,6 @@
         android:id="@+id/postItem_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/postItem_datetime"
         app:layout_constraintStart_toStartOf="@+id/postItem_title"
@@ -88,7 +96,7 @@
         android:id="@+id/postItem_imageSliderCardView"
         android:layout_width="0dp"
         android:layout_height="250dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:minWidth="300dp"
         app:cardCornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="@+id/postItem_description"
@@ -99,14 +107,7 @@
         <com.denzcoskun.imageslider.ImageSlider
             android:id="@+id/postItem_imageSlider"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/postItem_ImageInsideCard"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </com.denzcoskun.imageslider.ImageSlider>
+            android:layout_height="match_parent" />
 
     </androidx.cardview.widget.CardView>
 
@@ -114,7 +115,7 @@
         android:id="@+id/postItem_emailIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/postItem_description"
         app:layout_constraintTop_toBottomOf="@+id/postItem_imageSliderCardView"
         app:srcCompat="@drawable/post_email" />
@@ -123,31 +124,36 @@
         android:id="@+id/postItem_linkIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/postItem_description"
         app:layout_constraintTop_toBottomOf="@+id/postItem_emailIcon"
         app:srcCompat="@drawable/post_link" />
 
     <TextView
         android:id="@+id/postItem_email"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
         android:autoLink="email"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/md_theme_light_onSecondaryContainer"
         app:layout_constraintBottom_toBottomOf="@+id/postItem_emailIcon"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_description"
         app:layout_constraintStart_toEndOf="@+id/postItem_emailIcon"
         app:layout_constraintTop_toTopOf="@+id/postItem_emailIcon"
         tools:text="email@campus.unimib.it" />
 
     <TextView
         android:id="@+id/postItem_link"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:autoLink="web"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/md_theme_light_onSecondaryContainer"
         app:layout_constraintBottom_toBottomOf="@+id/postItem_linkIcon"
+        app:layout_constraintEnd_toEndOf="@+id/postItem_description"
         app:layout_constraintStart_toEndOf="@+id/postItem_linkIcon"
         app:layout_constraintTop_toTopOf="@+id/postItem_linkIcon"
         tools:text="https://www.unimib.it/" />
@@ -166,10 +172,22 @@
         android:id="@+id/divider"
         android:layout_width="409dp"
         android:layout_height="1dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postItem_link" />
+        app:layout_constraintTop_toBottomOf="@+id/postItem_commentIcon" />
+
+    <TextView
+        android:id="@+id/postItem_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="0"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/postItem_commentIcon"
+        app:layout_constraintStart_toEndOf="@+id/postItem_commentIcon"
+        app:layout_constraintTop_toTopOf="@+id/postItem_commentIcon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

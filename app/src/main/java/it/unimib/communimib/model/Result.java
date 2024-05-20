@@ -91,7 +91,7 @@ public abstract class Result {
         }
     }
 
-    public static final class PostSuccess extends Result{
+    public static final class PostSuccess extends Result {
         private final Post post;
 
 
@@ -102,26 +102,15 @@ public abstract class Result {
         public Post getPost(){ return post; }
     }
 
-    public static final class TokenSuccess extends Result{
-        private final Token token;
+    public static final class CommentSuccess extends Result {
+        private final Comment comment;
 
-        public TokenSuccess(Token token) {
-            this.token = token;
+        public CommentSuccess(Comment comment){
+            this.comment = comment;
         }
 
-        public Token getToken(){
-            return token;
-        }
-    }
-
-    public static final class TokenValueSuccess extends Result{
-        private final String token;
-
-        public TokenValueSuccess(String token) {
-            this.token = token;
-        }
-        public String getTokenValue() {
-            return token;
+        public Comment getComment(){
+            return comment;
         }
     }
 

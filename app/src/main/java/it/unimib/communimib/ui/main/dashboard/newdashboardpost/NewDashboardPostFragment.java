@@ -3,9 +3,12 @@ package it.unimib.communimib.ui.main.dashboard.newdashboardpost;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,15 +37,17 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.TopNavigationBarListener;
 import it.unimib.communimib.databinding.FragmentNewDashboardPostDialogBinding;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.ui.main.reports.ReportsViewModel;
-import it.unimib.communimib.ui.main.reports.ReportsViewModelFactory;
+import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.Validation;
 
-public class NewDashboardPostDialog extends Fragment {
+public class NewDashboardPostFragment extends Fragment {
 
     private boolean isTitleOk;
     private boolean isDescriptionOk;
     private boolean isSpinnerOk;
+    private boolean isEmailOk;
+    private boolean isLinkOk;
     private List<String> selectedUris;
     private FragmentNewDashboardPostDialogBinding binding;
 
@@ -51,7 +57,7 @@ public class NewDashboardPostDialog extends Fragment {
     private NewDashboardPostViewModel newDashboardPostViewModel;
 
 
-    public NewDashboardPostDialog() {
+    public NewDashboardPostFragment() {
         selectedUris = new ArrayList<>();
     }
 
@@ -61,6 +67,8 @@ public class NewDashboardPostDialog extends Fragment {
         isTitleOk = false;
         isDescriptionOk = false;
         isSpinnerOk = false;
+        isEmailOk = true;
+        isLinkOk = true;
         hideNavigationBars();
 
         newDashboardPostViewModel =
@@ -93,17 +101,16 @@ public class NewDashboardPostDialog extends Fragment {
                         ArrayList<SlideModel> slideModels = new ArrayList<>();
 
                         for (Uri uri : uris) {
-                            slideModels.add(new SlideModel(uri.toString(), ScaleTypes.FIT));
+                            slideModels.add(new SlideModel(uri.toString(), ScaleTypes.CENTER_CROP));
                         }
 
-                        binding.imageSliderLoadedImages.setImageList(slideModels);
+                        binding.imageSliderLoadedImages.setImageList(slideModels, ScaleTypes.CENTER_CROP);
                     }
                 });
 
         //Gestione del pulsante indietro
         binding.buttonBack.setOnClickListener(v -> {
             getParentFragmentManager().popBackStack();
-            showNavigationBars();
         });
 
         //Gestione del pulsante per caricare le foto
@@ -143,7 +150,11 @@ public class NewDashboardPostDialog extends Fragment {
         binding.categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                isSpinnerOk = true;
+                if(!binding.categorySpinner.getSelectedItem().equals("Categoria")){
+                    isSpinnerOk = true;
+                }else{
+                    isSpinnerOk = false;
+                }
                 tryEnableButton();
             }
 
@@ -164,7 +175,6 @@ public class NewDashboardPostDialog extends Fragment {
                         newDashboardPostViewModel.getCurrentUser(),
                         binding.editTextEmailAddress.getText().toString(),
                         binding.editTextWebsite.getText().toString(),
-                        System.currentTimeMillis(),
                         selectedUris
                 );
             }
@@ -181,10 +191,70 @@ public class NewDashboardPostDialog extends Fragment {
                 Snackbar.make(view, ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
+
+        //Gestione del tocco fuori dai campi per rimuovere il focus
+        binding.mainLayout.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                View currentFocus = getActivity().getCurrentFocus();
+                if (currentFocus != null) {
+                    currentFocus.clearFocus();
+                    hideKeyboard(v);
+                }
+            }
+            return true;
+        });
+
+        //Validazione della mail
+        binding.textViewEmailError.setVisibility(View.INVISIBLE);
+        binding.editTextEmailAddress.setOnFocusChangeListener((v, hasFocus) -> {
+            String email = binding.editTextEmailAddress.getText().toString();
+            if(hasFocus){
+                binding.textViewEmailError.setVisibility(View.INVISIBLE);
+                isEmailOk = false;
+                tryEnableButton();
+            }
+            else{
+                if(email.isEmpty() || Validation.isValidEmail(email)){
+                    isEmailOk = true;
+                }
+                else{
+                    binding.textViewEmailError.setVisibility(View.VISIBLE);
+                    isEmailOk = false;
+                }
+                tryEnableButton();
+            }
+        });
+
+        //Validazione del link
+        binding.textViewLinkError.setVisibility(View.INVISIBLE);
+        binding.editTextWebsite.setOnFocusChangeListener((v, hasFocus) -> {
+            String link = binding.editTextWebsite.getText().toString();
+            if(hasFocus){
+                binding.textViewLinkError.setVisibility(View.INVISIBLE);
+                isLinkOk = false;
+                tryEnableButton();
+            }
+            else{
+                if(link.isEmpty() || Validation.isValidLink(link)){
+                    isLinkOk = true;
+                }
+                else{
+                    binding.textViewLinkError.setVisibility(View.VISIBLE);
+                    isLinkOk = false;
+                }
+                tryEnableButton();
+            }
+        });
+
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void tryEnableButton() {
-        binding.buttonConfirm.setEnabled(isTitleOk && isDescriptionOk && isSpinnerOk);
+        binding.buttonConfirm.setEnabled(isTitleOk && isDescriptionOk && isSpinnerOk && isEmailOk && isLinkOk);
     }
 
     @Override

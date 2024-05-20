@@ -2,13 +2,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.main.dashboard.newdashboardpost.NewDashboardPostDialog">
+        tools:context=".ui.main.dashboard.newdashboardpost.NewDashboardPostFragment">
 
         <Button
             android:id="@+id/button_back"
@@ -125,29 +127,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageButton_add_images">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/imageSlider_loaded_images"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:iss_corner_radius="20"
+                app:iss_title_background="@drawable/default_gradient" />
 
-                <com.denzcoskun.imageslider.ImageSlider
-                    android:id="@+id/imageSlider_loaded_images"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:iss_corner_radius="20"
-                    app:iss_title_background="@drawable/default_gradient"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
         <EditText
             android:id="@+id/editText_email_address"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:gravity="center"
@@ -157,13 +149,12 @@
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView_imageSlider" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_emailError" />
 
         <EditText
             android:id="@+id/editText_website"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/edit_text_background"
             android:ems="10"
@@ -175,7 +166,30 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_linkError" />
+
+        <TextView
+            android:id="@+id/textView_emailError"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/md_theme_light_error"
+            android:text="@string/invalid_email"
+            app:layout_constraintEnd_toEndOf="@+id/editText_post_description"
+            app:layout_constraintStart_toStartOf="@+id/editText_post_description"
+            app:layout_constraintTop_toBottomOf="@+id/cardView_imageSlider" />
+
+        <TextView
+            android:id="@+id/textView_linkError"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/md_theme_light_error"
+            android:text="@string/invalid_link"
+            app:layout_constraintEnd_toEndOf="@+id/textView_emailError"
+            app:layout_constraintStart_toStartOf="@+id/textView_emailError"
             app:layout_constraintTop_toBottomOf="@+id/editText_email_address" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

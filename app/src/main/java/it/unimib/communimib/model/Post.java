@@ -1,12 +1,12 @@
 package it.unimib.communimib.model;
 
-import android.net.Uri;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Post {
+public class Post implements Serializable {
 
     private String pid;
     private String title;
@@ -17,10 +17,12 @@ public class Post {
     private String link;
     private long timestamp;
     private List<String> pictures;
+    private int comments;
 
 
     public Post(){
         pictures = new ArrayList<>();
+        comments = 0;
     }
 
     public Post(String title, String description, String category, User author, String email, String link, long timestamp, List<String> pictures) {
@@ -32,6 +34,7 @@ public class Post {
         this.link = link;
         this.timestamp = timestamp;
         this.pictures = pictures;
+        comments = 0;
     }
 
     public String getPid() {
@@ -104,6 +107,14 @@ public class Post {
 
     public void setPictures(List<String> pictures) {
         this.pictures = pictures;
+    }
+
+    public int getComments() {
+        return comments;
+    }
+
+    public void setComments(int comments) {
+        this.comments = comments;
     }
 
     @Override

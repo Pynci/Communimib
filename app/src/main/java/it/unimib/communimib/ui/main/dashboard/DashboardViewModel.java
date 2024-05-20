@@ -1,5 +1,6 @@
 package it.unimib.communimib.ui.main.dashboard;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -60,19 +61,19 @@ public class DashboardViewModel extends ViewModel {
     }
 
 
-    public MutableLiveData<Result> getPostAddedReadResult() {
+    public LiveData<Result> getPostAddedReadResult() {
         return postAddedReadResult;
     }
 
-    public MutableLiveData<Result> getPostChangedReadResult() {
+    public LiveData<Result> getPostChangedReadResult() {
         return postChangedReadResult;
     }
 
-    public MutableLiveData<Result> getPostRemovedReadResult() {
+    public LiveData<Result> getPostRemovedReadResult() {
         return postRemovedReadResult;
     }
 
-    public MutableLiveData<Result> getReadCancelledResult() {
+    public LiveData<Result> getReadCancelledResult() {
         return readCancelledResult;
     }
 
