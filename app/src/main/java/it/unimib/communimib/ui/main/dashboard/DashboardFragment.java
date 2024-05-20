@@ -51,8 +51,6 @@ public class DashboardFragment extends Fragment {
         dashboardViewModel = new ViewModelProvider(this,
                 new DashboardViewModelFactory(this.getContext()))
                 .get(DashboardViewModel.class);
-
-        Log.d("pizza", "siamo nell'onCreate");
     }
 
     @Override
@@ -65,8 +63,6 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        Log.d("pizza", "siamo nell'onViewCreated");
 
         String[] categories = getResources().getStringArray(R.array.posts_categories);
         categories = Arrays.copyOf(categories, categories.length-1);
@@ -131,10 +127,11 @@ public class DashboardFragment extends Fragment {
             if(result.isSuccessful()){
                 Post post = ((Result.PostSuccess) result).getPost();
                 dashboardRecyclerViewAdapter.addItem(post);
-                Log.d("pizza", "dopo addItem");
 
+                //((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition() >= 0 perché il primo elemento è contato -1
+                //nessuno osi chiedere il perché
                 numberNewPost++;
-                if (numberNewPost > 1 && ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition() > 0) {
+                if (numberNewPost >= 1 && ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition() >= 0) {
                     Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_down);
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
@@ -198,12 +195,6 @@ public class DashboardFragment extends Fragment {
             fragmentDashboardBinding.floatingActionButtonScrollUp.setVisibility(View.GONE);
         });
 
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("pizza", "siamo nell'onStart");
     }
 
     public void readPosts(String category){
