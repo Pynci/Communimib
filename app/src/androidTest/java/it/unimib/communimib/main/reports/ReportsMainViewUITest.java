@@ -65,7 +65,7 @@ public class ReportsMainViewUITest {
         // Controllo che il bottone menu sia visibile
         onView(withId(R.id.floatingActionButton_menu)).check(matches(ViewMatchers.isDisplayed()));
 
-        //Clico sul bottone del menu
+        //Click sul bottone del menu
         onView(withId(R.id.floatingActionButton_menu)).perform(click());
 
         // Controllo che il bottone preferiti sia visibile
