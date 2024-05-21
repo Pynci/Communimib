@@ -37,6 +37,7 @@ public class ReportsCreationViewModel extends ViewModel {
         return this.createReportResult;
     }
 
+
     public void cleanViewModel(){
         createReportResult = new MutableLiveData<>();
     }

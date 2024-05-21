@@ -11,7 +11,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -263,6 +262,7 @@ public class ReportsFragment extends Fragment {
 
         //Gestione osservazione filtri
         filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), this::filter);
+
     }
 
     private void filter(List<String> filter) {
@@ -336,4 +336,5 @@ public class ReportsFragment extends Fragment {
             fragmentReportsBinding.floatingActionButtonMenu.startAnimation(animationRotateClose);
         }
     }
+
 }

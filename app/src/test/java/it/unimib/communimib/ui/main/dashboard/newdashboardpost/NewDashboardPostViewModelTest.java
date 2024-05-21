@@ -56,11 +56,10 @@ public class NewDashboardPostViewModelTest {
         String category = "Eventi";
         String email = "g.vitale16@campus.unimib.it";
         String link = "https://link";
-        long timestamp = 1234566;
         List<String> pictures = new ArrayList<>();
 
         doAnswer(invocation ->{
-            Callback callback = invocation.getArgument(8);
+            Callback callback = invocation.getArgument(7);
             callback.onComplete(new Result.Success());
             return null;
         }).when(postRepository).createPost(
@@ -70,11 +69,10 @@ public class NewDashboardPostViewModelTest {
                 any(),
                 eq(email),
                 eq(link),
-                eq(timestamp),
                 eq(pictures),
                 any());
 
-        newDashboardPostViewModel.createPost(title, description, category, user, email, link, timestamp, pictures);
+        newDashboardPostViewModel.createPost(title, description, category, user, email, link, pictures);
         Result result = LiveDataTestUtil.getOrAwaitValue(newDashboardPostViewModel.getPostCreationResult());
         assertTrue(result instanceof Result.Success);
     }

@@ -5,30 +5,30 @@ import it.unimib.communimib.model.Post;
 
 public interface IPostRemoteDataSource {
 
-    public void readAllPosts(Callback addedCallback,
+    void readAllPosts(Callback addedCallback,
                              Callback changedCallback,
                              Callback removedCallback,
                              Callback cancelledCallback);
 
-    public void readPostsByCategory(String category,
+    void readPostsByCategory(String category,
                                     Callback addedCallback,
                                     Callback changedCallback,
                                     Callback removedCallback,
                                     Callback cancelledCallback);
 
-    public void readPostsByTitleOrDescription(String keyword,
+    void readPostsByTitleOrDescription(String keyword,
                                               Callback addedCallback,
                                               Callback changedCallback,
                                               Callback removedCallback,
                                               Callback cancelledCallback);
 
-    public void readPostsByTitleOrDescriptionAndCategory(String keyword,
+    void readPostsByTitleOrDescriptionAndCategory(String keyword,
                                               String category,
                                               Callback addedCallback,
                                               Callback changedCallback,
                                               Callback removedCallback,
                                               Callback cancelledCallback);
-    public void createPost(Post post, Callback callback);
+    void createPost(Post post, Callback callback);
 
-    public void deletePost(Post post, Callback callback);
+    void deletePost(Post post, Callback callback);
 }
