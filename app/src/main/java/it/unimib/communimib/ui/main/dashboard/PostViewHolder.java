@@ -43,12 +43,14 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private Post post;
     private final OnPostClickListener onPostClickListener;
     private final Context context;
+    private final boolean showCommentsCounter;
 
-    public PostViewHolder(@NonNull View itemView, Context context, OnPostClickListener onPostClickListener) {
+    public PostViewHolder(@NonNull View itemView, Context context, OnPostClickListener onPostClickListener, boolean showCommentsCounter) {
         super(itemView);
 
         this.onPostClickListener = onPostClickListener;
         this.context = context;
+        this.showCommentsCounter = showCommentsCounter;
 
         propic = itemView.findViewById(R.id.postItem_propic);
         name = itemView.findViewById(R.id.postItem_name);
@@ -93,8 +95,11 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
                     .load(Uri.parse(post.getAuthor().getPropic()))
                     .into(propic);
         }
+        else{
+            Glide.with(context).load(R.drawable.user_filled).into(propic);
+        }
 
-        if(post.getComments() > 0){
+        if(post.getComments() > 0 && showCommentsCounter){
             comments.setText(String.valueOf(post.getComments()));
             comments.setVisibility(View.VISIBLE);
             commentIcon.setVisibility(View.VISIBLE);

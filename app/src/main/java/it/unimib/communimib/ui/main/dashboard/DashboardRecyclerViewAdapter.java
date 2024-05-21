@@ -58,7 +58,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<PostViewH
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
-        return new PostViewHolder(view, context, onPostClickListener);
+        return new PostViewHolder(view, context, onPostClickListener, true);
     }
 
     @Override
