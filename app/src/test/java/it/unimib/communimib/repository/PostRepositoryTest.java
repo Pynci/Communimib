@@ -13,6 +13,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import it.unimib.communimib.Callback;
+import it.unimib.communimib.datasource.post.CommentRemoteDataSource;
+import it.unimib.communimib.datasource.post.ICommentRemoteDataSource;
 import it.unimib.communimib.datasource.post.IPostRemoteDataSource;
 import it.unimib.communimib.datasource.post.PostRemoteDataSource;
 import it.unimib.communimib.model.Post;
@@ -23,13 +25,15 @@ import it.unimib.communimib.util.ErrorMapper;
 public class PostRepositoryTest {
 
     private IPostRemoteDataSource postRemoteDataSource;
+    private ICommentRemoteDataSource commentRemoteDataSource;
     private IPostRepository postRepository;
     private User user;
 
     @Before
     public void setUp() throws Exception {
         postRemoteDataSource = mock(PostRemoteDataSource.class);
-        postRepository = new PostRepository(postRemoteDataSource);
+        commentRemoteDataSource = mock(CommentRemoteDataSource.class);
+        postRepository = new PostRepository(postRemoteDataSource, commentRemoteDataSource);
         this.user = new User("11111", "g.vitale16@campus.unimib.it", "Giulia", "Vitale", false);
     }
 
@@ -189,7 +193,6 @@ public class PostRepositoryTest {
                 user,
                 "g.vitale16@campus.unimib.it",
                 "https://link",
-                1234566,
                 new ArrayList<>(),
                 result ->
                     assertTrue(result instanceof Result.Success)
