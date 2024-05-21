@@ -150,12 +150,14 @@ public class NewDashboardPostFragment extends Fragment {
         binding.categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getView().clearFocus();
                 if(!binding.categorySpinner.getSelectedItem().equals("Categoria")){
                     isSpinnerOk = true;
                 }else{
                     isSpinnerOk = false;
                 }
                 tryEnableButton();
+
             }
 
             @Override

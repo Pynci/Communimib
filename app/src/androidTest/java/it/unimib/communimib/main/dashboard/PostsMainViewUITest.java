@@ -1,9 +1,18 @@
 package it.unimib.communimib.main.dashboard;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -11,7 +20,6 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import org.checkerframework.checker.units.qual.C;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,5 +67,29 @@ public class PostsMainViewUITest {
         onView(withId(R.id.button_new_post)).perform(click());
     }
 
+    @Test
+    public void testCreationPostDialogAppears(){
 
+        onView(withId(R.id.button_new_post)).perform(click());
+
+        onView(withText(R.string.crea_un_nuovo_post)).check(matches(ViewMatchers.isDisplayed()));
+    }
+
+     @Test
+    public void testErrorsCreationPostDialog(){
+
+         onView(withId(R.id.button_new_post)).perform(click());
+
+         onView(withId(R.id.button_confirm)).check(matches(ViewMatchers.isNotEnabled()));
+
+         onView(withId(R.id.editText_post_title)).perform(typeText("titolo"));
+         onView(withId(R.id.editText_post_description)).perform(typeText("descrizione"));
+
+         onView(withId(R.id.categories_spinner)).perform(click());
+
+         onData(allOf(is(instanceOf(String.class)), is("Eventi"))).perform(click());
+         onView(withId(R.id.categories_spinner)).check(matches(withSpinnerText(containsString("Eventi"))));
+
+         onView(withId(R.id.button_confirm)).check(matches(ViewMatchers.isEnabled()));
+     }
 }
