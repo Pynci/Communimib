@@ -6,15 +6,24 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intending;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.isInternal;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Telephony;
 import android.util.Log;
 import android.view.View;
 
@@ -23,6 +32,7 @@ import androidx.navigation.NavigatorProvider;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -30,6 +40,7 @@ import androidx.test.filters.LargeTest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,15 +82,27 @@ public class PostsMainViewUITest {
         }
         scenario = ActivityScenario.launch(MainActivity.class);
 
+        onView(withId(R.id.activityMainButtonMenu_bottomNavigation)).perform(click(R.id.dashboardFragment, BUTTON_PRIMARY));
+
+        onView(withId(R.id.dashboardFragment)).check(matches(ViewMatchers.isDisplayed()));
+
+    }
+
+    @Before
+    public void stubAllExternalIntents() {
+        // Stub all external intents to avoid launching external apps during tests
+        Intents.init();
+        intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, new Intent()));
+    }
+
+    @After
+    public void releaseIntents() {
+        Intents.release();
     }
 
     @Test
     public void testCreationButtonVisibility(){
-/*
-        onView(withId(R.id.activityMainButtonMenu_bottomNavigation)).perform(click(R.id.dashboardFragment, BUTTON_PRIMARY));
 
-        onView(withId(R.id.dashboardFragment)).check(matches(ViewMatchers.isDisplayed()));
-*/
         onView(withId(R.id.button_new_post)).check(matches(ViewMatchers.isDisplayed()));
 
         onView(withId(R.id.button_new_post)).perform(click());
@@ -90,17 +113,19 @@ public class PostsMainViewUITest {
 
         onView(withId(R.id.button_new_post)).perform(click());
 
-        onView(withText(R.string.crea_un_nuovo_post)).check(matches(ViewMatchers.isDisplayed()));
+        onView(withText(R.string.new_post)).check(matches(ViewMatchers.isDisplayed()));
     }
     @Test
     public void checkCategorySpinnerSelection(){
 
         onView(withId(R.id.button_new_post)).perform(click());
 
-        onView(withId(R.id.categories_spinner)).perform(ViewActions.click());
+        String category = "Eventi";
 
-        onData(allOf(is(instanceOf(String.class)), is("Eventi"))).perform(click());
-        onView(withId(R.id.categories_spinner)).check(matches(withSpinnerText(containsString("Eventi"))));
+        onView(withId(R.id.category_spinner)).perform(click());
+
+        onData(allOf(is(instanceOf(String.class)), is(category))).perform(click());
+        onView(withId(R.id.category_spinner)).check(matches(withSpinnerText(containsString(category))));
     }
 
      @Test
@@ -114,10 +139,10 @@ public class PostsMainViewUITest {
 
          onView(withId(R.id.editText_post_description)).perform(typeText("descrizione"));
 
-         onView(withId(R.id.categories_spinner)).perform(click());
+         onView(withId(R.id.category_spinner)).perform(click());
 
          onData(allOf(is(instanceOf(String.class)), is("Eventi"))).perform(click());
-         onView(withId(R.id.categories_spinner)).check(matches(withSpinnerText(containsString("Eventi"))));
+         onView(withId(R.id.category_spinner)).check(matches(withSpinnerText(containsString("Eventi"))));
 
          onView(withId(R.id.button_confirm)).check(matches(ViewMatchers.isEnabled()));
      }
@@ -125,20 +150,46 @@ public class PostsMainViewUITest {
      @Test
     public void checkImageLoaderCreationPost(){
 
-        onView(withId(R.id.button_new_post)).perform(click());
+         onView(withId(R.id.button_new_post)).perform(click());
 
-        onView(withId(R.id.imageButton_add_images)).perform(click());
+         //onView(withId(R.id.imageButton_add_images)).perform(click());
 
+         // Create a fake image URI
+         Uri imageUri = Uri.parse("https://images.app.goo.gl/PRGpMEbnZsBnfGFQA");
 
+         // Create an intent with the image URI as result
+         Intent resultData = new Intent();
+         resultData.setData(imageUri);
+         Instrumentation.ActivityResult result =
+                 new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+         // Stub the intent to return the fake image URI
+         intending(hasAction(Intent.ACTION_PICK)).respondWith(result);
+         // Now simulate the user selecting the image from the gallery
+         onView(withId(R.id.imageButton_add_images)).perform(click());
+         onView(withText(containsString("Add"))).perform(click());
+         // Verify that the card with the selected image is displayed
+         onView(withId(R.id.cardView_imageSlider)).check(matches(ViewMatchers.isDisplayed()));
+         //todo non vanno
      }
 
-     // test recycler view orizzontale categorie
 
-    // test image loader
+    @Test
+    public void checkButtonScrollUpVisibility(){
+        onView(withId(R.id.fragmentDashboard_recyclerView)).check(matches(ViewMatchers.isDisplayed()));
 
-    // test visibilità button per tornare su
+        onView(withId(R.id.post_item_layout)).perform(click());
 
-    // test visibilità
+        //todo da fare
+    }
 
+
+    @Test
+    public void checkImageDialogAppears(){
+        onView(withId(R.id.fragmentDashboard_recyclerView)).check(matches(ViewMatchers.isDisplayed()));
+
+        onView(withId(R.id.postItem_imageSlider)).perform(click());
+
+        onView(withId(R.id.dashboardImageDialog_recyclerView)).check(matches(ViewMatchers.isDisplayed()));
+    }
 
 }
