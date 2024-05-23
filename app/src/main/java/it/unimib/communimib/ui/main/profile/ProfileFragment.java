@@ -17,13 +17,18 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentProfileBinding;
+import it.unimib.communimib.model.Post;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
+import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
+import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
 
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
 
     private CategoriesRecyclerViewAdapter adapter;
+
+    private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
 
     public ProfileFragment() {
         //Costruttore volutamente vuoto
@@ -49,16 +54,41 @@ public class ProfileFragment extends Fragment {
         String[] options = getResources().getStringArray(R.array.profile_options);
         List<String> optionsList = Arrays.asList(options);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+        RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         adapter = new CategoriesRecyclerViewAdapter(optionsList, optionsList.get(0),new CategoriesRecyclerViewAdapter.OnCategoryClickListener() {
             @Override
             public void onItemClick(String category) {
                 adapter.setCurrentSelection(category);
+                if (category.equals("I miei post")){
+                    binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
+                } else {
+                    //settare adapter segnalazioni
+                }
             }
         });
 
         binding.profileDoubleItemRecyclerView.setLayoutManager(layoutManager);
         binding.profileDoubleItemRecyclerView.setAdapter(adapter);
+
+        dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new OnPostClickListener() {
+            @Override
+            public void onItemClick(Post post) {
+
+            }
+
+            @Override
+            public void onImageSliderClick(List<String> pictures) {
+
+            }
+        }, getContext());
+
+        RecyclerView.LayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+
+        binding.profileRecyclerView.setLayoutManager(verticalLayoutManager);
+
+        binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
+
+
 
     }
 
