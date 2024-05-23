@@ -55,6 +55,7 @@
     <string name="profilo">Profilo</string>
     <string name="segnalazioni">Segnalazioni</string>
     <string name="crea_una_nuova_segnalazione">Crea una nuova segnalazione</string>
+    <string name="new_report"> Nuova segnalazione </string>
     <string name="conferma">Conferma</string>
     <string name="annulla">Annulla</string>
     <string name="inserisci_una_breve_descrizione">Inserisci una breve descrizione</string>
@@ -90,6 +91,7 @@
     <string name="new_post_button">Bottone per creare una nuovo post nella bacheca</string>
     <string name="titolo_del_post">Titolo del post</string>
     <string name="crea_un_nuovo_post">Crea una nuovo post</string>
+    <string name="new_post"> Nuovo post </string>
     <string name="indietro">Indietro</string>
     <string name="pubblica">Pubblica</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate. </string>
