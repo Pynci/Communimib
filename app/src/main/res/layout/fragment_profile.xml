@@ -7,11 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.profile.ProfileFragment">
 
-    <com.google.android.material.card.MaterialCardView
-        style="@style/innserCardViewStyle"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/materialCardView4"
         android:layout_width="350dp"
-        android:layout_height="250dp"
+        android:layout_height="280dp"
         android:layout_marginTop="24dp"
+        app:cardCornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,10 +23,10 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView2"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="25dp"
-                app:cardCornerRadius="50dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="15dp"
+                app:cardCornerRadius="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -55,7 +56,7 @@
                 style="@style/Widget.Material3.TextInputEditText.FilledBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="12dp"
                 android:editable="false"
                 android:importantForAutofill="no"
                 android:inputType="text"
@@ -65,6 +66,7 @@
                 android:text="@string/name"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView2"
                 tools:ignore="Deprecated,LabelFor" />
@@ -83,11 +85,24 @@
                 android:text="@string/surname"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.51"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_textView_name"
                 tools:ignore="Deprecated,LabelFor" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/profileDoubleItem_recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/materialCardView4"
+        app:layout_constraintStart_toStartOf="@+id/materialCardView4"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView4" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

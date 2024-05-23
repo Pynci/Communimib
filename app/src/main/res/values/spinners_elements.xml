@@ -42,4 +42,9 @@
         <item>Altro</item>
         <item>Categoria</item>
     </array>
+
+    <array name="profile_options">
+        <item> I miei post </item>
+        <item> Le mie segnalazioni </item>
+    </array>
 </resources>
