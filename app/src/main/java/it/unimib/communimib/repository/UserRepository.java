@@ -157,7 +157,7 @@ public class UserRepository implements IUserRepository{
             pollingExecutor = Executors.newSingleThreadScheduledExecutor();
         }
 
-        pollingExecutor.scheduleAtFixedRate(() -> {
+        pollingExecutor.scheduleWithFixedDelay(() -> {
             isEmailVerified(result -> {
                 Log.d(this.getClass().getSimpleName(), "MAIL: sto controllando...");
                 if(result.isSuccessful()){

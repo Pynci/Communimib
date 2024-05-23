@@ -9,7 +9,15 @@
         android:id="@+id/dashboardFragment"
         android:name="it.unimib.communimib.ui.main.dashboard.DashboardFragment"
         android:label=""
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_newDashboardPostDialog"
+            app:destination="@id/newDashboardPostDialog"
+            app:enterAnim="@anim/fragment_slide_up" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_detailedPostFragment"
+            app:destination="@id/detailedPostFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="it.unimib.communimib.ui.main.profile.ProfileFragment"
@@ -33,5 +41,20 @@
         <argument
             android:name="report"
             app:argType="it.unimib.communimib.model.Report" />
+    </fragment>
+    <fragment
+        android:id="@+id/newDashboardPostDialog"
+        android:name="it.unimib.communimib.ui.main.dashboard.newpost.NewPostFragment"
+        android:label=""
+        tools:layout="@layout/fragment_new_post" >
+    </fragment>
+    <fragment
+        android:id="@+id/detailedPostFragment"
+        android:name="it.unimib.communimib.ui.main.dashboard.detailedpostwithcomments.DetailedPostFragment"
+        android:label="">
+
+        <argument
+            android:name="post"
+            app:argType="it.unimib.communimib.model.Post" />
     </fragment>
 </navigation>

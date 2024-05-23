@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.util.ErrorMapper;
-import it.unimib.communimib.util.Validation;
 
 public class SignupViewModel extends ViewModel {
 
@@ -21,6 +20,10 @@ public class SignupViewModel extends ViewModel {
 
     public void signUp(String email, String password, String name, String surname) {
         iUserRepository.signUp(email, password, name, surname, signUpResult::postValue);
+    }
+
+    public User getCurrentUser(){
+        return iUserRepository.getCurrentUser();
     }
 
     public LiveData<Result> getSignUpResult() {

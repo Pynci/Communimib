@@ -11,7 +11,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +83,15 @@ public class ReportsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        fragmentReportsBinding.fragmentReportSearchView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                fragmentReportsBinding.fragmentReportSearchView.setIconified(false);
+            }
+        });
 
         fragmentReportsBinding.fragmentReportSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -206,7 +214,6 @@ public class ReportsFragment extends Fragment {
                             },
                             requireContext(),
                             R.layout.report_horizontal_item);
-            reportsHorizontalRecyclerViewAdapter.setCategory(categories[i]);
             categoryReportList.add(new CategoryReport(categories[i],reportsHorizontalRecyclerViewAdapter));
         }
 
@@ -255,6 +262,7 @@ public class ReportsFragment extends Fragment {
 
         //Gestione osservazione filtri
         filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), this::filter);
+
     }
 
     private void filter(List<String> filter) {
@@ -328,4 +336,5 @@ public class ReportsFragment extends Fragment {
             fragmentReportsBinding.floatingActionButtonMenu.startAnimation(animationRotateClose);
         }
     }
+
 }

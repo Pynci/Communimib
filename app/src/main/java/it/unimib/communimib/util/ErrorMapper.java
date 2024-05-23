@@ -41,6 +41,10 @@ public class ErrorMapper {
         errorMap.put(LOCAL_SAVE_USER_FAVORITE_BUILDINGS_ERROR, R.string.local_save_user_favorite_buildings_error);
         errorMap.put(LOCAL_READ_USER_FAVORITE_BUILDINGS_ERROR, R.string.local_read_user_favorite_buildings_error);
         errorMap.put(REMOTE_READ_USER_FAVORITE_BUILDINGS_ERROR, R.string.remote_read_user_favorite_buildings_error);
+        errorMap.put(POST_CREATION_ERROR, R.string.post_creation_error);
+        errorMap.put(POST_DELETING_ERROR, R.string.post_deleting_error);
+        errorMap.put(COMMENT_READ_ERROR, R.string.comment_read_error);
+        errorMap.put(COMMENT_CREATION_ERROR, R.string.comment_creation_error);
     }
 
     public static ErrorMapper getInstance() {
@@ -92,4 +96,12 @@ public class ErrorMapper {
     // Errori gestione reports
     public static final String REPORT_CREATION_ERROR = "report_creation_error";
     public static final String REPORT_DELETING_ERROR = "report_deleting_error";
+
+    //Errori gestione posts
+    public static final String POST_CREATION_ERROR = "post_creation_error";
+    public static final String POST_DELETING_ERROR = "post_deleting_error";
+
+    //ERrori gestione commenti
+    public static final String COMMENT_READ_ERROR = "comment_read_error";
+    public static final String COMMENT_CREATION_ERROR = "comment_creation_error";
 }

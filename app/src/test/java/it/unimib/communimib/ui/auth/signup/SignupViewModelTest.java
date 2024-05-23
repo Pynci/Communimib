@@ -52,4 +52,5 @@ public class SignupViewModelTest {
         Assert.assertTrue(result instanceof Result.Success);
     }
 
+
 }

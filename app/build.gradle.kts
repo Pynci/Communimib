@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.firebase.database)
+    implementation(libs.volley)
     testImplementation(libs.junit)
     testImplementation("org.mockito:mockito-core:3.+")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
@@ -67,6 +68,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-storage")
 
+
     //Dipendenze per room
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
@@ -83,4 +85,7 @@ dependencies {
 
     //Dipendenza per GSON
     implementation("com.google.code.gson:gson:2.8.8")
+
+    //Dipendenza per l'image slider
+    implementation("com.github.denzcoskun:ImageSlideshow:0.1.2")
 }

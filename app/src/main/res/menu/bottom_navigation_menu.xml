@@ -6,15 +6,15 @@
         android:id="@+id/reportsFragment"
         android:enabled="true"
         android:icon="@drawable/flag"
-        android:title="@string/segnalazioni" />
+        android:title="@string/reports" />
     <item
         android:id="@+id/dashboardFragment"
         android:enabled="true"
         android:icon="@drawable/dashboard"
-        android:title="@string/bacheca" />
+        android:title="@string/dashboard" />
     <item
         android:id="@+id/profileFragment"
         android:enabled="true"
         android:icon="@drawable/user_unfilled"
-        android:title="@string/profilo" />
+        android:title="@string/profile" />
 </menu>
