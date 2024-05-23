@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IPostRepository;
 import it.unimib.communimib.repository.IReportRepository;
 import it.unimib.communimib.repository.IUserRepository;
@@ -41,12 +42,17 @@ public class ProfileViewModel extends ViewModel {
         cancelledReportResult = new MutableLiveData<>();
     }
 
-    public void getCurrentUser(){
-        userRepository.getCurrentUser();
+    public User getCurrentUser(){
+        return userRepository.getCurrentUser();
     }
 
     public void readPostsByUser(){
-
+        String uid = getCurrentUser().getUid();
+        postRepository.readPostsByUid(uid,
+                postAdded -> addedPostResult.setValue(postAdded),
+                postChanged -> changedPostResult.setValue(postChanged),
+                postRemoved -> removedPostResult.setValue(postRemoved),
+                postCancelled -> cancelledPostResult.setValue(postCancelled));
     }
 
     public MutableLiveData<Result> getAddedPostResult() {

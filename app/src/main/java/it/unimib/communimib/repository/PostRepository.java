@@ -55,7 +55,7 @@ public class PostRepository implements IPostRepository{
     }
 
     @Override
-    public void readPostsByUis(String uid,
+    public void readPostsByUid(String uid,
                                Callback addedCallback,
                                Callback changedCallback,
                                Callback removedCallback,
