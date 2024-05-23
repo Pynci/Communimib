@@ -31,6 +31,11 @@ public interface IPostRepository {
                                               Callback changedCallback,
                                               Callback removedCallback,
                                               Callback cancelledCallback);
+    public void readPostsByUis(String uid,
+                               Callback addedCallback,
+                               Callback changedCallback,
+                               Callback removedCallback,
+                               Callback cancelledCallback);
 
     public void createPost(String title, String description, String category, User author, String email, String link, List<String> pictures, Callback callback);
 
