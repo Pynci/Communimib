@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        binding.profileDoubleItemRecyclerView.setLayoutManager(layoutManager);
+        binding.profileDoubleItemRecyclerView.setLayoutManager(horizontalLayoutManager);
         binding.profileDoubleItemRecyclerView.setAdapter(adapter);
 
         dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new OnPostClickListener() {
