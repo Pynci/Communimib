@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.dashboard.dialogs;
+package it.unimib.communimib.ui.main.dashboard.pictures;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,29 +14,28 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import java.util.List;
 
-import it.unimib.communimib.databinding.FragmentDashboardImageDialogBinding;
-import it.unimib.communimib.model.Post;
+import it.unimib.communimib.databinding.FragmentPostPicturesBinding;
 
-public class DashboardImageFragmentDialog extends DialogFragment {
+public class PostPicturesFragmentDialog extends DialogFragment {
 
     private final List<String> pictures;
 
-    public DashboardImageFragmentDialog(List<String> pictures){
+    public PostPicturesFragmentDialog(List<String> pictures){
         this.pictures = pictures;
     }
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        FragmentDashboardImageDialogBinding fragmentDashboardImageDialogBinding = FragmentDashboardImageDialogBinding.inflate(getLayoutInflater());
+        FragmentPostPicturesBinding fragmentDashboardImageDialogBinding = FragmentPostPicturesBinding.inflate(getLayoutInflater());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(fragmentDashboardImageDialogBinding.getRoot());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        DashboardImageRecyclerViewAdapter dashboardImageRecyclerViewAdapter = new DashboardImageRecyclerViewAdapter(pictures, getContext());
+        PostPicturesRecyclerViewAdapter postPicturesRecyclerViewAdapter = new PostPicturesRecyclerViewAdapter(pictures, getContext());
         fragmentDashboardImageDialogBinding.dashboardImageDialogRecyclerView.setLayoutManager(layoutManager);
-        fragmentDashboardImageDialogBinding.dashboardImageDialogRecyclerView.setAdapter(dashboardImageRecyclerViewAdapter);
+        fragmentDashboardImageDialogBinding.dashboardImageDialogRecyclerView.setAdapter(postPicturesRecyclerViewAdapter);
 
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(fragmentDashboardImageDialogBinding.dashboardImageDialogRecyclerView);

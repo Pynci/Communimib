@@ -44,9 +44,9 @@
     </fragment>
     <fragment
         android:id="@+id/newDashboardPostDialog"
-        android:name="it.unimib.communimib.ui.main.dashboard.newdashboardpost.NewDashboardPostFragment"
+        android:name="it.unimib.communimib.ui.main.dashboard.newpost.NewPostFragment"
         android:label=""
-        tools:layout="@layout/fragment_new_dashboard_post_dialog" >
+        tools:layout="@layout/fragment_new_post" >
     </fragment>
     <fragment
         android:id="@+id/detailedPostFragment"

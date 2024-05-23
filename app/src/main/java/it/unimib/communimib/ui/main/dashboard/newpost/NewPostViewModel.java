@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.dashboard.newdashboardpost;
+package it.unimib.communimib.ui.main.dashboard.newpost;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,13 +11,13 @@ import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IPostRepository;
 import it.unimib.communimib.repository.IUserRepository;
 
-public class NewDashboardPostViewModel extends ViewModel {
+public class NewPostViewModel extends ViewModel {
 
     private final IPostRepository postRepository;
     private final IUserRepository userRepository;
     private MutableLiveData<Result> postCreationResult;
 
-    public NewDashboardPostViewModel(IPostRepository postRepository, IUserRepository userRepository){
+    public NewPostViewModel(IPostRepository postRepository, IUserRepository userRepository){
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         postCreationResult = new MutableLiveData<>();

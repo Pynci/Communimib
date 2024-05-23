@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.dashboard.dialogs;
+package it.unimib.communimib.ui.main.dashboard.pictures;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,21 +16,21 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 
-public class DashboardImageRecyclerViewAdapter extends RecyclerView.Adapter<DashboardImageRecyclerViewAdapter.ViewHolder> {
+public class PostPicturesRecyclerViewAdapter extends RecyclerView.Adapter<PostPicturesRecyclerViewAdapter.ViewHolder> {
 
     private List<String> images;
     private Context context;
 
-    public DashboardImageRecyclerViewAdapter(List<String> images, Context context){
+    public PostPicturesRecyclerViewAdapter(List<String> images, Context context){
         this.images = images;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public DashboardImageRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_image_item, parent, false);
-        return new DashboardImageRecyclerViewAdapter.ViewHolder(view);
+    public PostPicturesRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_picture_item, parent, false);
+        return new PostPicturesRecyclerViewAdapter.ViewHolder(view);
     }
 
     @Override

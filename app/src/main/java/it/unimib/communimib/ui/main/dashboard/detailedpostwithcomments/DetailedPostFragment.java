@@ -29,7 +29,7 @@ import it.unimib.communimib.model.Comment;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
-import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
+import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.TopbarHelper;
 
@@ -88,7 +88,7 @@ public class DetailedPostFragment extends Fragment {
 
             @Override
             public void onImageSliderClick(List<String> pictures) {
-                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(post.getPictures());
+                PostPicturesFragmentDialog imageDialog = new PostPicturesFragmentDialog(post.getPictures());
                 imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
         });
