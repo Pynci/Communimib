@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/categoria" />
+        tools:text="@string/category" />
 
     <View
         android:id="@+id/categoryItem_view"

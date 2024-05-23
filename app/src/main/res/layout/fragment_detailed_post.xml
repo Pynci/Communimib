@@ -44,7 +44,7 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/edit_text_background"
             android:ems="10"
-            android:hint="@string/pubblica_il_tuo_commento"
+            android:hint="@string/publish_your_comment"
             android:importantForAutofill="no"
             android:inputType="text"
             android:maxLength="200"
@@ -74,7 +74,7 @@
         android:layout_marginEnd="-16dp"
         android:layout_marginBottom="28dp"
         android:clickable="true"
-        android:contentDescription="@string/bottone_per_far_ricomparire_il_post"
+        android:contentDescription="@string/button_back_to_post"
         app:layout_constraintBottom_toTopOf="@+id/detailedPostItem_commentCreationContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/arrow_up" />

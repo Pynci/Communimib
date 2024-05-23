@@ -102,7 +102,7 @@ public class ReportsMainViewUITest {
         onView(withId(R.id.floatingActionButton_add_new_report)).perform(click());
 
         //Controllo che il dialog sia visibile
-        onView(withText(R.string.crea_una_nuova_segnalazione))
+        onView(withText(R.string.create_new_report))
                 .check(matches(ViewMatchers.isDisplayed()));
     }
 
@@ -116,7 +116,7 @@ public class ReportsMainViewUITest {
         onView(withId(R.id.floatingActionButton_filter_buildings)).perform(click());
 
         //Controllo che il dialog sia visibile
-        onView(withText(R.string.filtra_per_gli_edfici_preferiti))
+        onView(withText(R.string.filter_by_favorite_buildings))
                 .check(matches(ViewMatchers.isDisplayed()));
     }
 

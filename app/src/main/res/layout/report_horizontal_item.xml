@@ -48,7 +48,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/reportListItem_buildingImage"
-                    tools:text="@string/titolo_della_segnalazione" />
+                    tools:text="@string/report_title" />
 
                 <TextView
                     android:id="@+id/reportListItem_building"
