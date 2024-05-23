@@ -45,7 +45,7 @@ public class NewPostFragment extends Fragment {
     private boolean isSpinnerOk;
     private boolean isEmailOk;
     private boolean isLinkOk;
-    private List<String> selectedUris;
+    private final List<String> selectedUris;
     private FragmentNewPostBinding binding;
 
     private BottomNavigationBarListener bottomListener;
@@ -148,11 +148,7 @@ public class NewPostFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 getView().clearFocus();
-                if(!binding.categorySpinner.getSelectedItem().equals("Categoria")){
-                    isSpinnerOk = true;
-                }else{
-                    isSpinnerOk = false;
-                }
+                isSpinnerOk = !binding.categorySpinner.getSelectedItem().equals("Categoria");
                 tryEnableButton();
 
             }
@@ -302,7 +298,7 @@ public class NewPostFragment extends Fragment {
 
     @NonNull
     private ArrayAdapter<String> getCategoriesAdapter() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_dropdown_item) {
 
             @NonNull
             @Override

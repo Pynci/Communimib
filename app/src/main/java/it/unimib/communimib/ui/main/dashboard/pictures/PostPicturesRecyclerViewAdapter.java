@@ -18,8 +18,8 @@ import it.unimib.communimib.R;
 
 public class PostPicturesRecyclerViewAdapter extends RecyclerView.Adapter<PostPicturesRecyclerViewAdapter.ViewHolder> {
 
-    private List<String> images;
-    private Context context;
+    private final List<String> images;
+    private final Context context;
 
     public PostPicturesRecyclerViewAdapter(List<String> images, Context context){
         this.images = images;

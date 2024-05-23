@@ -45,7 +45,7 @@ public class DetailedPostFragment extends Fragment {
 
 
     public DetailedPostFragment() {
-
+        //costruttore vuoto
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {

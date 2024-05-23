@@ -66,5 +66,6 @@ public class DetailedPostViewModel extends ViewModel {
         this.commentChangedReadResult = new MutableLiveData<>();
         this.commentRemovedReadResult = new MutableLiveData<>();
         this.readCancelledResult = new MutableLiveData<>();
+        this.commentCreationResult = new MutableLiveData<>();
     }
 }

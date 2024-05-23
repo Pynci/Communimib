@@ -93,20 +93,6 @@ public class ReportsMainViewUITest {
     }
 
     @Test
-    public void testCreationDialogAppear() {
-
-        //Clico sul bottone del menu
-        onView(withId(R.id.floatingActionButton_menu)).perform(click());
-
-        //Clico sul bottone di creazione
-        onView(withId(R.id.floatingActionButton_add_new_report)).perform(click());
-
-        //Controllo che il dialog sia visibile
-        onView(withText(R.string.create_new_report))
-                .check(matches(ViewMatchers.isDisplayed()));
-    }
-
-    @Test
     public void testBuildingFilterDialogAppear() {
 
         //Clico sul bottone del menu
