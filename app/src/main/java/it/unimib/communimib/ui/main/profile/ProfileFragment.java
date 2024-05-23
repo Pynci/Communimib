@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment {
         String[] options = getResources().getStringArray(R.array.profile_options);
         List<String> optionsList = Arrays.asList(options);
 
-        RecyclerView.LayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+        RecyclerView.LayoutManager horizontalLayoutManager = new CustomLinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         adapter = new CategoriesRecyclerViewAdapter(optionsList, optionsList.get(0),new CategoriesRecyclerViewAdapter.OnCategoryClickListener() {
             @Override
             public void onItemClick(String category) {
