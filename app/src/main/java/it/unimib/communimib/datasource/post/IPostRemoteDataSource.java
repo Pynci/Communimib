@@ -2,6 +2,7 @@ package it.unimib.communimib.datasource.post;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.model.User;
 
 public interface IPostRemoteDataSource {
 
@@ -28,6 +29,12 @@ public interface IPostRemoteDataSource {
                                               Callback changedCallback,
                                               Callback removedCallback,
                                               Callback cancelledCallback);
+
+    void readPostsByUid(String uid,
+                        Callback addedCallback,
+                        Callback changedCallback,
+                        Callback removedCallback,
+                        Callback cancelledCallback);
     void createPost(Post post, Callback callback);
 
     void deletePost(Post post, Callback callback);
