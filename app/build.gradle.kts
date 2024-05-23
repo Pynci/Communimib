@@ -88,4 +88,7 @@ dependencies {
 
     //Dipendenza per l'image slider
     implementation("com.github.denzcoskun:ImageSlideshow:0.1.2")
+
+    //dipendeza per gestione immagini caricate (tagli, ecc)
+    implementation("com.github.yalantis:ucrop:2.2.8")
 }
