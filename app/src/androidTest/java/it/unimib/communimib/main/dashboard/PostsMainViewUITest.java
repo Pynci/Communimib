@@ -13,6 +13,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
@@ -40,6 +41,9 @@ import androidx.test.filters.LargeTest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,18 +90,6 @@ public class PostsMainViewUITest {
 
         onView(withId(R.id.dashboardFragment)).check(matches(ViewMatchers.isDisplayed()));
 
-    }
-
-    @Before
-    public void stubAllExternalIntents() {
-        // Stub all external intents to avoid launching external apps during tests
-        Intents.init();
-        intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, new Intent()));
-    }
-
-    @After
-    public void releaseIntents() {
-        Intents.release();
     }
 
     @Test
@@ -147,15 +139,5 @@ public class PostsMainViewUITest {
          onView(withId(R.id.button_confirm)).check(matches(ViewMatchers.isEnabled()));
      }
 
-
-    @Test
-    public void checkImageDialogAppears(){
-        /*
-        onView(withId(R.id.fragmentDashboard_recyclerView)).check(matches(ViewMatchers.isDisplayed()));
-
-        onView(withId(R.id.postItem_imageSlider)).perform(click());
-
-        onView(withId(R.id.dashboardImageDialog_recyclerView)).check(matches(ViewMatchers.isDisplayed()));*/
-    }
 
 }
