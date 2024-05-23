@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,23 +13,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.Arrays;
 import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentProfileBinding;
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.model.Result;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
+import it.unimib.communimib.util.ErrorMapper;
 
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
-
     private CategoriesRecyclerViewAdapter adapter;
-
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
+    private ProfileViewModel profileViewModel;
 
     public ProfileFragment() {
         //Costruttore volutamente vuoto
@@ -37,6 +42,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        profileViewModel = new ViewModelProvider(this,
+                new ProfileViewModelFactory(getContext()))
+                .get(ProfileViewModel.class);
     }
 
     @Override
@@ -61,6 +70,8 @@ public class ProfileFragment extends Fragment {
                 adapter.setCurrentSelection(category);
                 if (category.equals("I miei post")){
                     binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
+                    dashboardRecyclerViewAdapter.clearPostList();
+                    profileViewModel.readPostsByUser();
                 } else {
                     //settare adapter segnalazioni
                 }
@@ -88,6 +99,46 @@ public class ProfileFragment extends Fragment {
 
         binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
 
+        profileViewModel.readPostsByUser();
+
+        profileViewModel.getAddedPostResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Post post = ((Result.PostSuccess) result).getPost();
+                dashboardRecyclerViewAdapter.addItem(post);
+            } else {
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getChangedPostResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Post post = ((Result.PostSuccess) result).getPost();
+                dashboardRecyclerViewAdapter.editItem(post);
+            } else {
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getRemovedPostResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Post post = ((Result.PostSuccess) result).getPost();
+                dashboardRecyclerViewAdapter.removeItem(post);
+            } else {
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getCancelledPostResult().observe(getViewLifecycleOwner(), result -> {
+            Snackbar.make(requireView(),
+                    ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                    BaseTransientBottomBar.LENGTH_SHORT).show();
+        });
 
 
     }
