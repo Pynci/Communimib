@@ -1,4 +1,4 @@
-package it.unimib.communimib.ui.main.dashboard.newdashboardpost;
+package it.unimib.communimib.ui.main.dashboard.newpost;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,11 +25,11 @@ import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.repository.PostRepository;
 import it.unimib.communimib.repository.UserRepository;
 
-public class NewDashboardPostViewModelTest {
+public class NewPostViewModelTest {
 
     private IUserRepository userRepository;
     private IPostRepository postRepository;
-    private NewDashboardPostViewModel newDashboardPostViewModel;
+    private NewPostViewModel newPostViewModel;
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -38,14 +38,14 @@ public class NewDashboardPostViewModelTest {
     public void setUp() throws Exception {
         userRepository = mock(UserRepository.class);
         postRepository = mock(PostRepository.class);
-        newDashboardPostViewModel = new NewDashboardPostViewModel(postRepository, userRepository);
+        newPostViewModel = new NewPostViewModel(postRepository, userRepository);
     }
 
     @Test
     public void getCurrentUser() {
         User user = new User("test");
         when(userRepository.getCurrentUser()).thenReturn(user);
-        assertEquals(newDashboardPostViewModel.getCurrentUser(), user);
+        assertEquals(newPostViewModel.getCurrentUser(), user);
     }
 
     @Test
@@ -72,8 +72,8 @@ public class NewDashboardPostViewModelTest {
                 eq(pictures),
                 any());
 
-        newDashboardPostViewModel.createPost(title, description, category, user, email, link, pictures);
-        Result result = LiveDataTestUtil.getOrAwaitValue(newDashboardPostViewModel.getPostCreationResult());
+        newPostViewModel.createPost(title, description, category, user, email, link, pictures);
+        Result result = LiveDataTestUtil.getOrAwaitValue(newPostViewModel.getPostCreationResult());
         assertTrue(result instanceof Result.Success);
     }
 }

@@ -10,7 +10,7 @@
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.main.dashboard.newdashboardpost.NewDashboardPostFragment">
+        tools:context=".ui.main.dashboard.newpost.NewPostFragment">
 
         <Button
             android:id="@+id/button_back"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
-            android:text="@string/indietro"
+            android:text="@string/back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +30,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:enabled="false"
-            android:text="@string/pubblica"
+            android:text="@string/publish"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,7 +56,7 @@
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:gravity="center|top"
-            android:hint="@string/titolo_del_post"
+            android:hint="@string/post_title"
             android:importantForAutofill="no"
             android:inputType="text"
             android:maxLength="25"
@@ -78,7 +78,7 @@
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:gravity="center|top"
-            android:hint="@string/inserisci_una_breve_descrizione"
+            android:hint="@string/insert_description"
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
             android:maxLength="200"
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/seleziona_una_categoria"
+            android:text="@string/choose_category"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/editText_post_description"
             app:layout_constraintTop_toBottomOf="@+id/editText_post_description" />
@@ -114,7 +114,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="30dp"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/bottone_per_aggiungere_immagine"
+            android:contentDescription="@string/button_add_images"
             android:src="@drawable/image_logo"
             app:layout_constraintStart_toStartOf="@+id/textView13"
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
@@ -124,7 +124,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="@string/aggiungi_una_o_pi_immagini_al_post"
+            android:text="@string/add_post_images"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageButton_add_images"
             app:layout_constraintStart_toEndOf="@+id/imageButton_add_images"
@@ -157,7 +157,7 @@
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:gravity="center"
-            android:hint="@string/inserisci_un_contatto_e_mail_opzionale"
+            android:hint="@string/provide_optional_email_contact"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
@@ -173,7 +173,7 @@
             android:background="@drawable/edit_text_background"
             android:ems="10"
             android:gravity="center"
-            android:hint="@string/inserisci_un_link_per_un_sito_web_opzionale"
+            android:hint="@string/provide_optional_website"
             android:importantForAutofill="no"
             android:inputType="text"
             android:minHeight="48dp"

@@ -10,7 +10,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDashboardBinding;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
+import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.util.NavigationHelper;
 import it.unimib.communimib.util.ErrorMapper;
 
@@ -112,7 +111,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onImageSliderClick(List<String> pictures) {
-                DashboardImageFragmentDialog imageDialog = new DashboardImageFragmentDialog(pictures);
+                PostPicturesFragmentDialog imageDialog = new PostPicturesFragmentDialog(pictures);
                 imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
         }, getContext());

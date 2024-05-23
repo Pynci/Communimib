@@ -1,9 +1,8 @@
-package it.unimib.communimib.ui.main.dashboard.newdashboardpost;
+package it.unimib.communimib.ui.main.dashboard.newpost;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +22,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -35,29 +33,28 @@ import java.util.List;
 import it.unimib.communimib.BottomNavigationBarListener;
 import it.unimib.communimib.R;
 import it.unimib.communimib.TopNavigationBarListener;
-import it.unimib.communimib.databinding.FragmentNewDashboardPostDialogBinding;
+import it.unimib.communimib.databinding.FragmentNewPostBinding;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.ui.main.dashboard.dialogs.DashboardImageFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.Validation;
 
-public class NewDashboardPostFragment extends Fragment {
+public class NewPostFragment extends Fragment {
 
     private boolean isTitleOk;
     private boolean isDescriptionOk;
     private boolean isSpinnerOk;
     private boolean isEmailOk;
     private boolean isLinkOk;
-    private List<String> selectedUris;
-    private FragmentNewDashboardPostDialogBinding binding;
+    private final List<String> selectedUris;
+    private FragmentNewPostBinding binding;
 
     private BottomNavigationBarListener bottomListener;
     private TopNavigationBarListener topListener;
 
-    private NewDashboardPostViewModel newDashboardPostViewModel;
+    private NewPostViewModel newPostViewModel;
 
 
-    public NewDashboardPostFragment() {
+    public NewPostFragment() {
         selectedUris = new ArrayList<>();
     }
 
@@ -71,15 +68,15 @@ public class NewDashboardPostFragment extends Fragment {
         isLinkOk = true;
         hideNavigationBars();
 
-        newDashboardPostViewModel =
-                new ViewModelProvider(this, new NewDashboardPostViewModelFactory(this.getContext()))
-                        .get(NewDashboardPostViewModel.class);
+        newPostViewModel =
+                new ViewModelProvider(this, new NewPostViewModelFactory(this.getContext()))
+                        .get(NewPostViewModel.class);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentNewDashboardPostDialogBinding.inflate(getLayoutInflater());
+        binding = FragmentNewPostBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
@@ -151,11 +148,7 @@ public class NewDashboardPostFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 getView().clearFocus();
-                if(!binding.categorySpinner.getSelectedItem().equals("Categoria")){
-                    isSpinnerOk = true;
-                }else{
-                    isSpinnerOk = false;
-                }
+                isSpinnerOk = !binding.categorySpinner.getSelectedItem().equals("Categoria");
                 tryEnableButton();
 
             }
@@ -170,11 +163,11 @@ public class NewDashboardPostFragment extends Fragment {
         //Gestione del pulsante di conferma
         binding.buttonConfirm.setOnClickListener(v -> {
             if(binding.buttonConfirm.isEnabled()){
-                newDashboardPostViewModel.createPost(
+                newPostViewModel.createPost(
                         binding.editTextPostTitle.getText().toString(),
                         binding.editTextPostDescription.getText().toString(),
                         binding.categorySpinner.getSelectedItem().toString(),
-                        newDashboardPostViewModel.getCurrentUser(),
+                        newPostViewModel.getCurrentUser(),
                         binding.editTextEmailAddress.getText().toString(),
                         binding.editTextWebsite.getText().toString(),
                         selectedUris
@@ -183,7 +176,7 @@ public class NewDashboardPostFragment extends Fragment {
         });
 
         //Osservazione del risultato di creazione
-        newDashboardPostViewModel.getPostCreationResult().observe(getViewLifecycleOwner(), result -> {
+        newPostViewModel.getPostCreationResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.popBackStack();
@@ -305,7 +298,7 @@ public class NewDashboardPostFragment extends Fragment {
 
     @NonNull
     private ArrayAdapter<String> getCategoriesAdapter() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_dropdown_item) {
 
             @NonNull
             @Override

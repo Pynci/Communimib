@@ -61,7 +61,7 @@
         android:layout_marginTop="4dp"
         android:clickable="true"
         android:focusable="true"
-        android:text="@string/visualizza_i_nuovi_post"
+        android:text="@string/show_new_posts"
         app:icon="@drawable/bell"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
