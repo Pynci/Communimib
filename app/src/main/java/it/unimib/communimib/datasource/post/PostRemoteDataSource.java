@@ -238,7 +238,7 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
                                Callback cancelledCallback) {
         databaseReference
                 .child(Constants.POST_PATH)
-                .orderByChild("author")
+                .orderByChild("author/uid")
                 .equalTo(uid)
                 .addChildEventListener(new ChildEventListener() {
             @Override
