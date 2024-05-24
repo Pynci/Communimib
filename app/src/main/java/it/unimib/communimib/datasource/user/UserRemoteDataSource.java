@@ -97,6 +97,9 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                         }
                         updatePostsAuthorNameAndSurname(uid, name, surname, updateMap, callback);
                     }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                    }
                 });
     }
 
@@ -114,6 +117,9 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                             updateMap.put(Constants.POST_PATH + "/" + pid + AUTHOR_SURNAME_PATH, surname);
                         }
                         updateCommentsAuthorNameAndSurname(uid, name, surname, updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
                     }
                 });
     }
@@ -135,6 +141,9 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                             }
                         }
                         executeUpdate(updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
                     }
                 });
     }
@@ -181,6 +190,9 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                         updateMap.put(Constants.USERS_PATH + "/" + uid + "/propic", uri);
                         updateReportsAuthorPropicUri(uid, uri, updateMap, callback);
                     }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                    }
                 });
     }
 
@@ -198,6 +210,9 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                         }
                         updatePostsAuthorPropicUri(uid, uri, updateMap, callback);
                     }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                    }
                 });
     }
 
@@ -214,6 +229,9 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                             updateMap.put(Constants.POST_PATH + "/" + pid + AUTHOR_PROPIC_PATH, uri);
                         }
                         updateCommentsAuthorPropicUri(uid, uri, updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
                     }
                 });
     }
@@ -234,6 +252,9 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                             }
                         }
                         executePropicUpdate(uri, updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
                     }
                 });
     }
