@@ -13,7 +13,7 @@ public class ProfileViewModel extends ViewModel {
 
     private final IUserRepository userRepository;
     private final IPostRepository postRepository;
-    private final IReportRepository repository;
+    private final IReportRepository reportRepository;
 
     private MutableLiveData<Result> addedPostResult;
     private MutableLiveData<Result> changedPostResult;
@@ -29,7 +29,7 @@ public class ProfileViewModel extends ViewModel {
     public ProfileViewModel(IUserRepository userRepository, IPostRepository postRepository, IReportRepository repository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
-        this.repository = repository;
+        this.reportRepository = repository;
 
         addedPostResult = new MutableLiveData<>();
         changedPostResult = new MutableLiveData<>();
@@ -53,6 +53,15 @@ public class ProfileViewModel extends ViewModel {
                 postChanged -> changedPostResult.setValue(postChanged),
                 postRemoved -> removedPostResult.setValue(postRemoved),
                 postCancelled -> cancelledPostResult.setValue(postCancelled));
+    }
+
+    public void readReportsByUser(){
+        String uid = getCurrentUser().getUid();
+        reportRepository.readReportsByUid(uid,
+                reportAdded -> addedReportResult.setValue(reportAdded),
+                reportChanged -> changedReportResult.setValue(reportChanged),
+                reportRemoved -> removedReportResult.setValue(reportRemoved),
+                reportCancelled -> cancelledReportResult.setValue(reportCancelled));
     }
 
     public MutableLiveData<Result> getAddedPostResult() {
