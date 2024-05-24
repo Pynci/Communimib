@@ -93,11 +93,15 @@ public class ProfileFragment extends Fragment {
             }
         }, getContext());
 
+        dashboardRecyclerViewAdapter.clearPostList();
+        profileViewModel.cleanViewModel();
+
         RecyclerView.LayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         binding.profileRecyclerView.setLayoutManager(verticalLayoutManager);
 
         binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
+
 
         profileViewModel.readPostsByUser();
 
