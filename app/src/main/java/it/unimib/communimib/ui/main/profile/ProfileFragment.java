@@ -30,6 +30,7 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class ProfileFragment extends Fragment {
 
+    private boolean isInEditMode = false;
     private FragmentProfileBinding binding;
     private CategoriesRecyclerViewAdapter adapter;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
@@ -60,6 +61,13 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //Gestione del pulsante di modifica del profilo
+        binding.fragmentProfileImageButtonEditProfile.setOnClickListener(v -> {
+            isInEditMode = !isInEditMode;
+            gestPropicCardsComponent(isInEditMode);
+        });
+
+        //Gestione dei contenuti della schermata (recyler view)
         String[] options = getResources().getStringArray(R.array.profile_options);
         List<String> optionsList = Arrays.asList(options);
 
@@ -141,6 +149,22 @@ public class ProfileFragment extends Fragment {
         });
 
 
+    }
+
+    private void gestPropicCardsComponent(boolean mode) {
+        //Modifico il nome
+        binding.fragmentProfileTextViewName.setEnabled(mode);
+        binding.fragmentProfileTextViewName.setClickable(mode);
+        binding.fragmentProfileTextViewName.setFocusable(mode);
+
+        //Modifico il cognome
+        binding.fragmentProfileTextViewSurname.setEnabled(mode);
+        binding.fragmentProfileTextViewSurname.setClickable(mode);
+        binding.fragmentProfileTextViewSurname.setFocusable(mode);
+
+        //Modifico l'immagine
+        binding.fragmentProfileCardViewPropic.setClickable(mode);
+        binding.fragmentProfileCardViewPropic.setFocusable(mode);
     }
 
 }
