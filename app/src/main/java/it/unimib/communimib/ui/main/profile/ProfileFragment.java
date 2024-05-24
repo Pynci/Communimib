@@ -43,6 +43,8 @@ public class ProfileFragment extends Fragment {
 
     private boolean isInEditMode = false;
     private Uri selectedImage;
+
+    private ActivityResultLauncher<Intent> cropImageLauncher;
     private FragmentProfileBinding binding;
     private CategoriesRecyclerViewAdapter adapter;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
@@ -79,10 +81,33 @@ public class ProfileFragment extends Fragment {
             gestPropicCardsComponent(isInEditMode);
         });
 
-        //Gestione immagine selezionata
+        //Gestione del recupero dell'immagine editata
+        cropImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                final Uri resultUri = UCrop.getOutput(result.getData());
+                if (resultUri != null) {
+                    selectedImage = resultUri;
+                    RequestOptions requestOptions = new RequestOptions()
+                            .centerCrop()
+                            .placeholder(R.drawable.user_filled)
+                            .error(R.drawable.user_filled);
+
+                    // Caricamento dell'immagine con Glide
+                    Glide.with(this)
+                            .load(resultUri)
+                            .apply(requestOptions)
+                            .into(binding.fragmentProfileImageViewProfileImage);
+                }
+            } else if (result.getResultCode() == UCrop.RESULT_ERROR && result.getData() != null) {
+                final Throwable cropError = UCrop.getError(result.getData());
+                throw new UCropException(cropError);
+            }
+        });
+
+        //Gestione recupero immagine selezionata
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
-                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), editedImage -> {
-                    if (editedImage != null) {
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), imageToEdit -> {
+                    if (imageToEdit != null) {
 
                         Uri destinationUri = Uri.fromFile(new File(requireContext().getCacheDir(), "IMG_" + System.currentTimeMillis()));
 
@@ -91,11 +116,13 @@ public class ProfileFragment extends Fragment {
                         options.setShowCropFrame(false); // Nasconde il rettangolo di ritaglio
                         options.setShowCropGrid(false); // Nasconde la griglia di ritaglio
 
-                        UCrop.of(editedImage, destinationUri)
+                        Intent cropIntent = UCrop.of(imageToEdit, destinationUri)
                                 .withAspectRatio(1, 1)
                                 .withMaxResultSize(500, 500)
                                 .withOptions(options)
-                                .start(requireContext(), this);
+                                .getIntent(requireContext());
+
+                        cropImageLauncher.launch(cropIntent);
                     } else {
                         Log.d("Pizza", "No media selected");
                     }
@@ -190,31 +217,6 @@ public class ProfileFragment extends Fragment {
                     ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         });
-
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == Activity.RESULT_OK && requestCode == UCrop.REQUEST_CROP && data != null) {
-            final Uri resultUri = UCrop.getOutput(data);
-            selectedImage = resultUri;
-            RequestOptions requestOptions = new RequestOptions()
-                    .centerCrop()
-                    .placeholder(R.drawable.user_filled)
-                    .error(R.drawable.user_filled);
-
-            // Caricamento dell'immagine con Glide
-            Glide.with(this)
-                    .load(resultUri)
-                    .apply(requestOptions)
-                    .into(binding.fragmentProfileImageViewProfileImage);
-
-        } else if (resultCode == UCrop.RESULT_ERROR && data != null) {
-            final Throwable cropError = UCrop.getError(data);
-        }
     }
 
     private void gestPropicCardsComponent(boolean mode) {
