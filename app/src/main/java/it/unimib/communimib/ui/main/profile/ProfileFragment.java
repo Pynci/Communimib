@@ -10,11 +10,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -29,7 +27,6 @@ import it.unimib.communimib.databinding.FragmentProfileBinding;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
-import it.unimib.communimib.ui.main.dashboard.DashboardFragmentDirections;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
@@ -204,17 +201,14 @@ public class ProfileFragment extends Fragment {
             binding.profileScrollUpButton.startAnimation(animationSlideRight);
         });
 
-        binding.profileNestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                    @Override
-                    public void onScrollChanged() {
-                        int firstItemVisible = binding.profileNestedScrollView.getScrollY();
-                        if(firstItemVisible > 400 && !isScrollUpButtonVisible && !isAnimating){
-                            binding.profileScrollUpButton.startAnimation(animationSlideLeft);
-                        } else if(firstItemVisible < 400 && isScrollUpButtonVisible && !isAnimating){
-                            binding.profileScrollUpButton.startAnimation(animationSlideRight);
-                        }
-                    }
-                });
+        binding.profileNestedScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            int firstItemVisible = binding.profileNestedScrollView.getScrollY();
+            if(firstItemVisible > 400 && !isScrollUpButtonVisible && !isAnimating){
+                binding.profileScrollUpButton.startAnimation(animationSlideLeft);
+            } else if(firstItemVisible < 400 && isScrollUpButtonVisible && !isAnimating){
+                binding.profileScrollUpButton.startAnimation(animationSlideRight);
+            }
+        });
 
     }
 
