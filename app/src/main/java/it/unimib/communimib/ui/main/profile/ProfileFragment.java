@@ -10,9 +10,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -37,6 +41,8 @@ public class ProfileFragment extends Fragment {
     private CategoriesRecyclerViewAdapter adapter;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
     private ProfileViewModel profileViewModel;
+    private boolean isScrollUpButtonVisible = false;
+    private boolean isAnimating = false;
 
     public ProfileFragment() {
         //Costruttore volutamente vuoto
@@ -100,10 +106,50 @@ public class ProfileFragment extends Fragment {
             }
         }, getContext());
 
+        Animation animationSlideLeft = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_left);
+        animationSlideLeft.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                binding.profileScrollUpButton.setVisibility(View.VISIBLE);
+                isAnimating = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                isScrollUpButtonVisible = true;
+                isAnimating = false;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //non fa nulla
+            }
+        });
+
+        Animation animationSlideRight = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_right);
+        animationSlideRight.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                isAnimating = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.profileScrollUpButton.setVisibility(View.GONE);
+                isAnimating = false;
+                isScrollUpButtonVisible = false;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //non fa nulla
+            }
+        });
+
         dashboardRecyclerViewAdapter.clearPostList();
         profileViewModel.cleanViewModel();
 
-        RecyclerView.LayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         binding.profileRecyclerView.setLayoutManager(verticalLayoutManager);
 
@@ -151,7 +197,30 @@ public class ProfileFragment extends Fragment {
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         });
 
+        binding.profileScrollUpButton.setVisibility(View.GONE);
+        binding.profileScrollUpButton.setOnClickListener(r -> {
+            binding.profileNestedScrollView.smoothScrollTo(0,1, 800);
+            if(isScrollUpButtonVisible && !isAnimating)
+            binding.profileScrollUpButton.startAnimation(animationSlideRight);
+        });
+
+        binding.profileNestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                    @Override
+                    public void onScrollChanged() {
+                        int firstItemVisible = binding.profileNestedScrollView.getScrollY();
+                        if(firstItemVisible > 400 && !isScrollUpButtonVisible && !isAnimating){
+                            binding.profileScrollUpButton.startAnimation(animationSlideLeft);
+                        } else if(firstItemVisible < 400 && isScrollUpButtonVisible && !isAnimating){
+                            binding.profileScrollUpButton.startAnimation(animationSlideRight);
+                        }
+                    }
+                });
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        profileViewModel.cleanViewModel();
+    }
 }
