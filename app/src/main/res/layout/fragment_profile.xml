@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentProfile_constraintLayout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main.profile.ProfileFragment">
@@ -35,7 +35,8 @@
                     android:id="@+id/fragmentProfile_imageView_profileImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:importantForAccessibility="no" />
+                    android:importantForAccessibility="no"
+                    tools:ignore="ImageContrastCheck" />
 
             </androidx.cardview.widget.CardView>
 
@@ -45,8 +46,8 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:clickable="false"
                 android:background="@android:color/transparent"
+                android:clickable="false"
                 android:importantForAccessibility="no"
                 android:src="@drawable/pencil_edit"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,42 +55,44 @@
 
             <EditText
                 android:id="@+id/fragmentProfile_textView_name"
-                style="@style/Widget.Material3.TextInputEditText.FilledBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:enabled="false"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:hint="@string/name"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:minHeight="48dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:text="@string/name"
+                android:paddingStart="16dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="6dp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/fragmentProfile_cardView_propic"
+                app:layout_constraintStart_toStartOf="@+id/fragmentProfile_cardView_propic"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_cardView_propic"
                 tools:ignore="Deprecated,LabelFor" />
 
             <EditText
                 android:id="@+id/fragmentProfile_textView_surname"
-                style="@style/Widget.Material3.TextInputEditText.FilledBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:hint="@string/surname"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:minHeight="48dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:text="@string/surname"
+                android:paddingStart="16dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="6dp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.51"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/fragmentProfile_textView_name"
+                app:layout_constraintStart_toStartOf="@+id/fragmentProfile_textView_name"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_textView_name"
-                tools:ignore="Deprecated,LabelFor" />
+                tools:ignore="Deprecated,LabelFor,TextContrastCheck" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -99,8 +102,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="@+id/materialCardView4"
         app:layout_constraintStart_toStartOf="@+id/materialCardView4"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView4" />

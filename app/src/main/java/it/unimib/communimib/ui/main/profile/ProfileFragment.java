@@ -1,6 +1,8 @@
 package it.unimib.communimib.ui.main.profile;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,8 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -35,6 +40,7 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentProfileBinding;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
@@ -70,9 +76,16 @@ public class ProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //Gestione del focus quando si preme da qualche altra parte
+        binding.fragmentProfileConstraintLayoutMain.setOnTouchListener(this::onClickMainLayoutManagement);
+
+        //Gestione iniziale dei componenti della card
+        initPropicCardComponents(profileViewModel.getCurrentUser());
 
         //Gestione del pulsante di modifica del profilo
         binding.fragmentProfileImageButtonEditProfile.setOnClickListener(v -> {
@@ -86,7 +99,7 @@ public class ProfileFragment extends Fragment {
         //Gestione recupero immagine selezionata
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
                 registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), imageToEdit -> {
-                    mediaPickResultManagement(imageToEdit, cropImageLauncher);
+                    manageMediaPickResult(imageToEdit, cropImageLauncher);
                 });
 
         //Gestione del click sull'immagine per caricare una nuova foto
@@ -180,7 +193,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void mediaPickResultManagement(Uri imageToEdit, ActivityResultLauncher<Intent> cropImageLauncher) {
+    private void manageMediaPickResult(Uri imageToEdit, ActivityResultLauncher<Intent> cropImageLauncher) {
         if (imageToEdit != null) {
 
             Uri destinationUri = Uri.fromFile(new File(requireContext().getCacheDir(), "IMG_" + System.currentTimeMillis()));
@@ -229,7 +242,7 @@ public class ProfileFragment extends Fragment {
 
     private void onImageButtonClickManagement() {
         isInEditMode = !isInEditMode;
-        propicCardsComponentsManagement(isInEditMode);
+        managePropicCardComponents(isInEditMode);
 
         if(isInEditMode) 
             binding.fragmentProfileImageButtonEditProfile.setImageResource(R.drawable.confirm_edits);
@@ -237,15 +250,58 @@ public class ProfileFragment extends Fragment {
             binding.fragmentProfileImageButtonEditProfile.setImageResource(R.drawable.pencil_edit);
     }
 
-    private void propicCardsComponentsManagement(boolean mode) {
+    private void managePropicCardComponents(boolean mode) {
         //Modifico il nome
-        binding.fragmentProfileTextViewName.setEnabled(mode);
+        binding.fragmentProfileTextViewName.setFocusable(mode);
+        binding.fragmentProfileTextViewName.setFocusableInTouchMode(mode);
+
+        if(mode)
+            binding.fragmentProfileTextViewName.setTextColor(ContextCompat.getColor(requireContext(), R.color.md_theme_light_tertiary));
+        else
+            binding.fragmentProfileTextViewName.setTextColor(ContextCompat.getColor(requireContext(), R.color.md_theme_light_secondary));
 
         //Modifico il cognome
-        binding.fragmentProfileTextViewSurname.setEnabled(mode);
+        binding.fragmentProfileTextViewSurname.setFocusable(mode);
+        binding.fragmentProfileTextViewSurname.setFocusableInTouchMode(mode);
+
+        if(mode)
+            binding.fragmentProfileTextViewSurname.setTextColor(ContextCompat.getColor(requireContext(), R.color.md_theme_light_tertiary));
+        else
+            binding.fragmentProfileTextViewSurname.setTextColor(ContextCompat.getColor(requireContext(), R.color.md_theme_light_secondary));
 
         //Modifico l'immagine
         binding.fragmentProfileCardViewPropic.setClickable(mode);
+    }
+
+    private void initPropicCardComponents(User currentUser) {
+
+        if(!currentUser.getName().isEmpty())
+            binding.fragmentProfileTextViewName.setText(currentUser.getName());
+
+        if(!currentUser.getSurname().isEmpty())
+            binding.fragmentProfileTextViewSurname.setText(currentUser.getSurname());
+
+        if(!currentUser.getName().isEmpty())
+            loadImageIntoImageView(Uri.parse(currentUser.getPropic()));
+
+        binding.fragmentProfileTextViewName.setFocusable(false);
+        binding.fragmentProfileTextViewSurname.setFocusable(false);
+        binding.fragmentProfileCardViewPropic.setClickable(false);
+    }
+
+    private boolean onClickMainLayoutManagement(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View currentFocus = getActivity().getCurrentFocus();
+            if (currentFocus != null) {
+                currentFocus.clearFocus();
+                hideKeyboard(v);
+            }
+        }
+        return true;
+    }
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }
