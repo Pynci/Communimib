@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,8 +25,10 @@ import it.unimib.communimib.databinding.FragmentProfileBinding;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
+import it.unimib.communimib.ui.main.dashboard.DashboardFragmentDirections;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
+import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
 
 public class ProfileFragment extends Fragment {
@@ -84,12 +87,16 @@ public class ProfileFragment extends Fragment {
         dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new OnPostClickListener() {
             @Override
             public void onItemClick(Post post) {
+                ProfileFragmentDirections.ActionProfileFragmentToDetailedPostFragment action =
+                        ProfileFragmentDirections.actionProfileFragmentToDetailedPostFragment(post);
 
+                Navigation.findNavController(view).navigate(action);
             }
 
             @Override
             public void onImageSliderClick(List<String> pictures) {
-
+                PostPicturesFragmentDialog imageDialog = new PostPicturesFragmentDialog(pictures);
+                imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
         }, getContext());
 
