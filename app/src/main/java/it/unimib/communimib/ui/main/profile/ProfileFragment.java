@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -75,45 +76,17 @@ public class ProfileFragment extends Fragment {
 
         //Gestione del pulsante di modifica del profilo
         binding.fragmentProfileImageButtonEditProfile.setOnClickListener(v -> {
-            isInEditMode = !isInEditMode;
-            gestPropicCardsComponent(isInEditMode);
+            onImageButtonClickManagement();
         });
 
         //Gestione del recupero dell'immagine editata
-        ActivityResultLauncher<Intent> cropImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                final Uri resultUri = UCrop.getOutput(result.getData());
-                if (resultUri != null) {
-                    loadImageIntoImageView(resultUri);
-                }
-            } else if (result.getResultCode() == UCrop.RESULT_ERROR && result.getData() != null) {
-                final Throwable cropError = UCrop.getError(result.getData());
-                throw new UCropException(cropError);
-            }
-        });
+        ActivityResultLauncher<Intent> cropImageLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::cropImageResultManagement);
 
         //Gestione recupero immagine selezionata
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
                 registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), imageToEdit -> {
-                    if (imageToEdit != null) {
-
-                        Uri destinationUri = Uri.fromFile(new File(requireContext().getCacheDir(), "IMG_" + System.currentTimeMillis()));
-
-                        UCrop.Options options = new UCrop.Options();
-                        options.setCircleDimmedLayer(true); // Abilita il ritaglio circolare
-                        options.setShowCropFrame(false); // Nasconde il rettangolo di ritaglio
-                        options.setShowCropGrid(false); // Nasconde la griglia di ritaglio
-
-                        Intent cropIntent = UCrop.of(imageToEdit, destinationUri)
-                                .withAspectRatio(1, 1)
-                                .withMaxResultSize(500, 500)
-                                .withOptions(options)
-                                .getIntent(requireContext());
-
-                        cropImageLauncher.launch(cropIntent);
-                    } else {
-                        Log.d("Pizza", "No media selected");
-                    }
+                    mediaPickResultManagement(imageToEdit, cropImageLauncher);
                 });
 
         //Gestione del click sull'immagine per caricare una nuova foto
@@ -207,6 +180,39 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    private void mediaPickResultManagement(Uri imageToEdit, ActivityResultLauncher<Intent> cropImageLauncher) {
+        if (imageToEdit != null) {
+
+            Uri destinationUri = Uri.fromFile(new File(requireContext().getCacheDir(), "IMG_" + System.currentTimeMillis()));
+
+            UCrop.Options options = new UCrop.Options();
+            options.setCircleDimmedLayer(true); // Abilita il ritaglio circolare
+            options.setShowCropFrame(false); // Nasconde il rettangolo di ritaglio
+            options.setShowCropGrid(false); // Nasconde la griglia di ritaglio
+
+            Intent cropIntent = UCrop.of(imageToEdit, destinationUri)
+                    .withAspectRatio(1, 1)
+                    .withMaxResultSize(500, 500)
+                    .withOptions(options)
+                    .getIntent(requireContext());
+
+            cropImageLauncher.launch(cropIntent);
+        } else {
+            Log.d("Pizza", "No media selected");
+        }
+    }
+    private void cropImageResultManagement(ActivityResult result) {
+        if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+            final Uri resultUri = UCrop.getOutput(result.getData());
+            if (resultUri != null) {
+                loadImageIntoImageView(resultUri);
+            }
+        } else if (result.getResultCode() == UCrop.RESULT_ERROR && result.getData() != null) {
+            final Throwable cropError = UCrop.getError(result.getData());
+            throw new UCropException(cropError);
+        }
+    }
+
     private void loadImageIntoImageView(Uri resultUri) {
         selectedImage = resultUri;
         RequestOptions requestOptions = new RequestOptions()
@@ -221,7 +227,17 @@ public class ProfileFragment extends Fragment {
                 .into(binding.fragmentProfileImageViewProfileImage);
     }
 
-    private void gestPropicCardsComponent(boolean mode) {
+    private void onImageButtonClickManagement() {
+        isInEditMode = !isInEditMode;
+        propicCardsComponentsManagement(isInEditMode);
+
+        if(isInEditMode) 
+            binding.fragmentProfileImageButtonEditProfile.setImageResource(R.drawable.confirm_edits);
+        else
+            binding.fragmentProfileImageButtonEditProfile.setImageResource(R.drawable.pencil_edit);
+    }
+
+    private void propicCardsComponentsManagement(boolean mode) {
         //Modifico il nome
         binding.fragmentProfileTextViewName.setEnabled(mode);
 
