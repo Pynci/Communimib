@@ -1,5 +1,6 @@
 package it.unimib.communimib.ui.main.profile;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -13,7 +14,6 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 
 import com.bumptech.glide.Glide;
@@ -250,27 +251,21 @@ public class ProfileFragment extends Fragment {
             binding.fragmentProfileImageButtonEditProfile.setImageResource(R.drawable.pencil_edit);
     }
 
-    private void managePropicCardComponents(boolean mode) {
-        //Modifico il nome
-        binding.fragmentProfileTextViewName.setFocusable(mode);
-        binding.fragmentProfileTextViewName.setFocusableInTouchMode(mode);
+    private void managePropicCardComponents(boolean isEditMode) {
 
-        if(mode)
-            binding.fragmentProfileTextViewName.setTextColor(ContextCompat.getColor(requireContext(), R.color.md_theme_light_tertiary));
-        else
-            binding.fragmentProfileTextViewName.setTextColor(ContextCompat.getColor(requireContext(), R.color.md_theme_light_secondary));
+        //Modifico il nome
+        binding.fragmentProfileTextViewName.setFocusable(isEditMode);
+        binding.fragmentProfileTextViewName.setFocusableInTouchMode(isEditMode);
 
         //Modifico il cognome
-        binding.fragmentProfileTextViewSurname.setFocusable(mode);
-        binding.fragmentProfileTextViewSurname.setFocusableInTouchMode(mode);
-
-        if(mode)
-            binding.fragmentProfileTextViewSurname.setTextColor(ContextCompat.getColor(requireContext(), R.color.md_theme_light_tertiary));
-        else
-            binding.fragmentProfileTextViewSurname.setTextColor(ContextCompat.getColor(requireContext(), R.color.md_theme_light_secondary));
+        binding.fragmentProfileTextViewSurname.setFocusable(isEditMode);
+        binding.fragmentProfileTextViewSurname.setFocusableInTouchMode(isEditMode);
 
         //Modifico l'immagine
-        binding.fragmentProfileCardViewPropic.setClickable(mode);
+        binding.fragmentProfileCardViewPropic.setClickable(isEditMode);
+
+        //Avvio le animazioni
+        fadeCardComponentsAnimation(isEditMode);
     }
 
     private void initPropicCardComponents(User currentUser) {
@@ -302,6 +297,27 @@ public class ProfileFragment extends Fragment {
     private void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void fadeCardComponentsAnimation(boolean isFadeIn) {
+
+        ValueAnimator animator;
+        if(isFadeIn)
+            animator = ValueAnimator.ofFloat(1f, 0.5f);
+        else
+            animator = ValueAnimator.ofFloat(0.5f, 1f);
+
+        animator.setDuration(500); // Durata dell'animazione in millisecondi
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        animator.addUpdateListener(animation -> {
+            float alpha = (float) animation.getAnimatedValue();
+            binding.fragmentProfileTextViewName.setAlpha(alpha);
+            binding.fragmentProfileTextViewSurname.setAlpha(alpha);
+            binding.fragmentProfileImageViewProfileImage.setAlpha(alpha);
+        });
+
+        animator.start();
     }
 
 }
