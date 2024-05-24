@@ -43,8 +43,6 @@ public class ProfileFragment extends Fragment {
 
     private boolean isInEditMode = false;
     private Uri selectedImage;
-
-    private ActivityResultLauncher<Intent> cropImageLauncher;
     private FragmentProfileBinding binding;
     private CategoriesRecyclerViewAdapter adapter;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
@@ -82,21 +80,11 @@ public class ProfileFragment extends Fragment {
         });
 
         //Gestione del recupero dell'immagine editata
-        cropImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        ActivityResultLauncher<Intent> cropImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                 final Uri resultUri = UCrop.getOutput(result.getData());
                 if (resultUri != null) {
-                    selectedImage = resultUri;
-                    RequestOptions requestOptions = new RequestOptions()
-                            .centerCrop()
-                            .placeholder(R.drawable.user_filled)
-                            .error(R.drawable.user_filled);
-
-                    // Caricamento dell'immagine con Glide
-                    Glide.with(this)
-                            .load(resultUri)
-                            .apply(requestOptions)
-                            .into(binding.fragmentProfileImageViewProfileImage);
+                    loadImageIntoImageView(resultUri);
                 }
             } else if (result.getResultCode() == UCrop.RESULT_ERROR && result.getData() != null) {
                 final Throwable cropError = UCrop.getError(result.getData());
@@ -217,6 +205,20 @@ public class ProfileFragment extends Fragment {
                     ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         });
+    }
+
+    private void loadImageIntoImageView(Uri resultUri) {
+        selectedImage = resultUri;
+        RequestOptions requestOptions = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.user_filled)
+                .error(R.drawable.user_filled);
+
+        // Caricamento dell'immagine con Glide
+        Glide.with(this)
+                .load(resultUri)
+                .apply(requestOptions)
+                .into(binding.fragmentProfileImageViewProfileImage);
     }
 
     private void gestPropicCardsComponent(boolean mode) {
