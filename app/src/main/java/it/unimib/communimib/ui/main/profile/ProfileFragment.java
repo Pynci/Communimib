@@ -1,7 +1,13 @@
 package it.unimib.communimib.ui.main.profile;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -9,13 +15,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +42,7 @@ import it.unimib.communimib.util.ErrorMapper;
 public class ProfileFragment extends Fragment {
 
     private boolean isInEditMode = false;
+    private Uri selectedImage;
     private FragmentProfileBinding binding;
     private CategoriesRecyclerViewAdapter adapter;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
@@ -66,6 +78,37 @@ public class ProfileFragment extends Fragment {
             isInEditMode = !isInEditMode;
             gestPropicCardsComponent(isInEditMode);
         });
+
+        //Gestione immagine selezionata
+        ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), editedImage -> {
+                    if (editedImage != null) {
+
+                        Uri destinationUri = Uri.fromFile(new File(requireContext().getCacheDir(), "IMG_" + System.currentTimeMillis()));
+
+                        UCrop.Options options = new UCrop.Options();
+                        options.setCircleDimmedLayer(true); // Abilita il ritaglio circolare
+                        options.setShowCropFrame(false); // Nasconde il rettangolo di ritaglio
+                        options.setShowCropGrid(false); // Nasconde la griglia di ritaglio
+
+                        UCrop.of(editedImage, destinationUri)
+                                .withAspectRatio(1, 1)
+                                .withMaxResultSize(500, 500)
+                                .withOptions(options)
+                                .start(requireContext(), this);
+                    } else {
+                        Log.d("Pizza", "No media selected");
+                    }
+                });
+
+        //Gestione del click sull'immagine per caricare una nuova foto
+        binding.fragmentProfileCardViewPropic.setOnClickListener(v -> {
+            if(isInEditMode)
+                pickMedia.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build());
+        });
+
 
         //Gestione dei contenuti della schermata (recyler view)
         String[] options = getResources().getStringArray(R.array.profile_options);
@@ -151,20 +194,38 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK && requestCode == UCrop.REQUEST_CROP && data != null) {
+            final Uri resultUri = UCrop.getOutput(data);
+            selectedImage = resultUri;
+            RequestOptions requestOptions = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.user_filled)
+                    .error(R.drawable.user_filled);
+
+            // Caricamento dell'immagine con Glide
+            Glide.with(this)
+                    .load(resultUri)
+                    .apply(requestOptions)
+                    .into(binding.fragmentProfileImageViewProfileImage);
+
+        } else if (resultCode == UCrop.RESULT_ERROR && data != null) {
+            final Throwable cropError = UCrop.getError(data);
+        }
+    }
+
     private void gestPropicCardsComponent(boolean mode) {
         //Modifico il nome
         binding.fragmentProfileTextViewName.setEnabled(mode);
-        binding.fragmentProfileTextViewName.setClickable(mode);
-        binding.fragmentProfileTextViewName.setFocusable(mode);
 
         //Modifico il cognome
         binding.fragmentProfileTextViewSurname.setEnabled(mode);
-        binding.fragmentProfileTextViewSurname.setClickable(mode);
-        binding.fragmentProfileTextViewSurname.setFocusable(mode);
 
         //Modifico l'immagine
         binding.fragmentProfileCardViewPropic.setClickable(mode);
-        binding.fragmentProfileCardViewPropic.setFocusable(mode);
     }
 
 }
