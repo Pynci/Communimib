@@ -25,11 +25,13 @@ import java.util.List;
 import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentProfileBinding;
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
+import it.unimib.communimib.ui.main.reports.ReportsHorizontalRecyclerViewAdapter;
 import it.unimib.communimib.util.ErrorMapper;
 
 public class ProfileFragment extends Fragment {
@@ -37,6 +39,7 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private CategoriesRecyclerViewAdapter adapter;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
+    private ReportsHorizontalRecyclerViewAdapter reportsRecyclerViewAdapter;
     private ProfileViewModel profileViewModel;
     private boolean isScrollUpButtonVisible = false;
     private boolean isAnimating = false;
@@ -79,7 +82,9 @@ public class ProfileFragment extends Fragment {
                     dashboardRecyclerViewAdapter.clearPostList();
                     profileViewModel.readPostsByUser();
                 } else {
-                    //settare adapter segnalazioni
+                    binding.profileRecyclerView.setAdapter(reportsRecyclerViewAdapter);
+                    reportsRecyclerViewAdapter.clearReportList();
+                    profileViewModel.readReportsByUser();
                 }
             }
         });
@@ -102,6 +107,20 @@ public class ProfileFragment extends Fragment {
                 imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
         }, getContext());
+
+        boolean isUnimibEmployee = profileViewModel.getCurrentUser().isUnimibEmployee();
+        reportsRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(isUnimibEmployee, new ReportsHorizontalRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onCloseReportClick(Report report) {
+
+            }
+
+            @Override
+            public void onCardClick(Report report) {
+
+            }
+        },
+                getContext(), R.layout.report_item);
 
         Animation animationSlideLeft = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_left);
         animationSlideLeft.setAnimationListener(new Animation.AnimationListener() {
@@ -192,6 +211,45 @@ public class ProfileFragment extends Fragment {
             Snackbar.make(requireView(),
                     ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                     BaseTransientBottomBar.LENGTH_SHORT).show();
+        });
+
+        profileViewModel.getAddedReportResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.addItem(report);
+            } else {
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getChangedReportResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.editItem(report);
+            } else {
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getRemovedReportResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Report report = ((Result.ReportSuccess) result).getReport();
+                reportsRecyclerViewAdapter.removeItem(report);
+            } else {
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getCancelledReportResult().observe(getViewLifecycleOwner(), result -> {
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
         });
 
         binding.profileScrollUpButton.setVisibility(View.GONE);
