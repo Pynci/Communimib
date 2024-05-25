@@ -127,19 +127,16 @@ public class ProfileFragment extends Fragment {
         List<String> optionsList = Arrays.asList(options);
 
         RecyclerView.LayoutManager horizontalLayoutManager = new CustomLinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-        adapter = new CategoriesRecyclerViewAdapter(optionsList, optionsList.get(0),new CategoriesRecyclerViewAdapter.OnCategoryClickListener() {
-            @Override
-            public void onItemClick(String category) {
-                adapter.setCurrentSelection(category);
-                if (category.equals("I miei post")){
-                    binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
-                    dashboardRecyclerViewAdapter.clearPostList();
-                    profileViewModel.readPostsByUser();
-                } else {
-                    binding.profileRecyclerView.setAdapter(reportsRecyclerViewAdapter);
-                    reportsRecyclerViewAdapter.clearReportList();
-                    profileViewModel.readReportsByUser();
-                }
+        adapter = new CategoriesRecyclerViewAdapter(optionsList, optionsList.get(0), category -> {
+            adapter.setCurrentSelection(category);
+            if (category.equals("I miei post")){
+                binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
+                dashboardRecyclerViewAdapter.clearPostList();
+                profileViewModel.readPostsByUser();
+            } else {
+                binding.profileRecyclerView.setAdapter(reportsRecyclerViewAdapter);
+                reportsRecyclerViewAdapter.clearReportList();
+                profileViewModel.readReportsByUser();
             }
         });
 
