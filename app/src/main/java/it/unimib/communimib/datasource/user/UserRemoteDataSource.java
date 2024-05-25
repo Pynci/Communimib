@@ -23,9 +23,9 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
 
     private final DatabaseReference databaseReference;
     private final StorageReference storageReference;
-    private static final String AUTHOR_NAME_PATH = "author/name/";
-    private static final String AUTHOR_SURNAME_PATH = "author/surname/";
-    private static final String AUTHOR_PROPIC_PATH = "author/propic/";
+    private static final String AUTHOR_NAME_PATH = "/author/name/";
+    private static final String AUTHOR_SURNAME_PATH = "/author/surname/";
+    private static final String AUTHOR_PROPIC_PATH = "/author/propic/";
 
     public UserRemoteDataSource() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
