@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -45,6 +48,7 @@ import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
+import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
 
 public class ProfileFragment extends Fragment {
@@ -55,6 +59,8 @@ public class ProfileFragment extends Fragment {
     private CategoriesRecyclerViewAdapter adapter;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
     private ProfileViewModel profileViewModel;
+    private boolean isScrollUpButtonVisible = false;
+    private boolean isAnimating = false;
 
     public ProfileFragment() {
         //Costruttore volutamente vuoto
@@ -137,20 +143,68 @@ public class ProfileFragment extends Fragment {
         dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new OnPostClickListener() {
             @Override
             public void onItemClick(Post post) {
+                ProfileFragmentDirections.ActionProfileFragmentToDetailedPostFragment action =
+                        ProfileFragmentDirections.actionProfileFragmentToDetailedPostFragment(post);
 
+                Navigation.findNavController(view).navigate(action);
             }
 
             @Override
             public void onImageSliderClick(List<String> pictures) {
-
+                PostPicturesFragmentDialog imageDialog = new PostPicturesFragmentDialog(pictures);
+                imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
         }, getContext());
 
-        RecyclerView.LayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        Animation animationSlideLeft = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_left);
+        animationSlideLeft.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                binding.profileScrollUpButton.setVisibility(View.VISIBLE);
+                isAnimating = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                isScrollUpButtonVisible = true;
+                isAnimating = false;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //non fa nulla
+            }
+        });
+
+        Animation animationSlideRight = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_right);
+        animationSlideRight.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                isAnimating = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.profileScrollUpButton.setVisibility(View.GONE);
+                isAnimating = false;
+                isScrollUpButtonVisible = false;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //non fa nulla
+            }
+        });
+
+        dashboardRecyclerViewAdapter.clearPostList();
+        profileViewModel.cleanViewModel();
+
+        LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         binding.profileRecyclerView.setLayoutManager(verticalLayoutManager);
 
         binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
+
 
         profileViewModel.readPostsByUser();
 
@@ -192,29 +246,24 @@ public class ProfileFragment extends Fragment {
                     ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         });
+
+        binding.profileScrollUpButton.setVisibility(View.GONE);
+        binding.profileScrollUpButton.setOnClickListener(r -> {
+            binding.profileNestedScrollView.smoothScrollTo(0,1, 800);
+            if(isScrollUpButtonVisible && !isAnimating)
+                binding.profileScrollUpButton.startAnimation(animationSlideRight);
+        });
+
+        binding.profileNestedScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            int firstItemVisible = binding.profileNestedScrollView.getScrollY();
+            if(firstItemVisible > 400 && !isScrollUpButtonVisible && !isAnimating){
+                binding.profileScrollUpButton.startAnimation(animationSlideLeft);
+            } else if(firstItemVisible < 400 && isScrollUpButtonVisible && !isAnimating){
+                binding.profileScrollUpButton.startAnimation(animationSlideRight);
+            }
+        });
     }
 
-    private void manageMediaPickResult(Uri imageToEdit, ActivityResultLauncher<Intent> cropImageLauncher) {
-        if (imageToEdit != null) {
-
-            Uri destinationUri = Uri.fromFile(new File(requireContext().getCacheDir(), "IMG_" + System.currentTimeMillis()));
-
-            UCrop.Options options = new UCrop.Options();
-            options.setCircleDimmedLayer(true); // Abilita il ritaglio circolare
-            options.setShowCropFrame(false); // Nasconde il rettangolo di ritaglio
-            options.setShowCropGrid(false); // Nasconde la griglia di ritaglio
-
-            Intent cropIntent = UCrop.of(imageToEdit, destinationUri)
-                    .withAspectRatio(1, 1)
-                    .withMaxResultSize(500, 500)
-                    .withOptions(options)
-                    .getIntent(requireContext());
-
-            cropImageLauncher.launch(cropIntent);
-        } else {
-            Log.d("Pizza", "No media selected");
-        }
-    }
     private void cropImageResultManagement(ActivityResult result) {
         if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
             final Uri resultUri = UCrop.getOutput(result.getData());
@@ -245,7 +294,7 @@ public class ProfileFragment extends Fragment {
         isInEditMode = !isInEditMode;
         managePropicCardComponents(isInEditMode);
 
-        if(isInEditMode) 
+        if(isInEditMode)
             binding.fragmentProfileImageButtonEditProfile.setImageResource(R.drawable.confirm_edits);
         else
             binding.fragmentProfileImageButtonEditProfile.setImageResource(R.drawable.pencil_edit);
@@ -320,4 +369,9 @@ public class ProfileFragment extends Fragment {
         animator.start();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        profileViewModel.cleanViewModel();
+    }
 }

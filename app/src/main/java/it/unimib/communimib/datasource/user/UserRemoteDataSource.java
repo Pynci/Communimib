@@ -71,6 +71,13 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
     @Override
     public void updateNameAndSurname(String uid, String name, String surname, Callback callback) {
         Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put(Constants.USERS_PATH + "/" + uid + "/name", name);
+        updateMap.put(Constants.USERS_PATH + "/" + uid + "/surname", surname);
+
+        updateReportsAuthorNameAndSurname(uid, name, surname, updateMap, callback);
+    }
+
+    private void updateReportsAuthorNameAndSurname(String uid, String name, String surname, Map<String, Object> updateMap, Callback callback) {
         databaseReference
                 .child(Constants.USERSREPORTS_PATH)
                 .child(uid)
@@ -78,25 +85,64 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                 .addOnCompleteListener(getTask -> {
                     if(getTask.isSuccessful()){
                         DataSnapshot snapshot = getTask.getResult();
-                        final Iterator<DataSnapshot> iterator = snapshot.getChildren().iterator();
-                        while(iterator.hasNext()){
-                            String rid = iterator.next().getKey();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            String rid = dataSnapshot.getKey();
                             updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/name", name);
                             updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/surname", surname);
-                            //TODO: modificare il codice per includere l'aggiornamento di post e commenti
                         }
-                        updateMap.put(Constants.USERS_PATH + "/" + uid + "/name", name);
-                        updateMap.put(Constants.USERS_PATH + "/" + uid + "/surname", surname);
-                        databaseReference
-                                .updateChildren(updateMap)
-                                .addOnCompleteListener(updateTask -> {
-                                    if(updateTask.isSuccessful()){
-                                        callback.onComplete(new Result.Success());
-                                    }
-                                    else{
-                                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
-                                    }
-                                });
+                        updatePostsAuthorNameAndSurname(uid, name, surname, updateMap, callback);
+                    }
+                });
+    }
+
+    private void updatePostsAuthorNameAndSurname(String uid, String name, String surname, Map<String, Object> updateMap, Callback callback){
+        databaseReference
+                .child(Constants.USERSPOSTS_PATH)
+                .child(uid)
+                .get()
+                .addOnCompleteListener(getTask -> {
+                    if(getTask.isSuccessful()){
+                        DataSnapshot snapshot = getTask.getResult();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            String pid = dataSnapshot.getKey();
+                            updateMap.put(Constants.POST_PATH + "/" + pid + "/author/name", name);
+                            updateMap.put(Constants.POST_PATH + "/" + pid + "/author/surname", surname);
+                        }
+                        updateCommentsAuthorNameAndSurname(uid, name, surname, updateMap, callback);
+                    }
+                });
+    }
+
+    private void updateCommentsAuthorNameAndSurname(String uid, String name, String surname, Map<String, Object> updateMap, Callback callback){
+        databaseReference
+                .child(Constants.USERSCOMMENTS_PATH)
+                .child(uid)
+                .get()
+                .addOnCompleteListener(getTask -> {
+                    if(getTask.isSuccessful()){
+                        DataSnapshot snapshot = getTask.getResult();
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            String pid = postSnapshot.getKey();
+                            for (DataSnapshot commentSnapshot : postSnapshot.getChildren()) {
+                                String cid = commentSnapshot.getKey();
+                                updateMap.put(Constants.COMMENT_PATH + "/" + pid + "/" + cid + "/author/name", name);
+                                updateMap.put(Constants.COMMENT_PATH + "/" + pid + "/" + cid + "/author/surname", surname);
+                            }
+                        }
+                        executeUpdate(updateMap, callback);
+                    }
+                });
+    }
+
+    private void executeUpdate(Map<String, Object> updateMap, Callback callback) {
+        databaseReference
+                .updateChildren(updateMap)
+                .addOnCompleteListener(updateTask -> {
+                    if(updateTask.isSuccessful()){
+                        callback.onComplete(new Result.Success());
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
                     }
                 });
     }

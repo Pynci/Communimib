@@ -115,6 +115,7 @@ public class DashboardFragment extends Fragment {
                 imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
         }, getContext());
+        dashboardRecyclerViewAdapter.clearPostList();
 
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setLayoutManager(layoutManager);
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
