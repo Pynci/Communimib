@@ -22,10 +22,15 @@ import it.unimib.communimib.util.ErrorMapper;
 public class UserRemoteDataSource implements IUserRemoteDataSource{
 
     private final DatabaseReference databaseReference;
+    private final StorageReference storageReference;
+    private static final String AUTHOR_NAME_PATH = "author/name/";
+    private static final String AUTHOR_SURNAME_PATH = "author/surname/";
+    private static final String AUTHOR_PROPIC_PATH = "author/propic/";
 
     public UserRemoteDataSource() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         databaseReference = FirebaseDatabase.getInstance(Constants.DATABASE).getReference();
+        storageReference = FirebaseStorage.getInstance().getReference();
     }
 
     @Override
@@ -87,10 +92,13 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                         DataSnapshot snapshot = getTask.getResult();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             String rid = dataSnapshot.getKey();
-                            updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/name", name);
-                            updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/surname", surname);
+                            updateMap.put(Constants.REPORTS_PATH + "/" + rid + AUTHOR_NAME_PATH, name);
+                            updateMap.put(Constants.REPORTS_PATH + "/" + rid + AUTHOR_SURNAME_PATH, surname);
                         }
                         updatePostsAuthorNameAndSurname(uid, name, surname, updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
                     }
                 });
     }
@@ -105,10 +113,13 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                         DataSnapshot snapshot = getTask.getResult();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             String pid = dataSnapshot.getKey();
-                            updateMap.put(Constants.POST_PATH + "/" + pid + "/author/name", name);
-                            updateMap.put(Constants.POST_PATH + "/" + pid + "/author/surname", surname);
+                            updateMap.put(Constants.POST_PATH + "/" + pid + AUTHOR_NAME_PATH, name);
+                            updateMap.put(Constants.POST_PATH + "/" + pid + AUTHOR_SURNAME_PATH, surname);
                         }
                         updateCommentsAuthorNameAndSurname(uid, name, surname, updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
                     }
                 });
     }
@@ -125,11 +136,14 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                             String pid = postSnapshot.getKey();
                             for (DataSnapshot commentSnapshot : postSnapshot.getChildren()) {
                                 String cid = commentSnapshot.getKey();
-                                updateMap.put(Constants.COMMENT_PATH + "/" + pid + "/" + cid + "/author/name", name);
-                                updateMap.put(Constants.COMMENT_PATH + "/" + pid + "/" + cid + "/author/surname", surname);
+                                updateMap.put(Constants.COMMENT_PATH + "/" + pid + "/" + cid + AUTHOR_NAME_PATH, name);
+                                updateMap.put(Constants.COMMENT_PATH + "/" + pid + "/" + cid + AUTHOR_SURNAME_PATH, surname);
                             }
                         }
                         executeUpdate(updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
                     }
                 });
     }
@@ -149,14 +163,13 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
 
     @Override
     public void uploadPropic(String uid, Uri uri, Callback callback){
-        StorageReference userStorageReference = FirebaseStorage.getInstance().getReference()
-                .child(Constants.STORAGE_USERSPROPICS).child(uid);
-
-        userStorageReference
+        storageReference
+                .child(Constants.STORAGE_USERSPROPICS)
+                .child(uid)
                 .putFile(uri)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        updatePropicUri(uid, userStorageReference, callback);
+                        updatePropicUri(uid, callback);
                     }
                     else{
                         callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
@@ -164,40 +177,101 @@ public class UserRemoteDataSource implements IUserRemoteDataSource{
                 });
     }
 
-    private void updatePropicUri(String uid, StorageReference reference, Callback callback){
+    private void updatePropicUri(String uid, Callback callback){
+
         Map<String, Object> updateMap = new HashMap<>();
-        reference
+        storageReference
+                .child(Constants.STORAGE_USERSPROPICS)
+                .child(uid)
                 .getDownloadUrl()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         String uri = task.getResult().toString();
-                        databaseReference
-                                .child(Constants.USERSREPORTS_PATH)
-                                .child(uid)
-                                .get()
-                                .addOnCompleteListener(getTask -> {
-                                    if(getTask.isSuccessful()){
-                                        DataSnapshot snapshot = getTask.getResult();
-                                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                            String rid = dataSnapshot.getKey();
-                                            updateMap.put(Constants.REPORTS_PATH + "/" + rid + "/author/propic", uri);
-                                        }
-                                        updateMap.put(Constants.USERS_PATH + "/" + uid + "/propic", uri);
-                                        databaseReference
-                                                .updateChildren(updateMap)
-                                                .addOnCompleteListener(updateTask -> {
-                                                    if(updateTask.isSuccessful()){
-                                                        callback.onComplete(new Result.UriSuccess(uri));
-                                                    }
-                                                    else{
-                                                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
-                                                    }
-                                                });
-                                    }
-                                });
+                        updateMap.put(Constants.USERS_PATH + "/" + uid + "/propic", uri);
+                        updateReportsAuthorPropicUri(uid, uri, updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
                     }
                 });
     }
+
+    private void updateReportsAuthorPropicUri(String uid, String uri, Map<String, Object> updateMap, Callback callback){
+        databaseReference
+                .child(Constants.USERSREPORTS_PATH)
+                .child(uid)
+                .get()
+                .addOnCompleteListener(getTask -> {
+                    if(getTask.isSuccessful()){
+                        DataSnapshot snapshot = getTask.getResult();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            String rid = dataSnapshot.getKey();
+                            updateMap.put(Constants.REPORTS_PATH + "/" + rid + AUTHOR_PROPIC_PATH, uri);
+                        }
+                        updatePostsAuthorPropicUri(uid, uri, updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                    }
+                });
+    }
+
+    private void updatePostsAuthorPropicUri(String uid, String uri, Map<String, Object> updateMap, Callback callback){
+        databaseReference
+                .child(Constants.USERSPOSTS_PATH)
+                .child(uid)
+                .get()
+                .addOnCompleteListener(getTask -> {
+                    if(getTask.isSuccessful()){
+                        DataSnapshot snapshot = getTask.getResult();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            String pid = dataSnapshot.getKey();
+                            updateMap.put(Constants.POST_PATH + "/" + pid + AUTHOR_PROPIC_PATH, uri);
+                        }
+                        updateCommentsAuthorPropicUri(uid, uri, updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                    }
+                });
+    }
+
+    private void updateCommentsAuthorPropicUri(String uid, String uri, Map<String, Object> updateMap, Callback callback){
+        databaseReference
+                .child(Constants.USERSCOMMENTS_PATH)
+                .child(uid)
+                .get()
+                .addOnCompleteListener(getTask -> {
+                    if(getTask.isSuccessful()){
+                        DataSnapshot snapshot = getTask.getResult();
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            String pid = postSnapshot.getKey();
+                            for (DataSnapshot commentSnapshot : postSnapshot.getChildren()) {
+                                String cid = commentSnapshot.getKey();
+                                updateMap.put(Constants.COMMENT_PATH + "/" + pid + "/" + cid + AUTHOR_PROPIC_PATH, uri);
+                            }
+                        }
+                        executePropicUpdate(uri, updateMap, callback);
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                    }
+                });
+    }
+
+    private void executePropicUpdate(String uri, Map<String, Object> updateMap, Callback callback) {
+        databaseReference
+                .updateChildren(updateMap)
+                .addOnCompleteListener(updateTask -> {
+                    if(updateTask.isSuccessful()){
+                        callback.onComplete(new Result.UriSuccess(uri));
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_UPDATE_ERROR));
+                    }
+                });
+    }
+
 
     @Override
     public void storeUserFavoriteBuildings(List<String> userInterests, String userId, Callback callback) {
