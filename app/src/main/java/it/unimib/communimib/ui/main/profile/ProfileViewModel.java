@@ -1,5 +1,8 @@
 package it.unimib.communimib.ui.main.profile;
 
+import android.net.Uri;
+
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -24,6 +27,8 @@ public class ProfileViewModel extends ViewModel {
     private MutableLiveData<Result> changedReportResult;
     private MutableLiveData<Result> removedReportResult;
     private MutableLiveData<Result> cancelledReportResult;
+    private MutableLiveData<Result> updateUserPropicResult;
+    private MutableLiveData<Result> updateUserNameAndSurnameResult;
 
 
     public ProfileViewModel(IUserRepository userRepository, IPostRepository postRepository, IReportRepository repository) {
@@ -40,6 +45,9 @@ public class ProfileViewModel extends ViewModel {
         changedReportResult = new MutableLiveData<>();
         removedReportResult = new MutableLiveData<>();
         cancelledReportResult = new MutableLiveData<>();
+
+        updateUserPropicResult = new MutableLiveData<>();
+        updateUserNameAndSurnameResult = new MutableLiveData<>();
     }
 
     public User getCurrentUser(){
@@ -55,36 +63,58 @@ public class ProfileViewModel extends ViewModel {
                 postCancelled -> cancelledPostResult.setValue(postCancelled));
     }
 
-    public MutableLiveData<Result> getAddedPostResult() {
+    public void updateUserParameters(Uri uri, String name, String surname) {
+
+        //Prendo l'utente corrente
+        User currentUser = getCurrentUser();
+
+        //Se l'immagine profilo è diversa la devo aggiornare
+        if(currentUser.getPropic() != null && !currentUser.getPropic().equals(uri.toString()))
+            userRepository.uploadPropic(uri, result -> updateUserPropicResult.postValue(result));
+
+        //Se il nome ed il cognome sono diversi li devo aggiornare
+        if(!currentUser.getName().equals(name) || !currentUser.getSurname().equals(surname))
+            userRepository.updateUserNameAndSurname(name, surname, result -> updateUserNameAndSurnameResult.postValue(result));
+    }
+
+    public LiveData<Result> getAddedPostResult() {
         return addedPostResult;
     }
 
-    public MutableLiveData<Result> getChangedPostResult() {
+    public LiveData<Result> getChangedPostResult() {
         return changedPostResult;
     }
 
-    public MutableLiveData<Result> getRemovedPostResult() {
+    public LiveData<Result> getRemovedPostResult() {
         return removedPostResult;
     }
 
-    public MutableLiveData<Result> getCancelledPostResult() {
+    public LiveData<Result> getCancelledPostResult() {
         return cancelledPostResult;
     }
 
-    public MutableLiveData<Result> getAddedReportResult() {
+    public LiveData<Result> getAddedReportResult() {
         return addedReportResult;
     }
 
-    public MutableLiveData<Result> getChangedReportResult() {
+    public LiveData<Result> getChangedReportResult() {
         return changedReportResult;
     }
 
-    public MutableLiveData<Result> getRemovedReportResult() {
+    public LiveData<Result> getRemovedReportResult() {
         return removedReportResult;
     }
 
-    public MutableLiveData<Result> getCancelledReportResult() {
+    public LiveData<Result> getCancelledReportResult() {
         return cancelledReportResult;
+    }
+
+    public LiveData<Result> getUpdateUserPropicResult() {
+        return updateUserPropicResult;
+    }
+
+    public LiveData<Result> getUpdateUserNameAndSurnameResult() {
+        return updateUserNameAndSurnameResult;
     }
 
     public void cleanViewModel(){
@@ -97,5 +127,7 @@ public class ProfileViewModel extends ViewModel {
         changedReportResult = new MutableLiveData<>();
         removedReportResult = new MutableLiveData<>();
         cancelledReportResult = new MutableLiveData<>();
+        updateUserPropicResult = new MutableLiveData<>();
+        updateUserNameAndSurnameResult = new MutableLiveData<>();
     }
 }

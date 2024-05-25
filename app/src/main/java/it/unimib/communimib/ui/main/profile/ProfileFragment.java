@@ -50,6 +50,7 @@ import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.Validation;
 
 public class ProfileFragment extends Fragment {
 
@@ -89,14 +90,14 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //Gestione del focus quando si preme da qualche altra parte
-        binding.fragmentProfileConstraintLayoutMain.setOnTouchListener(this::onClickMainLayoutManagement);
+        binding.fragmentProfileFrameLayoutMain.setOnTouchListener(this::onClickMainLayoutManagement);
 
         //Gestione iniziale dei componenti della card
         initPropicCardComponents(profileViewModel.getCurrentUser());
 
         //Gestione del pulsante di modifica del profilo
         binding.fragmentProfileImageButtonEditProfile.setOnClickListener(v -> {
-            onImageButtonClickManagement();
+            onImageButtonClickManagement(view);
         });
 
         //Gestione del recupero dell'immagine editata
@@ -264,6 +265,68 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    private void manageUpdateUserNameAndSurnameResult(@NonNull View view, Result result) {
+        if (result.isSuccessful()) {
+            Snackbar.make(
+                    view,
+                    "Il nome e cognome inseriti sono stati registrati correttamente",
+                    BaseTransientBottomBar.LENGTH_SHORT).show();
+        }
+        else{
+            rollbackNameAndSurname();
+            Snackbar.make(
+                    view,
+                    ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                    BaseTransientBottomBar.LENGTH_SHORT).show();
+        }
+    }
+
+    private void manageUpdateUserPropicResult(@NonNull View view, Result result) {
+        if (result.isSuccessful()) {
+            Snackbar.make(
+                    view,
+                    "L'immagine profilo è stata aggiornata correttamente",
+                    BaseTransientBottomBar.LENGTH_SHORT).show();
+        }
+        else{
+            rollbackPropic();
+            Snackbar.make(
+                    view,
+                    ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                    BaseTransientBottomBar.LENGTH_SHORT).show();
+        }
+    }
+
+    private void rollbackNameAndSurname() {
+        binding.fragmentProfileTextViewName.setText(profileViewModel.getCurrentUser().getName());
+        binding.fragmentProfileTextViewSurname.setText(profileViewModel.getCurrentUser().getSurname());
+    }
+
+    private void rollbackPropic() {
+        loadImageIntoImageView(Uri.parse(profileViewModel.getCurrentUser().getPropic()));
+    }
+
+    private void manageMediaPickResult(Uri imageToEdit, ActivityResultLauncher<Intent> cropImageLauncher) {
+        if (imageToEdit != null) {
+
+            Uri destinationUri = Uri.fromFile(new File(requireContext().getCacheDir(), "IMG_" + System.currentTimeMillis()));
+
+            UCrop.Options options = new UCrop.Options();
+            options.setCircleDimmedLayer(true); // Abilita il ritaglio circolare
+            options.setShowCropFrame(false); // Nasconde il rettangolo di ritaglio
+            options.setShowCropGrid(false); // Nasconde la griglia di ritaglio
+
+            Intent cropIntent = UCrop.of(imageToEdit, destinationUri)
+                    .withAspectRatio(1, 1)
+                    .withMaxResultSize(500, 500)
+                    .withOptions(options)
+                    .getIntent(requireContext());
+
+            cropImageLauncher.launch(cropIntent);
+        } else {
+            Log.d("Pizza", "No media selected");
+        }
+    }
     private void cropImageResultManagement(ActivityResult result) {
         if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
             final Uri resultUri = UCrop.getOutput(result.getData());
@@ -290,7 +353,27 @@ public class ProfileFragment extends Fragment {
                 .into(binding.fragmentProfileImageViewProfileImage);
     }
 
-    private void onImageButtonClickManagement() {
+    private void onImageButtonClickManagement(View view) {
+
+        hideKeyboard(view);
+
+        String name = binding.fragmentProfileTextViewName.getText().toString();
+        String surname = binding.fragmentProfileTextViewSurname.getText().toString();
+
+        String validationNameResult = Validation.checkField(name);
+
+        String validationSurnameResult = Validation.checkField(surname);
+
+        if(validationNameResult.equals("ok") && validationSurnameResult.equals("ok"))
+            profileViewModel.updateUserParameters(selectedImage, name, surname);
+        else{
+            rollbackNameAndSurname();
+            Snackbar.make(
+                    view,
+                    "I nuovi dati inseriti non sono validi. Le modifiche sono annullate",
+                    BaseTransientBottomBar.LENGTH_SHORT).show();
+        }
+
         isInEditMode = !isInEditMode;
         managePropicCardComponents(isInEditMode);
 
@@ -325,7 +408,7 @@ public class ProfileFragment extends Fragment {
         if(!currentUser.getSurname().isEmpty())
             binding.fragmentProfileTextViewSurname.setText(currentUser.getSurname());
 
-        if(!currentUser.getName().isEmpty())
+        if(currentUser.getPropic() != null && !currentUser.getPropic().isEmpty())
             loadImageIntoImageView(Uri.parse(currentUser.getPropic()));
 
         binding.fragmentProfileTextViewName.setFocusable(false);
