@@ -157,7 +157,7 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
                                  Callback removedCallback,
                                  Callback cancelledCallback){
         removeAllQueryListeners();
-        addQueryListener("author", author, addedCallback, changedCallback, removedCallback, cancelledCallback);
+        addQueryListener("author/uid", author, addedCallback, changedCallback, removedCallback, cancelledCallback);
     }
 
     @Override
