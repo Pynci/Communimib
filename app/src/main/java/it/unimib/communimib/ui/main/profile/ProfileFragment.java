@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,9 +15,11 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +49,7 @@ import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
+import it.unimib.communimib.ui.main.MainActivity;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
@@ -53,6 +57,7 @@ import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialo
 import it.unimib.communimib.ui.main.reports.ReportsHorizontalRecyclerViewAdapter;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.Validation;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class ProfileFragment extends Fragment {
 
@@ -118,12 +123,13 @@ public class ProfileFragment extends Fragment {
                         .build());
         });
 
+        //Osservazione del risultato di modifica nome e cognome
         profileViewModel.getUpdateUserNameAndSurnameResult().observe(getViewLifecycleOwner(), result ->
                 manageUpdateUserNameAndSurnameResult(view, result));
 
+        //Osservazione del risultato di modifica profilo
         profileViewModel.getUpdateUserPropicResult().observe(getViewLifecycleOwner(), result ->
                 manageUpdateUserPropicResult(view, result));
-
 
         //Gestione dei contenuti della schermata (recyler view)
         String[] options = getResources().getStringArray(R.array.profile_options);
@@ -241,6 +247,42 @@ public class ProfileFragment extends Fragment {
                 binding.profileScrollUpButton.startAnimation(animationSlideRight);
             }
         });
+
+        //Gestione swipe dell'elemento della recycler view a destra
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+                int position = viewHolder.getBindingAdapterPosition();
+                dashboardRecyclerViewAdapter.removeItem(dashboardRecyclerViewAdapter.getPostFromPosition(position));
+            }
+
+            @Override
+            public void onChildDraw (@NonNull Canvas c,
+                                     @NonNull RecyclerView recyclerView,
+                                     @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+
+                        .addSwipeLeftBackgroundColor(R.color.md_theme_light_primary)
+                        .addSwipeLeftActionIcon(R.drawable.trashcan)
+                        .addBackgroundColor(ContextCompat.getColor(requireContext(), R.color.md_theme_light_error))
+                        .addActionIcon(R.drawable.trashcan)
+                        .create()
+                        .decorate();
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
+
     }
 
     @Override

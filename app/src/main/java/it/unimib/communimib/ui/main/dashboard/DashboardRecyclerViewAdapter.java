@@ -70,4 +70,8 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<PostViewH
     public int getItemCount() {
         return postList.size();
     }
+
+    public Post getPostFromPosition(int position) {
+        return postList.get(position);
+    }
 }
