@@ -28,6 +28,7 @@ public class UserRepository implements IUserRepository{
     private final IUserLocalDataSource userLocalDataSource;
     private User currentUser;
     private long lastFavoriteBuildingsUpdate;
+    private long lastCurrentUserUpdate;
 
     private UserRepository(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource, IUserLocalDataSource localDataSource){
         this.authDataSource = authDataSource;
@@ -49,6 +50,14 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public User getCurrentUser(){
+        if(System.currentTimeMillis() - lastCurrentUserUpdate > Constants.CURRENT_USER_TIMEOUT){
+            userRemoteDataSource.getUserByEmail(currentUser.getEmail(), remoteResult -> {
+                if(remoteResult.isSuccessful()){
+                    currentUser = ((Result.UserSuccess) remoteResult).getUser();
+                    lastCurrentUserUpdate = System.currentTimeMillis();
+                }
+            });
+        }
         return currentUser;
     }
 
@@ -247,15 +256,12 @@ public class UserRepository implements IUserRepository{
     }
 
     public void readUserFavoriteBuildings(Callback callback) {
-
-        long currentTime = System.currentTimeMillis();
-
-        if(currentTime - lastFavoriteBuildingsUpdate > Constants.FAVORITE_BUILDINGS_TIMEOUT){
+        if(System.currentTimeMillis() - lastFavoriteBuildingsUpdate > Constants.FAVORITE_BUILDINGS_TIMEOUT){
             userRemoteDataSource.getUserFavoriteBuildings(currentUser.getUid(), remoteResult -> {
                 if(remoteResult.isSuccessful()){
                     userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildingsSuccess) remoteResult).getFavoriteBuildings(), localResult -> {
                         if(localResult.isSuccessful()){
-                            lastFavoriteBuildingsUpdate = currentTime;
+                            lastFavoriteBuildingsUpdate = System.currentTimeMillis();
                             callback.onComplete(remoteResult);
                         }
                         else{
