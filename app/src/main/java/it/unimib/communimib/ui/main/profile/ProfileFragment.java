@@ -93,7 +93,6 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //Gestione del focus quando si preme da qualche altra parte
-        binding.fragmentProfileMaterialCardViewMainCardProfile.setOnTouchListener(this::onClickMainLayoutManagement);
         binding.profileNestedScrollView.setOnTouchListener(this::onClickMainLayoutManagement);
 
         //Gestione iniziale dei componenti della card
