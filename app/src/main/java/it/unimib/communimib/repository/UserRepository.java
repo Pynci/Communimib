@@ -51,7 +51,7 @@ public class UserRepository implements IUserRepository{
     @Override
     public User getCurrentUser(){
         if(System.currentTimeMillis() - lastCurrentUserUpdate > Constants.CURRENT_USER_TIMEOUT){
-            userRemoteDataSource.getUserByEmail(currentUser.getEmail(), remoteResult -> {
+            userRemoteDataSource.getUserByEmail(authDataSource.getCurrentUserEmail(), remoteResult -> {
                 if(remoteResult.isSuccessful()){
                     currentUser = ((Result.UserSuccess) remoteResult).getUser();
                     lastCurrentUserUpdate = System.currentTimeMillis();
@@ -69,11 +69,8 @@ public class UserRepository implements IUserRepository{
                 userRemoteDataSource.storeUserParameters(((Result.SignupSuccess) authResult).getUid(), email, name, surname, isUnimibEmployee(email), dbResult -> {
                     if(dbResult.isSuccessful()) {
                         currentUser = new User(((Result.SignupSuccess) authResult).getUid(), email, name, surname, isUnimibEmployee(email));
-                        userLocalDataSource.insertUser(currentUser, callback);
                     }
-                    else{
-                        callback.onComplete(dbResult);
-                    }
+                    callback.onComplete(dbResult);
                 });
             }
             else{
@@ -90,11 +87,8 @@ public class UserRepository implements IUserRepository{
                 getUserByEmail(email, remoteResult -> {
                     if(remoteResult.isSuccessful()){
                         currentUser = ((Result.UserSuccess) remoteResult).getUser();
-                        userLocalDataSource.insertUser(currentUser, callback);
                     }
-                    else{
-                        callback.onComplete(remoteResult);
-                    }
+                    callback.onComplete(remoteResult);
                 });
             }
             else{
@@ -107,16 +101,9 @@ public class UserRepository implements IUserRepository{
     public void signOut(Callback callback) {
         authDataSource.signOut(authResult -> {
             if(authResult.isSuccessful()){
-                userLocalDataSource.deleteUser(localResult -> {
-                    if(localResult.isSuccessful()){
-                        currentUser = null;
-                    }
-                    callback.onComplete(localResult);
-                });
+                currentUser = null;
             }
-            else{
-                callback.onComplete(authResult);
-            }
+            callback.onComplete(authResult);
         });
     }
 
@@ -124,13 +111,13 @@ public class UserRepository implements IUserRepository{
     public void isSessionStillActive(Callback callback){
         if(authDataSource.isSessionStillActive()){
             if(currentUser == null){
-                userLocalDataSource.getUser(localResult -> {
-                    if(localResult.isSuccessful()){
-                        currentUser = ((Result.UserSuccess) localResult).getUser();
+                userRemoteDataSource.getUserByEmail(authDataSource.getCurrentUserEmail(), remoteResult -> {
+                    if(remoteResult.isSuccessful()){
+                        currentUser = ((Result.UserSuccess) remoteResult).getUser();
                         callback.onComplete(new Result.BooleanSuccess(true));
                     }
                     else{
-                        callback.onComplete(localResult);
+                        callback.onComplete(remoteResult);
                     }
                 });
             }
@@ -139,14 +126,8 @@ public class UserRepository implements IUserRepository{
             }
         }
         else{
-            userLocalDataSource.deleteUser(localResult -> {
-                if(localResult.isSuccessful()){
-                    callback.onComplete(new Result.BooleanSuccess(false));
-                }
-                else{
-                    callback.onComplete(localResult);
-                }
-            });
+            currentUser = null;
+            callback.onComplete(new Result.BooleanSuccess(false));
         }
     }
 
@@ -197,11 +178,8 @@ public class UserRepository implements IUserRepository{
                 if(remoteResult.isSuccessful()){
                     currentUser.setName(name);
                     currentUser.setSurname(surname);
-                    userLocalDataSource.updateUser(currentUser, callback);
                 }
-                else{
-                    callback.onComplete(remoteResult);
-                }
+                callback.onComplete(remoteResult);
             });
         }
         else{
@@ -216,11 +194,8 @@ public class UserRepository implements IUserRepository{
                 if(remoteResult.isSuccessful()){
                     String remoteDownloadUri = ((Result.UriSuccess) remoteResult).getUri();
                     currentUser.setPropic(remoteDownloadUri);
-                    userLocalDataSource.updateUser(currentUser, callback);
                 }
-                else{
-                    callback.onComplete(remoteResult);
-                }
+                callback.onComplete(remoteResult);
             });
         }
         else{

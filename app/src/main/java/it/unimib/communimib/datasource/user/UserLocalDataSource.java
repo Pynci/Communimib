@@ -18,59 +18,10 @@ import it.unimib.communimib.util.ErrorMapper;
 
 public class UserLocalDataSource implements IUserLocalDataSource{
 
-    private final UserDAO userDAO;
     private final SharedPreferences sharedPreferences;
 
-    public UserLocalDataSource(UserDAO userDAO, SharedPreferences sharedPreferences) {
-        this.userDAO = userDAO;
+    public UserLocalDataSource(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
-    }
-
-    @Override
-    public void getUser(Callback callback) {
-        LocalDatabase.databaseWriteExecutor.execute(() -> {
-            User user = userDAO.getUser();
-            if(user != null){
-                callback.onComplete(new Result.UserSuccess(user));
-            }
-            else{
-                callback.onComplete(new Result.Error(ErrorMapper.LOCALDB_GET_ERROR));
-            }
-        });
-    }
-
-    @Override
-    public void insertUser(User user, Callback callback) {
-        LocalDatabase.databaseWriteExecutor.execute(() -> {
-            long userId = userDAO.insertUser(user);
-            if(userId != -1) {
-                callback.onComplete(new Result.Success());
-            }
-            else{
-                callback.onComplete(new Result.Error(ErrorMapper.LOCALDB_INSERT_ERROR));
-            }
-        });
-    }
-
-    @Override
-    public void updateUser(User user, Callback callback) {
-        LocalDatabase.databaseWriteExecutor.execute(() -> {
-            int rows = userDAO.updateUser(user);
-            if(rows == 1){
-                callback.onComplete(new Result.Success());
-            }
-            else{
-                callback.onComplete(new Result.Error(ErrorMapper.LOCALDB_UPDATE_ERROR));
-            }
-        });
-    }
-
-    @Override
-    public void deleteUser(Callback callback) {
-        LocalDatabase.databaseWriteExecutor.execute(() -> {
-            userDAO.clearUser();
-            callback.onComplete(new Result.Success());
-        });
     }
 
     @Override

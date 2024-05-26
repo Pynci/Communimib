@@ -42,60 +42,8 @@ public class UserLocalDataSourceTest {
         sharedPreferences = Mockito.mock(SharedPreferences.class);
         editor = Mockito.mock(SharedPreferences.Editor.class);
         callback = Mockito.mock(Callback.class);
-        fakeUserDAO = new FakeUserDAO();
-        userLocalDataSource = new UserLocalDataSource(fakeUserDAO, sharedPreferences);
+        userLocalDataSource = new UserLocalDataSource(sharedPreferences);
         marco = new User("123456", "marco@unimib.it", "Marco", "Ferioli", true);
-    }
-
-    @Test
-    public void getUser() throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        fakeUserDAO.insertUser(marco);
-        userLocalDataSource.getUser(result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.UserSuccess);
-        Assert.assertEquals(marco, ((Result.UserSuccess) result).getUser());
-    }
-
-    @Test
-    public void insertUser() throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        fakeUserDAO.clearUser();
-        userLocalDataSource.insertUser(marco,result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Success);
-    }
-
-    @Test
-    public void updateUser() throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        fakeUserDAO.insertUser(marco);
-        User newMarco = marco;
-        newMarco.setSurname("Feriolonazzi");
-        userLocalDataSource.updateUser(newMarco, result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Success);
-    }
-
-    @Test
-    public void deleteUser() throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        fakeUserDAO.insertUser(marco);
-        userLocalDataSource.deleteUser(result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Success);
     }
 
     @Test
