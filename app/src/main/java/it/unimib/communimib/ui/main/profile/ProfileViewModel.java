@@ -78,7 +78,7 @@ public class ProfileViewModel extends ViewModel {
         User currentUser = getCurrentUser();
 
         //Se l'immagine profilo è diversa la devo aggiornare
-        if(uri != null && (currentUser.getPropic() == null || !currentUser.getPropic().equals(uri.toString())))
+        if(uri != null)
             userRepository.uploadPropic(uri, result -> updateUserPropicResult.postValue(result));
 
         //Se il nome ed il cognome sono diversi li devo aggiornare

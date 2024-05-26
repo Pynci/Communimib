@@ -99,9 +99,7 @@ public class ProfileFragment extends Fragment {
         initPropicCardComponents(profileViewModel.getCurrentUser());
 
         //Gestione del pulsante di modifica del profilo
-        binding.fragmentProfileImageButtonEditProfile.setOnClickListener(v -> {
-            onImageButtonClickManagement(view);
-        });
+        binding.fragmentProfileImageButtonEditProfile.setOnClickListener(v -> onImageButtonClickManagement(view));
 
         //Gestione del recupero dell'immagine editata
         ActivityResultLauncher<Intent> cropImageLauncher =
@@ -109,9 +107,8 @@ public class ProfileFragment extends Fragment {
 
         //Gestione recupero immagine selezionata
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
-                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), imageToEdit -> {
-                    manageMediaPickResult(imageToEdit, cropImageLauncher);
-                });
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), imageToEdit ->
+                        manageMediaPickResult(imageToEdit, cropImageLauncher));
 
         //Gestione del click sull'immagine per caricare una nuova foto
         binding.fragmentProfileCardViewPropic.setOnClickListener(v -> {
@@ -120,6 +117,12 @@ public class ProfileFragment extends Fragment {
                         .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                         .build());
         });
+
+        profileViewModel.getUpdateUserNameAndSurnameResult().observe(getViewLifecycleOwner(), result ->
+                manageUpdateUserNameAndSurnameResult(view, result));
+
+        profileViewModel.getUpdateUserPropicResult().observe(getViewLifecycleOwner(), result ->
+                manageUpdateUserPropicResult(view, result));
 
 
         //Gestione dei contenuti della schermata (recyler view)
@@ -170,8 +173,7 @@ public class ProfileFragment extends Fragment {
             public void onCardClick(Report report) {
 
             }
-        },
-                getContext(), R.layout.report_item);
+        }, getContext(), R.layout.report_item);
 
         Animation animationSlideLeft = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_left);
         animationSlideLeft.setAnimationListener(new Animation.AnimationListener() {
@@ -217,53 +219,41 @@ public class ProfileFragment extends Fragment {
         profileViewModel.cleanViewModel();
 
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-
         binding.profileRecyclerView.setLayoutManager(verticalLayoutManager);
-
         binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
 
-
         profileViewModel.readPostsByUser();
+        initPostsListeners();
+        initReportsListeners();
 
-        profileViewModel.getAddedPostResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()){
-                Post post = ((Result.PostSuccess) result).getPost();
-                dashboardRecyclerViewAdapter.addItem(post);
-            } else {
-                Snackbar.make(requireView(),
-                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
-                        BaseTransientBottomBar.LENGTH_SHORT).show();
+        binding.profileScrollUpButton.setVisibility(View.GONE);
+        binding.profileScrollUpButton.setOnClickListener(r -> {
+            binding.profileNestedScrollView.smoothScrollTo(0,1, 800);
+            if(isScrollUpButtonVisible && !isAnimating)
+                binding.profileScrollUpButton.startAnimation(animationSlideRight);
+        });
+
+        binding.profileNestedScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            int firstItemVisible = binding.profileNestedScrollView.getScrollY();
+            if(firstItemVisible > 400 && !isScrollUpButtonVisible && !isAnimating){
+                binding.profileScrollUpButton.startAnimation(animationSlideLeft);
+            } else if(firstItemVisible < 400 && isScrollUpButtonVisible && !isAnimating){
+                binding.profileScrollUpButton.startAnimation(animationSlideRight);
             }
         });
+    }
 
-        profileViewModel.getChangedPostResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()){
-                Post post = ((Result.PostSuccess) result).getPost();
-                dashboardRecyclerViewAdapter.editItem(post);
-            } else {
-                Snackbar.make(requireView(),
-                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
-                        BaseTransientBottomBar.LENGTH_SHORT).show();
-            }
-        });
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        profileViewModel.cleanViewModel();
+    }
 
-        profileViewModel.getRemovedPostResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()){
-                Post post = ((Result.PostSuccess) result).getPost();
-                dashboardRecyclerViewAdapter.removeItem(post);
-            } else {
-                Snackbar.make(requireView(),
-                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
-                        BaseTransientBottomBar.LENGTH_SHORT).show();
-            }
-        });
 
-        profileViewModel.getCancelledPostResult().observe(getViewLifecycleOwner(), result -> {
-            Snackbar.make(requireView(),
-                    ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
-                    BaseTransientBottomBar.LENGTH_SHORT).show();
-        });
 
+
+
+    private void initReportsListeners() {
         profileViewModel.getAddedReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
@@ -297,27 +287,50 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getCancelledReportResult().observe(getViewLifecycleOwner(), result -> {
+        profileViewModel.getCancelledReportResult().observe(getViewLifecycleOwner(), result ->
+                Snackbar.make(requireView(),
+                ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                BaseTransientBottomBar.LENGTH_SHORT).show());
+    }
+
+    private void initPostsListeners() {
+        profileViewModel.getAddedPostResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Post post = ((Result.PostSuccess) result).getPost();
+                dashboardRecyclerViewAdapter.addItem(post);
+            } else {
                 Snackbar.make(requireView(),
                         ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
-        });
-
-        binding.profileScrollUpButton.setVisibility(View.GONE);
-        binding.profileScrollUpButton.setOnClickListener(r -> {
-            binding.profileNestedScrollView.smoothScrollTo(0,1, 800);
-            if(isScrollUpButtonVisible && !isAnimating)
-                binding.profileScrollUpButton.startAnimation(animationSlideRight);
-        });
-
-        binding.profileNestedScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
-            int firstItemVisible = binding.profileNestedScrollView.getScrollY();
-            if(firstItemVisible > 400 && !isScrollUpButtonVisible && !isAnimating){
-                binding.profileScrollUpButton.startAnimation(animationSlideLeft);
-            } else if(firstItemVisible < 400 && isScrollUpButtonVisible && !isAnimating){
-                binding.profileScrollUpButton.startAnimation(animationSlideRight);
             }
         });
+
+        profileViewModel.getChangedPostResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Post post = ((Result.PostSuccess) result).getPost();
+                dashboardRecyclerViewAdapter.editItem(post);
+            } else {
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getRemovedPostResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Post post = ((Result.PostSuccess) result).getPost();
+                dashboardRecyclerViewAdapter.removeItem(post);
+            } else {
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getCancelledPostResult().observe(getViewLifecycleOwner(), result ->
+                Snackbar.make(requireView(),
+                ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                BaseTransientBottomBar.LENGTH_SHORT).show());
     }
 
     private void manageUpdateUserNameAndSurnameResult(@NonNull View view, Result result) {
@@ -505,11 +518,5 @@ public class ProfileFragment extends Fragment {
         });
 
         animator.start();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        profileViewModel.cleanViewModel();
     }
 }
