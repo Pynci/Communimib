@@ -15,7 +15,7 @@ public class Constants {
     public static final String STORAGE_POSTPICS = "post_pics";
 
     public static final int FAVORITE_BUILDINGS_TIMEOUT = 1000 * 60 * 15; // 15 minuti espressi in millisecondi
-    public static final int CURRENT_USER_TIMEOUT = 1000 * 60 * 15; // 15 minuti espressi in millisecondi
+    public static final int CURRENT_USER_TIMEOUT = 1000 * 30; // 15 minuti espressi in millisecondi
 
     public static final String EMAIL_ERROR = "email_error";
     public static final String PASSWORD_ERROR = "password_error";
