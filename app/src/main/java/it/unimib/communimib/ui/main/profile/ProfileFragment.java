@@ -93,7 +93,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //Gestione del focus quando si preme da qualche altra parte
-        binding.fragmentProfileFrameLayoutMain.setOnTouchListener(this::onClickMainLayoutManagement);
+        binding.profileNestedScrollView.setOnTouchListener(this::onClickMainLayoutManagement);
 
         //Gestione iniziale dei componenti della card
         initPropicCardComponents(profileViewModel.getCurrentUser());
@@ -492,7 +492,7 @@ public class ProfileFragment extends Fragment {
                 hideKeyboard(v);
             }
         }
-        return true;
+        return false;
     }
     private void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
