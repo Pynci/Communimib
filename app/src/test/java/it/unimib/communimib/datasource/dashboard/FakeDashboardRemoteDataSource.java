@@ -38,6 +38,11 @@ public class FakeDashboardRemoteDataSource implements IPostRemoteDataSource {
     }
 
     @Override
+    public void readPostsByUid(String uid, Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback) {
+
+    }
+
+    @Override
     public void createPost(Post post, Callback callback) {
         post.setPid("12345");
         posts.put(post.getPid(), post);

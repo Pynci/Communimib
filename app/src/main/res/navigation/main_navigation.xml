@@ -22,7 +22,11 @@
         android:id="@+id/profileFragment"
         android:name="it.unimib.communimib.ui.main.profile.ProfileFragment"
         android:label=""
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_detailedPostFragment"
+            app:destination="@id/detailedPostFragment" />
+    </fragment>
     <fragment
         android:id="@+id/reportsFragment"
         android:name="it.unimib.communimib.ui.main.reports.ReportsFragment"

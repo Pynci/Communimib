@@ -21,6 +21,7 @@ import java.util.concurrent.CountDownLatch;
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.util.Constants;
 import it.unimib.communimib.util.ErrorMapper;
 
@@ -228,6 +229,54 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
                     }
                 });
     }
+
+    @Override
+    public void readPostsByUid(String uid,
+                               Callback addedCallback,
+                               Callback changedCallback,
+                               Callback removedCallback,
+                               Callback cancelledCallback) {
+        databaseReference
+                .child(Constants.POST_PATH)
+                .orderByChild("author/uid")
+                .equalTo(uid)
+                .addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Post post = snapshot.getValue(Post.class);
+                post.setPid(snapshot.getKey());
+
+                addedCallback.onComplete(new Result.PostSuccess(post));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Post post = snapshot.getValue(Post.class);
+                post.setPid(snapshot.getKey());
+
+                changedCallback.onComplete(new Result.PostSuccess(post));
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Post post = snapshot.getValue(Post.class);
+                post.setPid(snapshot.getKey());
+
+                removedCallback.onComplete(new Result.PostSuccess(post));
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+            }
+        });
+    }
+
 
     @Override
     public void createPost(Post post, Callback callback) {

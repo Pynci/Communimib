@@ -84,7 +84,7 @@ public class DashboardFragment extends Fragment {
         });
 
         RecyclerView.LayoutManager categoryLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, this::readPosts);
+        categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, "Tutti", this::readPosts);
 
         fragmentDashboardBinding.buttonNewPost.setOnClickListener(v -> {
             dashboardViewModel.cleanViewModel();
@@ -115,6 +115,7 @@ public class DashboardFragment extends Fragment {
                 imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
         }, getContext());
+        dashboardRecyclerViewAdapter.clearPostList();
 
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setLayoutManager(layoutManager);
         fragmentDashboardBinding.fragmentDashboardRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
@@ -198,12 +199,12 @@ public class DashboardFragment extends Fragment {
 
     public void readPosts(String category){
         if(category.equals("Tutti")){
-            categoriesRecyclerViewAdapter.setCurrentCategory(category);
+            categoriesRecyclerViewAdapter.setCurrentSelection(category);
             dashboardRecyclerViewAdapter.clearPostList();
             dashboardViewModel.setVisualizedCategory(category);
             dashboardViewModel.readAllPosts();
         } else {
-            categoriesRecyclerViewAdapter.setCurrentCategory(category);
+            categoriesRecyclerViewAdapter.setCurrentSelection(category);
             dashboardRecyclerViewAdapter.clearPostList();
             dashboardViewModel.setVisualizedCategory(category);
             dashboardViewModel.readPostsByCategory(category);

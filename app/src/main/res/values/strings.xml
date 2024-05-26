@@ -115,4 +115,5 @@
 
     <string name="invalid_email">Inserisci una mail valida</string>
     <string name="invalid_link">Inserisci un link valido</string>
+    <string name="click_to_edit">CLICCA PER MODIFICARE</string>
 </resources>
