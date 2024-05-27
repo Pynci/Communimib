@@ -16,16 +16,9 @@ public class BuildingReport {
         return buildingName;
     }
 
-    public void setBuildingName(String buildingName) {
-        this.buildingName = buildingName;
-    }
 
     public ReportsHorizontalRecyclerViewAdapter getReportsHorizontalRecyclerViewAdapter() {
         return reportsHorizontalRecyclerViewAdapter;
-    }
-
-    public void setReportsHorizontalRecyclerViewAdapter(ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter) {
-        this.reportsHorizontalRecyclerViewAdapter = reportsHorizontalRecyclerViewAdapter;
     }
 
 }
