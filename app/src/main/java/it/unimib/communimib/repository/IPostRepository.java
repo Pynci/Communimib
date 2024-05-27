@@ -41,6 +41,8 @@ public interface IPostRepository {
 
     public void deletePost(Post post, Callback callback);
 
+    void undoDeletePost(Post post, Callback callback);
+
     void readCommentsByPid(String pid,
                            Callback addedCallback,
                            Callback changedCallback,

@@ -70,6 +70,7 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel profileViewModel;
     private boolean isScrollUpButtonVisible = false;
     private boolean isAnimating = false;
+    private Post removedPost;
 
     public ProfileFragment() {
         //Costruttore volutamente vuoto
@@ -259,7 +260,10 @@ public class ProfileFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
                 int position = viewHolder.getBindingAdapterPosition();
-                dashboardRecyclerViewAdapter.removeItem(dashboardRecyclerViewAdapter.getPostFromPosition(position));
+                removedPost = dashboardRecyclerViewAdapter.getPostFromPosition(position);
+                dashboardRecyclerViewAdapter.removeItem(removedPost);
+                dashboardRecyclerViewAdapter.notifyItemRemoved(position);
+                profileViewModel.deletePost(removedPost);
             }
 
             @Override
@@ -283,6 +287,21 @@ public class ProfileFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
 
+        profileViewModel.getRemovedPostResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Snackbar.make(requireView(), R.string.post_removed, BaseTransientBottomBar.LENGTH_SHORT)
+                        .setAction(R.string.cancel, v -> {
+                            //annullare la cancellazione
+                        })
+                        .show();
+            }
+            else{
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override
@@ -290,7 +309,6 @@ public class ProfileFragment extends Fragment {
         super.onDestroyView();
         profileViewModel.cleanViewModel();
     }
-
 
 
 

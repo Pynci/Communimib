@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IPostRepository;
@@ -27,6 +28,7 @@ public class ProfileViewModel extends ViewModel {
     private MutableLiveData<Result> changedReportResult;
     private MutableLiveData<Result> removedReportResult;
     private MutableLiveData<Result> cancelledReportResult;
+
     private MutableLiveData<Result> updateUserPropicResult;
     private MutableLiveData<Result> updateUserNameAndSurnameResult;
 
@@ -73,7 +75,6 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void updateUserParameters(Uri uri, String name, String surname) {
-
         //Prendo l'utente corrente
         User currentUser = getCurrentUser();
 
@@ -84,6 +85,10 @@ public class ProfileViewModel extends ViewModel {
         //Se il nome ed il cognome sono diversi li devo aggiornare
         if(!currentUser.getName().equals(name) || !currentUser.getSurname().equals(surname))
             userRepository.updateUserNameAndSurname(name, surname, result -> updateUserNameAndSurnameResult.postValue(result));
+    }
+
+    public void deletePost(Post post){
+        postRepository.deletePost(post, postDeleted -> removedPostResult.setValue(postDeleted));
     }
 
     public LiveData<Result> getAddedPostResult() {

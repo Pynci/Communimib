@@ -76,6 +76,11 @@ public class PostRepository implements IPostRepository{
     }
 
     @Override
+    public void undoDeletePost(Post post, Callback callback){
+        postRemoteDataSource.deletePost(post, callback);
+    }
+
+    @Override
     public void readCommentsByPid(String pid,
                                   Callback addedCallback,
                                   Callback changedCallback,

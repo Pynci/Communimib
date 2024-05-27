@@ -272,6 +272,34 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
                 });
     }
 
+    @Override
+    public void undoDeletePost(Post post, Callback callback){
+        databaseReference
+                .child(Constants.POST_PATH)
+                .child(post.getPid())
+                .setValue(post)
+                .addOnCompleteListener(postTask -> {
+                    if(postTask.isSuccessful()){
+                        databaseReference
+                                .child(Constants.USERSPOSTS_PATH)
+                                .child(post.getAuthor().getUid())
+                                .child(post.getPid())
+                                .setValue(true)
+                                .addOnCompleteListener(userPostTask -> {
+                                    if(userPostTask.isSuccessful()){
+                                        callback.onComplete(new Result.Success());
+                                    }
+                                    else{
+                                        callback.onComplete(new Result.Error(ErrorMapper.POST_UNDO_DELETING_ERROR));
+                                    }
+                                });
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(ErrorMapper.POST_UNDO_DELETING_ERROR));
+                    }
+                });
+    }
+
     private void removeAllQueryListeners(){
         if(!currentListeners.isEmpty() && !currentReferences.isEmpty()){
             for (int i = 0; i < currentListeners.size(); i++) {
