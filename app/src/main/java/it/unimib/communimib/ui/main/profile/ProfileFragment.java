@@ -289,13 +289,13 @@ public class ProfileFragment extends Fragment {
 
         profileViewModel.getRemovedPostResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
-                Snackbar.make(requireView(), R.string.post_removed, BaseTransientBottomBar.LENGTH_SHORT)
+                Snackbar snackbar = Snackbar.make(view, R.string.post_removed, BaseTransientBottomBar.LENGTH_SHORT)
                         .setAction(R.string.cancel, v -> {
                             if(removedPost != null){
                                 profileViewModel.undoDeletePost(removedPost);
                             }
-                        })
-                        .show();
+                        });
+                snackbar.show();
             }
             else{
                 Snackbar.make(requireView(),
@@ -308,6 +308,8 @@ public class ProfileFragment extends Fragment {
             if(result.isSuccessful()){
                 if(removedPost != null && removedPostPosition != -999){
                     dashboardRecyclerViewAdapter.addItem(removedPost, removedPostPosition);
+                    removedPostPosition = -999;
+                    removedPost = null;
                 }
             }
             else{
@@ -372,7 +374,9 @@ public class ProfileFragment extends Fragment {
         profileViewModel.getAddedPostResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Post post = ((Result.PostSuccess) result).getPost();
-                dashboardRecyclerViewAdapter.addItem(post);
+                if(!post.equals(removedPost)){
+                    dashboardRecyclerViewAdapter.addItem(post);
+                }
             } else {
                 Snackbar.make(requireView(),
                         ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),

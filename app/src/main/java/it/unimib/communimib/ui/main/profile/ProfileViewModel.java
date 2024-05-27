@@ -90,7 +90,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void deletePost(Post post){
-        postRepository.deletePost(post, postDeleted -> removedPostResult.setValue(postDeleted));
+        postRepository.deletePost(post, postDeleted -> {/* è catturato dalla lettura */});
     }
 
     public void undoDeletePost(Post post){
