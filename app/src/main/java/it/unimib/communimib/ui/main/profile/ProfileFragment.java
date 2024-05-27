@@ -287,37 +287,7 @@ public class ProfileFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
 
-        profileViewModel.getRemovedPostResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()){
-                Snackbar snackbar = Snackbar.make(view, R.string.post_removed, BaseTransientBottomBar.LENGTH_SHORT)
-                        .setAction(R.string.cancel, v -> {
-                            if(removedPost != null){
-                                profileViewModel.undoDeletePost(removedPost);
-                            }
-                        });
-                snackbar.show();
-            }
-            else{
-                Snackbar.make(requireView(),
-                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
-                        BaseTransientBottomBar.LENGTH_SHORT).show();
-            }
-        });
 
-        profileViewModel.getUndoDeletePostResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()){
-                if(removedPost != null && removedPostPosition != -999){
-                    dashboardRecyclerViewAdapter.addItem(removedPost, removedPostPosition);
-                    removedPostPosition = -999;
-                    removedPost = null;
-                }
-            }
-            else{
-                Snackbar.make(requireView(),
-                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
-                        BaseTransientBottomBar.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
@@ -389,6 +359,38 @@ public class ProfileFragment extends Fragment {
                 Post post = ((Result.PostSuccess) result).getPost();
                 dashboardRecyclerViewAdapter.editItem(post);
             } else {
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getRemovedPostResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                Snackbar snackbar = Snackbar.make(requireView(), R.string.post_removed, BaseTransientBottomBar.LENGTH_SHORT)
+                        .setAction(R.string.cancel, v -> {
+                            if(removedPost != null){
+                                profileViewModel.undoDeletePost(removedPost);
+                            }
+                        });
+                snackbar.show();
+            }
+            else{
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getUndoDeletePostResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                if(removedPost != null && removedPostPosition != -999){
+                    dashboardRecyclerViewAdapter.addItem(removedPost, removedPostPosition);
+                    removedPostPosition = -999;
+                    removedPost = null;
+                }
+            }
+            else{
                 Snackbar.make(requireView(),
                         ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
