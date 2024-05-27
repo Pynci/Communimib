@@ -44,7 +44,7 @@
             android:id="@+id/textView_building"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corners"
+            android:background="@drawable/rounded_left_corners"
             android:backgroundTint="@color/md_theme_light_secondaryContainer"
             android:paddingStart="5dp"
             android:textColor="@color/seed"

@@ -75,6 +75,7 @@
         android:layout_marginBottom="28dp"
         android:clickable="true"
         android:contentDescription="@string/button_back_to_post"
+        android:focusable="true"
         app:layout_constraintBottom_toTopOf="@+id/detailedPostItem_commentCreationContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/arrow_up" />
