@@ -66,33 +66,39 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Post post = snapshot.getValue(Post.class);
-                post.setPid(snapshot.getKey());
-                String title = post.getTitle().toLowerCase();
-                String description = post.getDescription().toLowerCase();
-                if(title.contains(keyword) || description.contains(keyword)){
-                    addedCallback.onComplete(new Result.PostSuccess(post));
+                if(post != null){
+                    post.setPid(snapshot.getKey());
+                    String title = post.getTitle().toLowerCase();
+                    String description = post.getDescription().toLowerCase();
+                    if(title.contains(keyword) || description.contains(keyword)){
+                        addedCallback.onComplete(new Result.PostSuccess(post));
+                    }
                 }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Post post = snapshot.getValue(Post.class);
-                post.setPid(snapshot.getKey());
-                String title = post.getTitle().toLowerCase();
-                String description = post.getDescription().toLowerCase();
-                if(title.contains(keyword) || description.contains(keyword)){
-                    changedCallback.onComplete(new Result.PostSuccess(post));
+                if(post != null){
+                    post.setPid(snapshot.getKey());
+                    String title = post.getTitle().toLowerCase();
+                    String description = post.getDescription().toLowerCase();
+                    if(title.contains(keyword) || description.contains(keyword)){
+                        changedCallback.onComplete(new Result.PostSuccess(post));
+                    }
                 }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Post post = snapshot.getValue(Post.class);
-                post.setPid(snapshot.getKey());
-                String title = post.getTitle().toLowerCase();
-                String description = post.getDescription().toLowerCase();
-                if(title.contains(keyword) || description.contains(keyword)){
-                    removedCallback.onComplete(new Result.PostSuccess(post));
+                if (post != null){
+                    post.setPid(snapshot.getKey());
+                    String title = post.getTitle().toLowerCase();
+                    String description = post.getDescription().toLowerCase();
+                    if(title.contains(keyword) || description.contains(keyword)){
+                        removedCallback.onComplete(new Result.PostSuccess(post));
+                    }
                 }
             }
 
@@ -121,33 +127,39 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Post post = snapshot.getValue(Post.class);
-                post.setPid(snapshot.getKey());
-                String title = post.getTitle().toLowerCase();
-                String description = post.getDescription().toLowerCase();
-                if(title.contains(keyword) || description.contains(keyword)){
-                    addedCallback.onComplete(new Result.PostSuccess(post));
+                if(post != null){
+                    post.setPid(snapshot.getKey());
+                    String title = post.getTitle().toLowerCase();
+                    String description = post.getDescription().toLowerCase();
+                    if(title.contains(keyword) || description.contains(keyword)){
+                        addedCallback.onComplete(new Result.PostSuccess(post));
+                    }
                 }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Post post = snapshot.getValue(Post.class);
-                post.setPid(snapshot.getKey());
-                String title = post.getTitle().toLowerCase();
-                String description = post.getDescription().toLowerCase();
-                if(title.contains(keyword) || description.contains(keyword)){
-                    changedCallback.onComplete(new Result.PostSuccess(post));
+                if(post != null){
+                    post.setPid(snapshot.getKey());
+                    String title = post.getTitle().toLowerCase();
+                    String description = post.getDescription().toLowerCase();
+                    if(title.contains(keyword) || description.contains(keyword)){
+                        changedCallback.onComplete(new Result.PostSuccess(post));
+                    }
                 }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Post post = snapshot.getValue(Post.class);
-                post.setPid(snapshot.getKey());
-                String title = post.getTitle().toLowerCase();
-                String description = post.getDescription().toLowerCase();
-                if(title.contains(keyword) || description.contains(keyword)){
-                    removedCallback.onComplete(new Result.PostSuccess(post));
+                if(post != null){
+                    post.setPid(snapshot.getKey());
+                    String title = post.getTitle().toLowerCase();
+                    String description = post.getDescription().toLowerCase();
+                    if(title.contains(keyword) || description.contains(keyword)){
+                        removedCallback.onComplete(new Result.PostSuccess(post));
+                    }
                 }
             }
 
@@ -306,21 +318,27 @@ public class PostRemoteDataSource implements IPostRemoteDataSource{
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Post post = snapshot.getValue(Post.class);
-                post.setPid(snapshot.getKey());
+                if(post != null){
+                    post.setPid(snapshot.getKey());
+                }
                 addedCallback.onComplete(new Result.PostSuccess(post));
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Post post = snapshot.getValue(Post.class);
-                post.setPid(snapshot.getKey());
+                if(post != null){
+                    post.setPid(snapshot.getKey());
+                }
                 changedCallback.onComplete(new Result.PostSuccess(post));
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Post post = snapshot.getValue(Post.class);
-                post.setPid(snapshot.getKey());
+                if(post != null){
+                    post.setPid(snapshot.getKey());
+                }
                 removedCallback.onComplete(new Result.PostSuccess(post));
             }
 

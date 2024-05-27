@@ -36,7 +36,8 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Comment comment = snapshot.getValue(Comment.class);
-                        comment.setCid(snapshot.getKey());
+                        if (comment != null)
+                            comment.setCid(snapshot.getKey());
 
                         addedCallback.onComplete(new Result.CommentSuccess(comment));
                     }
@@ -44,7 +45,8 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Comment comment = snapshot.getValue(Comment.class);
-                        comment.setCid(snapshot.getKey());
+                        if (comment != null)
+                            comment.setCid(snapshot.getKey());
 
                         changedCallback.onComplete(new Result.CommentSuccess(comment));
                     }
@@ -52,7 +54,8 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                         Comment comment = snapshot.getValue(Comment.class);
-                        comment.setCid(snapshot.getKey());
+                        if (comment != null)
+                            comment.setCid(snapshot.getKey());
 
                         addedCallback.onComplete(new Result.CommentSuccess(comment));
                     }
@@ -111,7 +114,8 @@ public class CommentRemoteDataSource implements ICommentRemoteDataSource {
                 .addOnCompleteListener(getTask -> {
                     if(getTask.isSuccessful()){
                         Integer commentsCounter = getTask.getResult().getValue(Integer.class);
-                        commentsCounter++;
+                        if(commentsCounter != null)
+                            commentsCounter++;
                         databaseReference
                                 .child(Constants.POST_PATH)
                                 .child(pid)
