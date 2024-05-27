@@ -29,6 +29,7 @@ import it.unimib.communimib.model.Comment;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
+import it.unimib.communimib.ui.main.dashboard.PostViewHolder;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.TopbarHelper;
@@ -78,20 +79,24 @@ public class DetailedPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //gestione dei commenti
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        CommentsAdapter commentsAdapter = new CommentsAdapter(post, getContext(), new OnPostClickListener() {
+        PostViewHolder viewHolder = new PostViewHolder(view, requireContext(), new OnPostClickListener() {
             @Override
             public void onItemClick(Post post) {
-                // non deve fare niente
+
             }
 
             @Override
             public void onImageSliderClick(List<String> pictures) {
-                PostPicturesFragmentDialog imageDialog = new PostPicturesFragmentDialog(post.getPictures());
-                imageDialog.show(getParentFragmentManager(), "Image Dialog");
+                PostPicturesFragmentDialog dialog = new PostPicturesFragmentDialog(pictures);
+                dialog.show(getParentFragmentManager(), "Image Dialog");
             }
-        });
+        }, false);
+
+        viewHolder.bind(post);
+
+        //gestione dei commenti
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        CommentsAdapter commentsAdapter = new CommentsAdapter(getContext(), requireView());
         binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);
         binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
 

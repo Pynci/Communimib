@@ -3,26 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:selectableItemBackground">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/detailedPostItem_commentCreationContainer">
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/detailedPostItem_commentCreationContainer"
+        android:background="?android:selectableItemBackground">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/postItem_commentIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="@+id/postItem_description"
-                app:layout_constraintTop_toBottomOf="@+id/postItem_linkIcon"
-                app:srcCompat="@drawable/comment_icon" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/postItem_propicCardview"
@@ -177,6 +171,15 @@
                 app:layout_constraintTop_toTopOf="@+id/postItem_surname"
                 app:srcCompat="@drawable/unimib_employee" />
 
+            <ImageView
+                android:id="@+id/postItem_commentIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/postItem_description"
+                app:layout_constraintTop_toBottomOf="@+id/postItem_linkIcon"
+                app:srcCompat="@drawable/comment_icon" />
+
             <View
                 android:id="@+id/divider"
                 android:layout_width="409dp"
@@ -203,30 +206,30 @@
                 android:id="@+id/comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/comments"
                 android:textSize="20sp"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="16dp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/divider"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detailedPostItem_commentsRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
                 android:layout_marginTop="8dp"
                 android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/comments" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
