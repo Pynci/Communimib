@@ -233,12 +233,14 @@ public class ProfileFragment extends Fragment {
         initReportsListeners();
 
         binding.profileScrollUpButton.setVisibility(View.GONE);
+
         binding.profileScrollUpButton.setOnClickListener(r -> {
             binding.profileNestedScrollView.smoothScrollTo(0,1, 800);
             if(isScrollUpButtonVisible && !isAnimating)
                 binding.profileScrollUpButton.startAnimation(animationSlideRight);
         });
 
+        //listener sullo scroll della nested scroll view
         binding.profileNestedScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
             int firstItemVisible = binding.profileNestedScrollView.getScrollY();
             if(firstItemVisible > 400 && !isScrollUpButtonVisible && !isAnimating){

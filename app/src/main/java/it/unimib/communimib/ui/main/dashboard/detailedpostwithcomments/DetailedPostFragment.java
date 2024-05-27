@@ -143,31 +143,19 @@ public class DetailedPostFragment extends Fragment {
 
         binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
         binding.detailedPostItemFloatingActionButtonGoUp.setOnClickListener(v -> {
-            // Faccio tornare la RecyclerView al primo elemento
-            binding.detailedPostItemCommentsRecyclerView.smoothScrollToPosition(0);
-
-            // Avvio l'animazione di uscita se il pulsante è visibile e non è in corso un'animazione
-            if (isScrollButtonVisible && !isAnimating) {
+            // gestione click sul tasto scroll up
+            binding.detailedPostNestedScrollView.smoothScrollTo(0,1, 800);
+            if(isScrollButtonVisible && !isAnimating)
                 binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
-            }
         });
 
-        RecyclerView recyclerView = binding.detailedPostItemCommentsRecyclerView;
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                assert layoutManager != null;
-                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-                if (firstVisibleItemPosition > 0 && !isScrollButtonVisible && !isAnimating) {
-                    // Avvio l'animazione di entrata
-                    binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideLeft);
-                } else if (firstVisibleItemPosition == 0 && isScrollButtonVisible && !isAnimating) {
-                    // Avvio l'animazione di uscita
-                    binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
-                }
+        //listener sullo scroll della nested scroll view
+        binding.detailedPostNestedScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            int firstItemVisible = binding.detailedPostNestedScrollView.getScrollY();
+            if(firstItemVisible > 400 && !isScrollButtonVisible && !isAnimating){
+                binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideLeft);
+            } else if(firstItemVisible < 400 && isScrollButtonVisible && !isAnimating){
+                binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
             }
         });
 
