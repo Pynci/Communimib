@@ -51,7 +51,7 @@ public class DetailedPostFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TopbarHelper.handleTopbar((AppCompatActivity) getActivity());
+        TopbarHelper.handleTopbar((AppCompatActivity) this.requireActivity());
         hideBottomNavigationBar();
         try {
             DetailedPostFragmentArgs args = DetailedPostFragmentArgs.fromBundle(getArguments());
@@ -154,6 +154,7 @@ public class DetailedPostFragment extends Fragment {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                assert layoutManager != null;
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
                 if (firstVisibleItemPosition > 0 && !isScrollButtonVisible && !isAnimating) {
                     // Avvio l'animazione di entrata
@@ -211,11 +212,9 @@ public class DetailedPostFragment extends Fragment {
         });
 
         //Gestione dell'interruzione durante la lettura
-        detailedPostViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result -> {
-            Snackbar.make(requireView(),
-                    ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
-                    BaseTransientBottomBar.LENGTH_SHORT).show();
-        });
+        detailedPostViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result -> Snackbar.make(requireView(),
+                ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                BaseTransientBottomBar.LENGTH_SHORT).show());
 
         //Gestione della creazione di un nuovo commento
         binding.detailedPostItemSend.setOnClickListener(v -> {

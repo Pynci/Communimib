@@ -11,8 +11,8 @@ import it.unimib.communimib.model.User;
 
 public class PostRepository implements IPostRepository{
 
-    private IPostRemoteDataSource postRemoteDataSource;
-    private ICommentRemoteDataSource commentRemoteDataSource;
+    private final IPostRemoteDataSource postRemoteDataSource;
+    private final ICommentRemoteDataSource commentRemoteDataSource;
 
     public PostRepository(IPostRemoteDataSource postRemoteDataSource, ICommentRemoteDataSource commentRemoteDataSource) {
         this.postRemoteDataSource = postRemoteDataSource;

@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.communimib.Callback;
-import it.unimib.communimib.database.LocalDatabase;
-import it.unimib.communimib.database.UserDAO;
 import it.unimib.communimib.model.Result;
-import it.unimib.communimib.model.User;
 import it.unimib.communimib.util.ErrorMapper;
 
 public class UserLocalDataSource implements IUserLocalDataSource{

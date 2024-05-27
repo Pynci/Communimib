@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import java.util.Objects;
+
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.ui.main.MainActivity;
@@ -53,7 +55,7 @@ public class AuthActivity extends AppCompatActivity {
         });
 
         //Questo serve per dire quando deve avviare un'animazione di uscita
-        splashScreen.setKeepOnScreenCondition(() -> !loadingScreenViewModel.getAreAllDataAvaible().getValue() );
+        splashScreen.setKeepOnScreenCondition(() -> Boolean.FALSE.equals(loadingScreenViewModel.getAreAllDataAvaible().getValue()));
 
         //Questo serve per l'animazione di uscita
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -86,13 +88,13 @@ public class AuthActivity extends AppCompatActivity {
                         boolean resultSession;
                         boolean resultEmail;
                         try {
-                            resultSession = ((Result.BooleanSuccess) loadingScreenViewModel.getSessionResult().getValue()).getBoolean();
+                            resultSession = ((Result.BooleanSuccess) Objects.requireNonNull(loadingScreenViewModel.getSessionResult().getValue())).getBoolean();
                         }catch (NullPointerException exception) {
                             resultSession = false;
                         }
 
                         try{
-                            resultEmail = ((Result.BooleanSuccess) loadingScreenViewModel.getEmailCheckResult().getValue()).getBoolean();
+                            resultEmail = ((Result.BooleanSuccess) Objects.requireNonNull(loadingScreenViewModel.getEmailCheckResult().getValue())).getBoolean();
                         }
                         catch (NullPointerException exception) {
                             resultEmail = false;
@@ -139,6 +141,7 @@ public class AuthActivity extends AppCompatActivity {
                     NavHostFragment navHostFragment = (NavHostFragment)
                             getSupportFragmentManager().findFragmentById(R.id.activityAuth_navHostFragment);
 
+                    assert navHostFragment != null;
                     NavController navController = navHostFragment.getNavController();
 
                     navController.navigate(R.id.emailVerificationFragment);
@@ -157,7 +160,7 @@ public class AuthActivity extends AppCompatActivity {
             loadingScreenViewModel.setAreAllDataAvaible();
         }
         catch (InterruptedException exception) {
-            Log.d(TAG, exception.getMessage());
+            Log.d(TAG, Objects.requireNonNull(exception.getMessage()));
         }
     }
 }

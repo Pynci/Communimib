@@ -6,12 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import it.unimib.communimib.ui.auth.loading.LoadingScreenViewModel;
 import it.unimib.communimib.util.ServiceLocator;
 
 public class LoadingScreenViewModelFactory implements ViewModelProvider.Factory {
 
-    private Context context;
+    private final Context context;
 
     public LoadingScreenViewModelFactory(Context context) {
         this.context = context;

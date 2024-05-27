@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel;
 
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IUserRepository;
-import it.unimib.communimib.util.ErrorMapper;
-import it.unimib.communimib.util.Validation;
 
 public class SigninViewModel extends ViewModel {
 
