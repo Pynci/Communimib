@@ -66,6 +66,7 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private CategoriesRecyclerViewAdapter adapter;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
+    ItemTouchHelper postItemTouchHelper;
     private ReportsHorizontalRecyclerViewAdapter reportsRecyclerViewAdapter;
     private ProfileViewModel profileViewModel;
     private boolean isScrollUpButtonVisible = false;
@@ -142,10 +143,12 @@ public class ProfileFragment extends Fragment {
             adapter.setCurrentSelection(category);
             if (category.equals("I miei post")){
                 binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
+                postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
                 dashboardRecyclerViewAdapter.clearPostList();
                 profileViewModel.readPostsByUser();
             } else {
                 binding.profileRecyclerView.setAdapter(reportsRecyclerViewAdapter);
+                postItemTouchHelper.attachToRecyclerView(null); // disabilita swipe se sono visualizzate le segnalazioni
                 reportsRecyclerViewAdapter.clearReportList();
                 profileViewModel.readReportsByUser();
             }
@@ -251,7 +254,7 @@ public class ProfileFragment extends Fragment {
         });
 
         //Gestione swipe dell'elemento della recycler view a destra
-        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper.SimpleCallback postITHSimpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -284,8 +287,8 @@ public class ProfileFragment extends Fragment {
             }
         };
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
+        postItemTouchHelper = new ItemTouchHelper(postITHSimpleCallback);
+        postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
 
 
 
