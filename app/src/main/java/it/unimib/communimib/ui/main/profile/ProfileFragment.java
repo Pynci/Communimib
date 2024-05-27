@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -49,6 +50,7 @@ import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
+import it.unimib.communimib.ui.auth.loading.AuthActivity;
 import it.unimib.communimib.ui.main.MainActivity;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
@@ -133,6 +135,14 @@ public class ProfileFragment extends Fragment {
         //Osservazione del risultato di modifica profilo
         profileViewModel.getUpdateUserPropicResult().observe(getViewLifecycleOwner(), result ->
                 manageUpdateUserPropicResult(view, result));
+
+        //Gestione del pulsqnte di Logout
+        binding.fragmentProfileImageButtonLogout.setOnClickListener(v -> {
+            profileViewModel.logout();
+        });
+
+        //Osservazione risultato logout
+        profileViewModel.getLogoutResult().observe(getViewLifecycleOwner(), result -> manageUserLogout(view, result));
 
         //Gestione dei contenuti della schermata (recyler view)
         String[] options = getResources().getStringArray(R.array.profile_options);
@@ -294,6 +304,20 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    private void manageUserLogout(@NonNull View view, Result result) {
+        if (result.isSuccessful()) {
+            Intent intent = new Intent(getContext(), AuthActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
+        else{
+            Snackbar.make(
+                    view,
+                    ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                    BaseTransientBottomBar.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -426,7 +450,7 @@ public class ProfileFragment extends Fragment {
         if (result.isSuccessful()) {
             Snackbar.make(
                     view,
-                    "L'immagine profilo è stata aggiornata correttamente",
+                    "L'immagine profilo è stata aggiornata correttamente", //TODO: stringa hardcodata
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         }
         else{

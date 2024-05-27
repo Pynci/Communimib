@@ -33,6 +33,8 @@ public class ProfileViewModel extends ViewModel {
     private MutableLiveData<Result> updateUserPropicResult;
     private MutableLiveData<Result> updateUserNameAndSurnameResult;
 
+    private MutableLiveData<Result> logoutResult;
+
 
     public ProfileViewModel(IUserRepository userRepository, IPostRepository postRepository, IReportRepository repository) {
         this.userRepository = userRepository;
@@ -52,6 +54,8 @@ public class ProfileViewModel extends ViewModel {
 
         updateUserPropicResult = new MutableLiveData<>();
         updateUserNameAndSurnameResult = new MutableLiveData<>();
+
+        logoutResult = new MutableLiveData<>();
     }
 
     public User getCurrentUser(){
@@ -97,6 +101,10 @@ public class ProfileViewModel extends ViewModel {
         postRepository.undoDeletePost(post, undoDeletePost -> undoDeletePostResult.setValue(undoDeletePost));
     }
 
+    public void logout() {
+        userRepository.signOut(logoutResult::postValue);
+    }
+
     public LiveData<Result> getAddedPostResult() {
         return addedPostResult;
     }
@@ -139,6 +147,10 @@ public class ProfileViewModel extends ViewModel {
 
     public LiveData<Result> getUpdateUserNameAndSurnameResult() {
         return updateUserNameAndSurnameResult;
+    }
+
+    public LiveData<Result> getLogoutResult() {
+        return logoutResult;
     }
 
     public void cleanViewModel(){
