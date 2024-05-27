@@ -77,7 +77,7 @@ public class PostRepository implements IPostRepository{
 
     @Override
     public void undoDeletePost(Post post, Callback callback){
-        postRemoteDataSource.deletePost(post, callback);
+        postRemoteDataSource.undoDeletePost(post, callback);
     }
 
     @Override

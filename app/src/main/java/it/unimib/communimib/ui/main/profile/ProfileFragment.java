@@ -71,6 +71,7 @@ public class ProfileFragment extends Fragment {
     private boolean isScrollUpButtonVisible = false;
     private boolean isAnimating = false;
     private Post removedPost;
+    private int removedPostPosition = -999;
 
     public ProfileFragment() {
         //Costruttore volutamente vuoto
@@ -259,10 +260,9 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-                int position = viewHolder.getBindingAdapterPosition();
-                removedPost = dashboardRecyclerViewAdapter.getPostFromPosition(position);
+                removedPostPosition = viewHolder.getBindingAdapterPosition();
+                removedPost = dashboardRecyclerViewAdapter.getPostFromPosition(removedPostPosition);
                 dashboardRecyclerViewAdapter.removeItem(removedPost);
-                dashboardRecyclerViewAdapter.notifyItemRemoved(position);
                 profileViewModel.deletePost(removedPost);
             }
 
@@ -291,9 +291,24 @@ public class ProfileFragment extends Fragment {
             if(result.isSuccessful()){
                 Snackbar.make(requireView(), R.string.post_removed, BaseTransientBottomBar.LENGTH_SHORT)
                         .setAction(R.string.cancel, v -> {
-                            //annullare la cancellazione
+                            if(removedPost != null){
+                                profileViewModel.undoDeletePost(removedPost);
+                            }
                         })
                         .show();
+            }
+            else{
+                Snackbar.make(requireView(),
+                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                        BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
+
+        profileViewModel.getUndoDeletePostResult().observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                if(removedPost != null && removedPostPosition != -999){
+                    dashboardRecyclerViewAdapter.addItem(removedPost, removedPostPosition);
+                }
             }
             else{
                 Snackbar.make(requireView(),
@@ -376,17 +391,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getRemovedPostResult().observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessful()){
-                Post post = ((Result.PostSuccess) result).getPost();
-                dashboardRecyclerViewAdapter.removeItem(post);
-            } else {
-                Snackbar.make(requireView(),
-                        ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
-                        BaseTransientBottomBar.LENGTH_SHORT).show();
-            }
-        });
-
         profileViewModel.getCancelledPostResult().observe(getViewLifecycleOwner(), result ->
                 Snackbar.make(requireView(),
                 ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
@@ -397,7 +401,7 @@ public class ProfileFragment extends Fragment {
         if (result.isSuccessful()) {
             Snackbar.make(
                     view,
-                    "Il nome e cognome inseriti sono stati registrati correttamente",
+                    "Il nome e cognome inseriti sono stati registrati correttamente", //TODO: stringa hardcodata
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         }
         else{
@@ -498,7 +502,7 @@ public class ProfileFragment extends Fragment {
             rollbackNameAndSurname();
             Snackbar.make(
                     view,
-                    "I nuovi dati inseriti non sono validi. Le modifiche sono annullate",
+                    "I nuovi dati inseriti non sono validi. Le modifiche sono annullate", //TODO: stringa hardcodata
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         }
 

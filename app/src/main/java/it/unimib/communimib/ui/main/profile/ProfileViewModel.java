@@ -22,6 +22,7 @@ public class ProfileViewModel extends ViewModel {
     private MutableLiveData<Result> addedPostResult;
     private MutableLiveData<Result> changedPostResult;
     private MutableLiveData<Result> removedPostResult;
+    private MutableLiveData<Result> undoDeletePostResult;
     private MutableLiveData<Result> cancelledPostResult;
 
     private MutableLiveData<Result> addedReportResult;
@@ -41,6 +42,7 @@ public class ProfileViewModel extends ViewModel {
         addedPostResult = new MutableLiveData<>();
         changedPostResult = new MutableLiveData<>();
         removedPostResult = new MutableLiveData<>();
+        undoDeletePostResult = new MutableLiveData<>();
         cancelledPostResult = new MutableLiveData<>();
 
         addedReportResult = new MutableLiveData<>();
@@ -91,6 +93,10 @@ public class ProfileViewModel extends ViewModel {
         postRepository.deletePost(post, postDeleted -> removedPostResult.setValue(postDeleted));
     }
 
+    public void undoDeletePost(Post post){
+        postRepository.undoDeletePost(post, undoDeletePost -> undoDeletePostResult.setValue(undoDeletePost));
+    }
+
     public LiveData<Result> getAddedPostResult() {
         return addedPostResult;
     }
@@ -101,6 +107,10 @@ public class ProfileViewModel extends ViewModel {
 
     public LiveData<Result> getRemovedPostResult() {
         return removedPostResult;
+    }
+
+    public LiveData<Result> getUndoDeletePostResult(){
+        return undoDeletePostResult;
     }
 
     public LiveData<Result> getCancelledPostResult() {
@@ -135,12 +145,14 @@ public class ProfileViewModel extends ViewModel {
         addedPostResult = new MutableLiveData<>();
         changedPostResult = new MutableLiveData<>();
         removedPostResult = new MutableLiveData<>();
+        undoDeletePostResult = new MutableLiveData<>();
         cancelledPostResult = new MutableLiveData<>();
 
         addedReportResult = new MutableLiveData<>();
         changedReportResult = new MutableLiveData<>();
         removedReportResult = new MutableLiveData<>();
         cancelledReportResult = new MutableLiveData<>();
+
         updateUserPropicResult = new MutableLiveData<>();
         updateUserNameAndSurnameResult = new MutableLiveData<>();
     }
