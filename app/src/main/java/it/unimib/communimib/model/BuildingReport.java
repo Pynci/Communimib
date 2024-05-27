@@ -4,8 +4,8 @@ import it.unimib.communimib.ui.main.reports.ReportsHorizontalRecyclerViewAdapter
 
 public class BuildingReport {
 
-    private String buildingName;
-    private ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter;
+    private final String buildingName;
+    private final ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter;
 
     public BuildingReport(String buildingName, ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter) {
         this.buildingName = buildingName;
