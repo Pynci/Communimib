@@ -104,7 +104,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         private final CardView card;
         private final TextView title;
         private final TextView description;
-        private final TextView buiding;
+        private final TextView category;
         private final ImageView propic;
         private final TextView name;
         private final TextView surname;
@@ -119,7 +119,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
 
             title = itemView.findViewById(R.id.reportListItem_title);
             description = itemView.findViewById(R.id.reportListItem_description);
-            buiding = itemView.findViewById(R.id.reportListItem_building);
+            category = itemView.findViewById(R.id.reportListItem_category);
             propic = itemView.findViewById(R.id.reportListItem_imageView);
             name = itemView.findViewById(R.id.reportListItem_user_name);
             surname = itemView.findViewById(R.id.reportListItem_user_surname);
@@ -137,7 +137,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
         public void bind(Report report){
             title.setText(report.getTitle());
             description.setText(report.getDescription());
-            buiding.setText(report.getBuilding());
+            category.setText(report.getCategory());
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
             BuildingsImagesHelper.setBuildingImage(buildingImage, report.getBuilding());

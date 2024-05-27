@@ -128,7 +128,7 @@
                 tools:text="breve descrizione per descrivere più descrittivamente la segnalazione" />
 
             <TextView
-                android:id="@+id/reportListItem_building"
+                android:id="@+id/reportListItem_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

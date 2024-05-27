@@ -55,7 +55,7 @@
                     tools:text="@string/report_title" />
 
                 <TextView
-                    android:id="@+id/reportListItem_building"
+                    android:id="@+id/reportListItem_category"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corners"
