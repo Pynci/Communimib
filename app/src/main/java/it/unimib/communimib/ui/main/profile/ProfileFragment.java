@@ -210,7 +210,7 @@ public class ProfileFragment extends Fragment {
 
         }, getContext());
 
-        boolean isUnimibEmployee = profileViewModel.getCurrentUser().isUnimibEmployee();
+        boolean isUnimibEmployee = displayedUser.isUnimibEmployee();
         reportsRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(isUnimibEmployee, new ReportsHorizontalRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onCloseReportClick(Report report) {
