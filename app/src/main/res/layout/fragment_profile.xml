@@ -6,7 +6,7 @@
     android:id="@+id/fragmentProfile_constraintLayout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.profile.ProfileFragment">
+    tools:context=".ui.main.profile.CurrentUserProfileFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/profile_scrollUpButton"
@@ -151,9 +151,9 @@
                 android:id="@+id/profileDoubleItem_recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="40dp"
+                android:layout_marginEnd="24dp"
                 app:layout_constraintEnd_toEndOf="@+id/fragmentProfile_materialCardView_mainCardProfile"
                 app:layout_constraintStart_toStartOf="@+id/fragmentProfile_materialCardView_mainCardProfile"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_materialCardView_mainCardProfile" />

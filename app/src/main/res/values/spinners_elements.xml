@@ -44,7 +44,7 @@
     </array>
 
     <array name="profile_options">
-        <item> Post </item>
-        <item> Segnalazioni </item>
+        <item> Post pubblicati </item>
+        <item> Segnalazioni aperte </item>
     </array>
 </resources>

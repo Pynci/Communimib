@@ -13,7 +13,7 @@ import it.unimib.communimib.repository.IPostRepository;
 import it.unimib.communimib.repository.IReportRepository;
 import it.unimib.communimib.repository.IUserRepository;
 
-public class ProfileViewModel extends ViewModel {
+public class CurrentUserProfileViewModel extends ViewModel {
 
     private final IUserRepository userRepository;
     private final IPostRepository postRepository;
@@ -36,7 +36,7 @@ public class ProfileViewModel extends ViewModel {
     private MutableLiveData<Result> logoutResult;
 
 
-    public ProfileViewModel(IUserRepository userRepository, IPostRepository postRepository, IReportRepository repository) {
+    public CurrentUserProfileViewModel(IUserRepository userRepository, IPostRepository postRepository, IReportRepository repository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.reportRepository = repository;
@@ -62,16 +62,16 @@ public class ProfileViewModel extends ViewModel {
         return userRepository.getCurrentUser();
     }
 
-    public void readPostsByUser(String uid){
-        postRepository.readPostsByUid(uid,
+    public void readPostsByUser(){
+        postRepository.readPostsByUid(getCurrentUser().getUid(),
                 postAdded -> addedPostResult.setValue(postAdded),
                 postChanged -> changedPostResult.setValue(postChanged),
                 postRemoved -> removedPostResult.setValue(postRemoved),
                 postCancelled -> cancelledPostResult.setValue(postCancelled));
     }
 
-    public void readReportsByUser(String uid){
-        reportRepository.readReportsByUid(uid,
+    public void readReportsByUser(){
+        reportRepository.readReportsByUid(getCurrentUser().getUid(),
                 reportAdded -> addedReportResult.setValue(reportAdded),
                 reportChanged -> changedReportResult.setValue(reportChanged),
                 reportRemoved -> removedReportResult.setValue(reportRemoved),

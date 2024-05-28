@@ -97,8 +97,8 @@ public class DetailedPostFragment extends Fragment {
 
             @Override
             public void onProfileClick(User postAuthor) {
-                DetailedPostFragmentDirections.ActionDetailedPostFragmentToProfileFragment action =
-                        DetailedPostFragmentDirections.actionDetailedPostFragmentToProfileFragment(postAuthor);
+                DetailedPostFragmentDirections.ActionDetailedPostFragmentToOtherUserProfileFragment action =
+                        DetailedPostFragmentDirections.actionDetailedPostFragmentToOtherUserProfileFragment(postAuthor);
                 Navigation.findNavController(view).navigate(action);
             }
 

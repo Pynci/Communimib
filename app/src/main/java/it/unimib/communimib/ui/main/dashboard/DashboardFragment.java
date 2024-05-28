@@ -117,8 +117,8 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onProfileClick(User postAuthor) {
-                DashboardFragmentDirections.ActionDashboardFragmentToProfileFragment action =
-                        DashboardFragmentDirections.actionDashboardFragmentToProfileFragment(postAuthor);
+                DashboardFragmentDirections.ActionDashboardFragmentToOtherUserProfileFragment action =
+                        DashboardFragmentDirections.actionDashboardFragmentToOtherUserProfileFragment(postAuthor);
                 Navigation.findNavController(view).navigate(action);
             }
 

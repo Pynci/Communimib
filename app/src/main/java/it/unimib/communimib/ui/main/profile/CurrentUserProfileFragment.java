@@ -15,7 +15,6 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -57,13 +56,11 @@ import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.ui.main.reports.ReportsHorizontalRecyclerViewAdapter;
 import it.unimib.communimib.util.ErrorMapper;
-import it.unimib.communimib.util.TopbarHelper;
 import it.unimib.communimib.util.Validation;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class ProfileFragment extends Fragment {
+public class CurrentUserProfileFragment extends Fragment {
 
-    User displayedUser;
     private boolean isInEditMode = false;
     private Uri selectedImage;
     private FragmentProfileBinding binding;
@@ -71,13 +68,13 @@ public class ProfileFragment extends Fragment {
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
     ItemTouchHelper postItemTouchHelper;
     private ReportsHorizontalRecyclerViewAdapter reportsRecyclerViewAdapter;
-    private ProfileViewModel profileViewModel;
+    private CurrentUserProfileViewModel currentUserProfileViewModel;
     private boolean isScrollUpButtonVisible = false;
     private boolean isAnimating = false;
     private Post removedPost;
     private int removedPostPosition = -999;
 
-    public ProfileFragment() {
+    public CurrentUserProfileFragment() {
         //Costruttore volutamente vuoto
     }
 
@@ -85,19 +82,10 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        profileViewModel = new ViewModelProvider(this,
-                new ProfileViewModelFactory(getContext()))
-                .get(ProfileViewModel.class);
+        currentUserProfileViewModel = new ViewModelProvider(this,
+                new CurrentUserProfileViewModelFactory(getContext()))
+                .get(CurrentUserProfileViewModel.class);
 
-
-        TopbarHelper.handleTopbar((AppCompatActivity) getActivity());
-        try {
-            ProfileFragmentArgs args = ProfileFragmentArgs.fromBundle(getArguments());
-            this.displayedUser = args.getUser();
-        }
-        catch (Exception e) {
-            this.displayedUser = profileViewModel.getCurrentUser();
-        }
     }
 
     @Override
@@ -113,17 +101,11 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Rimozione dei pulsanti edit e logout se l'utente visualizzato non è quello corrente
-        if(!displayedUser.equals(profileViewModel.getCurrentUser())){
-            binding.fragmentProfileImageButtonLogout.setVisibility(View.GONE);
-            binding.fragmentProfileImageButtonEditProfile.setVisibility(View.GONE);
-        }
-
         //Gestione del focus quando si preme da qualche altra parte
         binding.profileNestedScrollView.setOnTouchListener(this::onClickMainLayoutManagement);
 
         //Gestione iniziale dei componenti della card
-        initPropicCardComponents(profileViewModel.getCurrentUser());
+        initPropicCardComponents(currentUserProfileViewModel.getCurrentUser());
 
         //Gestione del pulsante di modifica del profilo
         binding.fragmentProfileImageButtonEditProfile.setOnClickListener(v -> onImageButtonClickManagement(view));
@@ -146,20 +128,20 @@ public class ProfileFragment extends Fragment {
         });
 
         //Osservazione del risultato di modifica nome e cognome
-        profileViewModel.getUpdateUserNameAndSurnameResult().observe(getViewLifecycleOwner(), result ->
+        currentUserProfileViewModel.getUpdateUserNameAndSurnameResult().observe(getViewLifecycleOwner(), result ->
                 manageUpdateUserNameAndSurnameResult(view, result));
 
         //Osservazione del risultato di modifica profilo
-        profileViewModel.getUpdateUserPropicResult().observe(getViewLifecycleOwner(), result ->
+        currentUserProfileViewModel.getUpdateUserPropicResult().observe(getViewLifecycleOwner(), result ->
                 manageUpdateUserPropicResult(view, result));
 
         //Gestione del pulsqnte di Logout
         binding.fragmentProfileImageButtonLogout.setOnClickListener(v -> {
-            profileViewModel.logout();
+            currentUserProfileViewModel.logout();
         });
 
         //Osservazione risultato logout
-        profileViewModel.getLogoutResult().observe(getViewLifecycleOwner(), result -> manageUserLogout(view, result));
+        currentUserProfileViewModel.getLogoutResult().observe(getViewLifecycleOwner(), result -> manageUserLogout(view, result));
 
         //Gestione dei contenuti della schermata (recyler view)
         String[] options = getResources().getStringArray(R.array.profile_options);
@@ -168,20 +150,16 @@ public class ProfileFragment extends Fragment {
         RecyclerView.LayoutManager horizontalLayoutManager = new CustomLinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         adapter = new CategoriesRecyclerViewAdapter(optionsList, optionsList.get(0), category -> {
             adapter.setCurrentSelection(category);
-            if (category.equals("Post")){
+            if (category.equals("Post pubblicati")){
                 binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
-                if(displayedUser.equals(profileViewModel.getCurrentUser())){
-                    postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
-                }
+                postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
                 dashboardRecyclerViewAdapter.clearPostList();
-                profileViewModel.readPostsByUser(displayedUser.getUid());
+                currentUserProfileViewModel.readPostsByUser();
             } else {
                 binding.profileRecyclerView.setAdapter(reportsRecyclerViewAdapter);
-                if(displayedUser.equals(profileViewModel.getCurrentUser())){
-                    postItemTouchHelper.attachToRecyclerView(null); // disabilita swipe se sono visualizzate le segnalazioni
-                }
+                postItemTouchHelper.attachToRecyclerView(null); // disabilita swipe se sono visualizzate le segnalazioni
                 reportsRecyclerViewAdapter.clearReportList();
-                profileViewModel.readReportsByUser(displayedUser.getUid());
+                currentUserProfileViewModel.readReportsByUser();
             }
         });
 
@@ -191,8 +169,8 @@ public class ProfileFragment extends Fragment {
         dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new OnPostClickListener() {
             @Override
             public void onItemClick(Post post) {
-                ProfileFragmentDirections.ActionProfileFragmentToDetailedPostFragment action =
-                        ProfileFragmentDirections.actionProfileFragmentToDetailedPostFragment(post);
+                CurrentUserProfileFragmentDirections.ActionProfileFragmentToDetailedPostFragment action =
+                        CurrentUserProfileFragmentDirections.actionProfileFragmentToDetailedPostFragment(post);
 
                 Navigation.findNavController(view).navigate(action);
             }
@@ -210,7 +188,7 @@ public class ProfileFragment extends Fragment {
 
         }, getContext());
 
-        boolean isUnimibEmployee = displayedUser.isUnimibEmployee();
+        boolean isUnimibEmployee = currentUserProfileViewModel.getCurrentUser().isUnimibEmployee();
         reportsRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(isUnimibEmployee, new ReportsHorizontalRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onCloseReportClick(Report report) {
@@ -264,13 +242,13 @@ public class ProfileFragment extends Fragment {
         });
 
         dashboardRecyclerViewAdapter.clearPostList();
-        profileViewModel.cleanViewModel();
+        currentUserProfileViewModel.cleanViewModel();
 
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         binding.profileRecyclerView.setLayoutManager(verticalLayoutManager);
         binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
 
-        profileViewModel.readPostsByUser(displayedUser.getUid());
+        currentUserProfileViewModel.readPostsByUser();
         initPostsListeners();
         initReportsListeners();
 
@@ -303,7 +281,7 @@ public class ProfileFragment extends Fragment {
                 removedPostPosition = viewHolder.getBindingAdapterPosition();
                 removedPost = dashboardRecyclerViewAdapter.getPostFromPosition(removedPostPosition);
                 dashboardRecyclerViewAdapter.removeItem(removedPost);
-                profileViewModel.deletePost(removedPost);
+                currentUserProfileViewModel.deletePost(removedPost);
             }
 
             @Override
@@ -325,9 +303,7 @@ public class ProfileFragment extends Fragment {
         };
 
         postItemTouchHelper = new ItemTouchHelper(postITHSimpleCallback);
-        if(displayedUser.equals(profileViewModel.getCurrentUser())){
-            postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
-        }
+        postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
     }
 
     private void manageUserLogout(@NonNull View view, Result result) {
@@ -347,14 +323,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        profileViewModel.cleanViewModel();
+        currentUserProfileViewModel.cleanViewModel();
     }
 
 
 
 
     private void initReportsListeners() {
-        profileViewModel.getAddedReportResult().observe(getViewLifecycleOwner(), result -> {
+        currentUserProfileViewModel.getAddedReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
                 reportsRecyclerViewAdapter.addItem(report);
@@ -365,7 +341,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getChangedReportResult().observe(getViewLifecycleOwner(), result -> {
+        currentUserProfileViewModel.getChangedReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
                 reportsRecyclerViewAdapter.editItem(report);
@@ -376,7 +352,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getRemovedReportResult().observe(getViewLifecycleOwner(), result -> {
+        currentUserProfileViewModel.getRemovedReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
                 reportsRecyclerViewAdapter.removeItem(report);
@@ -387,14 +363,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getCancelledReportResult().observe(getViewLifecycleOwner(), result ->
+        currentUserProfileViewModel.getCancelledReportResult().observe(getViewLifecycleOwner(), result ->
                 Snackbar.make(requireView(),
                 ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                 BaseTransientBottomBar.LENGTH_SHORT).show());
     }
 
     private void initPostsListeners() {
-        profileViewModel.getAddedPostResult().observe(getViewLifecycleOwner(), result -> {
+        currentUserProfileViewModel.getAddedPostResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Post post = ((Result.PostSuccess) result).getPost();
                 if(!post.equals(removedPost)){
@@ -407,7 +383,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getChangedPostResult().observe(getViewLifecycleOwner(), result -> {
+        currentUserProfileViewModel.getChangedPostResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Post post = ((Result.PostSuccess) result).getPost();
                 dashboardRecyclerViewAdapter.editItem(post);
@@ -418,12 +394,12 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getRemovedPostResult().observe(getViewLifecycleOwner(), result -> {
+        currentUserProfileViewModel.getRemovedPostResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 Snackbar snackbar = Snackbar.make(requireView(), R.string.post_removed, BaseTransientBottomBar.LENGTH_SHORT)
                         .setAction(R.string.cancel, v -> {
                             if(removedPost != null){
-                                profileViewModel.undoDeletePost(removedPost);
+                                currentUserProfileViewModel.undoDeletePost(removedPost);
                             }
                         });
                 snackbar.show();
@@ -435,7 +411,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getUndoDeletePostResult().observe(getViewLifecycleOwner(), result -> {
+        currentUserProfileViewModel.getUndoDeletePostResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 if(removedPost != null && removedPostPosition != -999){
                     dashboardRecyclerViewAdapter.addItem(removedPost, removedPostPosition);
@@ -450,7 +426,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileViewModel.getCancelledPostResult().observe(getViewLifecycleOwner(), result ->
+        currentUserProfileViewModel.getCancelledPostResult().observe(getViewLifecycleOwner(), result ->
                 Snackbar.make(requireView(),
                 ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                 BaseTransientBottomBar.LENGTH_SHORT).show());
@@ -489,12 +465,12 @@ public class ProfileFragment extends Fragment {
     }
 
     private void rollbackNameAndSurname() {
-        binding.fragmentProfileTextViewName.setText(profileViewModel.getCurrentUser().getName());
-        binding.fragmentProfileTextViewSurname.setText(profileViewModel.getCurrentUser().getSurname());
+        binding.fragmentProfileTextViewName.setText(currentUserProfileViewModel.getCurrentUser().getName());
+        binding.fragmentProfileTextViewSurname.setText(currentUserProfileViewModel.getCurrentUser().getSurname());
     }
 
     private void rollbackPropic() {
-        loadImageIntoImageView(Uri.parse(profileViewModel.getCurrentUser().getPropic()));
+        loadImageIntoImageView(Uri.parse(currentUserProfileViewModel.getCurrentUser().getPropic()));
     }
 
     private void manageMediaPickResult(Uri imageToEdit, ActivityResultLauncher<Intent> cropImageLauncher) {
@@ -556,7 +532,7 @@ public class ProfileFragment extends Fragment {
         String validationSurnameResult = Validation.checkField(surname);
 
         if(validationNameResult.equals("ok") && validationSurnameResult.equals("ok"))
-            profileViewModel.updateUserParameters(selectedImage, name, surname);
+            currentUserProfileViewModel.updateUserParameters(selectedImage, name, surname);
         else{
             rollbackNameAndSurname();
             Snackbar.make(
@@ -594,13 +570,13 @@ public class ProfileFragment extends Fragment {
     private void initPropicCardComponents(User currentUser) {
 
         if(!currentUser.getName().isEmpty())
-            binding.fragmentProfileTextViewName.setText(displayedUser.getName());
+            binding.fragmentProfileTextViewName.setText(currentUserProfileViewModel.getCurrentUser().getName());
 
         if(!currentUser.getSurname().isEmpty())
-            binding.fragmentProfileTextViewSurname.setText(displayedUser.getSurname());
+            binding.fragmentProfileTextViewSurname.setText(currentUserProfileViewModel.getCurrentUser().getSurname());
 
-        if(displayedUser.getPropic() != null && !displayedUser.getPropic().isEmpty())
-            loadImageIntoImageView(Uri.parse(displayedUser.getPropic()));
+        if(currentUserProfileViewModel.getCurrentUser().getPropic() != null && !currentUserProfileViewModel.getCurrentUser().getPropic().isEmpty())
+            loadImageIntoImageView(Uri.parse(currentUserProfileViewModel.getCurrentUser().getPropic()));
 
         binding.fragmentProfileTextViewName.setFocusable(false);
         binding.fragmentProfileTextViewSurname.setFocusable(false);
