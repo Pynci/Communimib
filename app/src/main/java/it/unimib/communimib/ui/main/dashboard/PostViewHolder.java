@@ -2,6 +2,7 @@ package it.unimib.communimib.ui.main.dashboard;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.util.DateFormatter;
 
 public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -41,6 +43,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private final CardView imageSliderCardview;
 
     private Post post;
+
     private final OnPostClickListener onPostClickListener;
     private final Context context;
     private final boolean showCommentsCounter;
@@ -72,6 +75,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     public void bind(Post post) {
         this.post = post;
+        User postAuthor = post.getAuthor();
 
         name.setText(post.getAuthor().getName());
         surname.setText(post.getAuthor().getSurname());
@@ -133,6 +137,10 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
                 //per ora non serve
             }
         });
+
+        propic.setOnClickListener(v -> onPostClickListener.onProfileClick(postAuthor));
+        name.setOnClickListener(v -> onPostClickListener.onProfileClick(postAuthor));
+        surname.setOnClickListener(v -> onPostClickListener.onProfileClick(postAuthor));
     }
 
     @Override

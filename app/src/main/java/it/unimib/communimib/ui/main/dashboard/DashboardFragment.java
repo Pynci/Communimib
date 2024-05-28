@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDashboardBinding;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.util.NavigationHelper;
 import it.unimib.communimib.util.ErrorMapper;
@@ -114,6 +116,12 @@ public class DashboardFragment extends Fragment {
                 PostPicturesFragmentDialog imageDialog = new PostPicturesFragmentDialog(pictures);
                 imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
+
+            @Override
+            public void onProfileClick(User postAuthor) {
+                Log.d("pizza", "CIAO MARCOOOOO");
+            }
+
         }, getContext());
         dashboardRecyclerViewAdapter.clearPostList();
 

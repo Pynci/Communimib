@@ -181,6 +181,12 @@ public class ProfileFragment extends Fragment {
                 PostPicturesFragmentDialog imageDialog = new PostPicturesFragmentDialog(pictures);
                 imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
+
+            @Override
+            public void onProfileClick(User postAuthor) {
+                Log.d("pizza", "TAAAAAAAAH");
+            }
+
         }, getContext());
 
         boolean isUnimibEmployee = profileViewModel.getCurrentUser().isUnimibEmployee();

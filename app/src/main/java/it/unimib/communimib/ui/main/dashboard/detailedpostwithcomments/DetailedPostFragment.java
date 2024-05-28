@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import it.unimib.communimib.databinding.FragmentDetailedPostBinding;
 import it.unimib.communimib.model.Comment;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
@@ -91,6 +93,12 @@ public class DetailedPostFragment extends Fragment {
                 PostPicturesFragmentDialog imageDialog = new PostPicturesFragmentDialog(post.getPictures());
                 imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
+
+            @Override
+            public void onProfileClick(User postAuthor) {
+                Log.d("Pizza", "CIAOOOOO");
+            }
+
         });
         binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);
         binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
