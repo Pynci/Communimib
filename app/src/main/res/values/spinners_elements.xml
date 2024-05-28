@@ -44,7 +44,7 @@
     </array>
 
     <array name="profile_options">
-        <item> I miei post </item>
-        <item> Le mie segnalazioni </item>
+        <item> Post </item>
+        <item> Segnalazioni </item>
     </array>
 </resources>

@@ -104,10 +104,8 @@ public class DashboardFragment extends Fragment {
         dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new OnPostClickListener() {
             @Override
             public void onItemClick(Post post) {
-
                 DashboardFragmentDirections.ActionDashboardFragmentToDetailedPostFragment action =
                         DashboardFragmentDirections.actionDashboardFragmentToDetailedPostFragment(post);
-
                 Navigation.findNavController(view).navigate(action);
             }
 
@@ -119,7 +117,9 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onProfileClick(User postAuthor) {
-                Log.d("pizza", "CIAO MARCOOOOO");
+                DashboardFragmentDirections.ActionDashboardFragmentToProfileFragment action =
+                        DashboardFragmentDirections.actionDashboardFragmentToProfileFragment(postAuthor);
+                Navigation.findNavController(view).navigate(action);
             }
 
         }, getContext());

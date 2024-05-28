@@ -15,9 +15,9 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -51,18 +51,19 @@ import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.auth.loading.AuthActivity;
-import it.unimib.communimib.ui.main.MainActivity;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.ui.main.reports.ReportsHorizontalRecyclerViewAdapter;
 import it.unimib.communimib.util.ErrorMapper;
+import it.unimib.communimib.util.TopbarHelper;
 import it.unimib.communimib.util.Validation;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class ProfileFragment extends Fragment {
 
+    User displayedUser;
     private boolean isInEditMode = false;
     private Uri selectedImage;
     private FragmentProfileBinding binding;
@@ -87,6 +88,16 @@ public class ProfileFragment extends Fragment {
         profileViewModel = new ViewModelProvider(this,
                 new ProfileViewModelFactory(getContext()))
                 .get(ProfileViewModel.class);
+
+
+        TopbarHelper.handleTopbar((AppCompatActivity) getActivity());
+        try {
+            ProfileFragmentArgs args = ProfileFragmentArgs.fromBundle(getArguments());
+            this.displayedUser = args.getUser();
+        }
+        catch (Exception e) {
+            this.displayedUser = profileViewModel.getCurrentUser();
+        }
     }
 
     @Override
@@ -101,6 +112,12 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //Rimozione dei pulsanti edit e logout se l'utente visualizzato non è quello corrente
+        if(!displayedUser.equals(profileViewModel.getCurrentUser())){
+            binding.fragmentProfileImageButtonLogout.setVisibility(View.GONE);
+            binding.fragmentProfileImageButtonEditProfile.setVisibility(View.GONE);
+        }
 
         //Gestione del focus quando si preme da qualche altra parte
         binding.profileNestedScrollView.setOnTouchListener(this::onClickMainLayoutManagement);
@@ -151,16 +168,20 @@ public class ProfileFragment extends Fragment {
         RecyclerView.LayoutManager horizontalLayoutManager = new CustomLinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         adapter = new CategoriesRecyclerViewAdapter(optionsList, optionsList.get(0), category -> {
             adapter.setCurrentSelection(category);
-            if (category.equals("I miei post")){
+            if (category.equals("Post")){
                 binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
-                postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
+                if(displayedUser.equals(profileViewModel.getCurrentUser())){
+                    postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
+                }
                 dashboardRecyclerViewAdapter.clearPostList();
-                profileViewModel.readPostsByUser();
+                profileViewModel.readPostsByUser(displayedUser.getUid());
             } else {
                 binding.profileRecyclerView.setAdapter(reportsRecyclerViewAdapter);
-                postItemTouchHelper.attachToRecyclerView(null); // disabilita swipe se sono visualizzate le segnalazioni
+                if(displayedUser.equals(profileViewModel.getCurrentUser())){
+                    postItemTouchHelper.attachToRecyclerView(null); // disabilita swipe se sono visualizzate le segnalazioni
+                }
                 reportsRecyclerViewAdapter.clearReportList();
-                profileViewModel.readReportsByUser();
+                profileViewModel.readReportsByUser(displayedUser.getUid());
             }
         });
 
@@ -184,7 +205,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onProfileClick(User postAuthor) {
-                Log.d("pizza", "TAAAAAAAAH");
+                // non deve fare niente
             }
 
         }, getContext());
@@ -249,7 +270,7 @@ public class ProfileFragment extends Fragment {
         binding.profileRecyclerView.setLayoutManager(verticalLayoutManager);
         binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
 
-        profileViewModel.readPostsByUser();
+        profileViewModel.readPostsByUser(displayedUser.getUid());
         initPostsListeners();
         initReportsListeners();
 
@@ -304,10 +325,9 @@ public class ProfileFragment extends Fragment {
         };
 
         postItemTouchHelper = new ItemTouchHelper(postITHSimpleCallback);
-        postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
-
-
-
+        if(displayedUser.equals(profileViewModel.getCurrentUser())){
+            postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
+        }
     }
 
     private void manageUserLogout(@NonNull View view, Result result) {
@@ -574,13 +594,13 @@ public class ProfileFragment extends Fragment {
     private void initPropicCardComponents(User currentUser) {
 
         if(!currentUser.getName().isEmpty())
-            binding.fragmentProfileTextViewName.setText(currentUser.getName());
+            binding.fragmentProfileTextViewName.setText(displayedUser.getName());
 
         if(!currentUser.getSurname().isEmpty())
-            binding.fragmentProfileTextViewSurname.setText(currentUser.getSurname());
+            binding.fragmentProfileTextViewSurname.setText(displayedUser.getSurname());
 
-        if(currentUser.getPropic() != null && !currentUser.getPropic().isEmpty())
-            loadImageIntoImageView(Uri.parse(currentUser.getPropic()));
+        if(displayedUser.getPropic() != null && !displayedUser.getPropic().isEmpty())
+            loadImageIntoImageView(Uri.parse(displayedUser.getPropic()));
 
         binding.fragmentProfileTextViewName.setFocusable(false);
         binding.fragmentProfileTextViewSurname.setFocusable(false);

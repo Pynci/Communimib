@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -96,7 +97,9 @@ public class DetailedPostFragment extends Fragment {
 
             @Override
             public void onProfileClick(User postAuthor) {
-                Log.d("Pizza", "CIAOOOOO");
+                DetailedPostFragmentDirections.ActionDetailedPostFragmentToProfileFragment action =
+                        DetailedPostFragmentDirections.actionDetailedPostFragmentToProfileFragment(postAuthor);
+                Navigation.findNavController(view).navigate(action);
             }
 
         });

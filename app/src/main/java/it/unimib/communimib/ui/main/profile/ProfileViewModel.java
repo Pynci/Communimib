@@ -62,8 +62,7 @@ public class ProfileViewModel extends ViewModel {
         return userRepository.getCurrentUser();
     }
 
-    public void readPostsByUser(){
-        String uid = getCurrentUser().getUid();
+    public void readPostsByUser(String uid){
         postRepository.readPostsByUid(uid,
                 postAdded -> addedPostResult.setValue(postAdded),
                 postChanged -> changedPostResult.setValue(postChanged),
@@ -71,8 +70,7 @@ public class ProfileViewModel extends ViewModel {
                 postCancelled -> cancelledPostResult.setValue(postCancelled));
     }
 
-    public void readReportsByUser(){
-        String uid = getCurrentUser().getUid();
+    public void readReportsByUser(String uid){
         reportRepository.readReportsByUid(uid,
                 reportAdded -> addedReportResult.setValue(reportAdded),
                 reportChanged -> changedReportResult.setValue(reportChanged),
@@ -167,5 +165,6 @@ public class ProfileViewModel extends ViewModel {
 
         updateUserPropicResult = new MutableLiveData<>();
         updateUserNameAndSurnameResult = new MutableLiveData<>();
+        logoutResult = new MutableLiveData<>();
     }
 }
