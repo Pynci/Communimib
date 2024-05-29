@@ -100,7 +100,7 @@ public class DashboardFragment extends Fragment {
         fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setLayoutManager(categoryLayoutManager);
         fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new OnPostClickListener() {
             @Override
             public void onItemClick(Post post) {
@@ -139,7 +139,7 @@ public class DashboardFragment extends Fragment {
                 //((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition() >= 0 perché il primo elemento è contato -1
                 //nessuno osi chiedere il perché
                 numberNewPost++;
-                if (numberNewPost >= 1 && ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition() >= 0) {
+                if (numberNewPost >= 1 && layoutManager.findFirstVisibleItemPosition() >= 0) {
                     Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_down);
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override

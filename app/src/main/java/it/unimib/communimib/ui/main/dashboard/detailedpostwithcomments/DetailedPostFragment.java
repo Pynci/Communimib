@@ -32,6 +32,7 @@ import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
+import it.unimib.communimib.ui.main.dashboard.PostViewHolder;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.TopbarHelper;
@@ -54,7 +55,7 @@ public class DetailedPostFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TopbarHelper.handleTopbar((AppCompatActivity) getActivity());
+        TopbarHelper.handleTopbar((AppCompatActivity) this.requireActivity());
         hideBottomNavigationBar();
         try {
             DetailedPostFragmentArgs args = DetailedPostFragmentArgs.fromBundle(getArguments());
@@ -81,9 +82,7 @@ public class DetailedPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //gestione dei commenti
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        CommentsAdapter commentsAdapter = new CommentsAdapter(post, getContext(), new OnPostClickListener() {
+        PostViewHolder viewHolder = new PostViewHolder(view, requireContext(), new OnPostClickListener() {
             @Override
             public void onItemClick(Post post) {
                 // non deve fare niente
@@ -91,8 +90,8 @@ public class DetailedPostFragment extends Fragment {
 
             @Override
             public void onImageSliderClick(List<String> pictures) {
-                PostPicturesFragmentDialog imageDialog = new PostPicturesFragmentDialog(post.getPictures());
-                imageDialog.show(getParentFragmentManager(), "Image Dialog");
+                PostPicturesFragmentDialog dialog = new PostPicturesFragmentDialog(pictures);
+                dialog.show(getParentFragmentManager(), "Image Dialog");
             }
 
             @Override
@@ -102,7 +101,13 @@ public class DetailedPostFragment extends Fragment {
                 Navigation.findNavController(view).navigate(action);
             }
 
-        });
+        }, false);
+
+        viewHolder.bind(post);
+
+        //gestione dei commenti
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        CommentsAdapter commentsAdapter = new CommentsAdapter(getContext(), requireView());
         binding.detailedPostItemCommentsRecyclerView.setLayoutManager(layoutManager);
         binding.detailedPostItemCommentsRecyclerView.setAdapter(commentsAdapter);
 
@@ -149,30 +154,19 @@ public class DetailedPostFragment extends Fragment {
 
         binding.detailedPostItemFloatingActionButtonGoUp.setVisibility(View.GONE);
         binding.detailedPostItemFloatingActionButtonGoUp.setOnClickListener(v -> {
-            // Faccio tornare la RecyclerView al primo elemento
-            binding.detailedPostItemCommentsRecyclerView.smoothScrollToPosition(0);
-
-            // Avvio l'animazione di uscita se il pulsante è visibile e non è in corso un'animazione
-            if (isScrollButtonVisible && !isAnimating) {
+            // gestione click sul tasto scroll up
+            binding.detailedPostNestedScrollView.smoothScrollTo(0,1, 800);
+            if(isScrollButtonVisible && !isAnimating)
                 binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
-            }
         });
 
-        RecyclerView recyclerView = binding.detailedPostItemCommentsRecyclerView;
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-                if (firstVisibleItemPosition > 0 && !isScrollButtonVisible && !isAnimating) {
-                    // Avvio l'animazione di entrata
-                    binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideLeft);
-                } else if (firstVisibleItemPosition == 0 && isScrollButtonVisible && !isAnimating) {
-                    // Avvio l'animazione di uscita
-                    binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
-                }
+        //listener sullo scroll della nested scroll view
+        binding.detailedPostNestedScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            int firstItemVisible = binding.detailedPostNestedScrollView.getScrollY();
+            if(firstItemVisible > 400 && !isScrollButtonVisible && !isAnimating){
+                binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideLeft);
+            } else if(firstItemVisible < 400 && isScrollButtonVisible && !isAnimating){
+                binding.detailedPostItemFloatingActionButtonGoUp.startAnimation(animationButtonSlideRight);
             }
         });
 
@@ -222,11 +216,9 @@ public class DetailedPostFragment extends Fragment {
         });
 
         //Gestione dell'interruzione durante la lettura
-        detailedPostViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result -> {
-            Snackbar.make(requireView(),
-                    ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
-                    BaseTransientBottomBar.LENGTH_SHORT).show();
-        });
+        detailedPostViewModel.getReadCancelledResult().observe(getViewLifecycleOwner(), result -> Snackbar.make(requireView(),
+                ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
+                BaseTransientBottomBar.LENGTH_SHORT).show());
 
         //Gestione della creazione di un nuovo commento
         binding.detailedPostItemSend.setOnClickListener(v -> {

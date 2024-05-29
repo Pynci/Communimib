@@ -58,7 +58,7 @@ public class SignupFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentSignupBinding = FragmentSignupBinding.inflate(inflater, container, false);
         return fragmentSignupBinding.getRoot();
@@ -149,7 +149,7 @@ public class SignupFragment extends Fragment {
         //Gestione del risultato della registrazione
         signupViewModel.getSignUpResult().observe(getViewLifecycleOwner(), result -> {
 
-            this.getView().clearFocus();
+            this.requireView().clearFocus();
 
             if (result.isSuccessful()) {
                 NavigationHelper.navigateTo(requireActivity(), requireView(), R.id.action_signupFragment_to_emailVerificationFragment, false);
@@ -157,7 +157,7 @@ public class SignupFragment extends Fragment {
             else{
                 Result.Error errore = (Result.Error) result;
                 Snackbar.make(
-                        this.getView(),
+                        this.requireView(),
                         ErrorMapper.getInstance().getErrorMessage(errore.getMessage()),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
             }

@@ -120,4 +120,5 @@
 
     <string name="post_removed">Il post è stato rimosso</string>
     <string name="logout_button">Bottone di logout</string>
+    <string name="comments"> Commenti </string>
 </resources>

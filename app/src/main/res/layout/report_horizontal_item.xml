@@ -34,7 +34,8 @@
                     android:backgroundTintMode="multiply"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/building"/>
 
                 <TextView
                     android:id="@+id/reportListItem_title"
@@ -51,21 +52,21 @@
                     tools:text="@string/report_title" />
 
                 <TextView
-                    android:id="@+id/reportListItem_building"
-                    android:layout_width="70dp"
+                    android:id="@+id/reportListItem_category"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners"
+                    android:background="@drawable/rounded_left_corners"
                     android:backgroundTint="@color/md_theme_light_secondaryContainer"
                     android:paddingStart="5dp"
-                    android:paddingEnd="15dp"
+                    android:paddingEnd="10dp"
                     android:textColor="@color/seed"
-                    android:textSize="24sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.34"
-                    tools:text="U14" />
+                    app:layout_constraintVertical_bias="0.95"
+                    tools:text="Malfunzionamento" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -83,7 +84,7 @@
                     android:paddingStart="16dp"
                     android:paddingTop="4dp"
                     android:paddingEnd="16dp"
-                    android:textColor="@color/md_theme_light_onSecondaryContainer"
+                    android:textColor="@color/md_theme_light_tertiary"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -106,6 +107,7 @@
                         android:id="@+id/reportListItem_imageView"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
+                        android:contentDescription="@string/profile"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 

@@ -1,5 +1,6 @@
 package it.unimib.communimib.ui.main.dashboard.newpost;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -80,6 +81,7 @@ public class NewPostFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -106,9 +108,7 @@ public class NewPostFragment extends Fragment {
                 });
 
         //Gestione del pulsante indietro
-        binding.buttonBack.setOnClickListener(v -> {
-            getParentFragmentManager().popBackStack();
-        });
+        binding.buttonBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         //Gestione del pulsante per caricare le foto
         binding.imageButtonAddImages.setOnClickListener(v -> pickMultipleMedia.launch(new PickVisualMediaRequest.Builder()
@@ -147,7 +147,7 @@ public class NewPostFragment extends Fragment {
         binding.categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                getView().clearFocus();
+                requireView().clearFocus();
                 isSpinnerOk = !binding.categorySpinner.getSelectedItem().equals("Categoria");
                 tryEnableButton();
 
@@ -178,7 +178,7 @@ public class NewPostFragment extends Fragment {
         //Osservazione del risultato di creazione
         newPostViewModel.getPostCreationResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager.popBackStack();
                 showNavigationBars();
             }
@@ -190,7 +190,7 @@ public class NewPostFragment extends Fragment {
         //Gestione del tocco fuori dai campi per rimuovere il focus
         binding.mainLayout.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                View currentFocus = getActivity().getCurrentFocus();
+                View currentFocus = requireActivity().getCurrentFocus();
                 if (currentFocus != null) {
                     currentFocus.clearFocus();
                     hideKeyboard(v);
@@ -244,7 +244,7 @@ public class NewPostFragment extends Fragment {
     }
 
     private void hideKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 

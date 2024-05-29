@@ -10,8 +10,8 @@ import it.unimib.communimib.repository.IUserRepository;
 
 public class DetailedPostViewModel extends ViewModel {
 
-    private IPostRepository postRepository;
-    private IUserRepository userRepository;
+    private final IPostRepository postRepository;
+    private final IUserRepository userRepository;
     private MutableLiveData<Result> commentCreationResult;
     private MutableLiveData<Result> commentAddedReadResult;
     private MutableLiveData<Result> commentChangedReadResult;

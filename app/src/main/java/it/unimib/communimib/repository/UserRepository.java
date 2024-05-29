@@ -147,21 +147,19 @@ public class UserRepository implements IUserRepository{
             pollingExecutor = Executors.newSingleThreadScheduledExecutor();
         }
 
-        pollingExecutor.scheduleWithFixedDelay(() -> {
-            isEmailVerified(result -> {
-                Log.d(this.getClass().getSimpleName(), "MAIL: sto controllando...");
-                if(result.isSuccessful()){
-                    if(((Result.BooleanSuccess)result).getBoolean()){
-                        stopEmailPolling();
-                        callback.onComplete(new Result.Success());
-                    }
-                }
-                else{
+        pollingExecutor.scheduleWithFixedDelay(() -> isEmailVerified(result -> {
+            Log.d(this.getClass().getSimpleName(), "MAIL: sto controllando...");
+            if(result.isSuccessful()){
+                if(((Result.BooleanSuccess)result).getBoolean()){
                     stopEmailPolling();
-                    callback.onComplete(result);
+                    callback.onComplete(new Result.Success());
                 }
-            });
-        }, 0, 4, TimeUnit.SECONDS);
+            }
+            else{
+                stopEmailPolling();
+                callback.onComplete(result);
+            }
+        }), 0, 4, TimeUnit.SECONDS);
     }
 
     @Override
