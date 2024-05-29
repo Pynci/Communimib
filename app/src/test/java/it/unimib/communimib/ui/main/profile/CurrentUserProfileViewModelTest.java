@@ -1,17 +1,27 @@
 package it.unimib.communimib.ui.main.profile;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import it.unimib.communimib.Callback;
+import it.unimib.communimib.LiveDataTestUtil;
+import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IPostRepository;
 import it.unimib.communimib.repository.IReportRepository;
 import it.unimib.communimib.repository.IUserRepository;
 import it.unimib.communimib.repository.PostRepository;
 import it.unimib.communimib.repository.ReportRepository;
 import it.unimib.communimib.repository.UserRepository;
+import it.unimib.communimib.util.ErrorMapper;
 
 public class CurrentUserProfileViewModelTest {
 
@@ -33,11 +43,73 @@ public class CurrentUserProfileViewModelTest {
     }
 
     @Test
-    public void readPostsByUser() {
+    public void readPostsByUser() throws InterruptedException {
+
+        String uid = "123456789";
+        User user = new User();
+        user.setUid(uid);
+
+        doAnswer(invocation -> {
+            Callback addedcallback = invocation.getArgument(1);
+            addedcallback.onComplete(new Result.Success());
+            Callback changedCallback = invocation.getArgument(2);
+            changedCallback.onComplete(new Result.Success());
+            Callback removedCallback = invocation.getArgument(3);
+            removedCallback.onComplete(new Result.Success());
+            Callback cancelledCallback = invocation.getArgument(4);
+            cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+            return null;
+        }).when(postRepository).readPostsByUid(eq(uid), any(), any(), any(), any());
+
+        //when(userRepository.getCurrentUser()).thenReturn(user);
+
+        doReturn(user).when(userRepository).getCurrentUser();
+
+        currentUserProfileViewModel.readPostsByUser();
+        Result addedResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getAddedPostResult());
+        assertTrue(addedResult instanceof Result.Success);
+        Result changedResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getChangedPostResult());
+        assertTrue(changedResult instanceof Result.Success);
+        Result removedResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getRemovedPostResult());
+        assertTrue(removedResult instanceof Result.Success);
+        Result cancelledResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getCancelledPostResult());
+        assertTrue(cancelledResult instanceof Result.Error);
+        assertEquals(((Result.Error) cancelledResult).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
     }
 
     @Test
-    public void readReportsByUser() {
+    public void readReportsByUser() throws InterruptedException {
+        String uid = "123456789";
+        User user = new User();
+        user.setUid(uid);
+
+        doAnswer(invocation -> {
+            Callback addedcallback = invocation.getArgument(1);
+            addedcallback.onComplete(new Result.Success());
+            Callback changedCallback = invocation.getArgument(2);
+            changedCallback.onComplete(new Result.Success());
+            Callback removedCallback = invocation.getArgument(3);
+            removedCallback.onComplete(new Result.Success());
+            Callback cancelledCallback = invocation.getArgument(4);
+            cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+            return null;
+        }).when(reportRepository).readReportsByUid(eq(uid), any(), any(), any(), any());
+
+        //when(userRepository.getCurrentUser()).thenReturn(user);
+
+        doReturn(user).when(userRepository).getCurrentUser();
+
+        currentUserProfileViewModel.readReportsByUser();
+        Result addedResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getAddedReportResult());
+        assertTrue(addedResult instanceof Result.Success);
+        Result changedResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getChangedReportResult());
+        assertTrue(changedResult instanceof Result.Success);
+        Result removedResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getRemovedReportResult());
+        assertTrue(removedResult instanceof Result.Success);
+        Result cancelledResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getCancelledReportResult());
+        assertTrue(cancelledResult instanceof Result.Error);
+        assertEquals(((Result.Error) cancelledResult).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+
     }
 
     @Test
