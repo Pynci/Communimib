@@ -8,6 +8,8 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import android.net.Uri;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -113,7 +115,36 @@ public class CurrentUserProfileViewModelTest {
     }
 
     @Test
-    public void updateUserParameters() {
+    public void updateUserParameters() throws InterruptedException {
+        String uid = "123456789";
+        User user = new User();
+        user.setUid(uid);
+        user.setName("giu");
+        user.setSurname("vitale");
+        Uri uri = Uri.parse("https://link");
+        String name = "giulia";
+        String surname = "vitale";
+
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(1);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(userRepository).uploadPropic(eq(uri), any());
+
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(2);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(userRepository).updateUserNameAndSurname(eq(name), eq(surname), any());
+
+        doReturn(user).when(userRepository).getCurrentUser();
+
+        currentUserProfileViewModel.updateUserParameters(uri, name, surname);
+        Result propicResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getUpdateUserPropicResult());
+        assertTrue(propicResult instanceof Result.Success);
+        Result nameSurnameResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getUpdateUserNameAndSurnameResult());
+        assertTrue(nameSurnameResult instanceof Result.Success);
+
     }
 
     @Test
