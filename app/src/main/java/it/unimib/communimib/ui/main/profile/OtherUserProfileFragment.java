@@ -37,9 +37,6 @@ import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
-import it.unimib.communimib.ui.main.dashboard.detailedpostwithcomments.DetailedPostFragmentArgs;
-import it.unimib.communimib.ui.main.dashboard.detailedpostwithcomments.DetailedPostViewModel;
-import it.unimib.communimib.ui.main.dashboard.detailedpostwithcomments.DetailedPostViewModelFactory;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.ui.main.reports.ReportsHorizontalRecyclerViewAdapter;
 import it.unimib.communimib.util.ErrorMapper;
@@ -98,7 +95,7 @@ public class OtherUserProfileFragment extends Fragment {
 
 
         //Gestione dei contenuti della schermata (recyler view)
-        String[] options = getResources().getStringArray(R.array.profile_options);
+        String[] options = getResources().getStringArray(R.array.other_user_profile_options);
         List<String> optionsList = Arrays.asList(options);
 
         RecyclerView.LayoutManager horizontalLayoutManager = new CustomLinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);

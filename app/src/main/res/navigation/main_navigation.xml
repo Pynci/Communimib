@@ -80,7 +80,7 @@
     <fragment
         android:id="@+id/otherUserProfileFragment"
         android:name="it.unimib.communimib.ui.main.profile.OtherUserProfileFragment"
-        android:label="OtherUserProfileFragment" >
+        android:label="" >
 
         <argument
             android:name="user"

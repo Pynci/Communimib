@@ -144,13 +144,13 @@ public class CurrentUserProfileFragment extends Fragment {
         currentUserProfileViewModel.getLogoutResult().observe(getViewLifecycleOwner(), result -> manageUserLogout(view, result));
 
         //Gestione dei contenuti della schermata (recyler view)
-        String[] options = getResources().getStringArray(R.array.profile_options);
+        String[] options = getResources().getStringArray(R.array.current_user_profile_options);
         List<String> optionsList = Arrays.asList(options);
 
         RecyclerView.LayoutManager horizontalLayoutManager = new CustomLinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         adapter = new CategoriesRecyclerViewAdapter(optionsList, optionsList.get(0), category -> {
             adapter.setCurrentSelection(category);
-            if (category.equals("Post pubblicati")){
+            if (category.equals("I miei post")){
                 binding.profileRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
                 postItemTouchHelper.attachToRecyclerView(binding.profileRecyclerView);
                 dashboardRecyclerViewAdapter.clearPostList();
