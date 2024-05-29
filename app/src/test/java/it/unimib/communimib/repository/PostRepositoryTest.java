@@ -252,6 +252,20 @@ public class PostRepositoryTest {
     }
 
     @Test
+    public void undoDeletePost(){
+        Post post = new Post("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, new ArrayList<>());
+
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(1);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(postRemoteDataSource).undoDeletePost(eq(post), any());
+
+        postRepository.undoDeletePost(post,
+                result -> assertTrue(result instanceof Result.Success));
+    }
+
+    @Test
     public void readCommentsByPid() {
         Post post = new Post();
         post.setPid("11111");
