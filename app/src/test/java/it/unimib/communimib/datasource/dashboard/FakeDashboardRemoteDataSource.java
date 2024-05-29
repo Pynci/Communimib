@@ -60,4 +60,9 @@ public class FakeDashboardRemoteDataSource implements IPostRemoteDataSource {
             callback.onComplete(new Result.Error(ErrorMapper.POST_DELETING_ERROR));
         }
     }
+
+    @Override
+    public void undoDeletePost(Post post, Callback callback) {
+
+    }
 }

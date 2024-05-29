@@ -257,7 +257,6 @@ public class UserRepositoryTest {
         Assert.assertTrue(result instanceof Result.Success);
         Assert.assertEquals(uri.toString(), remoteDataSource.users.get("12345").getPropic());
         Assert.assertEquals(uri.toString(), userRepository.getCurrentUser().getPropic());
-        //Assert.assertEquals(uri.toString(), userDAO.getUser().getPropic());
     }
 
     @Test
