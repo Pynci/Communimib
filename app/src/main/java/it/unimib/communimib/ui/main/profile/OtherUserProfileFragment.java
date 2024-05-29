@@ -38,6 +38,7 @@ import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
+import it.unimib.communimib.ui.main.reports.OnReportClickListener;
 import it.unimib.communimib.ui.main.reports.ReportsHorizontalRecyclerViewAdapter;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.TopbarHelper;
@@ -138,15 +139,20 @@ public class OtherUserProfileFragment extends Fragment {
         }, getContext());
 
         boolean isUnimibEmployee = displayedUser.isUnimibEmployee();
-        reportsRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(isUnimibEmployee, new ReportsHorizontalRecyclerViewAdapter.OnItemClickListener() {
+        reportsRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(isUnimibEmployee, new OnReportClickListener() {
             @Override
-            public void onCloseReportClick(Report report) {
-
+            public void onItemClick(Report report) {
+                // TODO: da implementare
             }
 
             @Override
-            public void onCardClick(Report report) {
+            public void onCloseReportClick(Report report) {
+                // TODO: da implementare
+            }
 
+            @Override
+            public void onProfileClick(User reportAuthor) {
+                // non deve fare niente
             }
         }, getContext(), R.layout.report_item);
 

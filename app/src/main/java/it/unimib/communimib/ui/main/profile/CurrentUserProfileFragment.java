@@ -54,6 +54,7 @@ import it.unimib.communimib.ui.main.dashboard.CategoriesRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.DashboardRecyclerViewAdapter;
 import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
+import it.unimib.communimib.ui.main.reports.OnReportClickListener;
 import it.unimib.communimib.ui.main.reports.ReportsHorizontalRecyclerViewAdapter;
 import it.unimib.communimib.util.ErrorMapper;
 import it.unimib.communimib.util.Validation;
@@ -189,16 +190,22 @@ public class CurrentUserProfileFragment extends Fragment {
         }, getContext());
 
         boolean isUnimibEmployee = currentUserProfileViewModel.getCurrentUser().isUnimibEmployee();
-        reportsRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(isUnimibEmployee, new ReportsHorizontalRecyclerViewAdapter.OnItemClickListener() {
+        reportsRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(isUnimibEmployee, new OnReportClickListener() {
+            @Override
+            public void onItemClick(Report report) {
+                //TODO: da implementare
+            }
+
             @Override
             public void onCloseReportClick(Report report) {
-
+                //TODO: da implementare
             }
 
             @Override
-            public void onCardClick(Report report) {
-
+            public void onProfileClick(User reportAuthor) {
+                // non deve fare niente
             }
+
         }, getContext(), R.layout.report_item);
 
         Animation animationSlideLeft = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_left);

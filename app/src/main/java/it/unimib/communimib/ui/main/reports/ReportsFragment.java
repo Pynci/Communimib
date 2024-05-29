@@ -29,6 +29,8 @@ import it.unimib.communimib.databinding.FragmentReportsBinding;
 import it.unimib.communimib.model.CategoryReport;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
+import it.unimib.communimib.ui.main.dashboard.DashboardFragmentDirections;
 import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingViewModel;
 import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingViewModelFactory;
 import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingsFragmentDialog;
@@ -199,16 +201,23 @@ public class ReportsFragment extends Fragment {
         for (int i = 0; i<categories.length - 1; i++) {
             ReportsHorizontalRecyclerViewAdapter reportsHorizontalRecyclerViewAdapter =
                     new ReportsHorizontalRecyclerViewAdapter(reportsViewModel.getCurrentUser().isUnimibEmployee(),
-                            new ReportsHorizontalRecyclerViewAdapter.OnItemClickListener() {
+                            new OnReportClickListener() {
+                                @Override
+                                public void onItemClick(Report report) {
+                                    ReportsFragmentDirections.ActionReportsFragmentToDetailedReportFragment action =
+                                            ReportsFragmentDirections.actionReportsFragmentToDetailedReportFragment(report);
+                                    Navigation.findNavController(view).navigate(action);
+                                }
+
                                 @Override
                                 public void onCloseReportClick(Report report) {
                                     reportsViewModel.closeReport(report);
                                 }
 
                                 @Override
-                                public void onCardClick(Report report) {
-                                    ReportsFragmentDirections.ActionReportsFragmentToDetailedReportFragment action =
-                                            ReportsFragmentDirections.actionReportsFragmentToDetailedReportFragment(report);
+                                public void onProfileClick(User reportAuthor) {
+                                    ReportsFragmentDirections.ActionReportsFragmentToOtherUserProfileFragment action =
+                                            ReportsFragmentDirections.actionReportsFragmentToOtherUserProfileFragment(reportAuthor);
                                     Navigation.findNavController(view).navigate(action);
                                 }
                             },
