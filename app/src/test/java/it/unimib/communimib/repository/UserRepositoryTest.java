@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import it.unimib.communimib.database.FakeUserDAO;
 import it.unimib.communimib.datasource.user.FakeAuthDataSource;
 import it.unimib.communimib.datasource.user.FakeUserLocalDataSource;
 import it.unimib.communimib.datasource.user.FakeUserRemoteDataSource;
@@ -29,15 +28,13 @@ public class UserRepositoryTest {
     private IUserRepository userRepository;
     private FakeUserRemoteDataSource remoteDataSource;
     private FakeAuthDataSource authDataSource;
-    private FakeUserDAO userDAO;
     private User marco;
     private volatile Result result;
 
     @Before
     public void setUp() throws NoSuchFieldException, IllegalAccessException {
-        userDAO = new FakeUserDAO();
         remoteDataSource = new FakeUserRemoteDataSource();
-        FakeUserLocalDataSource localDataSource = new FakeUserLocalDataSource(userDAO);
+        FakeUserLocalDataSource localDataSource = new FakeUserLocalDataSource();
         authDataSource = new FakeAuthDataSource();
         marco = new User("12345", "marco@unimib.it", "Marco", "Ferioli", true);
         clearAll();
@@ -144,7 +141,7 @@ public class UserRepositoryTest {
     @Test
     public void signOutSuccess() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        userDAO.insertUser(marco);
+        //userDAO.insertUser(marco);
         remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
         authDataSource.currentUser = marco;
@@ -156,7 +153,7 @@ public class UserRepositoryTest {
         countDownLatch.await();
         Assert.assertTrue(result instanceof Result.Success);
         Assert.assertNull(userRepository.getCurrentUser());
-        Assert.assertNull(userDAO.getUser());
+        //Assert.assertNull(userDAO.getUser());
     }
 
     @Test
@@ -177,7 +174,7 @@ public class UserRepositoryTest {
     @Test
     public void isSessionStillActiveTrue() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        userDAO.insertUser(marco);
+        //userDAO.insertUser(marco);
         remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
         authDataSource.currentUser = marco;
@@ -194,7 +191,7 @@ public class UserRepositoryTest {
     @Test
     public void isSessionStillActiveFalse() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        userDAO.insertUser(marco);
+        //userDAO.insertUser(marco);
         remoteDataSource.users.put(marco.getUid(), marco);
         authDataSource.signedupUsers.add(marco);
 
@@ -224,8 +221,8 @@ public class UserRepositoryTest {
         Assert.assertEquals("Pinciroli", remoteDataSource.users.get("12345").getSurname());
         Assert.assertEquals("Luca", userRepository.getCurrentUser().getName());
         Assert.assertEquals("Pinciroli", userRepository.getCurrentUser().getSurname());
-        Assert.assertEquals("Luca", userDAO.getUser().getName());
-        Assert.assertEquals("Pinciroli", userDAO.getUser().getSurname());
+        //Assert.assertEquals("Luca", userDAO.getUser().getName());
+        //Assert.assertEquals("Pinciroli", userDAO.getUser().getSurname());
     }
 
     @Test
@@ -260,7 +257,7 @@ public class UserRepositoryTest {
         Assert.assertTrue(result instanceof Result.Success);
         Assert.assertEquals(uri.toString(), remoteDataSource.users.get("12345").getPropic());
         Assert.assertEquals(uri.toString(), userRepository.getCurrentUser().getPropic());
-        Assert.assertEquals(uri.toString(), userDAO.getUser().getPropic());
+        //Assert.assertEquals(uri.toString(), userDAO.getUser().getPropic());
     }
 
     @Test
@@ -342,7 +339,7 @@ public class UserRepositoryTest {
 
     private void clearAll() throws NoSuchFieldException, IllegalAccessException {
         remoteDataSource.users.clear();
-        userDAO.clearUser();
+        //userDAO.clearUser();
         authDataSource.signedupUsers.clear();
         Field instance = UserRepository.class.getDeclaredField("INSTANCE");
         instance.setAccessible(true);

@@ -38,7 +38,7 @@ public class ServiceLocator {
         return UserRepository.getInstance(
                 new AuthDataSource(),
                 new UserRemoteDataSource(),
-                new UserLocalDataSource(getLocalDatabase(context).userDAO(), getFavoriteBuildingsSharedPreferences(context)));
+                new UserLocalDataSource(getFavoriteBuildingsSharedPreferences(context)));
     }
 
     public IReportRepository getReportRepository() {

@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import it.unimib.communimib.R;
 import it.unimib.communimib.databinding.FragmentDashboardBinding;
 import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
+import it.unimib.communimib.model.User;
 import it.unimib.communimib.ui.main.dashboard.pictures.PostPicturesFragmentDialog;
 import it.unimib.communimib.util.NavigationHelper;
 import it.unimib.communimib.util.ErrorMapper;
@@ -98,14 +100,12 @@ public class DashboardFragment extends Fragment {
         fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setLayoutManager(categoryLayoutManager);
         fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new OnPostClickListener() {
             @Override
             public void onItemClick(Post post) {
-
                 DashboardFragmentDirections.ActionDashboardFragmentToDetailedPostFragment action =
                         DashboardFragmentDirections.actionDashboardFragmentToDetailedPostFragment(post);
-
                 Navigation.findNavController(view).navigate(action);
             }
 
@@ -114,6 +114,14 @@ public class DashboardFragment extends Fragment {
                 PostPicturesFragmentDialog imageDialog = new PostPicturesFragmentDialog(pictures);
                 imageDialog.show(getParentFragmentManager(), "Image Dialog");
             }
+
+            @Override
+            public void onProfileClick(User postAuthor) {
+                DashboardFragmentDirections.ActionDashboardFragmentToOtherUserProfileFragment action =
+                        DashboardFragmentDirections.actionDashboardFragmentToOtherUserProfileFragment(postAuthor);
+                Navigation.findNavController(view).navigate(action);
+            }
+
         }, getContext());
         dashboardRecyclerViewAdapter.clearPostList();
 
@@ -131,7 +139,7 @@ public class DashboardFragment extends Fragment {
                 //((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition() >= 0 perché il primo elemento è contato -1
                 //nessuno osi chiedere il perché
                 numberNewPost++;
-                if (numberNewPost >= 1 && ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition() >= 0) {
+                if (numberNewPost >= 1 && layoutManager.findFirstVisibleItemPosition() >= 0) {
                     Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.button_slide_down);
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override

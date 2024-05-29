@@ -28,6 +28,7 @@ public class UserRepository implements IUserRepository{
     private final IUserLocalDataSource userLocalDataSource;
     private User currentUser;
     private long lastFavoriteBuildingsUpdate;
+    private long lastCurrentUserUpdate;
 
     private UserRepository(IAuthDataSource authDataSource, IUserRemoteDataSource userRemoteDataSource, IUserLocalDataSource localDataSource){
         this.authDataSource = authDataSource;
@@ -49,6 +50,14 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public User getCurrentUser(){
+        if(System.currentTimeMillis() - lastCurrentUserUpdate > Constants.CURRENT_USER_TIMEOUT){
+            userRemoteDataSource.getUserByEmail(authDataSource.getCurrentUserEmail(), remoteResult -> {
+                if(remoteResult.isSuccessful()){
+                    currentUser = ((Result.UserSuccess) remoteResult).getUser();
+                    lastCurrentUserUpdate = System.currentTimeMillis();
+                }
+            });
+        }
         return currentUser;
     }
 
@@ -60,11 +69,8 @@ public class UserRepository implements IUserRepository{
                 userRemoteDataSource.storeUserParameters(((Result.SignupSuccess) authResult).getUid(), email, name, surname, isUnimibEmployee(email), dbResult -> {
                     if(dbResult.isSuccessful()) {
                         currentUser = new User(((Result.SignupSuccess) authResult).getUid(), email, name, surname, isUnimibEmployee(email));
-                        userLocalDataSource.insertUser(currentUser, callback);
                     }
-                    else{
-                        callback.onComplete(dbResult);
-                    }
+                    callback.onComplete(dbResult);
                 });
             }
             else{
@@ -81,11 +87,8 @@ public class UserRepository implements IUserRepository{
                 getUserByEmail(email, remoteResult -> {
                     if(remoteResult.isSuccessful()){
                         currentUser = ((Result.UserSuccess) remoteResult).getUser();
-                        userLocalDataSource.insertUser(currentUser, callback);
                     }
-                    else{
-                        callback.onComplete(remoteResult);
-                    }
+                    callback.onComplete(remoteResult);
                 });
             }
             else{
@@ -98,16 +101,9 @@ public class UserRepository implements IUserRepository{
     public void signOut(Callback callback) {
         authDataSource.signOut(authResult -> {
             if(authResult.isSuccessful()){
-                userLocalDataSource.deleteUser(localResult -> {
-                    if(localResult.isSuccessful()){
-                        currentUser = null;
-                    }
-                    callback.onComplete(localResult);
-                });
+                currentUser = null;
             }
-            else{
-                callback.onComplete(authResult);
-            }
+            callback.onComplete(authResult);
         });
     }
 
@@ -115,13 +111,13 @@ public class UserRepository implements IUserRepository{
     public void isSessionStillActive(Callback callback){
         if(authDataSource.isSessionStillActive()){
             if(currentUser == null){
-                userLocalDataSource.getUser(localResult -> {
-                    if(localResult.isSuccessful()){
-                        currentUser = ((Result.UserSuccess) localResult).getUser();
+                userRemoteDataSource.getUserByEmail(authDataSource.getCurrentUserEmail(), remoteResult -> {
+                    if(remoteResult.isSuccessful()){
+                        currentUser = ((Result.UserSuccess) remoteResult).getUser();
                         callback.onComplete(new Result.BooleanSuccess(true));
                     }
                     else{
-                        callback.onComplete(localResult);
+                        callback.onComplete(remoteResult);
                     }
                 });
             }
@@ -130,14 +126,8 @@ public class UserRepository implements IUserRepository{
             }
         }
         else{
-            userLocalDataSource.deleteUser(localResult -> {
-                if(localResult.isSuccessful()){
-                    callback.onComplete(new Result.BooleanSuccess(false));
-                }
-                else{
-                    callback.onComplete(localResult);
-                }
-            });
+            currentUser = null;
+            callback.onComplete(new Result.BooleanSuccess(false));
         }
     }
 
@@ -157,21 +147,19 @@ public class UserRepository implements IUserRepository{
             pollingExecutor = Executors.newSingleThreadScheduledExecutor();
         }
 
-        pollingExecutor.scheduleWithFixedDelay(() -> {
-            isEmailVerified(result -> {
-                Log.d(this.getClass().getSimpleName(), "MAIL: sto controllando...");
-                if(result.isSuccessful()){
-                    if(((Result.BooleanSuccess)result).getBoolean()){
-                        stopEmailPolling();
-                        callback.onComplete(new Result.Success());
-                    }
-                }
-                else{
+        pollingExecutor.scheduleWithFixedDelay(() -> isEmailVerified(result -> {
+            Log.d(this.getClass().getSimpleName(), "MAIL: sto controllando...");
+            if(result.isSuccessful()){
+                if(((Result.BooleanSuccess)result).getBoolean()){
                     stopEmailPolling();
-                    callback.onComplete(result);
+                    callback.onComplete(new Result.Success());
                 }
-            });
-        }, 0, 4, TimeUnit.SECONDS);
+            }
+            else{
+                stopEmailPolling();
+                callback.onComplete(result);
+            }
+        }), 0, 4, TimeUnit.SECONDS);
     }
 
     @Override
@@ -188,11 +176,8 @@ public class UserRepository implements IUserRepository{
                 if(remoteResult.isSuccessful()){
                     currentUser.setName(name);
                     currentUser.setSurname(surname);
-                    userLocalDataSource.updateUser(currentUser, callback);
                 }
-                else{
-                    callback.onComplete(remoteResult);
-                }
+                callback.onComplete(remoteResult);
             });
         }
         else{
@@ -207,11 +192,8 @@ public class UserRepository implements IUserRepository{
                 if(remoteResult.isSuccessful()){
                     String remoteDownloadUri = ((Result.UriSuccess) remoteResult).getUri();
                     currentUser.setPropic(remoteDownloadUri);
-                    userLocalDataSource.updateUser(currentUser, callback);
                 }
-                else{
-                    callback.onComplete(remoteResult);
-                }
+                callback.onComplete(remoteResult);
             });
         }
         else{
@@ -247,15 +229,12 @@ public class UserRepository implements IUserRepository{
     }
 
     public void readUserFavoriteBuildings(Callback callback) {
-
-        long currentTime = System.currentTimeMillis();
-
-        if(currentTime - lastFavoriteBuildingsUpdate > Constants.FAVORITE_BUILDINGS_TIMEOUT){
+        if(System.currentTimeMillis() - lastFavoriteBuildingsUpdate > Constants.FAVORITE_BUILDINGS_TIMEOUT){
             userRemoteDataSource.getUserFavoriteBuildings(currentUser.getUid(), remoteResult -> {
                 if(remoteResult.isSuccessful()){
                     userLocalDataSource.saveUserFavoriteBuildings(((Result.UserFavoriteBuildingsSuccess) remoteResult).getFavoriteBuildings(), localResult -> {
                         if(localResult.isSuccessful()){
-                            lastFavoriteBuildingsUpdate = currentTime;
+                            lastFavoriteBuildingsUpdate = System.currentTimeMillis();
                             callback.onComplete(remoteResult);
                         }
                         else{

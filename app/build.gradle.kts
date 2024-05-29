@@ -91,4 +91,7 @@ dependencies {
 
     //dipendeza per gestione immagini caricate (tagli, ecc)
     implementation("com.github.yalantis:ucrop:2.2.8")
+
+    //Dipendenza per swiper recycler view
+    implementation("it.xabaras.android:recyclerview-swipedecorator:1.4")
 }

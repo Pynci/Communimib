@@ -6,11 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import it.unimib.communimib.ui.main.dashboard.DashboardViewModel;
 import it.unimib.communimib.util.ServiceLocator;
 
 public class DetailedPostViewModelFactory implements ViewModelProvider.Factory {
-    private Context context;
+    private final Context context;
 
     public DetailedPostViewModelFactory(Context context) {
         this.context = context;

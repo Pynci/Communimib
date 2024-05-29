@@ -67,6 +67,7 @@
     <string name="report_deleting_error">Si è verificato un errore durante cancellazione della segnalazione</string>
     <string name="post_creation_error"> Si è verificato un errore durante la memorizzazione del post nel sistema</string>
     <string name="post_deleting_error"> Si è verificato un errore durante la cancellazione del post</string>
+    <string name="post_undo_deleting_error">Si è verificato un errore durante il ripristino del post</string>
     <string name="close"> Chiudi </string>
     <string name="report_closed_correctly"> Segnalazione chiusa correttamente </string>
     <string name="button_favorite_buildings_selection">Bottone per selezionare gli edifici preferiti</string>
@@ -116,4 +117,8 @@
     <string name="invalid_email">Inserisci una mail valida</string>
     <string name="invalid_link">Inserisci un link valido</string>
     <string name="click_to_edit">CLICCA PER MODIFICARE</string>
+
+    <string name="post_removed">Il post è stato rimosso</string>
+    <string name="logout_button">Bottone di logout</string>
+    <string name="comments"> Commenti </string>
 </resources>

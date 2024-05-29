@@ -43,7 +43,12 @@
         <item>Categoria</item>
     </array>
 
-    <array name="profile_options">
+    <array name="other_user_profile_options">
+        <item> Post pubblicati </item>
+        <item> Segnalazioni aperte </item>
+    </array>
+
+    <array name="current_user_profile_options">
         <item> I miei post </item>
         <item> Le mie segnalazioni </item>
     </array>

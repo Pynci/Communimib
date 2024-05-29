@@ -27,11 +27,18 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<PostViewH
         }
     }
 
+    public void addItem(Post newPost, int position){
+        if (!postList.contains(newPost)) {
+            postList.add(position, newPost);
+            notifyItemInserted(position);
+        }
+    }
+
     public void editItem(Post editedPost) {
         int position = postList.indexOf(editedPost);
         if (position != -1) {
             postList.set(position, editedPost);
-            notifyItemChanged(position + 1);
+            notifyItemChanged(position);
         }
     }
 
@@ -39,7 +46,7 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<PostViewH
         int position = postList.indexOf(removedPost);
         if (position != -1) {
             postList.remove(position);
-            notifyItemRemoved(position + 1);
+            notifyItemRemoved(position);
         }
     }
 
@@ -69,5 +76,9 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<PostViewH
     @Override
     public int getItemCount() {
         return postList.size();
+    }
+
+    public Post getPostFromPosition(int position) {
+        return postList.get(position);
     }
 }

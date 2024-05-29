@@ -6,13 +6,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IPostRepository;
 import it.unimib.communimib.repository.IReportRepository;
 import it.unimib.communimib.repository.IUserRepository;
 
-public class ProfileViewModel extends ViewModel {
+public class CurrentUserProfileViewModel extends ViewModel {
 
     private final IUserRepository userRepository;
     private final IPostRepository postRepository;
@@ -21,17 +22,21 @@ public class ProfileViewModel extends ViewModel {
     private MutableLiveData<Result> addedPostResult;
     private MutableLiveData<Result> changedPostResult;
     private MutableLiveData<Result> removedPostResult;
+    private MutableLiveData<Result> undoDeletePostResult;
     private MutableLiveData<Result> cancelledPostResult;
 
     private MutableLiveData<Result> addedReportResult;
     private MutableLiveData<Result> changedReportResult;
     private MutableLiveData<Result> removedReportResult;
     private MutableLiveData<Result> cancelledReportResult;
+
     private MutableLiveData<Result> updateUserPropicResult;
     private MutableLiveData<Result> updateUserNameAndSurnameResult;
 
+    private MutableLiveData<Result> logoutResult;
 
-    public ProfileViewModel(IUserRepository userRepository, IPostRepository postRepository, IReportRepository repository) {
+
+    public CurrentUserProfileViewModel(IUserRepository userRepository, IPostRepository postRepository, IReportRepository repository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.reportRepository = repository;
@@ -39,6 +44,7 @@ public class ProfileViewModel extends ViewModel {
         addedPostResult = new MutableLiveData<>();
         changedPostResult = new MutableLiveData<>();
         removedPostResult = new MutableLiveData<>();
+        undoDeletePostResult = new MutableLiveData<>();
         cancelledPostResult = new MutableLiveData<>();
 
         addedReportResult = new MutableLiveData<>();
@@ -48,6 +54,8 @@ public class ProfileViewModel extends ViewModel {
 
         updateUserPropicResult = new MutableLiveData<>();
         updateUserNameAndSurnameResult = new MutableLiveData<>();
+
+        logoutResult = new MutableLiveData<>();
     }
 
     public User getCurrentUser(){
@@ -55,8 +63,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void readPostsByUser(){
-        String uid = getCurrentUser().getUid();
-        postRepository.readPostsByUid(uid,
+        postRepository.readPostsByUid(getCurrentUser().getUid(),
                 postAdded -> addedPostResult.setValue(postAdded),
                 postChanged -> changedPostResult.setValue(postChanged),
                 postRemoved -> removedPostResult.setValue(postRemoved),
@@ -64,8 +71,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void readReportsByUser(){
-        String uid = getCurrentUser().getUid();
-        reportRepository.readReportsByUid(uid,
+        reportRepository.readReportsByUid(getCurrentUser().getUid(),
                 reportAdded -> addedReportResult.setValue(reportAdded),
                 reportChanged -> changedReportResult.setValue(reportChanged),
                 reportRemoved -> removedReportResult.setValue(reportRemoved),
@@ -73,17 +79,28 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void updateUserParameters(Uri uri, String name, String surname) {
-
         //Prendo l'utente corrente
         User currentUser = getCurrentUser();
 
         //Se l'immagine profilo è diversa la devo aggiornare
-        if(uri != null && (currentUser.getPropic() == null || !currentUser.getPropic().equals(uri.toString())))
+        if(uri != null)
             userRepository.uploadPropic(uri, result -> updateUserPropicResult.postValue(result));
 
         //Se il nome ed il cognome sono diversi li devo aggiornare
         if(!currentUser.getName().equals(name) || !currentUser.getSurname().equals(surname))
             userRepository.updateUserNameAndSurname(name, surname, result -> updateUserNameAndSurnameResult.postValue(result));
+    }
+
+    public void deletePost(Post post){
+        postRepository.deletePost(post, postDeleted -> {/* è catturato dalla lettura */});
+    }
+
+    public void undoDeletePost(Post post){
+        postRepository.undoDeletePost(post, undoDeletePost -> undoDeletePostResult.setValue(undoDeletePost));
+    }
+
+    public void logout() {
+        userRepository.signOut(logoutResult::postValue);
     }
 
     public LiveData<Result> getAddedPostResult() {
@@ -96,6 +113,10 @@ public class ProfileViewModel extends ViewModel {
 
     public LiveData<Result> getRemovedPostResult() {
         return removedPostResult;
+    }
+
+    public LiveData<Result> getUndoDeletePostResult(){
+        return undoDeletePostResult;
     }
 
     public LiveData<Result> getCancelledPostResult() {
@@ -126,17 +147,24 @@ public class ProfileViewModel extends ViewModel {
         return updateUserNameAndSurnameResult;
     }
 
+    public LiveData<Result> getLogoutResult() {
+        return logoutResult;
+    }
+
     public void cleanViewModel(){
         addedPostResult = new MutableLiveData<>();
         changedPostResult = new MutableLiveData<>();
         removedPostResult = new MutableLiveData<>();
+        undoDeletePostResult = new MutableLiveData<>();
         cancelledPostResult = new MutableLiveData<>();
 
         addedReportResult = new MutableLiveData<>();
         changedReportResult = new MutableLiveData<>();
         removedReportResult = new MutableLiveData<>();
         cancelledReportResult = new MutableLiveData<>();
+
         updateUserPropicResult = new MutableLiveData<>();
         updateUserNameAndSurnameResult = new MutableLiveData<>();
+        logoutResult = new MutableLiveData<>();
     }
 }
