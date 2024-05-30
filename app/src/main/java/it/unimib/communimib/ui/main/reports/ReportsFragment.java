@@ -85,14 +85,8 @@ public class ReportsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fragmentReportsBinding.fragmentReportSearchView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                fragmentReportsBinding.fragmentReportSearchView.setIconified(false);
-            }
-        });
+        fragmentReportsBinding.fragmentReportSearchView.setOnClickListener(v ->
+                fragmentReportsBinding.fragmentReportSearchView.setIconified(false));
 
         fragmentReportsBinding.fragmentReportSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -241,6 +235,8 @@ public class ReportsFragment extends Fragment {
         favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
 
+                boolean updatedFavoriteBuildings = false;
+                
                 // alla prima chiamata riempie i preferiti
                 if(favoriteBuildings.isEmpty()){
                     favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
@@ -250,10 +246,11 @@ public class ReportsFragment extends Fragment {
                 //successivamente effettua la rilettura solo se i preferiti sono cambiati rispetto a prima
                 if(!favoriteBuildings.equals(((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings())){
                     favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
+                    updatedFavoriteBuildings = true;
                 }
 
                 // aggiorna recycler view solo se è stata selezionata la visualizzazione per preferiti
-                if(isFilteredByFavorites && !favoriteBuildings.equals(((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings())) {
+                if(isFilteredByFavorites && updatedFavoriteBuildings) {
                         reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                         reportsViewModel.readReportsByBuildings(favoriteBuildings);
                 }
