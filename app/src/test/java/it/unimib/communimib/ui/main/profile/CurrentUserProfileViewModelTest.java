@@ -191,6 +191,17 @@ public class CurrentUserProfileViewModelTest {
     }
 
     @Test
-    public void logout() {
+    public void logout() throws InterruptedException {
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(0);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(userRepository).signOut(any());
+
+        currentUserProfileViewModel.logout();
+        Result result = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getLogoutResult());
+        assertTrue(result instanceof Result.Success);
+
+        verify(userRepository).signOut(any());
     }
 }
