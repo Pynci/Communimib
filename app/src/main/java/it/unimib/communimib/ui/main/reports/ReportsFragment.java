@@ -102,12 +102,6 @@ public class ReportsFragment extends Fragment {
             }
         });
 
-        fragmentReportsBinding.fragmentReportSearchView.setOnCloseListener(() -> {
-            filter(filtersViewModel.getChosenFilter().getValue());
-            return false;
-        });
-
-
         //Gestione pulsanti del menu
         fragmentReportsBinding.floatingActionButtonMenu.setOnClickListener(v ->
             onMenuButtonClicked(getContext())
@@ -261,10 +255,6 @@ public class ReportsFragment extends Fragment {
                         BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
-
-
-        //setTextAlert();
-
 
         favoriteBuildingViewModel.getSetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
