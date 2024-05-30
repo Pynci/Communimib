@@ -121,4 +121,6 @@
     <string name="post_removed">Il post è stato rimosso</string>
     <string name="logout_button">Bottone di logout</string>
     <string name="comments"> Commenti </string>
+    <string name="noFavoriteBuildingsChosen"> Prova a selezionare degli edifici preferiti </string>
+    <string name="noFavoriteBuilidingsReports"> Nessuna segnalazione per i tuoi edifici preferiti </string>
 </resources>
