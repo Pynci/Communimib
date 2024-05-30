@@ -254,15 +254,16 @@ public class ReportsFragment extends Fragment {
                         reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                         reportsViewModel.readReportsByBuildings(favoriteBuildings);
                 }
-
+                //setto la text view di alert se non sono presenti report
+                setTextAlert();
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
 
-        //setto la text view di alert se non sono presenti report
-        setTextAlert();
+
+        //setTextAlert();
 
 
         favoriteBuildingViewModel.getSetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
