@@ -94,6 +94,11 @@ public class ProfileMainViewUITest {
     @Test
     public void testLogOutButton(){
 
+        onView(withId(R.id.fragmentProfile_imageButton_logout)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.fragmentProfile_imageButton_logout)).check(matches(isClickable()));
     }
+
+
 
 }
