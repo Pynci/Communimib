@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import it.unimib.communimib.model.Post;
+import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IPostRepository;
@@ -97,6 +98,10 @@ public class CurrentUserProfileViewModel extends ViewModel {
 
     public void undoDeletePost(Post post){
         postRepository.undoDeletePost(post, undoDeletePost -> undoDeletePostResult.setValue(undoDeletePost));
+    }
+
+    public void closeReport(Report report){
+        reportRepository.deleteReport(report, reportDeleted -> {/* è catturato dalla lettura */});
     }
 
     public void logout() {

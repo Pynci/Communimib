@@ -142,12 +142,14 @@ public class OtherUserProfileFragment extends Fragment {
         reportsRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(isUnimibEmployee, new OnReportClickListener() {
             @Override
             public void onItemClick(Report report) {
-                // TODO: da implementare
+                OtherUserProfileFragmentDirections.ActionOtherUserProfileFragmentToDetailedReportFragment action =
+                        OtherUserProfileFragmentDirections.actionOtherUserProfileFragmentToDetailedReportFragment(report);
+                Navigation.findNavController(view).navigate(action);
             }
 
             @Override
             public void onCloseReportClick(Report report) {
-                // TODO: da implementare
+                // non deve fare niente
             }
 
             @Override
