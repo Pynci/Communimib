@@ -54,6 +54,15 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
         }
     }
 
+    public boolean isEmpty(){
+        for (BuildingReport buildingReport: buildingReportList) {
+            if(!buildingReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void clearHorizontalAdapters(){
         for (BuildingReport buildingReport : buildingReportList) {
             buildingReport.getReportsHorizontalRecyclerViewAdapter().clearReportList();

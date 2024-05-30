@@ -30,7 +30,6 @@ import it.unimib.communimib.model.BuildingReport;
 import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
-import it.unimib.communimib.ui.main.dashboard.DashboardFragmentDirections;
 import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingViewModel;
 import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingViewModelFactory;
 import it.unimib.communimib.ui.main.reports.dialogs.favorites.FavoriteBuildingsFragmentDialog;
@@ -150,6 +149,8 @@ public class ReportsFragment extends Fragment {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
                 reportMainRecyclerViewAdapter.addItem(report.getBuilding(), report);
+                fragmentReportsBinding.textViewAlert.setVisibility(View.GONE);
+
             }
             else{
                 Snackbar
@@ -173,6 +174,9 @@ public class ReportsFragment extends Fragment {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
                 reportMainRecyclerViewAdapter.removeItem(report.getBuilding(),report);
+                if(reportMainRecyclerViewAdapter.isEmpty()){
+                    setTextAlert();
+                }
             }
             else{
                 Snackbar
@@ -260,6 +264,10 @@ public class ReportsFragment extends Fragment {
             }
         });
 
+        //setto la text view di alert se non sono presenti report
+        setTextAlert();
+
+
         favoriteBuildingViewModel.getSetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 favoriteBuildingViewModel.getUserFavoriteBuildings();
@@ -343,6 +351,19 @@ public class ReportsFragment extends Fragment {
             fragmentReportsBinding.floatingActionButtonFavorite.startAnimation(animationToBottom);
             fragmentReportsBinding.floatingActionButtonFilterBuildings.startAnimation(animationToBottom);
             fragmentReportsBinding.floatingActionButtonMenu.startAnimation(animationRotateClose);
+        }
+    }
+    //metodo per settare la textView che compare quando la recycler view è vuota
+    public void setTextAlert(){
+        if(reportMainRecyclerViewAdapter.isEmpty()){
+            fragmentReportsBinding.textViewAlert.setVisibility(View.VISIBLE);
+            if(favoriteBuildings.isEmpty()){
+                fragmentReportsBinding.textViewAlert.setText(R.string.no_favorite_buildings_chosen);
+            } else {
+                fragmentReportsBinding.textViewAlert.setText(R.string.no_favorite_buildings_reports);
+            }
+        } else {
+            fragmentReportsBinding.textViewAlert.setVisibility(View.GONE);
         }
     }
 
