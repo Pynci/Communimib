@@ -6,15 +6,20 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.net.Uri;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import it.unimib.communimib.Callback;
 import it.unimib.communimib.LiveDataTestUtil;
+import it.unimib.communimib.model.Post;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 import it.unimib.communimib.repository.IPostRepository;
@@ -32,6 +37,8 @@ public class CurrentUserProfileViewModelTest {
     private IReportRepository reportRepository;
     private CurrentUserProfileViewModel currentUserProfileViewModel;
 
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
     @Before
     public void setUp() throws Exception {
         userRepository = mock(UserRepository.class);
@@ -97,8 +104,6 @@ public class CurrentUserProfileViewModelTest {
             return null;
         }).when(reportRepository).readReportsByUid(eq(uid), any(), any(), any(), any());
 
-        //when(userRepository.getCurrentUser()).thenReturn(user);
-
         doReturn(user).when(userRepository).getCurrentUser();
 
         currentUserProfileViewModel.readReportsByUser();
@@ -121,7 +126,7 @@ public class CurrentUserProfileViewModelTest {
         user.setUid(uid);
         user.setName("giu");
         user.setSurname("vitale");
-        Uri uri = Uri.parse("https://link");
+        Uri uri = mock(Uri.class);
         String name = "giulia";
         String surname = "vitale";
 
@@ -145,14 +150,44 @@ public class CurrentUserProfileViewModelTest {
         Result nameSurnameResult = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getUpdateUserNameAndSurnameResult());
         assertTrue(nameSurnameResult instanceof Result.Success);
 
+        verify(userRepository).uploadPropic(eq(uri), any());
+        verify(userRepository).updateUserNameAndSurname(eq(name), eq(surname), any());
+        verify(userRepository).getCurrentUser();
+
     }
 
     @Test
     public void deletePost() {
+        Post post = new Post();
+        post.setPid("11111");
+
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(1);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(postRepository).deletePost(eq(post), any());
+
+        currentUserProfileViewModel.deletePost(post);
+
+        verify(postRepository).deletePost(eq(post), any());
     }
 
     @Test
-    public void undoDeletePost() {
+    public void undoDeletePost() throws InterruptedException {
+        Post post = new Post();
+        post.setPid("11111");
+
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(1);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(postRepository).undoDeletePost(eq(post), any());
+
+        currentUserProfileViewModel.undoDeletePost(post);
+        Result result = LiveDataTestUtil.getOrAwaitValue(currentUserProfileViewModel.getUndoDeletePostResult());
+        assertTrue(result instanceof Result.Success);
+
+        verify(postRepository).undoDeletePost(eq(post), any());
     }
 
     @Test
