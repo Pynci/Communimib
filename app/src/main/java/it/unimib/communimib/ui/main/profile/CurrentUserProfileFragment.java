@@ -193,12 +193,14 @@ public class CurrentUserProfileFragment extends Fragment {
         reportsRecyclerViewAdapter = new ReportsHorizontalRecyclerViewAdapter(isUnimibEmployee, new OnReportClickListener() {
             @Override
             public void onItemClick(Report report) {
-                //TODO: da implementare
+                CurrentUserProfileFragmentDirections.ActionCurrentUserProfileFragmentToDetailedReportFragment action =
+                        CurrentUserProfileFragmentDirections.actionCurrentUserProfileFragmentToDetailedReportFragment(report);
+                Navigation.findNavController(view).navigate(action);
             }
 
             @Override
             public void onCloseReportClick(Report report) {
-                //TODO: da implementare
+                currentUserProfileViewModel.closeReport(report);
             }
 
             @Override

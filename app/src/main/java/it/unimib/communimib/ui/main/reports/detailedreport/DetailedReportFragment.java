@@ -70,6 +70,11 @@ public class DetailedReportFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        View.OnClickListener tapToProfileListener = v -> {
+            DetailedReportFragmentDirections.ActionDetailedReportFragmentToOtherUserProfileFragment action =
+                    DetailedReportFragmentDirections.actionDetailedReportFragmentToOtherUserProfileFragment(report.getAuthor());
+            Navigation.findNavController(view).navigate(action);
+        };
         binding.textViewTitolo.setText(report.getTitle());
         binding.textViewDescription.setText(report.getDescription());
         binding.textViewCategory.setText(report.getCategory());
@@ -86,6 +91,9 @@ public class DetailedReportFragment extends Fragment {
         User currentUser = detailedReportViewModel.getCurrentUser();
         if(currentUser != null && currentUser.isUnimibEmployee())
             binding.buttonCloseReport.setVisibility(View.VISIBLE);
+
+        binding.cardViewProfileImage.setOnClickListener(tapToProfileListener);
+        binding.textViewAuthor.setOnClickListener(tapToProfileListener);
 
         binding.buttonCloseReport.setOnClickListener(v -> detailedReportViewModel.closeReport(report));
 
