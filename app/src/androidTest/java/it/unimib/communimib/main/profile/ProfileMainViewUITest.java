@@ -99,6 +99,9 @@ public class ProfileMainViewUITest {
         onView(withId(R.id.fragmentProfile_imageButton_logout)).check(matches(isClickable()));
     }
 
+    @Test
+    public void testCurrentSelection(){
 
-
+        onView(withId(R.id.profileDoubleItem_recyclerView)).check(matches(isDisplayed()));
+    }
 }
