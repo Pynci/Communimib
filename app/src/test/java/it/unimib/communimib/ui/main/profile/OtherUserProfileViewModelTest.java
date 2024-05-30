@@ -68,6 +68,31 @@ public class OtherUserProfileViewModelTest {
     }
 
     @Test
-    public void readReportsByUser() {
+    public void readReportsByUser() throws InterruptedException {
+        String uid = "111111111";
+
+        doAnswer(invocation -> {
+            Callback addedCallback = invocation.getArgument(1);
+            addedCallback.onComplete(new Result.Success());
+            Callback changedCallback = invocation.getArgument(2);
+            changedCallback.onComplete(new Result.Success());
+            Callback removedCallback = invocation.getArgument(3);
+            removedCallback.onComplete(new Result.Success());
+            Callback cancelledCallback = invocation.getArgument(4);
+            cancelledCallback.onComplete(new Result.Success());
+            return null;
+        }).when(reportRepository).readReportsByUid(eq(uid), any(), any(), any(), any());
+
+        otherUserProfileViewModel.readReportsByUser(uid);
+        Result addedResult = LiveDataTestUtil.getOrAwaitValue(otherUserProfileViewModel.getAddedReportResult());
+        assertTrue(addedResult instanceof Result.Success);
+        Result changedResult = LiveDataTestUtil.getOrAwaitValue(otherUserProfileViewModel.getChangedReportResult());
+        assertTrue(changedResult instanceof Result.Success);
+        Result removedResult = LiveDataTestUtil.getOrAwaitValue(otherUserProfileViewModel.getRemovedReportResult());
+        assertTrue(removedResult instanceof Result.Success);
+        Result cancelledResult = LiveDataTestUtil.getOrAwaitValue(otherUserProfileViewModel.getCancelledReportResult());
+        assertTrue(cancelledResult instanceof Result.Success);
+
+        verify(reportRepository).readReportsByUid(eq(uid), any(), any(), any(), any());
     }
 }
