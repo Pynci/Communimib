@@ -15,12 +15,19 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
+import android.view.View;
+
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,7 +65,23 @@ public class PostsMainViewUITest {
         }
         scenario = ActivityScenario.launch(MainActivity.class);
 
-        onView(withId(R.id.activityMainButtonMenu_bottomNavigation)).perform(click(R.id.dashboardFragment, BUTTON_PRIMARY));
+        onView(withId(R.id.activityMainButtonMenu_bottomNavigation)).perform(new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return ViewMatchers.isAssignableFrom(BottomNavigationView.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Click on menu item to navigate to dashboard";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                BottomNavigationView bottomNavigationView = (BottomNavigationView) view;
+                bottomNavigationView.setSelectedItemId(R.id.dashboardFragment);
+            }
+        });
 
         onView(withId(R.id.dashboardFragment)).check(matches(ViewMatchers.isDisplayed()));
 
