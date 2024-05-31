@@ -77,16 +77,20 @@ public class FiltersFragmentDialog extends DialogFragment {
             if(selectedBuildings.isEmpty()) {
                 List<String> checkedBox = new ArrayList<>();
 
-                if(binding.fragmentFilterCheckboxFavoriteBuildings.isChecked())
+                if(binding.fragmentFilterCheckboxFavoriteBuildings.isChecked()){
                     checkedBox.add("filter-by-favorite");
-                else
+                    filtersViewModel.setFilters(checkedBox, this::dismiss);
+                }
+                else if(binding.fragmentFilterCheckboxAllBuildings.isChecked()){
                     checkedBox.add("filter-by-all");
+                    filtersViewModel.setFilters(checkedBox, this::dismiss);
+                }
 
-                filtersViewModel.setFilters(checkedBox, this::dismiss);
             }
             else{
                 filtersViewModel.setFilters(selectedBuildings, this::dismiss);
             }
+
             this.dismiss();
         });
 
