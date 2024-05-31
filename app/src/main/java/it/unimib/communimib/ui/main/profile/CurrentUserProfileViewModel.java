@@ -30,6 +30,7 @@ public class CurrentUserProfileViewModel extends ViewModel {
     private MutableLiveData<Result> changedReportResult;
     private MutableLiveData<Result> removedReportResult;
     private MutableLiveData<Result> cancelledReportResult;
+    private MutableLiveData<Result> closedReportResult;
 
     private MutableLiveData<Result> updateUserPropicResult;
     private MutableLiveData<Result> updateUserNameAndSurnameResult;
@@ -52,6 +53,7 @@ public class CurrentUserProfileViewModel extends ViewModel {
         changedReportResult = new MutableLiveData<>();
         removedReportResult = new MutableLiveData<>();
         cancelledReportResult = new MutableLiveData<>();
+        closedReportResult = new MutableLiveData<>();
 
         updateUserPropicResult = new MutableLiveData<>();
         updateUserNameAndSurnameResult = new MutableLiveData<>();
@@ -101,7 +103,7 @@ public class CurrentUserProfileViewModel extends ViewModel {
     }
 
     public void closeReport(Report report){
-        reportRepository.deleteReport(report, reportDeleted -> {/* è catturato dalla lettura */});
+        reportRepository.deleteReport(report, reportDeleted -> closedReportResult.setValue(reportDeleted));
     }
 
     public void logout() {
@@ -144,6 +146,10 @@ public class CurrentUserProfileViewModel extends ViewModel {
         return cancelledReportResult;
     }
 
+    public LiveData<Result> getClosedReportResult() {
+        return closedReportResult;
+    }
+
     public LiveData<Result> getUpdateUserPropicResult() {
         return updateUserPropicResult;
     }
@@ -167,6 +173,7 @@ public class CurrentUserProfileViewModel extends ViewModel {
         changedReportResult = new MutableLiveData<>();
         removedReportResult = new MutableLiveData<>();
         cancelledReportResult = new MutableLiveData<>();
+        closedReportResult = new MutableLiveData<>();
 
         updateUserPropicResult = new MutableLiveData<>();
         updateUserNameAndSurnameResult = new MutableLiveData<>();

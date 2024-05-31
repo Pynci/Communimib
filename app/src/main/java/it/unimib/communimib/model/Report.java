@@ -3,6 +3,7 @@ package it.unimib.communimib.model;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Report implements Serializable {
 
@@ -72,5 +73,18 @@ public class Report implements Serializable {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Report report = (Report) o;
+        return Objects.equals(getRid(), report.getRid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRid());
     }
 }
