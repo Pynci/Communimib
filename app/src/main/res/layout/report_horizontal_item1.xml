@@ -88,10 +88,10 @@
                         android:scaleType="centerCrop"
                         android:src="@mipmap/edificiou1"
                         android:tintMode="src_atop"
+                        app:tint="#54000000"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:tint="#54000000" />
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
