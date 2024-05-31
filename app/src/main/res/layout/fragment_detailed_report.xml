@@ -129,12 +129,12 @@
         app:layout_constraintTop_toBottomOf="@+id/separatore">
 
         <ImageView
-            android:scaleType="centerCrop"
             android:id="@+id/reportListItem_imageProfile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/user_filled" />
 
     </androidx.cardview.widget.CardView>
 

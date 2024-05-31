@@ -42,7 +42,7 @@ import it.unimib.communimib.ui.main.reports.dialogs.filters.FiltersViewModel;
 
 public class ReportsFragment extends Fragment {
 
-    private FragmentReportsBinding fragmentReportsBinding;
+    private FragmentReportsBinding binding;
     private ReportsViewModel reportsViewModel;
     private FiltersViewModel filtersViewModel;
     private ReportsCreationViewModel reportsCreationViewModel;
@@ -78,18 +78,18 @@ public class ReportsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        fragmentReportsBinding = FragmentReportsBinding.inflate(inflater, container, false);
-        return fragmentReportsBinding.getRoot();
+        binding = FragmentReportsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fragmentReportsBinding.fragmentReportSearchView.setOnClickListener(v ->
-                fragmentReportsBinding.fragmentReportSearchView.setIconified(false));
+        binding.fragmentReportSearchView.setOnClickListener(v ->
+                binding.fragmentReportSearchView.setIconified(false));
 
-        fragmentReportsBinding.fragmentReportSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.fragmentReportSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
@@ -104,23 +104,23 @@ public class ReportsFragment extends Fragment {
         });
 
         //Gestione pulsanti del menu
-        fragmentReportsBinding.floatingActionButtonMenu.setOnClickListener(v ->
+        binding.floatingActionButtonMenu.setOnClickListener(v ->
             onMenuButtonClicked(getContext())
         );
 
-        fragmentReportsBinding.floatingActionButtonFavorite.setOnClickListener(v -> {
+        binding.floatingActionButtonFavorite.setOnClickListener(v -> {
             FavoriteBuildingsFragmentDialog favoriteBuildingsFragmentDialog = new FavoriteBuildingsFragmentDialog(favoriteBuildingViewModel, favoriteBuildings);
             favoriteBuildingsFragmentDialog.show(getParentFragmentManager(), "New Favorite Dialog");
             onMenuButtonClicked(getContext());
         });
 
-        fragmentReportsBinding.floatingActionButtonFilterBuildings.setOnClickListener(v -> {
+        binding.floatingActionButtonFilterBuildings.setOnClickListener(v -> {
             FiltersFragmentDialog filtersFragmentDialog = new FiltersFragmentDialog(filtersViewModel, filters);
             filtersFragmentDialog.show(getParentFragmentManager(), "New Filter Fragment Dialog");
             onMenuButtonClicked(getContext());
         });
 
-        fragmentReportsBinding.floatingActionButtonAddNewReport.setOnClickListener(v -> {
+        binding.floatingActionButtonAddNewReport.setOnClickListener(v -> {
             NewReportFragmentDialog dialog = new NewReportFragmentDialog(reportsCreationViewModel);
             dialog.show(getParentFragmentManager(), "New Report Fragment Dialog");
             onMenuButtonClicked(getContext());
@@ -138,7 +138,7 @@ public class ReportsFragment extends Fragment {
             if(result.isSuccessful()){
                 Report report = ((Result.ReportSuccess) result).getReport();
                 reportMainRecyclerViewAdapter.addItem(report.getBuilding(), report);
-                fragmentReportsBinding.textViewAlert.setVisibility(View.GONE);
+                binding.textViewAlert.setVisibility(View.GONE);
 
             }
             else{
@@ -219,7 +219,7 @@ public class ReportsFragment extends Fragment {
             buildingReportList.add(new BuildingReport(buildings[i],reportsHorizontalRecyclerViewAdapter));
         }
 
-        RecyclerView mainRecyclerView = fragmentReportsBinding.fragmentReportRecyclerView;
+        RecyclerView mainRecyclerView = binding.fragmentReportRecyclerView;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         reportMainRecyclerViewAdapter = new ReportMainRecyclerViewAdapter(buildingReportList);
         mainRecyclerView.setAdapter(reportMainRecyclerViewAdapter);
@@ -253,24 +253,33 @@ public class ReportsFragment extends Fragment {
 
         //Gestione osservazione filtri
         filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), filters -> {
-            if(filters.get(0).equals("filter-by-all")){
-                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readAllReports();
-                isFilteredByFavorite = false;
-                setTextAlert();
-            }
-            else if(filters.get(0).equals("filter-by-favorite")){
-                favoriteBuildingViewModel.getUserFavoriteBuildings();
-                isFilteredByFavorite = true;
-            }
-            else{
-                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readReportsByBuildings(filters);
-                isFilteredByFavorite = false;
-                setTextAlert();
-            }
+            filterAndRead(filters);
             this.filters = filters;
         });
+
+        binding.fragmentReportSearchView.setOnCloseListener(() -> {
+            filterAndRead(filters);
+            return false;
+        });
+    }
+
+    private void filterAndRead(List<String> filters) {
+        if(filters == null || filters.get(0).equals("filter-by-favorite")){
+            favoriteBuildingViewModel.getUserFavoriteBuildings();
+            isFilteredByFavorite = true;
+        }
+        else if(filters.get(0).equals("filter-by-all")){
+            reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+            reportsViewModel.readAllReports();
+            isFilteredByFavorite = false;
+            setTextAlert();
+        }
+        else {
+            reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+            reportsViewModel.readReportsByBuildings(filters);
+            isFilteredByFavorite = false;
+            setTextAlert();
+        }
     }
 
     @Override
@@ -292,14 +301,14 @@ public class ReportsFragment extends Fragment {
 
     private void setVisibility() {
         if(!menuVisibile) {
-            fragmentReportsBinding.floatingActionButtonAddNewReport.setVisibility(View.VISIBLE);
-            fragmentReportsBinding.floatingActionButtonFavorite.setVisibility(View.VISIBLE);
-            fragmentReportsBinding.floatingActionButtonFilterBuildings.setVisibility(View.VISIBLE);
+            binding.floatingActionButtonAddNewReport.setVisibility(View.VISIBLE);
+            binding.floatingActionButtonFavorite.setVisibility(View.VISIBLE);
+            binding.floatingActionButtonFilterBuildings.setVisibility(View.VISIBLE);
         }
         else{
-            fragmentReportsBinding.floatingActionButtonAddNewReport.setVisibility(View.INVISIBLE);
-            fragmentReportsBinding.floatingActionButtonFavorite.setVisibility(View.INVISIBLE);
-            fragmentReportsBinding.floatingActionButtonFilterBuildings.setVisibility(View.INVISIBLE);
+            binding.floatingActionButtonAddNewReport.setVisibility(View.INVISIBLE);
+            binding.floatingActionButtonFavorite.setVisibility(View.INVISIBLE);
+            binding.floatingActionButtonFilterBuildings.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -310,37 +319,37 @@ public class ReportsFragment extends Fragment {
         Animation animationRotateClose = AnimationUtils.loadAnimation(context, R.anim.rotate_close_anim);
 
         if(!menuVisibile) {
-            fragmentReportsBinding.floatingActionButtonAddNewReport.startAnimation(animationFromBottom);
-            fragmentReportsBinding.floatingActionButtonFavorite.startAnimation(animationFromBottom);
-            fragmentReportsBinding.floatingActionButtonFilterBuildings.startAnimation(animationFromBottom);
-            fragmentReportsBinding.floatingActionButtonMenu.startAnimation(animationRotateOpen);
+            binding.floatingActionButtonAddNewReport.startAnimation(animationFromBottom);
+            binding.floatingActionButtonFavorite.startAnimation(animationFromBottom);
+            binding.floatingActionButtonFilterBuildings.startAnimation(animationFromBottom);
+            binding.floatingActionButtonMenu.startAnimation(animationRotateOpen);
         }
         else{
-            fragmentReportsBinding.floatingActionButtonAddNewReport.startAnimation(animationToBottom);
-            fragmentReportsBinding.floatingActionButtonFavorite.startAnimation(animationToBottom);
-            fragmentReportsBinding.floatingActionButtonFilterBuildings.startAnimation(animationToBottom);
-            fragmentReportsBinding.floatingActionButtonMenu.startAnimation(animationRotateClose);
+            binding.floatingActionButtonAddNewReport.startAnimation(animationToBottom);
+            binding.floatingActionButtonFavorite.startAnimation(animationToBottom);
+            binding.floatingActionButtonFilterBuildings.startAnimation(animationToBottom);
+            binding.floatingActionButtonMenu.startAnimation(animationRotateClose);
         }
     }
 
     //metodo per settare la textView che compare quando la recycler view è vuota
     public void setTextAlert(){
         if(reportMainRecyclerViewAdapter.isEmpty()){
-            fragmentReportsBinding.textViewAlert.setVisibility(View.VISIBLE);
+            binding.textViewAlert.setVisibility(View.VISIBLE);
 
             if(isFilteredByFavorite){
                 if(favoriteBuildings.isEmpty()){
-                    fragmentReportsBinding.textViewAlert.setText(R.string.no_favorite_buildings_chosen);
+                    binding.textViewAlert.setText(R.string.no_favorite_buildings_chosen);
                 } else {
-                    fragmentReportsBinding.textViewAlert.setText(R.string.no_favorite_buildings_reports);
+                    binding.textViewAlert.setText(R.string.no_favorite_buildings_reports);
                 }
             }
             else{
-                fragmentReportsBinding.textViewAlert.setText(R.string.no_current_filters_reports);
+                binding.textViewAlert.setText(R.string.no_current_filters_reports);
             }
 
         } else {
-            fragmentReportsBinding.textViewAlert.setVisibility(View.GONE);
+            binding.textViewAlert.setVisibility(View.GONE);
         }
     }
 
