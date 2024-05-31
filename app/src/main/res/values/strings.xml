@@ -75,7 +75,7 @@
     <string name="main_menu_button">bottone_principale_del_menu</string>
     <string name="select_buildings_filters">Seleziona gli edifici per filtrare le segnalazioni</string>
     <string name="filter_by_favorite_buildings">Visualizza le segnalazioni dei miei edifici preferiti</string>
-    <string name="show_all_buildings_reports">Visualizza le seganalzioni di tutti gli edifici</string>
+    <string name="show_all_buildings_reports">Visualizza le segnalazioni di tutti gli edifici</string>
     <string name="choose_favorite_buildings">Scegli i tuoi edifici preferiti</string>
     <string name="favorite_explain_1">Riceverai notifiche in tempo reale delle segnalazioni associate agli edifici selezionati</string>
     <string name="favorite_explain_2">Quando aprirai l\'applicazione le segnalazioni verranno filtrate automaticamente secondo gli edifici scelti</string>
@@ -121,4 +121,7 @@
     <string name="post_removed">Il post è stato rimosso</string>
     <string name="logout_button">Bottone di logout</string>
     <string name="comments"> Commenti </string>
+    <string name="no_favorite_buildings_chosen">Prova a selezionare degli edifici preferiti</string>
+    <string name="no_favorite_buildings_reports">Non sono presenti segnalazioni per i tuoi edifici preferiti</string>
+    <string name="no_current_filters_reports">Non sono presenti segnalazioni per i filtri impostati</string>
 </resources>

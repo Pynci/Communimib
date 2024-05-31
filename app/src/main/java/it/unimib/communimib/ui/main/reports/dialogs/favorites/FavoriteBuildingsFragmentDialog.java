@@ -3,7 +3,6 @@ package it.unimib.communimib.ui.main.reports.dialogs.favorites;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,13 +20,15 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
 
     private FragmentFavoriteDialogBinding binding;
     private FavoriteBuildingViewModel favoriteBuildingViewModel;
+    List<String> favoriteBuildings;
 
     public FavoriteBuildingsFragmentDialog () {
 
     }
 
-    public FavoriteBuildingsFragmentDialog (FavoriteBuildingViewModel favoriteBuildingViewModel) {
+    public FavoriteBuildingsFragmentDialog (FavoriteBuildingViewModel favoriteBuildingViewModel, List<String> favoriteBuildings) {
         this.favoriteBuildingViewModel = favoriteBuildingViewModel;
+        this.favoriteBuildings = favoriteBuildings;
     }
 
     @NonNull
@@ -61,16 +62,7 @@ public class FavoriteBuildingsFragmentDialog extends DialogFragment {
         //Gestione pulsante chiusura
         binding.fragmentFavoriteRollbackButton.setOnClickListener(v -> this.dismiss());
 
-        //Leggo gli interessi dell'utente
-        favoriteBuildingViewModel.getUserFavoriteBuildings();
-
-        favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(this, result -> {
-            List<String> favoriteBuildings;
-            if(result.isSuccessful()) {
-                favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
-                filterReportListViewAdapter.setCheckedItems(favoriteBuildings);
-            }
-        });
+        filterReportListViewAdapter.setCheckedItems(favoriteBuildings);
 
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

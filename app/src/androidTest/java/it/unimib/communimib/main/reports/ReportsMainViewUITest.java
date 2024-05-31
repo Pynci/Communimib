@@ -88,7 +88,7 @@ public class ReportsMainViewUITest {
         onView(withId(R.id.floatingActionButton_favorite)).perform(click());
 
         //Controllo che il dialog sia visibile
-        onView(withText(R.string.favorite_explain_1))
+        onView(withText(R.string.favorite_explain_2))
                 .check(matches(ViewMatchers.isDisplayed()));
     }
 

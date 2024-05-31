@@ -10,7 +10,7 @@ import it.unimib.communimib.DialogCallback;
 
 public class FiltersViewModel extends ViewModel {
 
-    private final MutableLiveData<List<String>> chosenFilter;
+    private MutableLiveData<List<String>> chosenFilter;
 
     public FiltersViewModel() {
         chosenFilter = new MutableLiveData<>();
@@ -23,5 +23,9 @@ public class FiltersViewModel extends ViewModel {
     protected void setFilters(List<String> list, DialogCallback callback) {
         chosenFilter.setValue(list);
         callback.onComplete();
+    }
+
+    public void cleanViewModel(){
+        chosenFilter = new MutableLiveData<>();
     }
 }

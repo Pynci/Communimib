@@ -378,6 +378,14 @@ public class CurrentUserProfileFragment extends Fragment {
                 Snackbar.make(requireView(),
                 ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                 BaseTransientBottomBar.LENGTH_SHORT).show());
+
+        currentUserProfileViewModel.getClosedReportResult().observe(getViewLifecycleOwner(), result ->{
+            if(result.isSuccessful()){
+                Snackbar.make(requireView(), R.string.report_closed_correctly, BaseTransientBottomBar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()), BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initPostsListeners() {
