@@ -49,6 +49,7 @@ public class ReportsFragment extends Fragment {
     private FavoriteBuildingViewModel favoriteBuildingViewModel;
     private ReportMainRecyclerViewAdapter reportMainRecyclerViewAdapter;
     private List<String> favoriteBuildings;
+    private List<String> filters;
     private boolean menuVisibile;
     private boolean isFilteredByFavorite = true;
 
@@ -114,7 +115,7 @@ public class ReportsFragment extends Fragment {
         });
 
         fragmentReportsBinding.floatingActionButtonFilterBuildings.setOnClickListener(v -> {
-            FiltersFragmentDialog filtersFragmentDialog = new FiltersFragmentDialog(filtersViewModel);
+            FiltersFragmentDialog filtersFragmentDialog = new FiltersFragmentDialog(filtersViewModel, filters);
             filtersFragmentDialog.show(getParentFragmentManager(), "New Filter Fragment Dialog");
             onMenuButtonClicked(getContext());
         });
@@ -233,7 +234,7 @@ public class ReportsFragment extends Fragment {
                 reportsViewModel.readReportsByBuildings(favoriteBuildings);
 
                 //setto la text view di alert se non sono presenti report
-                //setTextAlert();
+                setTextAlert();
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
@@ -256,6 +257,7 @@ public class ReportsFragment extends Fragment {
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                 reportsViewModel.readAllReports();
                 isFilteredByFavorite = false;
+                setTextAlert();
             }
             else if(filters.get(0).equals("filter-by-favorite")){
                 favoriteBuildingViewModel.getUserFavoriteBuildings();
@@ -265,7 +267,9 @@ public class ReportsFragment extends Fragment {
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                 reportsViewModel.readReportsByBuildings(filters);
                 isFilteredByFavorite = false;
+                setTextAlert();
             }
+            this.filters = filters;
         });
     }
 
@@ -274,6 +278,10 @@ public class ReportsFragment extends Fragment {
         super.onDestroyView();
         reportsViewModel.cleanViewModel();
         reportsCreationViewModel.cleanViewModel();
+        filtersViewModel.cleanViewModel();
+        filters = null;
+        isFilteredByFavorite = true;
+
     }
 
     private void onMenuButtonClicked(Context context) {
@@ -314,15 +322,23 @@ public class ReportsFragment extends Fragment {
             fragmentReportsBinding.floatingActionButtonMenu.startAnimation(animationRotateClose);
         }
     }
+
     //metodo per settare la textView che compare quando la recycler view è vuota
     public void setTextAlert(){
         if(reportMainRecyclerViewAdapter.isEmpty()){
             fragmentReportsBinding.textViewAlert.setVisibility(View.VISIBLE);
-            if(favoriteBuildings.isEmpty()){
-                fragmentReportsBinding.textViewAlert.setText(R.string.no_favorite_buildings_chosen);
-            } else {
-                fragmentReportsBinding.textViewAlert.setText(R.string.no_favorite_buildings_reports);
+
+            if(isFilteredByFavorite){
+                if(favoriteBuildings.isEmpty()){
+                    fragmentReportsBinding.textViewAlert.setText(R.string.no_favorite_buildings_chosen);
+                } else {
+                    fragmentReportsBinding.textViewAlert.setText(R.string.no_favorite_buildings_reports);
+                }
             }
+            else{
+                fragmentReportsBinding.textViewAlert.setText(R.string.no_current_filters_reports);
+            }
+
         } else {
             fragmentReportsBinding.textViewAlert.setVisibility(View.GONE);
         }
