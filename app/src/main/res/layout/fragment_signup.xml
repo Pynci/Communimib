@@ -230,7 +230,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/fragmentSignup_editText_confirmPassword"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:inputType="textPassword" />
 
                 </com.google.android.material.textfield.TextInputLayout>
