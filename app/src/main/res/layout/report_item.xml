@@ -29,9 +29,10 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
-                android:layout_marginTop="-170dp"
+                android:layout_marginTop="-165dp"
                 android:layout_marginEnd="-100dp"
                 app:cardCornerRadius="130dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -44,15 +45,16 @@
                     <ImageView
                         android:id="@+id/reportListItem_buildingImage"
                         android:layout_width="210dp"
-                        android:layout_height="135dp"
-                        android:background="@mipmap/edificiou1"
-                        android:backgroundTint="@color/md_theme_dark_tertiary"
-                        android:backgroundTintMode="multiply"
+                        android:layout_height="140dp"
+                        android:scaleType="centerCrop"
+                        android:tintMode="src_atop"
+                        app:tint="#54000000"
+                        android:src="@mipmap/edificiou1"
+                        android:contentDescription="@string/building"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:contentDescription="@string/building"/>
+                        app:layout_constraintStart_toStartOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -63,7 +65,7 @@
                 android:id="@+id/cardView"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
                 app:cardCornerRadius="30dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +112,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/md_theme_light_secondary"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView"
@@ -118,12 +120,11 @@
 
             <TextView
                 android:id="@+id/reportListItem_description"
-                android:layout_width="223dp"
-                android:layout_height="39dp"
+                android:layout_width="215dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
                 android:textColor="@color/md_theme_light_tertiary"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reportListItem_title"
@@ -133,16 +134,14 @@
                 android:id="@+id/reportListItem_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/rounded_right_corners"
                 android:backgroundTint="@color/md_theme_light_secondaryContainer"
-                android:paddingStart="5dp"
+                android:paddingStart="16dp"
                 android:paddingEnd="15dp"
                 android:textColor="@color/seed"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reportListItem_description"
                 app:layout_constraintVertical_bias="0.2"
@@ -156,9 +155,10 @@
                 android:layout_marginEnd="20dp"
                 android:text="@string/close"
                 android:textSize="12sp"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/reportListItem_category"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/reportListItem_category" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
