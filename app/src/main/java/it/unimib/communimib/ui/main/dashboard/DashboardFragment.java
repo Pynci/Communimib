@@ -202,6 +202,12 @@ public class DashboardFragment extends Fragment {
             binding.floatingActionButtonScrollUp.setVisibility(View.GONE);
         });
 
+        //Gestione della chiusura della searchbar
+        binding.fragmentDashboardSearchView.setOnCloseListener(() -> {
+            readPosts(dashboardViewModel.getVisualizedCategory());
+            return false;
+        });
+
     }
 
     public void readPosts(String category){
