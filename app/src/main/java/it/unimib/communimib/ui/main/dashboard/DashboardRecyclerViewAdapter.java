@@ -27,6 +27,13 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<PostViewH
         }
     }
 
+    public void addItem(Post newPost, int position){
+        if (!postList.contains(newPost)) {
+            postList.add(position, newPost);
+            notifyItemInserted(position);
+        }
+    }
+
     public void editItem(Post editedPost) {
         int position = postList.indexOf(editedPost);
         if (position != -1) {
@@ -69,5 +76,9 @@ public class DashboardRecyclerViewAdapter extends RecyclerView.Adapter<PostViewH
     @Override
     public int getItemCount() {
         return postList.size();
+    }
+
+    public Post getPostFromPosition(int position) {
+        return postList.get(position);
     }
 }

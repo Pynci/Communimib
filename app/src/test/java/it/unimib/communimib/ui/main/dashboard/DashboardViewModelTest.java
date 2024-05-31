@@ -117,5 +117,4 @@ public class DashboardViewModelTest {
         assertEquals(ErrorMapper.REMOTEDB_GET_ERROR, ((Result.Error) cancelledResult).getMessage());
     }
 
-
 }

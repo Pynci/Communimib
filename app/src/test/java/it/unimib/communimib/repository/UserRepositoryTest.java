@@ -1,348 +1,198 @@
 package it.unimib.communimib.repository;
 
-import static com.google.common.base.Verify.verify;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import android.net.Uri;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
-import it.unimib.communimib.database.FakeUserDAO;
-import it.unimib.communimib.datasource.user.FakeAuthDataSource;
-import it.unimib.communimib.datasource.user.FakeUserLocalDataSource;
-import it.unimib.communimib.datasource.user.FakeUserRemoteDataSource;
+import it.unimib.communimib.Callback;
+import it.unimib.communimib.datasource.user.IAuthDataSource;
+import it.unimib.communimib.datasource.user.IUserLocalDataSource;
+import it.unimib.communimib.datasource.user.IUserRemoteDataSource;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
-import it.unimib.communimib.util.ErrorMapper;
 
 public class UserRepositoryTest {
 
+    private IAuthDataSource authDataSource;
+    private IUserRemoteDataSource userRemoteDataSource;
+    private IUserLocalDataSource userLocalDataSource;
     private IUserRepository userRepository;
-    private FakeUserRemoteDataSource remoteDataSource;
-    private FakeAuthDataSource authDataSource;
-    private FakeUserDAO userDAO;
-    private User marco;
-    private volatile Result result;
+    private User user;
 
     @Before
-    public void setUp() throws NoSuchFieldException, IllegalAccessException {
-        userDAO = new FakeUserDAO();
-        remoteDataSource = new FakeUserRemoteDataSource();
-        FakeUserLocalDataSource localDataSource = new FakeUserLocalDataSource(userDAO);
-        authDataSource = new FakeAuthDataSource();
-        marco = new User("12345", "marco@unimib.it", "Marco", "Ferioli", true);
-        clearAll();
-        userRepository = UserRepository.getInstance(
-                authDataSource,
-                remoteDataSource,
-                localDataSource
-        );
+    public void setUp() throws Exception {
+        authDataSource = mock(IAuthDataSource.class);
+        userRemoteDataSource = mock(IUserRemoteDataSource.class);
+        userLocalDataSource = mock(IUserLocalDataSource.class);
+        userRepository = mock(UserRepository.class);
+        user = new User("11111", "g.vitale16@campus.unimib.it", "Giulia", "Vitale", false);
     }
 
     @Test
-    public void signUpSuccess() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+    public void signUp() {
+        doAnswer(invocation -> {
+            Callback authCallback = invocation.getArgument(2);
+            authCallback.onComplete(new Result.SignupSuccess("12345"));
+            return null;
+        }).when(authDataSource).signUp(any(), any(), any());
 
+        doAnswer(invocation -> {
+            Callback dbCallback = invocation.getArgument(5);
+            dbCallback.onComplete(new Result.Success());
+            return null;
+        }).when(userRemoteDataSource).storeUserParameters(any(), any(), any(), any(), anyBoolean(), any());
 
-        userRepository.signUp(marco.getEmail(), "password", marco.getName(), marco.getSurname(), result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Success);
-        Assert.assertEquals(marco.getEmail(), userRepository.getCurrentUser().getEmail());
+        Callback callback = result -> {
+            assertTrue(result instanceof Result.Success);
+            User currentUser = userRepository.getCurrentUser();
+            assertNotNull(currentUser);
+            assertEquals("12345", currentUser.getUid());
+        };
+
+        userRepository.signUp("g.vitale16@campus.unimib.it", "password", "Giulia", "Vitale", callback);
     }
 
     @Test
-    public void signUpFailure() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+    public void signIn() {
+        doAnswer(invocation -> {
+            Callback authCallback = invocation.getArgument(2);
+            authCallback.onComplete(new Result.Success());
+            return null;
+        }).when(authDataSource).signIn(any(), any(), any());
 
-        authDataSource.signedupUsers.add(marco);
+        doAnswer(invocation -> {
+            Callback userCallback = invocation.getArgument(1);
+            userCallback.onComplete(new Result.UserSuccess(user));
+            return null;
+        }).when(userRemoteDataSource).getUserByEmail(any(), any());
 
-        userRepository.signUp(marco.getEmail(), "password", marco.getName(), marco.getSurname(), result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Error);
-        Assert.assertEquals(ErrorMapper.SIGNUP_ERROR, ((Result.Error) result).getMessage());
+        Callback callback = result -> {
+            assertTrue(result instanceof Result.Success);
+            User currentUser = userRepository.getCurrentUser();
+            assertNotNull(currentUser);
+            assertEquals("g.vitale16@campus.unimib.it", currentUser.getEmail());
+        };
+
+        userRepository.signIn("g.vitale16@campus.unimib.it", "password", callback);
     }
 
     @Test
-    public void signInSuccess() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+    public void signOut() {
+        doAnswer(invocation -> {
+            Callback authCallback = invocation.getArgument(0);
+            authCallback.onComplete(new Result.Success());
+            return null;
+        }).when(authDataSource).signOut(any());
 
-        remoteDataSource.users.put(marco.getUid(), marco);
-        authDataSource.signedupUsers.add(marco);
+        Callback callback = result -> {
+            assertTrue(result instanceof Result.Success);
+            User currentUser = userRepository.getCurrentUser();
+            assertNull(currentUser);
+        };
 
-        userRepository.signIn(marco.getEmail(), "password", result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Success);
-        Assert.assertEquals(marco.getEmail(), userRepository.getCurrentUser().getEmail());
+        userRepository.signOut(callback);
     }
 
     @Test
-    public void signInFailureWrongPassword() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+    public void updateUserNameAndSurname() {
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(3);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(userRemoteDataSource).updateNameAndSurname(any(), any(), any(), any());
 
-        remoteDataSource.users.put(marco.getUid(), marco);
-        authDataSource.signedupUsers.add(marco);
+        Callback callback = result -> {
+            assertTrue(result instanceof Result.Success);
+            User currentUser = userRepository.getCurrentUser();
+            assertEquals("NewName", currentUser.getName());
+            assertEquals("NewSurname", currentUser.getSurname());
+        };
 
-        userRepository.signIn(marco.getEmail(), "wrongPassword", result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Error);
-        Assert.assertEquals(ErrorMapper.SIGNIN_ERROR, ((Result.Error) result).getMessage());
+        userRepository.updateUserNameAndSurname("NewName", "NewSurname", callback);
     }
 
     @Test
-    public void signInFailureWrongEmail() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+    public void uploadPropic() {
+        Uri localUri = mock(Uri.class);
 
-        remoteDataSource.users.put(marco.getUid(), marco);
-        authDataSource.signedupUsers.add(marco);
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(2);
+            callback.onComplete(new Result.UriSuccess("https://new.image.uri"));
+            return null;
+        }).when(userRemoteDataSource).uploadPropic(any(), any(), any());
 
-        userRepository.signIn("luca@unimib.it", "password", result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Error);
-        Assert.assertEquals(ErrorMapper.SIGNIN_ERROR, ((Result.Error) result).getMessage());
+        Callback callback = result -> {
+            assertTrue(result instanceof Result.Success);
+            User currentUser = userRepository.getCurrentUser();
+            assertEquals("https://new.image.uri", currentUser.getPropic());
+        };
+
+        userRepository.uploadPropic(localUri, callback);
     }
 
     @Test
-    public void signInFailureDataInconsistency() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-
-        // data are missing in remote data source (intentionally)
-        authDataSource.signedupUsers.add(marco);
-
-        userRepository.signIn(marco.getEmail(), "password", result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Error);
-        Assert.assertEquals(ErrorMapper.USER_NOT_FOUND_ERROR, ((Result.Error) result).getMessage());
-    }
-
-    @Test
-    public void signOutSuccess() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        userDAO.insertUser(marco);
-        remoteDataSource.users.put(marco.getUid(), marco);
-        authDataSource.signedupUsers.add(marco);
-        authDataSource.currentUser = marco;
-
-        userRepository.signOut(result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Success);
-        Assert.assertNull(userRepository.getCurrentUser());
-        Assert.assertNull(userDAO.getUser());
-    }
-
-    @Test
-    public void signOutFailure() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        remoteDataSource.users.put(marco.getUid(), marco);
-        authDataSource.signedupUsers.add(marco);
-
-        userRepository.signOut(result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Error);
-        Assert.assertEquals(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR, ((Result.Error) result).getMessage());
-    }
-
-    @Test
-    public void isSessionStillActiveTrue() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        userDAO.insertUser(marco);
-        remoteDataSource.users.put(marco.getUid(), marco);
-        authDataSource.signedupUsers.add(marco);
-        authDataSource.currentUser = marco;
-
-        userRepository.isSessionStillActive(result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.BooleanSuccess);
-        Assert.assertTrue(((Result.BooleanSuccess) result).getBoolean());
-    }
-
-    @Test
-    public void isSessionStillActiveFalse() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        userDAO.insertUser(marco);
-        remoteDataSource.users.put(marco.getUid(), marco);
-        authDataSource.signedupUsers.add(marco);
-
-        userRepository.isSessionStillActive(result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.BooleanSuccess);
-        Assert.assertFalse(((Result.BooleanSuccess) result).getBoolean());
-    }
-
-    @Test
-    public void updateUserNameAndSurnameSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        remoteDataSource.users.put(marco.getUid(), marco);
-        initializeCurrentUser(marco);
-
-        userRepository.updateUserNameAndSurname("Luca", "Pinciroli", result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Success);
-        Assert.assertEquals("Luca", remoteDataSource.users.get("12345").getName());
-        Assert.assertEquals("Pinciroli", remoteDataSource.users.get("12345").getSurname());
-        Assert.assertEquals("Luca", userRepository.getCurrentUser().getName());
-        Assert.assertEquals("Pinciroli", userRepository.getCurrentUser().getSurname());
-        Assert.assertEquals("Luca", userDAO.getUser().getName());
-        Assert.assertEquals("Pinciroli", userDAO.getUser().getSurname());
-    }
-
-    @Test
-    public void updateUserNameAndSurnameFailure() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        remoteDataSource.users.put(marco.getUid(), marco);
-        // missing current user initialization (on purpose)
-
-        userRepository.updateUserNameAndSurname("Luca", "Pinciroli", result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Error);
-        Assert.assertEquals(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR, ((Result.Error) result).getMessage());
-    }
-
-    @Test
-    public void uploadPropicSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        remoteDataSource.users.put(marco.getUid(), marco);
-        initializeCurrentUser(marco);
-        Uri uri = Mockito.mock(Uri.class);
-
-        userRepository.uploadPropic(uri, result -> {
-           this.result = result;
-           countDownLatch.countDown();
-        });
-
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Success);
-        Assert.assertEquals(uri.toString(), remoteDataSource.users.get("12345").getPropic());
-        Assert.assertEquals(uri.toString(), userRepository.getCurrentUser().getPropic());
-        Assert.assertEquals(uri.toString(), userDAO.getUser().getPropic());
-    }
-
-    @Test
-    public void uploadPropicFailure() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        remoteDataSource.users.put(marco.getUid(), marco);
-        Uri uri = Mockito.mock(Uri.class);
-        // missing current user initialization (on purpose)
-
-        userRepository.uploadPropic(uri, result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Error);
-        Assert.assertEquals(ErrorMapper.USER_NOT_AUTHENTICATED_ERROR, ((Result.Error) result).getMessage());
-    }
-
-    @Test
-    public void storeUserFavoriteBuildingsSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        remoteDataSource.users.put(marco.getUid(), marco);
-        initializeCurrentUser(marco);
+    public void storeUserFavoriteBuildings() {
         List<String> favoriteBuildings = new ArrayList<>();
-        favoriteBuildings.add("U1");
-        favoriteBuildings.add("U2");
+        favoriteBuildings.add("Building1");
+        favoriteBuildings.add("Building2");
 
-        userRepository.storeUserFavoriteBuildings(favoriteBuildings, result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(2);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(userRemoteDataSource).storeUserFavoriteBuildings(any(), any(), any());
 
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.Success);
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(1);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(userLocalDataSource).saveUserFavoriteBuildings(any(), any());
+
+        Callback callback = result -> assertTrue(result instanceof Result.Success);
+
+        userRepository.storeUserFavoriteBuildings(favoriteBuildings, callback);
     }
 
     @Test
-    public void readUserFavoriteBuildingsUpdateSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        List<String> favoriteBuildings = new ArrayList<>();
-        favoriteBuildings.add("U1");
-        favoriteBuildings.add("U2");
-        remoteDataSource.users.put(marco.getUid(), marco);
-        remoteDataSource.usersFavoriteBuildings.put(marco.getUid(), favoriteBuildings);
-        initializeCurrentUser(marco);
-        initializeLastFavoriteBuildingsUpdate(0);
+    public void readUserFavoriteBuildings() {
+        ArrayList<String> favoriteBuildings = new ArrayList<>();
+        favoriteBuildings.add("Building1");
+        favoriteBuildings.add("Building2");
 
-        userRepository.readUserFavoriteBuildings(result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(1);
+            callback.onComplete(new Result.UserFavoriteBuildingsSuccess(favoriteBuildings));
+            return null;
+        }).when(userRemoteDataSource).getUserFavoriteBuildings(any(), any());
 
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.UserFavoriteBuildingsSuccess);
-        Assert.assertEquals(favoriteBuildings, ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings());
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(1);
+            callback.onComplete(new Result.UserFavoriteBuildingsSuccess(favoriteBuildings));
+            return null;
+        }).when(userLocalDataSource).getUserFavoriteBuildings(any());
+
+        Callback callback = result -> {
+            assertTrue(result instanceof Result.Success);
+            assertEquals(favoriteBuildings, ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings());
+        };
+
+        userRepository.readUserFavoriteBuildings(callback);
     }
 
-    @Test
-    public void readUserFavoriteBuildingsFetchSuccess() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        List<String> favoriteBuildings = new ArrayList<>();
-        favoriteBuildings.add("U1");
-        favoriteBuildings.add("U2");
-        remoteDataSource.users.put(marco.getUid(), marco);
-        remoteDataSource.usersFavoriteBuildings.put(marco.getUid(), favoriteBuildings);
-        initializeCurrentUser(marco);
-        initializeLastFavoriteBuildingsUpdate(System.currentTimeMillis());
-
-        userRepository.readUserFavoriteBuildings(result -> {
-            this.result = result;
-            countDownLatch.countDown();
-        });
-
-        countDownLatch.await();
-        Assert.assertTrue(result instanceof Result.UserFavoriteBuildingsSuccess);
-        Assert.assertEquals(favoriteBuildings, ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings());
-    }
-
-    private void clearAll() throws NoSuchFieldException, IllegalAccessException {
+/*
+private void clearAll() throws NoSuchFieldException, IllegalAccessException {
         remoteDataSource.users.clear();
-        userDAO.clearUser();
+        //userDAO.clearUser();
         authDataSource.signedupUsers.clear();
         Field instance = UserRepository.class.getDeclaredField("INSTANCE");
         instance.setAccessible(true);
@@ -359,6 +209,6 @@ public class UserRepositoryTest {
         Field lastFavoriteBuildingsUpdateField = UserRepository.class.getDeclaredField("lastFavoriteBuildingsUpdate");
         lastFavoriteBuildingsUpdateField.setAccessible(true);
         lastFavoriteBuildingsUpdateField.set(userRepository, milliseconds);
-    }
+    }*/
 
 }

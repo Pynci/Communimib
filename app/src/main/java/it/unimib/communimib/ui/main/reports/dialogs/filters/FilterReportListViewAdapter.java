@@ -19,10 +19,17 @@ public class FilterReportListViewAdapter extends BaseAdapter {
 
     private final OnListViewItemCheck onListViewItemCheck;
 
-    public FilterReportListViewAdapter(Context context, List<String> data, OnListViewItemCheck onListViewItemCheck) {
+    public FilterReportListViewAdapter(Context context, List<String> data, List<String> checkedItems, OnListViewItemCheck onListViewItemCheck) {
         this.context = context;
         this.data = data;
-        checkedItems = new ArrayList<>();
+        if(checkedItems == null || checkedItems.isEmpty() ||
+                checkedItems.get(0).equals("filter-by-all") ||
+                checkedItems.get(0).equals("filter-by-favorite")){
+            this.checkedItems = new ArrayList<>();
+        }
+        else{
+            this.checkedItems = checkedItems;
+        }
         this.onListViewItemCheck = onListViewItemCheck;
     }
 

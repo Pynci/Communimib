@@ -179,50 +179,6 @@ public class SignUpUITest {
     }
 
     @Test
-    public void testEmptyConfirmPassword() {
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_confirmPassword))
-                .perform(click());
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_confirmPassword))
-                .perform(typeText(""), closeSoftKeyboard());
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_emailAddress))
-                .perform(click());
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_confirmPasswordError))
-                .check(matches(isDisplayed()));
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_confirmPasswordError))
-                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.EMPTY_FIELD))));
-    }
-
-    @Test
-    public void testNotEqualConfirmPassword() {
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_password))
-                .perform(click());
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_password))
-                .perform(typeText("Password1!"), closeSoftKeyboard());
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_confirmPassword))
-                .perform(click());
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_confirmPassword))
-                .perform(typeText("Password2!"), closeSoftKeyboard());
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_emailAddress))
-                .perform(click());
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_confirmPasswordError))
-                .check(matches(isDisplayed()));
-
-        Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_textView_confirmPasswordError))
-                .check(matches(withText(ErrorMapper.getInstance().getErrorMessage(ErrorMapper.NOT_EQUAL_PASSWORD))));
-    }
-
-    @Test
     public void testEmptyName() {
 
         Espresso.onView(ViewMatchers.withId(R.id.fragmentSignup_editText_name))

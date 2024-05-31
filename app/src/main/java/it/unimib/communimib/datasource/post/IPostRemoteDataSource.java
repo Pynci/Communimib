@@ -28,7 +28,15 @@ public interface IPostRemoteDataSource {
                                               Callback changedCallback,
                                               Callback removedCallback,
                                               Callback cancelledCallback);
+
+    void readPostsByUid(String uid,
+                        Callback addedCallback,
+                        Callback changedCallback,
+                        Callback removedCallback,
+                        Callback cancelledCallback);
     void createPost(Post post, Callback callback);
 
     void deletePost(Post post, Callback callback);
+
+    void undoDeletePost(Post post, Callback callback);
 }

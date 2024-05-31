@@ -20,13 +20,15 @@ import it.unimib.communimib.databinding.FragmentFilterDialogBinding;
 public class FiltersFragmentDialog extends DialogFragment {
 
     private FiltersViewModel filtersViewModel;
+    private List<String> filters;
 
     public FiltersFragmentDialog () {
 
     }
 
-    public FiltersFragmentDialog (FiltersViewModel filtersViewModel) {
+    public FiltersFragmentDialog (FiltersViewModel filtersViewModel, List<String> filters) {
         this.filtersViewModel = filtersViewModel;
+        this.filters = filters;
     }
     @NonNull
     @Override
@@ -47,6 +49,7 @@ public class FiltersFragmentDialog extends DialogFragment {
         FilterReportListViewAdapter filterReportListViewAdapter = new FilterReportListViewAdapter(
                 this.getContext(),
                 listaDati,
+                filters,
                 () -> {
                     binding.fragmentFilterCheckboxFavoriteBuildings.setChecked(false);
                     binding.fragmentFilterCheckboxAllBuildings.setChecked(false);
@@ -54,6 +57,18 @@ public class FiltersFragmentDialog extends DialogFragment {
         );
         binding.ListView.setAdapter(filterReportListViewAdapter);
         binding.ListView.setDivider(null);
+
+        if(filters != null){
+            if(!filters.isEmpty()){
+                if(filters.get(0).equals("filter-by-all"))
+                    binding.fragmentFilterCheckboxAllBuildings.setChecked(true);
+                if(filters.get(0).equals("filter-by-favorite"))
+                    binding.fragmentFilterCheckboxFavoriteBuildings.setChecked(true);
+            }
+        }
+        else{
+            binding.fragmentFilterCheckboxFavoriteBuildings.setChecked(true);
+        }
 
         //Gestione delle checkbox
         binding.fragmentFilterCheckboxFavoriteBuildings.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -77,16 +92,23 @@ public class FiltersFragmentDialog extends DialogFragment {
             if(selectedBuildings.isEmpty()) {
                 List<String> checkedBox = new ArrayList<>();
 
-                if(binding.fragmentFilterCheckboxFavoriteBuildings.isChecked())
+                if(binding.fragmentFilterCheckboxFavoriteBuildings.isChecked()){
                     checkedBox.add("filter-by-favorite");
-                else
+                    if(filters != null && (filters.isEmpty() || !filters.get(0).equals(checkedBox.get(0))))
+                            filtersViewModel.setFilters(checkedBox, this::dismiss);
+                }
+                else if(binding.fragmentFilterCheckboxAllBuildings.isChecked()){
                     checkedBox.add("filter-by-all");
+                    if(filters == null || filters.isEmpty() || !filters.get(0).equals(checkedBox.get(0)))
+                        filtersViewModel.setFilters(checkedBox, this::dismiss);
+                }
 
-                filtersViewModel.setFilters(checkedBox, this::dismiss);
             }
             else{
-                filtersViewModel.setFilters(selectedBuildings, this::dismiss);
+                if(filters == null || filters.isEmpty() || !filters.equals(selectedBuildings))
+                    filtersViewModel.setFilters(selectedBuildings, this::dismiss);
             }
+
             this.dismiss();
         });
 

@@ -17,12 +17,23 @@
         <action
             android:id="@+id/action_dashboardFragment_to_detailedPostFragment"
             app:destination="@id/detailedPostFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_otherUserProfileFragment"
+            app:destination="@id/otherUserProfileFragment" />
     </fragment>
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="it.unimib.communimib.ui.main.profile.ProfileFragment"
+        android:id="@+id/currentUserProfileFragment"
+        android:name="it.unimib.communimib.ui.main.profile.CurrentUserProfileFragment"
         android:label=""
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+
+        <action
+            android:id="@+id/action_profileFragment_to_detailedPostFragment"
+            app:destination="@id/detailedPostFragment" />
+        <action
+            android:id="@+id/action_currentUserProfileFragment_to_detailedReportFragment"
+            app:destination="@id/detailedReportFragment" />
+    </fragment>
     <fragment
         android:id="@+id/reportsFragment"
         android:name="it.unimib.communimib.ui.main.reports.ReportsFragment"
@@ -31,6 +42,9 @@
         <action
             android:id="@+id/action_reportsFragment_to_detailedReportFragment"
             app:destination="@id/detailedReportFragment" />
+        <action
+            android:id="@+id/action_reportsFragment_to_otherUserProfileFragment"
+            app:destination="@id/otherUserProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailedReportFragment"
@@ -41,6 +55,9 @@
         <argument
             android:name="report"
             app:argType="it.unimib.communimib.model.Report" />
+        <action
+            android:id="@+id/action_detailedReportFragment_to_otherUserProfileFragment"
+            app:destination="@id/otherUserProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/newDashboardPostDialog"
@@ -56,5 +73,23 @@
         <argument
             android:name="post"
             app:argType="it.unimib.communimib.model.Post" />
+        <action
+            android:id="@+id/action_detailedPostFragment_to_otherUserProfileFragment"
+            app:destination="@id/otherUserProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otherUserProfileFragment"
+        android:name="it.unimib.communimib.ui.main.profile.OtherUserProfileFragment"
+        android:label="" >
+
+        <argument
+            android:name="user"
+            app:argType="it.unimib.communimib.model.User" />
+        <action
+            android:id="@+id/action_otherUserProfileFragment_to_detailedPostFragment"
+            app:destination="@id/detailedPostFragment" />
+        <action
+            android:id="@+id/action_otherUserProfileFragment_to_detailedReportFragment"
+            app:destination="@id/detailedReportFragment" />
     </fragment>
 </navigation>

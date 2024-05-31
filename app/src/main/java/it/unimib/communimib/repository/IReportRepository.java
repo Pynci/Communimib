@@ -25,6 +25,12 @@ public interface IReportRepository {
                                           Callback removedCallback,
                                           Callback cancelledCallback);
 
+    void readReportsByUid(String uid,
+                          Callback addedCallback,
+                          Callback changedCallback,
+                          Callback removedCallback,
+                          Callback cancelledCallback);
+
     void createReport(String titolo, String descrizione, String edificio, String categoria, User author, Callback callback);
 
     void deleteReport(Report report, Callback callback);

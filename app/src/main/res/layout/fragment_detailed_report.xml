@@ -18,9 +18,10 @@
             android:id="@+id/reportListItem_imageBuilding"
             android:layout_width="match_parent"
             android:layout_height="230dp"
-            android:background="@mipmap/edificiou14_foreground"
-            android:backgroundTint="@color/md_theme_dark_tertiary"
-            android:backgroundTintMode="multiply"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/edificiou1"
+            android:tintMode="src_atop"
+            app:tint="#54000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +45,7 @@
             android:id="@+id/textView_building"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corners"
+            android:background="@drawable/rounded_left_corners"
             android:backgroundTint="@color/md_theme_light_secondaryContainer"
             android:paddingStart="5dp"
             android:textColor="@color/seed"
@@ -128,12 +129,12 @@
         app:layout_constraintTop_toBottomOf="@+id/separatore">
 
         <ImageView
-            android:scaleType="centerCrop"
             android:id="@+id/reportListItem_imageProfile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/user_filled" />
 
     </androidx.cardview.widget.CardView>
 

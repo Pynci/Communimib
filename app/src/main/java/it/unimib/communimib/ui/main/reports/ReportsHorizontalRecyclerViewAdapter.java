@@ -24,13 +24,9 @@ import it.unimib.communimib.util.BuildingsImagesHelper;
 
 public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<ReportsHorizontalRecyclerViewAdapter.ViewHolder> {
 
-    public interface OnItemClickListener {
-        void onCloseReportClick(Report report);
-        void onCardClick(Report report);
-    }
     private final boolean isUnimibUser;
     private List<Report> reportList;
-    private final OnItemClickListener onItemClickListener;
+    private final OnReportClickListener onReportClickListener;
     private final int layout;
     private final Context context;
 
@@ -48,14 +44,6 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
     }
 
     public void removeItem(Report removedReport) {
-        //todo sostituire il for con indexOf
-//        int position = -1;
-//        for (int i = 0; i < reportList.size(); i++) {
-//            if(reportList.get(i).getRid().equals(removedReport.getRid())){
-//                position = i;
-//                break;
-//            }
-//        }
         int position = reportList.indexOf(removedReport);
         if (position != -1) {
             reportList.remove(position);
@@ -73,12 +61,12 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
     }
 
 
-    public ReportsHorizontalRecyclerViewAdapter(boolean isUnimibUser, OnItemClickListener onItemClickListener,
+    public ReportsHorizontalRecyclerViewAdapter(boolean isUnimibUser, OnReportClickListener onReportClickListener,
                                                 Context context, int layout){
         reportList = new ArrayList<>();
         this.isUnimibUser = isUnimibUser;
         this.layout = layout;
-        this.onItemClickListener = onItemClickListener;
+        this.onReportClickListener = onReportClickListener;
         this.context = context;
     }
 
@@ -103,8 +91,8 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
 
         private final CardView card;
         private final TextView title;
-        private final TextView description;
-        private final TextView buiding;
+        //private final TextView description;
+        private final TextView category;
         private final ImageView propic;
         private final TextView name;
         private final TextView surname;
@@ -118,8 +106,8 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             super(itemView);
 
             title = itemView.findViewById(R.id.reportListItem_title);
-            description = itemView.findViewById(R.id.reportListItem_description);
-            buiding = itemView.findViewById(R.id.reportListItem_building);
+            //description = itemView.findViewById(R.id.reportListItem_description);
+            category = itemView.findViewById(R.id.reportListItem_category);
             propic = itemView.findViewById(R.id.reportListItem_imageView);
             name = itemView.findViewById(R.id.reportListItem_user_name);
             surname = itemView.findViewById(R.id.reportListItem_user_surname);
@@ -136,8 +124,7 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
 
         public void bind(Report report){
             title.setText(report.getTitle());
-            description.setText(report.getDescription());
-            buiding.setText(report.getBuilding());
+            category.setText(report.getCategory());
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());
             BuildingsImagesHelper.setBuildingImage(buildingImage, report.getBuilding());
@@ -147,16 +134,16 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
                         .load(Uri.parse(report.getAuthor().getPropic()))
                         .into(propic);
             }
+
+            closeButton.setOnClickListener(v -> onReportClickListener.onCloseReportClick(report));
+            propic.setOnClickListener(v -> onReportClickListener.onProfileClick(report.getAuthor()));
+            name.setOnClickListener(v -> onReportClickListener.onProfileClick(report.getAuthor()));
+            surname.setOnClickListener(v -> onReportClickListener.onProfileClick(report.getAuthor()));
         }
 
         @Override
         public void onClick(View v) {
-            if(v.getId() == R.id.reportListItem_closeButton){
-                onItemClickListener.onCloseReportClick(reportList.get(getAdapterPosition()));
-            }
-            if(v.getId() == R.id.cardview_report) {
-                onItemClickListener.onCardClick(reportList.get(getAdapterPosition()));
-            }
+            onReportClickListener.onItemClick(reportList.get(getBindingAdapterPosition()));
         }
 
     }

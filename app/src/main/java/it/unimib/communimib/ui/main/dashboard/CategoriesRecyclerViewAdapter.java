@@ -18,21 +18,21 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
     private final List<String> categoriesList;
     private final OnCategoryClickListener onCategoryClickListener;
 
-    private String currentCategory;
+    private String currentSelection;
 
     public interface OnCategoryClickListener {
         void onItemClick(String category);
     }
 
-    public void setCurrentCategory(String category){
-        currentCategory = category;
+    public void setCurrentSelection(String selection){
+        currentSelection = selection;
         notifyDataSetChanged();
     }
 
-    public CategoriesRecyclerViewAdapter(List<String> categories, OnCategoryClickListener onCategoryClickListener) {
+    public CategoriesRecyclerViewAdapter(List<String> categories, String currentSelection, OnCategoryClickListener onCategoryClickListener) {
         this.categoriesList = categories;
         this.onCategoryClickListener = onCategoryClickListener;
-        this.currentCategory = "Tutti";
+        this.currentSelection = currentSelection;
     }
 
     @NonNull
@@ -44,7 +44,7 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
 
     @Override
     public void onBindViewHolder(@NonNull CategoriesRecyclerViewAdapter.ViewHolder holder, int position) {
-        if(categoriesList.get(position).equals(currentCategory)){
+        if(categoriesList.get(position).equals(currentSelection)){
             holder.bindClicked(categoriesList.get(position));
         } else {
             holder.bind(categoriesList.get(position));
@@ -80,7 +80,7 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
 
         @Override
         public void onClick(View v) {
-            onCategoryClickListener.onItemClick(categoriesList.get(getAdapterPosition()));
+            onCategoryClickListener.onItemClick(categoriesList.get(getBindingAdapterPosition()));
         }
     }
 }

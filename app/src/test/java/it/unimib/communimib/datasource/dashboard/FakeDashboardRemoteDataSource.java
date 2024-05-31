@@ -38,6 +38,11 @@ public class FakeDashboardRemoteDataSource implements IPostRemoteDataSource {
     }
 
     @Override
+    public void readPostsByUid(String uid, Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback) {
+
+    }
+
+    @Override
     public void createPost(Post post, Callback callback) {
         post.setPid("12345");
         posts.put(post.getPid(), post);
@@ -54,5 +59,10 @@ public class FakeDashboardRemoteDataSource implements IPostRemoteDataSource {
         } else {
             callback.onComplete(new Result.Error(ErrorMapper.POST_DELETING_ERROR));
         }
+    }
+
+    @Override
+    public void undoDeletePost(Post post, Callback callback) {
+
     }
 }

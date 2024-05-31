@@ -25,25 +25,23 @@ import it.unimib.communimib.util.DateFormatter;
 
 public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int VIEW_TYPE_POST = 0;
-    private static final int VIEW_TYPE_COMMENT = 1;
-
     private List<Comment> commentList;
-    private final Post post;
+    private TextView comments;
     private final Context context;
-    private final OnPostClickListener onPostClickListener;
 
-    public CommentsAdapter(Post post, Context context, OnPostClickListener onPostClickListener) {
+    public CommentsAdapter(Context context, View view) {
         this.commentList = new ArrayList<>();
         this.context = context;
-        this.post = post;
-        this.onPostClickListener = onPostClickListener;
+        comments = view.findViewById(R.id.comments);
     }
 
     public void addItem(Comment newComment) {
         if (!commentList.contains(newComment)) {
+            if(commentList.isEmpty()){
+                comments.setVisibility(View.VISIBLE);
+            }
             commentList.add(0, newComment);
-            notifyItemInserted(1);
+            notifyItemInserted(0);
         }
     }
 
@@ -51,7 +49,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int position = commentList.indexOf(editedComment);
         if (position != -1) {
             commentList.set(position, editedComment);
-            notifyItemChanged(position + 1);
+            notifyItemChanged(position);
         }
     }
 
@@ -59,7 +57,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int position = commentList.indexOf(removedComment);
         if (position != -1) {
             commentList.remove(position);
-            notifyItemRemoved(position + 1);
+            if(commentList.isEmpty()){
+                comments.setVisibility(View.INVISIBLE);
+            }
+            notifyItemRemoved(position);
         }
     }
 
@@ -71,36 +72,18 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_POST) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
-            return new PostViewHolder(view, context, onPostClickListener, false);
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent, false);
-            return new CommentViewHolder(view);
-        }
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent, false);
+        return new CommentViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder.getItemViewType() == VIEW_TYPE_POST) {
-            ((PostViewHolder) holder).bind(post);
-        } else if (holder.getItemViewType() == VIEW_TYPE_COMMENT) {
-            ((CommentViewHolder) holder).bind(commentList.get(position - 1)); // Adjust for the post
-        }
+        ((CommentViewHolder) holder).bind(commentList.get(position)); // Adjust for the post
     }
 
     @Override
     public int getItemCount() {
-        return commentList.size() + 1; // +1 for the post
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position == 0) {
-            return VIEW_TYPE_POST;
-        } else {
-            return VIEW_TYPE_COMMENT;
-        }
+        return commentList.size();
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {

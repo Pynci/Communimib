@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.reportsFragment, R.id.dashboardFragment,
-                R.id.profileFragment).build();
+                R.id.currentUserProfileFragment).build();
 
         // For the Toolbar
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

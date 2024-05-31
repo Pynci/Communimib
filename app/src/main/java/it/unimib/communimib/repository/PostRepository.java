@@ -11,8 +11,8 @@ import it.unimib.communimib.model.User;
 
 public class PostRepository implements IPostRepository{
 
-    private IPostRemoteDataSource postRemoteDataSource;
-    private ICommentRemoteDataSource commentRemoteDataSource;
+    private final IPostRemoteDataSource postRemoteDataSource;
+    private final ICommentRemoteDataSource commentRemoteDataSource;
 
     public PostRepository(IPostRemoteDataSource postRemoteDataSource, ICommentRemoteDataSource commentRemoteDataSource) {
         this.postRemoteDataSource = postRemoteDataSource;
@@ -55,6 +55,16 @@ public class PostRepository implements IPostRepository{
     }
 
     @Override
+    public void readPostsByUid(String uid,
+                               Callback addedCallback,
+                               Callback changedCallback,
+                               Callback removedCallback,
+                               Callback cancelledCallback) {
+        postRemoteDataSource.readPostsByUid(uid, addedCallback, changedCallback, removedCallback, cancelledCallback);
+    }
+
+
+    @Override
     public void createPost(String title, String description, String category, User author,
                            String email, String link, List<String> pictures, Callback callback) {
         postRemoteDataSource.createPost(new Post(title, description, category, author, email, link, System.currentTimeMillis(), pictures), callback);
@@ -63,6 +73,11 @@ public class PostRepository implements IPostRepository{
     @Override
     public void deletePost(Post post, Callback callback) {
         postRemoteDataSource.deletePost(post, callback);
+    }
+
+    @Override
+    public void undoDeletePost(Post post, Callback callback){
+        postRemoteDataSource.undoDeletePost(post, callback);
     }
 
     @Override

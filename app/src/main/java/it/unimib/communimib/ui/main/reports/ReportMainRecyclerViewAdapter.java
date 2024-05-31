@@ -12,51 +12,60 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import it.unimib.communimib.R;
-import it.unimib.communimib.model.CategoryReport;
+import it.unimib.communimib.model.BuildingReport;
 import it.unimib.communimib.model.Report;
 
 public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMainRecyclerViewAdapter.ViewHolder> {
 
-    private final List<CategoryReport> categoryReportList;
+    private final List<BuildingReport> buildingReportList;
 
-    public ReportMainRecyclerViewAdapter(List<CategoryReport> categoryReportList) {
-        this.categoryReportList = categoryReportList;
+    public ReportMainRecyclerViewAdapter(List<BuildingReport> buildingReportList) {
+        this.buildingReportList = buildingReportList;
     }
 
 
-    public void addItem(String category, Report report){
-        for (CategoryReport categoryReport : categoryReportList) {
-            if(categoryReport.getCategoryName().equals(category)){
-                if(categoryReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
+    public void addItem(String building, Report report){
+        for (BuildingReport buildingReport : buildingReportList) {
+            if(buildingReport.getBuildingName().equals(building)){
+                if(buildingReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
                     notifyDataSetChanged();
                 }
-                categoryReport.getReportsHorizontalRecyclerViewAdapter().addItem(report);
+                buildingReport.getReportsHorizontalRecyclerViewAdapter().addItem(report);
             }
         }
     }
 
-    public void editItem(String category, Report report){
-        for (CategoryReport categoryReport: categoryReportList) {
-            if(categoryReport.getCategoryName().equals(category)){
-                categoryReport.getReportsHorizontalRecyclerViewAdapter().editItem(report);
+    public void editItem(String building, Report report){
+        for (BuildingReport buildingReport : buildingReportList) {
+            if(buildingReport.getBuildingName().equals(building)){
+                buildingReport.getReportsHorizontalRecyclerViewAdapter().editItem(report);
             }
         }
     }
 
-    public void removeItem(String category, Report report){
-        for (CategoryReport categoryReport: categoryReportList) {
-            if(categoryReport.getCategoryName().equals(category)){
-                categoryReport.getReportsHorizontalRecyclerViewAdapter().removeItem(report);
-                if(categoryReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
+    public void removeItem(String building, Report report){
+        for (BuildingReport buildingReport : buildingReportList) {
+            if(buildingReport.getBuildingName().equals(building)){
+                buildingReport.getReportsHorizontalRecyclerViewAdapter().removeItem(report);
+                if(buildingReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
                     notifyDataSetChanged();
                 }
             }
         }
+    }
+
+    public boolean isEmpty(){
+        for (BuildingReport buildingReport: buildingReportList) {
+            if(!buildingReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void clearHorizontalAdapters(){
-        for (CategoryReport categoryReport: categoryReportList) {
-            categoryReport.getReportsHorizontalRecyclerViewAdapter().clearReportList();
+        for (BuildingReport buildingReport : buildingReportList) {
+            buildingReport.getReportsHorizontalRecyclerViewAdapter().clearReportList();
         }
         notifyDataSetChanged();
     }
@@ -70,20 +79,20 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
     @Override
     public void onBindViewHolder(@NonNull ReportMainRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.bind(categoryReportList.get(position));
+        holder.bind(buildingReportList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if(categoryReportList != null){
-            return categoryReportList.size();
+        if(buildingReportList != null){
+            return buildingReportList.size();
         }
         return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private TextView categoryName;
+        private TextView buildingName;
         private View marginTop;
         private View marginBottom;
         private RecyclerView horizontalRecyclerView;
@@ -93,25 +102,25 @@ public class ReportMainRecyclerViewAdapter extends RecyclerView.Adapter<ReportMa
 
             marginTop = itemView.findViewById(R.id.horizontalRecyclerViewItem_marginTop);
             marginBottom = itemView.findViewById(R.id.horizontalRecyclerViewItem_marginBottom);
-            categoryName = itemView.findViewById(R.id.reportHorizontalRecyclerViewItem_categoryName);
+            buildingName = itemView.findViewById(R.id.reportHorizontalRecyclerViewItem_buildingName);
             horizontalRecyclerView = itemView.findViewById(R.id.reportHorizontalRecyclerViewItem_recyclerView);
 
         }
 
-        public void bind(CategoryReport categoryReport){
-            categoryName.setText(categoryReport.getCategoryName());
-            if(categoryReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
-                categoryName.setVisibility(View.GONE);
+        public void bind(BuildingReport buildingReport){
+            buildingName.setText(buildingReport.getBuildingName());
+            if(buildingReport.getReportsHorizontalRecyclerViewAdapter().isReportListEmpty()){
+                buildingName.setVisibility(View.GONE);
                 marginTop.setVisibility(View.GONE);
                 marginBottom.setVisibility(View.GONE);
             } else {
-                categoryName.setVisibility(View.VISIBLE);
+                buildingName.setVisibility(View.VISIBLE);
                 marginTop.setVisibility(View.VISIBLE);
                 marginBottom.setVisibility(View.VISIBLE);
             }
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
             horizontalRecyclerView.setLayoutManager(layoutManager);
-            horizontalRecyclerView.setAdapter(categoryReport.getReportsHorizontalRecyclerViewAdapter());
+            horizontalRecyclerView.setAdapter(buildingReport.getReportsHorizontalRecyclerViewAdapter());
         }
 
         @Override

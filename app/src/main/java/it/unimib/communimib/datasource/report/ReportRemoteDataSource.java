@@ -45,22 +45,27 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Report report = snapshot.getValue(Report.class);
-                report.setRid(snapshot.getKey());
-
+                if(report != null){
+                    report.setRid(snapshot.getKey());
+                }
                 addedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Report report = snapshot.getValue(Report.class);
-                report.setRid(snapshot.getKey());
+                if(report != null){
+                    report.setRid(snapshot.getKey());
+                }
                 changedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Report report = snapshot.getValue(Report.class);
-                report.setRid(snapshot.getKey());
+                if(report != null){
+                    report.setRid(snapshot.getKey());
+                }
                 removedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
@@ -105,33 +110,39 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Report report = snapshot.getValue(Report.class);
-                report.setRid(snapshot.getKey());
-                String title = report.getTitle().toLowerCase();
-                String description = report.getDescription().toLowerCase();
-                if(title.contains(keyword.toLowerCase()) || description.contains(keyword.toLowerCase())){
-                    addedCallback.onComplete(new Result.ReportSuccess(report));
+                if(report != null){
+                    report.setRid(snapshot.getKey());
+                    String title = report.getTitle().toLowerCase();
+                    String description = report.getDescription().toLowerCase();
+                    if(title.contains(keyword.toLowerCase()) || description.contains(keyword.toLowerCase())){
+                        addedCallback.onComplete(new Result.ReportSuccess(report));
+                    }
                 }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Report report = snapshot.getValue(Report.class);
-                report.setRid(snapshot.getKey());
-                String title = report.getTitle().toLowerCase();
-                String description = report.getDescription().toLowerCase();
-                if(title.contains(keyword.toLowerCase()) || description.contains(keyword.toLowerCase())){
-                    changedCallback.onComplete(new Result.ReportSuccess(report));
+                if(report != null){
+                    report.setRid(snapshot.getKey());
+                    String title = report.getTitle().toLowerCase();
+                    String description = report.getDescription().toLowerCase();
+                    if(title.contains(keyword.toLowerCase()) || description.contains(keyword.toLowerCase())){
+                        changedCallback.onComplete(new Result.ReportSuccess(report));
+                    }
                 }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Report report = snapshot.getValue(Report.class);
-                report.setRid(snapshot.getKey());
-                String title = report.getTitle().toLowerCase();
-                String description = report.getDescription().toLowerCase();
-                if(title.contains(keyword.toLowerCase()) || description.contains(keyword.toLowerCase())){
-                    removedCallback.onComplete(new Result.ReportSuccess(report));
+                if(report != null){
+                    report.setRid(snapshot.getKey());
+                    String title = report.getTitle().toLowerCase();
+                    String description = report.getDescription().toLowerCase();
+                    if(title.contains(keyword.toLowerCase()) || description.contains(keyword.toLowerCase())){
+                        removedCallback.onComplete(new Result.ReportSuccess(report));
+                    }
                 }
             }
 
@@ -157,38 +168,40 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
                                  Callback removedCallback,
                                  Callback cancelledCallback){
         removeAllQueryListeners();
-        addQueryListener("author", author, addedCallback, changedCallback, removedCallback, cancelledCallback);
+        addQueryListener("author/uid", author, addedCallback, changedCallback, removedCallback, cancelledCallback);
     }
 
     @Override
     public void createReport(Report report, Callback callback) {
 
         String key = databaseReference.child(Constants.REPORTS_PATH).push().getKey();
+        if(key != null){
+            databaseReference
+                    .child(Constants.REPORTS_PATH)
+                    .child(key)
+                    .setValue(report).addOnCompleteListener(reportTask -> {
+                        if(reportTask.isSuccessful()) {
+                            databaseReference
+                                    .child(Constants.USERSREPORTS_PATH)
+                                    .child(report.getAuthor().getUid())
+                                    .child(key)
+                                    .setValue(true)
+                                    .addOnCompleteListener(userReportTask -> {
+                                        if(userReportTask.isSuccessful()){
+                                            callback.onComplete(new Result.Success());
+                                        }
+                                        else{
+                                            //TODO inserire un errore più specifico qui
+                                            callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
+                                        }
+                                    });
+                        }
+                        else{
+                            callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
+                        }
+                    });
+        }
 
-        databaseReference
-                .child(Constants.REPORTS_PATH)
-                .child(key)
-                .setValue(report).addOnCompleteListener(reportTask -> {
-                    if(reportTask.isSuccessful()) {
-                        databaseReference
-                                .child(Constants.USERSREPORTS_PATH)
-                                .child(report.getAuthor().getUid())
-                                .child(key)
-                                .setValue(true)
-                                .addOnCompleteListener(userReportTask -> {
-                                    if(userReportTask.isSuccessful()){
-                                        callback.onComplete(new Result.Success());
-                                    }
-                                    else{
-                                        //TODO inserire un errore più specifico qui
-                                        callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
-                                    }
-                                });
-                    }
-                    else{
-                        callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
-                    }
-                });
     }
 
     public void deleteReport(Report report, Callback callback){
@@ -240,21 +253,27 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Report report = snapshot.getValue(Report.class);
-                report.setRid(snapshot.getKey());
+                if(report != null){
+                    report.setRid(snapshot.getKey());
+                }
                 addedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Report report = snapshot.getValue(Report.class);
-                report.setRid(snapshot.getKey());
+                if(report != null){
+                    report.setRid(snapshot.getKey());
+                }
                 changedCallback.onComplete(new Result.ReportSuccess(report));
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Report report = snapshot.getValue(Report.class);
-                report.setRid(snapshot.getKey());
+                if(report != null){
+                    report.setRid(snapshot.getKey());
+                }
                 removedCallback.onComplete(new Result.ReportSuccess(report));
             }
 

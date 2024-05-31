@@ -15,7 +15,7 @@ public class NewPostViewModel extends ViewModel {
 
     private final IPostRepository postRepository;
     private final IUserRepository userRepository;
-    private MutableLiveData<Result> postCreationResult;
+    private final MutableLiveData<Result> postCreationResult;
 
     public NewPostViewModel(IPostRepository postRepository, IUserRepository userRepository){
         this.postRepository = postRepository;

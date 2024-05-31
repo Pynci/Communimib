@@ -178,6 +178,35 @@ public class PostRepositoryTest {
     }
 
     @Test
+    public void readPostsByUid(){
+        String uid = "123456789";
+
+        doAnswer(invocation ->{
+            Callback addedCallback = invocation.getArgument(1);
+            addedCallback.onComplete(new Result.Success());
+            Callback changedCallback = invocation.getArgument(2);
+            changedCallback.onComplete(new Result.Success());
+            Callback removedCallback = invocation.getArgument(3);
+            removedCallback.onComplete(new Result.Success());
+            Callback cancelledCallback = invocation.getArgument(4);
+            cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
+            return null;
+        }).when(postRemoteDataSource).readPostsByUid(eq(uid), any(), any(), any(), any());
+
+        postRepository.readPostsByUid(
+                uid,
+                addedResult -> assertTrue(addedResult instanceof Result.Success),
+                changedresult -> assertTrue(changedresult instanceof Result.Success),
+                removedResult -> assertTrue(removedResult instanceof Result.Success),
+                cancelledResult -> {
+                    assertTrue(cancelledResult instanceof Result.Error);
+                    assertEquals(((Result.Error) cancelledResult).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                });
+
+        verify(postRemoteDataSource).readPostsByUid(eq(uid), any(), any(), any(), any());
+    }
+
+    @Test
     public void createPost() {
 
         Post post = new Post("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, new ArrayList<>());
@@ -220,6 +249,20 @@ public class PostRepositoryTest {
         );
 
         verify(postRemoteDataSource).deletePost(eq(post), any());
+    }
+
+    @Test
+    public void undoDeletePost(){
+        Post post = new Post("title", "description", "category", user, "g.vitale16@campus.unimib.it", "https://link", 1234566, new ArrayList<>());
+
+        doAnswer(invocation -> {
+            Callback callback = invocation.getArgument(1);
+            callback.onComplete(new Result.Success());
+            return null;
+        }).when(postRemoteDataSource).undoDeletePost(eq(post), any());
+
+        postRepository.undoDeletePost(post,
+                result -> assertTrue(result instanceof Result.Success));
     }
 
     @Test
