@@ -253,46 +253,33 @@ public class ReportsFragment extends Fragment {
 
         //Gestione osservazione filtri
         filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), filters -> {
-            if(filters.get(0).equals("filter-by-all")){
-                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readAllReports();
-                isFilteredByFavorite = false;
-                setTextAlert();
-            }
-            else if(filters.get(0).equals("filter-by-favorite")){
-                favoriteBuildingViewModel.getUserFavoriteBuildings();
-                isFilteredByFavorite = true;
-            }
-            else{
-                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readReportsByBuildings(filters);
-                isFilteredByFavorite = false;
-                setTextAlert();
-            }
+            filterAndRead(filters);
             this.filters = filters;
         });
 
         binding.fragmentReportSearchView.setOnCloseListener(() -> {
-
-            if(filters == null || filters.get(0).equals("filter-by-favorite")){
-                favoriteBuildingViewModel.getUserFavoriteBuildings();
-                isFilteredByFavorite = true;
-            }
-            else if(filters.get(0).equals("filter-by-all")){
-                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readAllReports();
-                isFilteredByFavorite = false;
-                setTextAlert();
-            }
-            else {
-                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readReportsByBuildings(filters);
-                isFilteredByFavorite = false;
-                setTextAlert();
-            }
+            filterAndRead(filters);
             return false;
-
         });
+    }
+
+    private void filterAndRead(List<String> filters) {
+        if(filters == null || filters.get(0).equals("filter-by-favorite")){
+            favoriteBuildingViewModel.getUserFavoriteBuildings();
+            isFilteredByFavorite = true;
+        }
+        else if(filters.get(0).equals("filter-by-all")){
+            reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+            reportsViewModel.readAllReports();
+            isFilteredByFavorite = false;
+            setTextAlert();
+        }
+        else {
+            reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+            reportsViewModel.readReportsByBuildings(filters);
+            isFilteredByFavorite = false;
+            setTextAlert();
+        }
     }
 
     @Override
