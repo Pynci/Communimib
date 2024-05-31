@@ -32,13 +32,14 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <ImageView
-                    android:scaleType="centerCrop"
                     android:id="@+id/reportListItem_imageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="@string/profile"
+                    android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/user_filled" />
 
             </androidx.cardview.widget.CardView>
 
