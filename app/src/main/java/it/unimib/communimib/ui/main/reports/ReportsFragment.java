@@ -215,7 +215,7 @@ public class ReportsFragment extends Fragment {
                                 }
                             },
                             requireContext(),
-                            R.layout.report_horizontal_item1);
+                            R.layout.report_horizontal_item);
             buildingReportList.add(new BuildingReport(buildings[i],reportsHorizontalRecyclerViewAdapter));
         }
 
