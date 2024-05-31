@@ -124,7 +124,6 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
 
         public void bind(Report report){
             title.setText(report.getTitle());
-            //description.setText(report.getDescription());
             category.setText(report.getCategory());
             name.setText(report.getAuthor().getName());
             surname.setText(report.getAuthor().getSurname());

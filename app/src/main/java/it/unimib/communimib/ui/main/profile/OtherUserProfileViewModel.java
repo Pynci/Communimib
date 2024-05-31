@@ -3,6 +3,8 @@ package it.unimib.communimib.ui.main.profile;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import it.unimib.communimib.model.Report;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.repository.IPostRepository;
 import it.unimib.communimib.repository.IReportRepository;
@@ -21,6 +23,7 @@ public class OtherUserProfileViewModel extends ViewModel {
     private MutableLiveData<Result> changedReportResult;
     private MutableLiveData<Result> removedReportResult;
     private MutableLiveData<Result> cancelledReportResult;
+    private MutableLiveData<Result> closedReportResult;
 
 
     public OtherUserProfileViewModel(IPostRepository postRepository, IReportRepository repository) {
@@ -36,6 +39,7 @@ public class OtherUserProfileViewModel extends ViewModel {
         changedReportResult = new MutableLiveData<>();
         removedReportResult = new MutableLiveData<>();
         cancelledReportResult = new MutableLiveData<>();
+        closedReportResult = new MutableLiveData<>();
     }
 
     public void readPostsByUser(String uid){
@@ -54,6 +58,9 @@ public class OtherUserProfileViewModel extends ViewModel {
                 reportCancelled -> cancelledReportResult.setValue(reportCancelled));
     }
 
+    public void closeReport(Report report){
+        reportRepository.deleteReport(report, reportDeleted -> closedReportResult.setValue(reportDeleted));
+    }
 
     public LiveData<Result> getAddedPostResult() {
         return addedPostResult;
@@ -87,6 +94,10 @@ public class OtherUserProfileViewModel extends ViewModel {
         return cancelledReportResult;
     }
 
+    public LiveData<Result> getClosedReportResult() {
+        return closedReportResult;
+    }
+
     public void cleanViewModel(){
         addedPostResult = new MutableLiveData<>();
         changedPostResult = new MutableLiveData<>();
@@ -97,5 +108,6 @@ public class OtherUserProfileViewModel extends ViewModel {
         changedReportResult = new MutableLiveData<>();
         removedReportResult = new MutableLiveData<>();
         cancelledReportResult = new MutableLiveData<>();
+        closedReportResult = new MutableLiveData<>();
     }
 }
