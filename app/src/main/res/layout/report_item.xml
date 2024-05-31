@@ -33,7 +33,7 @@
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:layout_marginTop="-165dp"
-                android:layout_marginEnd="-100dp"
+                android:layout_marginEnd="-90dp"
                 app:cardCornerRadius="130dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -44,7 +44,7 @@
 
                     <ImageView
                         android:id="@+id/reportListItem_buildingImage"
-                        android:layout_width="210dp"
+                        android:layout_width="220dp"
                         android:layout_height="140dp"
                         android:scaleType="centerCrop"
                         android:tintMode="src_atop"
@@ -107,17 +107,17 @@
 
             <TextView
                 android:id="@+id/reportListItem_title"
-                android:layout_width="201dp"
-                android:layout_height="23dp"
+                android:layout_width="180dp"
+                android:layout_height="45dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="24dp"
                 android:textColor="@color/md_theme_light_secondary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView"
                 tools:text="@string/report_title" />
-
+<!--
             <TextView
                 android:id="@+id/reportListItem_description"
                 android:layout_width="215dp"
@@ -129,12 +129,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reportListItem_title"
                 tools:text="breve descrizione per descrivere più descrittivamente la segnalazione" />
-
+-->
             <TextView
                 android:id="@+id/reportListItem_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/rounded_right_corners"
                 android:backgroundTint="@color/md_theme_light_secondaryContainer"
                 android:paddingStart="16dp"
@@ -143,7 +143,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/reportListItem_description"
+                app:layout_constraintTop_toBottomOf="@+id/reportListItem_title"
                 app:layout_constraintVertical_bias="0.2"
                 tools:text="Materiale Mancante" />
 
@@ -155,7 +155,7 @@
                 android:layout_marginEnd="20dp"
                 android:text="@string/close"
                 android:textSize="12sp"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/reportListItem_category"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/reportListItem_category" />
