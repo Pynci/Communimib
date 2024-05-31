@@ -49,8 +49,8 @@ public class ReportsFragment extends Fragment {
     private FavoriteBuildingViewModel favoriteBuildingViewModel;
     private ReportMainRecyclerViewAdapter reportMainRecyclerViewAdapter;
     private List<String> favoriteBuildings;
-    private boolean isFilteredByFavorites = false;
     private boolean menuVisibile;
+    private boolean isFilteredByFavorite = true;
 
     public ReportsFragment() {
         // Required empty public constructor
@@ -108,7 +108,7 @@ public class ReportsFragment extends Fragment {
         );
 
         fragmentReportsBinding.floatingActionButtonFavorite.setOnClickListener(v -> {
-            FavoriteBuildingsFragmentDialog favoriteBuildingsFragmentDialog = new FavoriteBuildingsFragmentDialog(favoriteBuildingViewModel);
+            FavoriteBuildingsFragmentDialog favoriteBuildingsFragmentDialog = new FavoriteBuildingsFragmentDialog(favoriteBuildingViewModel, favoriteBuildings);
             favoriteBuildingsFragmentDialog.show(getParentFragmentManager(), "New Favorite Dialog");
             onMenuButtonClicked(getContext());
         });
@@ -224,32 +224,16 @@ public class ReportsFragment extends Fragment {
         mainRecyclerView.setAdapter(reportMainRecyclerViewAdapter);
         mainRecyclerView.setLayoutManager(layoutManager);
 
-        favoriteBuildings = new ArrayList<>();
         favoriteBuildingViewModel.getUserFavoriteBuildings();
         favoriteBuildingViewModel.getGetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
 
-                boolean updatedFavoriteBuildings = false;
-                
-                // alla prima chiamata riempie i preferiti
-                if(favoriteBuildings.isEmpty()){
-                    favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
-                    reportsViewModel.readReportsByBuildings(favoriteBuildings);
-                    isFilteredByFavorites = true;
-                }
-                //successivamente effettua la rilettura solo se i preferiti sono cambiati rispetto a prima
-                if(!favoriteBuildings.equals(((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings())){
-                    favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
-                    updatedFavoriteBuildings = true;
-                }
+                favoriteBuildings = ((Result.UserFavoriteBuildingsSuccess) result).getFavoriteBuildings();
+                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                reportsViewModel.readReportsByBuildings(favoriteBuildings);
 
-                // aggiorna recycler view solo se è stata selezionata la visualizzazione per preferiti
-                if(isFilteredByFavorites && updatedFavoriteBuildings) {
-                        reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                        reportsViewModel.readReportsByBuildings(favoriteBuildings);
-                }
                 //setto la text view di alert se non sono presenti report
-                setTextAlert();
+                //setTextAlert();
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
@@ -258,7 +242,8 @@ public class ReportsFragment extends Fragment {
 
         favoriteBuildingViewModel.getSetUserFavoriteBuildingsResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
-                favoriteBuildingViewModel.getUserFavoriteBuildings();
+                if(isFilteredByFavorite)
+                    favoriteBuildingViewModel.getUserFavoriteBuildings();
             } else {
                 Snackbar.make(requireView(), ErrorMapper.getInstance().getErrorMessage(((Result.Error) result).getMessage()),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
@@ -266,34 +251,22 @@ public class ReportsFragment extends Fragment {
         });
 
         //Gestione osservazione filtri
-        filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), this::filter);
-
-    }
-
-    private void filter(List<String> filter) {
-        if(filter != null && !filter.isEmpty()){
-            if(filter.get(0).equals("filter-by-favorite")) {
-                isFilteredByFavorites = true;
-                if(!favoriteBuildings.isEmpty()){
-                    reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                    reportsViewModel.readReportsByBuildings(favoriteBuildings);
-                } else {
-                    Snackbar.make(requireView(), R.string.no_favorites_building, BaseTransientBottomBar.LENGTH_SHORT).show();
-                }
-            } else if (filter.get(0).equals("filter-by-all")) {
-                isFilteredByFavorites = false;
+        filtersViewModel.getChosenFilter().observe(getViewLifecycleOwner(), filters -> {
+            if(filters.get(0).equals("filter-by-all")){
                 reportMainRecyclerViewAdapter.clearHorizontalAdapters();
                 reportsViewModel.readAllReports();
-            } else {
-                isFilteredByFavorites = false;
-                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-                reportsViewModel.readReportsByBuildings(filter);
+                isFilteredByFavorite = false;
             }
-        }
-        else{
-            reportMainRecyclerViewAdapter.clearHorizontalAdapters();
-            reportsViewModel.readAllReports();
-        }
+            else if(filters.get(0).equals("filter-by-favorite")){
+                favoriteBuildingViewModel.getUserFavoriteBuildings();
+                isFilteredByFavorite = true;
+            }
+            else{
+                reportMainRecyclerViewAdapter.clearHorizontalAdapters();
+                reportsViewModel.readReportsByBuildings(filters);
+                isFilteredByFavorite = false;
+            }
+        });
     }
 
     @Override
