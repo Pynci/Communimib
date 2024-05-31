@@ -10,7 +10,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,7 @@ public class DashboardFragment extends Fragment {
 
     private int numberNewPost = 0; //numero minimo di nuovi post per triggerare la comparsa del bottone
     private DashboardViewModel dashboardViewModel;
-    private FragmentDashboardBinding fragmentDashboardBinding;
+    private FragmentDashboardBinding binding;
     private DashboardRecyclerViewAdapter dashboardRecyclerViewAdapter;
     private CategoriesRecyclerViewAdapter categoriesRecyclerViewAdapter;
 
@@ -57,8 +56,8 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        fragmentDashboardBinding = FragmentDashboardBinding.inflate(inflater, container, false);
-        return fragmentDashboardBinding.getRoot();
+        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -69,9 +68,9 @@ public class DashboardFragment extends Fragment {
         categories = Arrays.copyOf(categories, categories.length-1);
         List<String> categoryList = Arrays.asList(categories);
 
-        fragmentDashboardBinding.fragmentDashboardSearchView.setOnClickListener(v -> fragmentDashboardBinding.fragmentDashboardSearchView.setIconified(false));
+        binding.fragmentDashboardSearchView.setOnClickListener(v -> binding.fragmentDashboardSearchView.setIconified(false));
 
-        fragmentDashboardBinding.fragmentDashboardSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.fragmentDashboardSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 dashboardRecyclerViewAdapter.clearPostList();
@@ -88,7 +87,7 @@ public class DashboardFragment extends Fragment {
         RecyclerView.LayoutManager categoryLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(categoryList, "Tutti", this::readPosts);
 
-        fragmentDashboardBinding.buttonNewPost.setOnClickListener(v -> {
+        binding.buttonNewPost.setOnClickListener(v -> {
             dashboardViewModel.cleanViewModel();
             NavigationHelper.navigateTo(
                     getActivity(),
@@ -97,8 +96,8 @@ public class DashboardFragment extends Fragment {
                     false);
         });
 
-        fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setLayoutManager(categoryLayoutManager);
-        fragmentDashboardBinding.fragmentDashboardCategoriesRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
+        binding.fragmentDashboardCategoriesRecyclerView.setLayoutManager(categoryLayoutManager);
+        binding.fragmentDashboardCategoriesRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         dashboardRecyclerViewAdapter = new DashboardRecyclerViewAdapter(new OnPostClickListener() {
@@ -125,8 +124,8 @@ public class DashboardFragment extends Fragment {
         }, getContext());
         dashboardRecyclerViewAdapter.clearPostList();
 
-        fragmentDashboardBinding.fragmentDashboardRecyclerView.setLayoutManager(layoutManager);
-        fragmentDashboardBinding.fragmentDashboardRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
+        binding.fragmentDashboardRecyclerView.setLayoutManager(layoutManager);
+        binding.fragmentDashboardRecyclerView.setAdapter(dashboardRecyclerViewAdapter);
 
         dashboardViewModel.cleanViewModel();
         readPosts(dashboardViewModel.getVisualizedCategory());
@@ -144,7 +143,7 @@ public class DashboardFragment extends Fragment {
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
-                            fragmentDashboardBinding.floatingActionButtonScrollUp.setVisibility(View.VISIBLE);
+                            binding.floatingActionButtonScrollUp.setVisibility(View.VISIBLE);
                         }
 
                         @Override
@@ -157,7 +156,7 @@ public class DashboardFragment extends Fragment {
                             //Non deve fare nulla
                         }
                     });
-                    fragmentDashboardBinding.floatingActionButtonScrollUp.startAnimation(animation);
+                    binding.floatingActionButtonScrollUp.startAnimation(animation);
                 }
 
             } else {
@@ -197,10 +196,10 @@ public class DashboardFragment extends Fragment {
 
 
         //Gestione del bottone di scroll verso l'alto
-        fragmentDashboardBinding.floatingActionButtonScrollUp.setVisibility(View.GONE);
-        fragmentDashboardBinding.floatingActionButtonScrollUp.setOnClickListener(v -> {
-            fragmentDashboardBinding.fragmentDashboardRecyclerView.smoothScrollToPosition(0);
-            fragmentDashboardBinding.floatingActionButtonScrollUp.setVisibility(View.GONE);
+        binding.floatingActionButtonScrollUp.setVisibility(View.GONE);
+        binding.floatingActionButtonScrollUp.setOnClickListener(v -> {
+            binding.fragmentDashboardRecyclerView.smoothScrollToPosition(0);
+            binding.floatingActionButtonScrollUp.setVisibility(View.GONE);
         });
 
     }
