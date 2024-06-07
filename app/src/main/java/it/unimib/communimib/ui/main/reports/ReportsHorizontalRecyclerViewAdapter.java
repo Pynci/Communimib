@@ -91,7 +91,6 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
 
         private final CardView card;
         private final TextView title;
-        //private final TextView description;
         private final TextView category;
         private final ImageView propic;
         private final TextView name;
@@ -106,7 +105,6 @@ public class ReportsHorizontalRecyclerViewAdapter extends RecyclerView.Adapter<R
             super(itemView);
 
             title = itemView.findViewById(R.id.reportListItem_title);
-            //description = itemView.findViewById(R.id.reportListItem_description);
             category = itemView.findViewById(R.id.reportListItem_category);
             propic = itemView.findViewById(R.id.reportListItem_imageView);
             name = itemView.findViewById(R.id.reportListItem_user_name);

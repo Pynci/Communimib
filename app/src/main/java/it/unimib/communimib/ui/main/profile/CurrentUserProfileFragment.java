@@ -90,7 +90,7 @@ public class CurrentUserProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
@@ -137,9 +137,7 @@ public class CurrentUserProfileFragment extends Fragment {
                 manageUpdateUserPropicResult(view, result));
 
         //Gestione del pulsqnte di Logout
-        binding.fragmentProfileImageButtonLogout.setOnClickListener(v -> {
-            currentUserProfileViewModel.logout();
-        });
+        binding.fragmentProfileImageButtonLogout.setOnClickListener(v -> currentUserProfileViewModel.logout());
 
         //Osservazione risultato logout
         currentUserProfileViewModel.getLogoutResult().observe(getViewLifecycleOwner(), result -> manageUserLogout(view, result));
@@ -455,7 +453,7 @@ public class CurrentUserProfileFragment extends Fragment {
         if (result.isSuccessful()) {
             Snackbar.make(
                     view,
-                    "Il nome e cognome inseriti sono stati registrati correttamente", //TODO: stringa hardcodata
+                    R.string.name_surname_updated,
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         }
         else{
@@ -471,7 +469,7 @@ public class CurrentUserProfileFragment extends Fragment {
         if (result.isSuccessful()) {
             Snackbar.make(
                     view,
-                    "L'immagine profilo è stata aggiornata correttamente", //TODO: stringa hardcodata
+                    R.string.propic_updated,
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         }
         else{
@@ -556,7 +554,7 @@ public class CurrentUserProfileFragment extends Fragment {
             rollbackNameAndSurname();
             Snackbar.make(
                     view,
-                    "I nuovi dati inseriti non sono validi. Le modifiche sono annullate", //TODO: stringa hardcodata
+                    R.string.invalid_data_changes_cancelled,
                     BaseTransientBottomBar.LENGTH_SHORT).show();
         }
 

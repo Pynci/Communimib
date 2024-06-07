@@ -29,7 +29,7 @@ public class NewPostViewModel extends ViewModel {
 
     public void createPost(String title, String description, String category, User author,
                            String email, String link, List<String> pictures){
-        postRepository.createPost(title, description, category, author, email, link, pictures, result -> postCreationResult.setValue(result));
+        postRepository.createPost(title, description, category, author, email, link, pictures, postCreationResult::setValue);
     }
 
     public LiveData<Result> getPostCreationResult() {

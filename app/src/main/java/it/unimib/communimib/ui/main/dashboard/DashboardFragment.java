@@ -49,7 +49,7 @@ public class DashboardFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         dashboardViewModel = new ViewModelProvider(this,
-                new DashboardViewModelFactory(this.getContext()))
+                new DashboardViewModelFactory())
                 .get(DashboardViewModel.class);
     }
 

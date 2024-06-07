@@ -31,7 +31,7 @@ public class PostRepositoryTest {
     private User user;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         postRemoteDataSource = mock(PostRemoteDataSource.class);
         commentRemoteDataSource = mock(CommentRemoteDataSource.class);
         postRepository = new PostRepository(postRemoteDataSource, commentRemoteDataSource);
@@ -64,7 +64,7 @@ public class PostRepositoryTest {
                 ,
                 result -> {
                     assertTrue(result instanceof Result.Error);
-                    assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                    assertEquals(ErrorMapper.REMOTEDB_GET_ERROR, ((Result.Error) result).getMessage());
                 });
 
         verify(postRemoteDataSource).readAllPosts(any(), any(), any(), any());
@@ -99,7 +99,7 @@ public class PostRepositoryTest {
                 ,
                 result -> {
                     assertTrue(result instanceof Result.Error);
-                    assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                    assertEquals(ErrorMapper.REMOTEDB_GET_ERROR, ((Result.Error) result).getMessage());
                 });
 
         verify(postRemoteDataSource).readPostsByCategory(eq(category), any(), any(), any(), any());
@@ -134,7 +134,7 @@ public class PostRepositoryTest {
                 ,
                 result -> {
                     assertTrue(result instanceof Result.Error);
-                    assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                    assertEquals(ErrorMapper.REMOTEDB_GET_ERROR, ((Result.Error) result).getMessage());
                 });
 
         verify(postRemoteDataSource).readPostsByTitleOrDescription(eq(keyword), any(), any(), any(), any());
@@ -171,7 +171,7 @@ public class PostRepositoryTest {
                 ,
                 result -> {
                     assertTrue(result instanceof Result.Error);
-                    assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                    assertEquals(ErrorMapper.REMOTEDB_GET_ERROR, ((Result.Error) result).getMessage());
                 });
 
         verify(postRemoteDataSource).readPostsByTitleOrDescriptionAndCategory(eq(keyword), eq(category), any(), any(), any(), any());
@@ -200,7 +200,7 @@ public class PostRepositoryTest {
                 removedResult -> assertTrue(removedResult instanceof Result.Success),
                 cancelledResult -> {
                     assertTrue(cancelledResult instanceof Result.Error);
-                    assertEquals(((Result.Error) cancelledResult).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                    assertEquals(ErrorMapper.REMOTEDB_GET_ERROR, ((Result.Error) cancelledResult).getMessage());
                 });
 
         verify(postRemoteDataSource).readPostsByUid(eq(uid), any(), any(), any(), any());
@@ -292,7 +292,7 @@ public class PostRepositoryTest {
                         assertTrue(result instanceof Result.Success),
                 result -> {
                     assertTrue(result instanceof Result.Error);
-                    assertEquals(((Result.Error) result).getMessage(), ErrorMapper.REMOTEDB_GET_ERROR);
+                    assertEquals(ErrorMapper.REMOTEDB_GET_ERROR, ((Result.Error) result).getMessage());
                 });
     }
 
