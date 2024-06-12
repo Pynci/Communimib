@@ -36,7 +36,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView"
-                style="@style/innserCardViewStyle"
+                style="@style/innerCardViewStyle"
                 android:layout_width="300dp"
                 android:layout_height="175dp"
                 android:layout_marginTop="30dp"
@@ -72,7 +72,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView2"
-                style="@style/innserCardViewStyle"
+                style="@style/innerCardViewStyle"
                 android:layout_width="300dp"
                 android:layout_height="175dp"
                 android:layout_marginTop="30dp"

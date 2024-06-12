@@ -76,7 +76,7 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR)); //TODO: capire se qui bisogna mettere un errore specifico
+                cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
             }
         });
 
@@ -153,7 +153,7 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR)); //TODO: capire se qui bisogna mettere un errore specifico
+                cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
             }
         };
 
@@ -191,7 +191,6 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
                                             callback.onComplete(new Result.Success());
                                         }
                                         else{
-                                            //TODO inserire un errore più specifico qui
                                             callback.onComplete(new Result.Error(ErrorMapper.REPORT_CREATION_ERROR));
                                         }
                                     });
@@ -284,7 +283,7 @@ public class ReportRemoteDataSource implements IReportRemoteDataSource {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR)); //TODO: capire se qui bisogna mettere un errore specifico
+                cancelledCallback.onComplete(new Result.Error(ErrorMapper.REMOTEDB_GET_ERROR));
             }
         };
 

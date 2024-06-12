@@ -18,21 +18,15 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_launcher_foreground" />
         <activity
-            android:name=".ui.TestActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Communimib"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.Communimib"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.auth.loading.AuthActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.App.Starting"
             android:screenOrientation="portrait">
             <intent-filter>

@@ -5,8 +5,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
-import it.unimib.communimib.ui.main.reports.dialogs.reportcreation.ReportsCreationViewModel;
 import it.unimib.communimib.util.ServiceLocator;
 
 public class ReportsCreationViewModelFactory implements ViewModelProvider.Factory {

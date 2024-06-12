@@ -12,25 +12,20 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import it.unimib.communimib.Callback;
-import it.unimib.communimib.database.FakeUserDAO;
-import it.unimib.communimib.database.UserDAO;
 import it.unimib.communimib.model.Result;
 import it.unimib.communimib.model.User;
 
 public class UserLocalDataSourceTest {
 
     UserLocalDataSource userLocalDataSource;
-    UserDAO fakeUserDAO;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Callback callback;

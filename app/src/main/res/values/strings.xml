@@ -124,4 +124,9 @@
     <string name="no_favorite_buildings_chosen">Prova a selezionare degli edifici preferiti</string>
     <string name="no_favorite_buildings_reports">Non sono presenti segnalazioni per i tuoi edifici preferiti</string>
     <string name="no_current_filters_reports">Non sono presenti segnalazioni per i filtri impostati</string>
+    
+    <string name="invalid_data_changes_cancelled">"I nuovi dati inseriti non sono validi, le modifiche sono annullate"</string>
+    <string name="name_surname_updated">"Nome e cognome aggiornati correttamente"</string>
+    <string name="propic_updated">Immagine profilo aggiornata correttamente"</string>
+    <string name="report_created">"La segnalazione è stata creata con successo"</string>
 </resources>

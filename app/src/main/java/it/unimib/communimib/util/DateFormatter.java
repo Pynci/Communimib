@@ -9,6 +9,11 @@ import java.util.concurrent.TimeUnit;
 import it.unimib.communimib.R;
 
 public class DateFormatter {
+
+    private DateFormatter(){
+        // costruttore privato
+    }
+
     public static String format(long timestamp, Context context){
         long timeDifference = System.currentTimeMillis() - timestamp;
         Locale.getDefault().getDisplayLanguage();

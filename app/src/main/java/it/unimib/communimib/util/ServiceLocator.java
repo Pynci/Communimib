@@ -3,7 +3,6 @@ package it.unimib.communimib.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import it.unimib.communimib.database.LocalDatabase;
 import it.unimib.communimib.datasource.post.CommentRemoteDataSource;
 import it.unimib.communimib.datasource.post.PostRemoteDataSource;
 import it.unimib.communimib.datasource.report.ReportRemoteDataSource;
@@ -47,10 +46,6 @@ public class ServiceLocator {
 
     public IPostRepository getPostRepository(){
         return new PostRepository(new PostRemoteDataSource(), new CommentRemoteDataSource());
-    }
-
-    public LocalDatabase getLocalDatabase(Context context) {
-        return LocalDatabase.getDatabase(context);
     }
 
     public SharedPreferences getFavoriteBuildingsSharedPreferences(Context context) {

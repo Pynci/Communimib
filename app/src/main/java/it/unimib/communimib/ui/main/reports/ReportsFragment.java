@@ -129,8 +129,7 @@ public class ReportsFragment extends Fragment {
         //Gestione osservazione creazione
         reportsCreationViewModel.getCreateReportResult().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()) {
-                // TODO: togliere questo testo hardcodato
-                Snackbar.make(view, "La segnalazione è stata creata con successo", BaseTransientBottomBar.LENGTH_SHORT).show();
+                Snackbar.make(view, R.string.report_created, BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
 
