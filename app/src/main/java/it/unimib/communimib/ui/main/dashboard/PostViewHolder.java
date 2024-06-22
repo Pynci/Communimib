@@ -30,6 +30,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private final ImageView propic;
     private final TextView name;
     private final TextView surname;
+    private final ImageView badge;
     private final TextView title;
     private final TextView description;
     private final TextView dateTime;
@@ -58,6 +59,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         propic = itemView.findViewById(R.id.postItem_propic);
         name = itemView.findViewById(R.id.postItem_name);
         surname = itemView.findViewById(R.id.postItem_surname);
+        badge = itemView.findViewById(R.id.postItem_unimibEmployeeBadge);
         title = itemView.findViewById(R.id.postItem_title);
         description = itemView.findViewById(R.id.postItem_description);
         email = itemView.findViewById(R.id.postItem_email);
@@ -81,18 +83,28 @@ public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         surname.setText(post.getAuthor().getSurname());
         title.setText(post.getTitle());
         description.setText(post.getDescription());
+
+        if(postAuthor.isUnimibEmployee()){
+            badge.setVisibility(View.VISIBLE);
+        }
+        else{
+            badge.setVisibility(View.GONE);
+        }
+
         if (post.getEmail() != null && !post.getEmail().isEmpty()) {
             email.setText(post.getEmail());
         } else {
             email.setVisibility(View.GONE);
             emailIcon.setVisibility(View.GONE);
         }
+
         if (post.getLink() != null && !post.getLink().isEmpty()) {
             link.setText(post.getLink());
         } else {
             link.setVisibility(View.GONE);
             linkIcon.setVisibility(View.GONE);
         }
+
         dateTime.setText(DateFormatter.format(post.getTimestamp(), context));
         if (post.getAuthor().getPropic() != null) {
             Glide.with(context)

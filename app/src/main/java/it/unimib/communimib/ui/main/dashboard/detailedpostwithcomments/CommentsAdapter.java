@@ -18,9 +18,6 @@ import java.util.List;
 
 import it.unimib.communimib.R;
 import it.unimib.communimib.model.Comment;
-import it.unimib.communimib.model.Post;
-import it.unimib.communimib.ui.main.dashboard.OnPostClickListener;
-import it.unimib.communimib.ui.main.dashboard.PostViewHolder;
 import it.unimib.communimib.util.DateFormatter;
 
 public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -88,32 +85,42 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
 
-        private final ImageView userPropic;
-        private final TextView userName;
-        private final TextView userSurname;
-        private final TextView commentDescription;
-        private final TextView dateTime;
+        private final ImageView propic;
+        private final TextView name;
+        private final TextView surname;
+        private final ImageView badge;
+        private final TextView description;
+        private final TextView datetime;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
-            userPropic = itemView.findViewById(R.id.commentItem_propic);
-            userName = itemView.findViewById(R.id.commentItem_name);
-            userSurname = itemView.findViewById(R.id.commentItem_surname);
-            commentDescription = itemView.findViewById(R.id.commentItem_text);
-            dateTime = itemView.findViewById(R.id.commentItem_datetime);
+            propic = itemView.findViewById(R.id.commentItem_propic);
+            name = itemView.findViewById(R.id.commentItem_name);
+            surname = itemView.findViewById(R.id.commentItem_surname);
+            badge = itemView.findViewById(R.id.commentItem_unimibEmployeeBadge);
+            description = itemView.findViewById(R.id.commentItem_text);
+            datetime = itemView.findViewById(R.id.commentItem_datetime);
         }
 
         public void bind(Comment comment) {
             if (comment.getAuthor().getPropic() != null) {
-                Glide.with(context).load(Uri.parse(comment.getAuthor().getPropic())).into(userPropic);
+                Glide.with(context).load(Uri.parse(comment.getAuthor().getPropic())).into(propic);
             }
             else{
-                Glide.with(context).load(R.drawable.user_filled).into(userPropic);
+                Glide.with(context).load(R.drawable.user_filled).into(propic);
             }
-            userName.setText(comment.getAuthor().getName());
-            userSurname.setText(comment.getAuthor().getSurname());
-            commentDescription.setText(comment.getText());
-            dateTime.setText(DateFormatter.format(comment.getTimestamp(), context));
+
+            if(comment.getAuthor().isUnimibEmployee()){
+               badge.setVisibility(View.VISIBLE);
+            }
+            else{
+                badge.setVisibility(View.GONE);
+            }
+
+            name.setText(comment.getAuthor().getName());
+            surname.setText(comment.getAuthor().getSurname());
+            description.setText(comment.getText());
+            datetime.setText(DateFormatter.format(comment.getTimestamp(), context));
         }
     }
 }

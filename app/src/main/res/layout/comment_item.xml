@@ -6,6 +6,16 @@
     android:layout_height="wrap_content"
     android:paddingBottom="16dp">
 
+    <ImageView
+        android:id="@+id/commentItem_unimibEmployeeBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/commentItem_surname"
+        app:layout_constraintStart_toEndOf="@+id/commentItem_surname"
+        app:layout_constraintTop_toTopOf="@+id/commentItem_surname"
+        app:srcCompat="@drawable/unimib_employee" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/commentItem_propicCardview"
         android:layout_width="40dp"

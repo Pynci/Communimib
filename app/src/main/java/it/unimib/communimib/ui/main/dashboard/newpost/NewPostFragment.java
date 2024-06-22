@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -319,9 +320,13 @@ public class NewPostFragment extends Fragment {
             }
 
         };
-
+        boolean unimibUser = newPostViewModel.getCurrentUser().isUnimibEmployee();
         String[] categoriesArray = getResources().getStringArray(R.array.posts_categories);
-        categoriesArray = Arrays.copyOfRange(categoriesArray, 1, categoriesArray.length);
+        if(unimibUser){
+            categoriesArray = Arrays.copyOfRange(categoriesArray, 1, categoriesArray.length);
+        } else {
+            categoriesArray = Arrays.copyOfRange(categoriesArray, 2, categoriesArray.length);
+        }
         adapter.addAll(Arrays.asList(categoriesArray));
         return adapter;
     }
