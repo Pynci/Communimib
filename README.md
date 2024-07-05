@@ -1,6 +1,17 @@
-### 03 - Communimib
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/UnimibSoftEngCourse2022/homebrew-ferioli-pinciroli-trolli-spinelli-boolean-rhapsody">
+    <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" alt="Logo" width="200" height="200">
+  </a>
 
-Progetto 03 - Communimib a cura di Luca Pinciroli, Marco Ferioli e Giulia Raffaella Vitale.
+  <h3 align="center">03 - Communimib</h3>
+
+  <p align="center">
+    Progetto a cura di Luca Pinciroli, Marco Ferioli e Giulia Raffaella Vitale.
+  </p>
+</div>
+
 
 ---
 
