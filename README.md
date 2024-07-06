@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/UnimibSoftEngCourse2022/homebrew-ferioli-pinciroli-trolli-spinelli-boolean-rhapsody">
+  <a href="https://github.com/Pynci/03-Communimib">
     <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" alt="Logo" width="200" height="200">
   </a>
 
