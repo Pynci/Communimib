@@ -8,7 +8,7 @@
   <h3 align="center">Communimib</h3>
 
   <p align="center">
-    Project curated by Luca Pinciroli, Marco Ferioli, and Giulia Raffaella Vitale.
+    Project curated by Luca Pinciroli, Marco Ferioli and Giulia Raffaella Vitale.
   </p>
 </div>
 
